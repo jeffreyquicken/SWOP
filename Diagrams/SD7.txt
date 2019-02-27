@@ -1,0 +1,6 @@
+title Use Case 7
+
+User->System:clickColumnMargin
+System->User:indicateSelectedColumn
+User->System:pressDeleteKey
+System->User:removeColumn
