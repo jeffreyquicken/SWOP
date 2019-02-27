@@ -1,0 +1,19 @@
+title Use case 4: Open Table
+
+
+
+User->System: The user double-clicks a table name.
+
+
+
+opt The system moves into Table Design mode for the double-clicked table if the table has no columns
+
+    System->User: Open Table Design mode
+end
+
+
+opt The system moves into Table Rows mode for the double-clicked table otherwise
+
+    System->User: Open Table Rows mode
+
+end

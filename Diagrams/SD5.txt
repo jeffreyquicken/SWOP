@@ -1,0 +1,9 @@
+title Use case 5: Add Column
+
+
+User->System: The user double-clicks below the list of columns.
+
+
+System->User: The system adds a new column to the end of the list. Its name is ColumnN
+
+note right of System: where N is such that the column name is different from thenames of the existing columns

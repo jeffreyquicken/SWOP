@@ -1,0 +1,10 @@
+title Use case 3: Delete Table
+
+
+User->System: The user clicks the margin to the left of a table name.
+
+System->User: Indicate Selected Table
+
+User->System: User presses delete key
+
+System->User: The system removes the table and shows the updated list of tables.
