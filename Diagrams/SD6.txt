@@ -1,4 +1,4 @@
-title Edit table name
+title Edit table characteristics
 
 actor User
 participant UI
