@@ -1,0 +1,46 @@
+title Edit table name
+
+actor User
+participant UI
+participant Tables module
+participant Table
+
+note over UI: precondition: Table mode
+User->UI:clicks table name
+ 
+UI-->User:cursor behind table name
+
+loop until finished editting name
+User->UI: edits the name field by a single character
+
+UI->Tables module: checkTableName(name)
+Tables module->Tables module: checkName(name)
+Tables module-->UI: boolean: nameAvailable
+
+UI->UI: setCelValue(cel, name)
+
+opt name empty or taken
+note over UI:changes are undone at the start of the next loop iteration
+UI->UI:setCelBorderColour(Cel,Red)
+UI->UI: lockEditField(cel)
+note over UI:user can't get out of loop if the name is not valid unless escape is pressed
+end
+
+opt user presses escape
+User->UI:presses escape
+UI->Tables module: getTableName(tableID)
+Tables module-->UI:name of table
+UI->UI: setCelValue(cel, name)
+note over Tables module,User: breaks out of loop
+end
+
+UI-->User:updated name cell
+end
+
+User->UI: presses enter
+UI->Tables module:changeTableName(tableID, name)
+Tables module->Table: changeName(table, name)
+Table-->Tables module: name
+
+Tables module-->UI:updated table list
+UI-->User: visualized new list of tables

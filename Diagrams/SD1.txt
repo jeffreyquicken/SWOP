@@ -1,0 +1,15 @@
+title Create Table
+
+actor User
+
+note over UI: precondition: Table mode
+ User->UI: double click below list of tables
+ 
+UI->Tables module: requestNewTable()
+
+Tables module->Tables module:createNewTable()
+space -5
+note left of Tables module:default values
+Tables module-->UI:updated list of tables
+
+UI-->User: visualized new list of tables
