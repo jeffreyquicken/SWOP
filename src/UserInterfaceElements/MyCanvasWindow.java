@@ -1,4 +1,6 @@
-package canvaswindow;
+package UserInterfaceElements;
+
+import canvaswindow.CanvasWindow;
 
 public class MyCanvasWindow extends CanvasWindow {
 

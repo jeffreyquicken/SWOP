@@ -1,4 +1,4 @@
-import canvaswindow.MyCanvasWindow;
+import UserInterfaceElements.MyCanvasWindow;
 
 public class Main {
 
