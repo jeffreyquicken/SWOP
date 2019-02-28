@@ -1,0 +1,44 @@
+title Edit table name
+
+actor User
+participant UI
+participant Tables module
+participant Table
+
+note over UI: precondition: Table mode
+opt change column name
+User->UI:clicks column name
+note over UI: Name change: see 'Edit table name'
+end
+
+opt change column type
+User->UI:clicks column type
+UI->Tables module: checkTableType
+UI<-Tables module: boolean: validDefault
+User<-UI: visualize validDefault
+opt default not valid
+User->UI:clicks column type
+User<-UI: visualize validDefault
+end 
+Tables module->Table: changeType(table, type)
+end
+
+opt change blanks allowed checkbox
+User->UI:clicks checkbox
+UI->Tables module: checkCheckbox
+UI<-Tables module: boolean: validCheckbox
+User<-UI: visualize validCheckbox
+opt checkbox not valid
+User->UI:clicks checkbox
+User<-UI: visualize validCheckbox
+end
+Tables module->Table: changeCheckbox(table)
+end
+
+
+
+opt change default value
+
+end
+
+
