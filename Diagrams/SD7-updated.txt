@@ -1,0 +1,14 @@
+
+
+
+
+title Use Case 7
+actor User
+note over GUI:In Table Rows
+User->GUI:clickColumnMargin
+GUI-->User:indicateSelectedColumn
+User->GUI:pressDeleteKey
+GUI->System:deletekeyPressed(selectedColumn)
+System -> Column: Deletecolumn()
+destroy Column
+GUI-->User:Visualise columns

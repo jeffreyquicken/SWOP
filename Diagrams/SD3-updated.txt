@@ -1,0 +1,12 @@
+
+
+title Use Case 3
+actor User
+note over GUI:In Table Mode
+User->GUI:The user clicks the margin to the left of a table name.
+GUI-->User:Indicate Selected Table
+User->GUI:User presses delete key
+GUI->System:deletekeyPressed(selectedTable)
+System -> Table: DeleteTable()
+destroy Table
+GUI-->User:Visualise tables

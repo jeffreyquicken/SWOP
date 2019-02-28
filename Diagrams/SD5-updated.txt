@@ -1,0 +1,15 @@
+
+
+
+title Use case 5: Add Column
+actor User
+note over GUI:In Table Rows
+
+User->GUI: The user double-clicks below the list of columns.
+GUI ->System: 
+GUI->System:addColumn()
+System -> Table: addColumn()
+Table ->* Column :createColumn()
+GUI-->User: The system adds a new column to the end of the list. Its name is ColumnN
+
+note right of User: where N is such that the column name is different from thenames of the existing columns
