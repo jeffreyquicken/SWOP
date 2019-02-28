@@ -1,0 +1,10 @@
+title Use Case 8
+actor User
+note over GUI:In Table Rows
+User->GUI:doubleclicksBelowRow()
+GUI->System:addRow()
+System -> Table: addRow()
+Table ->* Row :createRow()
+GUI --> User: visualise new rows
+
+

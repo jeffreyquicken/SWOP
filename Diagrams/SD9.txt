@@ -1,0 +1,47 @@
+title Use Case 9
+
+actor User
+participant UI
+participant Tables module
+participant Table
+
+note over UI: Table Row
+User->UI:clicksValue()
+ 
+UI-->User:cursor behind Value
+
+loop until finished editting value
+User->UI: edits the value field by a single character
+
+UI->Tables module: checkValue(value)
+Tables module->Tables module: checkValue(value)
+Tables module-->UI: boolean: valueCorrect
+
+UI->UI: setCelValue(cel, value)
+
+opt value empty or taken
+note over UI:changes are undone at the start of the next loop iteration
+UI->UI:setCelBorderColour(Cel,Red)
+UI->UI: lockEditField(cel)
+note over UI:user can't get out of loop if the name is not valid unless escape is pressed
+end
+
+opt user presses escape
+User->UI:presses escape
+UI->Tables module: getValue(rowN,columnN)
+Tables module-->UI:value of cell
+UI->UI: setCelValue(cel, value)
+note over Tables module,User: breaks out of loop
+end
+
+UI-->User:updated value cell
+end
+
+User->UI: presses enter
+UI->Tables module:changeValue(cell, value)
+Tables module->Table: changeValue(cell, value)
+Table-->Tables module: name
+
+Tables module-->UI:updated table list
+UI-->User: visualized new list of tables
+

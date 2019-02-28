@@ -1,0 +1,11 @@
+
+title Use Case 10
+actor User
+note over GUI:In Table Rows
+User->GUI:clickRightRowMargin()
+GUI-->User:indicate Selected Row
+User->GUI:pressDeleteKey()
+GUI->System:deletekeyPressed(selectedRow)
+System -> Row: DeleteRow()
+destroy Row
+GUI-->User:Visualise rows
