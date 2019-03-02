@@ -33,6 +33,9 @@ public class MyCanvasWindow extends CanvasWindow {
 	}
 
 	public void handleKeyEvent(int id, int keyCode, char keyChar) {
+		//Controller handles Keyevent
+		controller.handleKeyEvent(id, keyCode, keyChar);
+		this.repaint();
 
 	}
 }

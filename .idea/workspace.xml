@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="10c2916a-4b81-4e25-89f1-2aef0a39059c" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SWOP/UserInterfaceElements/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SWOP/UserInterfaceElements/Controller.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SWOP/UserInterfaceElements/MyCanvasWindow.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SWOP/UserInterfaceElements/MyCanvasWindow.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/UserInterfaceElements/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserInterfaceElements/Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/UserInterfaceElements/MyCanvasWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserInterfaceElements/MyCanvasWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/UserInterfaceElements/UITablesModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserInterfaceElements/UITablesModule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/paintModule/paintModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/paintModule/paintModule.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,10 +14,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/UserInterfaceElements/MyCanvasWindow.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
+            <state relative-caret-position="454">
               <caret line="30" column="52" lean-forward="true" selection-start-line="30" selection-start-column="52" selection-end-line="30" selection-end-column="52" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -33,11 +28,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/UserInterfaceElements/Controller.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="54" column="40" selection-start-line="54" selection-start-column="40" selection-end-line="54" selection-end-column="40" />
+            <state relative-caret-position="294">
+              <caret line="34" column="57" selection-start-line="34" selection-start-column="57" selection-end-line="34" selection-end-column="57" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -138,8 +133,8 @@
         <option value="$PROJECT_DIR$/src/EventHandlers/ClickHandler.java" />
         <option value="$PROJECT_DIR$/src/paintModule/paintModule.java" />
         <option value="$PROJECT_DIR$/src/UserInterfaceElements/UITablesModule.java" />
-        <option value="$PROJECT_DIR$/src/UserInterfaceElements/Controller.java" />
         <option value="$PROJECT_DIR$/src/UserInterfaceElements/MyCanvasWindow.java" />
+        <option value="$PROJECT_DIR$/src/UserInterfaceElements/Controller.java" />
       </list>
     </option>
   </component>
@@ -197,7 +192,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551533118626" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551534324983" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../SoftwareOntwerp" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
   </component>
@@ -515,24 +510,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/UserInterfaceElements/Controller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="54" column="40" selection-start-line="54" selection-start-column="40" selection-end-line="54" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/UserInterfaceElements/MyCanvasWindow.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
+        <state relative-caret-position="454">
           <caret line="30" column="52" lean-forward="true" selection-start-line="30" selection-start-column="52" selection-end-line="30" selection-end-column="52" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#623#624#0" expanded="true" />
             <element signature="e#649#650#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UserInterfaceElements/Controller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="34" column="57" selection-start-line="34" selection-start-column="57" selection-end-line="34" selection-end-column="57" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

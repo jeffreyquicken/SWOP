@@ -13,7 +13,8 @@ public class Controller {
     private UIDesignModule designModule;
     private String currentMode;
     private List<Table> list;
-    private String mousevent = "";
+    private String mouseEvent = "";
+    private String keyEvent = "";
 
 
     public List<Table> getList() {
@@ -22,8 +23,16 @@ public class Controller {
 
     private Table emptyTable;
 
+    //Logs mousevent in string
+    //TODO: delete this method, now only for debugging
     public void handleMouseEvent(int id, int xCo, int yCo, int count){
-        mousevent = "Mouse eventID= " + id + " | Coordinates clicked" + xCo + ", " + yCo + "| Amount clicked: " + count;
+        mouseEvent = "Mouse eventID= " + id + " | Coordinates clicked" + xCo + ", " + yCo + "| Amount clicked: " + count;
+    }
+
+    //logs keyevent in string
+    //TODO: delete this method, now only for debugging
+    public void handleKeyEvent(int id, int keyCode, char keyChar){
+        keyEvent = "Key eventID= " + id + " | Key pressed: " + keyChar +  " | KeyCode: " + keyCode;
     }
 
     //Constructor that creates/init our three different UI modules/controller
@@ -51,8 +60,9 @@ public class Controller {
     public void paint (Graphics g){
         //TODO: Only tablemode is implemented different calls need to change to right change
         if (this.getCurrentMode() == "table"){
-            //drawing of mousevent just for debugging
-            g.drawString(mousevent, 10,400);
+            //drawing of mousevent, keyevent just for debugging
+            g.drawString(mouseEvent, 10,400);
+            g.drawString(keyEvent, 10 , 420);
             this.getTablemodule().paint(g, this.getList());
         }
         else if (this.getCurrentMode() == "row"){
