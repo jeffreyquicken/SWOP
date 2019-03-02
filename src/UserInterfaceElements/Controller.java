@@ -13,12 +13,18 @@ public class Controller {
     private UIDesignModule designModule;
     private String currentMode;
     private List<Table> list;
+    private String mousevent = "";
+
 
     public List<Table> getList() {
         return list;
     }
 
     private Table emptyTable;
+
+    public void handleMouseEvent(int id, int xCo, int yCo, int count){
+        mousevent = "Mouse eventID= " + id + " | Coordinates clicked" + xCo + ", " + yCo + "| Amount clicked: " + count;
+    }
 
     //Constructor that creates/init our three different UI modules/controller
     //Constructor also creates empty table list
@@ -45,6 +51,8 @@ public class Controller {
     public void paint (Graphics g){
         //TODO: Only tablemode is implemented different calls need to change to right change
         if (this.getCurrentMode() == "table"){
+            //drawing of mousevent just for debugging
+            g.drawString(mousevent, 10,400);
             this.getTablemodule().paint(g, this.getList());
         }
         else if (this.getCurrentMode() == "row"){

@@ -29,6 +29,7 @@ public class UITablesModule {
         paintModule.paintTitle(g, "Table Mode");
 
         //Dummy list to test functionality paintmodule
+        tableList.clear();
         tableList.add("Table 1");
         tableList.add("Table 2");
         tableList.add("Table 3");

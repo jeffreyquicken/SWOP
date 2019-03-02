@@ -32,8 +32,8 @@ public class paintModule {
         //int rectWidth = (int)(text.length()*8.5);
         int rectWidth = 60;
         g.drawRect(xCo,yCo,rectWidth,height);
-        int yCo2;
-        int xCo2;
+        int yCo2 = 0;
+        int xCo2 = 0;
         yCo2 = yCo + height/2 + 2; // text in middle of height
         xCo2 = xCo + 10; //margin left
         this.paintText(g, xCo2,yCo2, text);
