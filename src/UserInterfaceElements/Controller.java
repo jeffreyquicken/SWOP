@@ -27,6 +27,9 @@ public class Controller {
     //TODO: delete this method, now only for debugging
     public void handleMouseEvent(int id, int xCo, int yCo, int count){
         mouseEvent = "Mouse eventID= " + id + " | Coordinates clicked" + xCo + ", " + yCo + "| Amount clicked: " + count;
+        if (this.getCurrentMode() == "table"){
+            this.getTablemodule().handleMouseEvent(xCo, yCo, 100,100,20,60,5,1,10);
+        }
     }
 
     //logs keyevent in string

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class paintModule {
-
     //Method that draw list of table names in a collumn
     //For every element in its list it calls the printRectText method
     //TODO: should accept list with table elements (instead of strings) and iterate over that list and get table name
