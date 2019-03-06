@@ -1,17 +1,37 @@
 package paintModule;
 
+import Data.Column;
+import Data.Row;
+import Data.Table;
+
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class paintModule {
+    private int cellHeight = 20;
+    private int cellWidth = 50;
+    private int cellMargin = 10;
+    private int titleX = 10;
+    private  int titleY = 10;
+
+
+    public void paintTable(Graphics g, Table table, int startXco, int startyCo){
+        for(Row row: table.getTableRows()){
+            this.paintRow(g,row.getColcumnList(),startXco,startyCo);
+            startyCo = startyCo + 20;
+        }
+
+    }
+
     //Method that draw list of table names in a collumn
     //For every element in its list it calls the printRectText method
     //TODO: should accept list with table elements (instead of strings) and iterate over that list and get table name
-     public void paintTableView(Graphics g, List<String> tableList, int startXco, int startyCo){
-        for(String tableItem : tableList){
-            this.paintRectText(g,startXco, startyCo, 20 , tableItem );
-            startyCo = startyCo + 20;
+     public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startyCo){
+        for(Table tableItem : tableList){
+            this.paintRectText(g,startXco, startyCo , cellHeight, tableItem.getTableName() );
+            startyCo = startyCo + cellHeight;
         }
     }
 
@@ -29,17 +49,17 @@ public class paintModule {
     //TODO: margin, width, length are now hardcoded should be stored in variables
     public void paintRectText(Graphics g, int xCo, int yCo, int height, String text){
         //int rectWidth = (int)(text.length()*8.5);
-        int rectWidth = 60;
-        g.drawRect(xCo,yCo,rectWidth,height);
+        g.drawRect(xCo,yCo,cellWidth,height);
         int yCo2 = 0;
         int xCo2 = 0;
         yCo2 = yCo + height/2 + 2; // text in middle of height
-        xCo2 = xCo + 10; //margin left
+        xCo2 = xCo + cellMargin; //margin left
         this.paintText(g, xCo2,yCo2, text);
     }
+
     //Simple method that draws a title in left upper corner
     public void paintTitle(Graphics g, String text){
-        g.drawString("Current mode:" + text, 10,10);
+        g.drawString("Current mode:" + text, titleX,titleY);
     }
 
     //Simple method that draws text on screen

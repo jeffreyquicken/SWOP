@@ -4,8 +4,8 @@ package EventHandlers;
 
 public class mouseEventHandler {
 
-    public Boolean doubleClickUnderTable(int Y, int count, int lowestY){
-        if( count==2 && Y > lowestY ){
+    public Boolean doubleClickUnderTable(int Y, int count, int ID,int lowestY){
+        if( count==2 && Y > lowestY && ID == 501){
             return true;
         } else{
             return false;
