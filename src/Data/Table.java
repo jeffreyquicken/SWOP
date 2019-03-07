@@ -7,6 +7,10 @@ public class Table {
     private String tableName;
     private List<Row> tableRows;
 
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
     public List<Row> getTableRows() {
         return tableRows;
     }
