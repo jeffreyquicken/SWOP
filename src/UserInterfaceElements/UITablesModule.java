@@ -20,6 +20,7 @@ public class UITablesModule {
     private String tempText;
     private Boolean invalidInput;
 
+
     //Constructor that init/creates paintModule and an empty list with tablenames
     //Each UImodule has own paintmodule to save settings (e.g. size, bg, ...)
     public UITablesModule() {
@@ -31,7 +32,7 @@ public class UITablesModule {
 
     //Handles mousevent and returns if UImode need to change
     public String handleMouseEvent(int xCo, int yCo, int count, int ID, dataController data) {
-
+        String nextUImode = "table";
         //EVENT DOUBLE CLICKS UNDER TABLE
         if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getLowestY()) ) {
             int numberOfTable = data.getTableList().size() + 1;
@@ -43,17 +44,22 @@ public class UITablesModule {
         //TODO: check if margin clicked
         int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1);
 
-
+        //check if leftmargin is clicked
         if(currMode != "edit" && mouseEventHandler.marginLeftClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1, paintModule.getCellLeftMargin()) != null) {
             currMode = "delete";
             activeCell = clickedCell;
         }
-
         //Check if a cell is clicked
         else if (!invalidInput && currMode!= "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
+            if (count != 2){
             activeCell = clickedCell;
             currMode = "edit";
-            tempText = data.getTableList().get(activeCell[0]).getTableName();
+            tempText = data.getTableList().get(activeCell[0]).getTableName();}
+            else{
+                data.setSelectedTable(data.getTableList().get(clickedCell[0]));
+                nextUImode = "row";
+                return nextUImode;
+            }
 
             //EVENT edit mode and clicked outside table
         } else if (currMode == "edit"  && !invalidInput) {
@@ -64,7 +70,7 @@ public class UITablesModule {
             currMode = "normal";
         }
         invalidInput = !textIsValid(tempText, data);
-        String nextUImode = "table";
+
         return nextUImode;
     }
 

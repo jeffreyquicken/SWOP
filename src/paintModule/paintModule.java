@@ -9,7 +9,7 @@ import java.util.List;
 
 public class paintModule {
     private int cellHeight = 20;
-    private int cellWidth = 80;
+    private int cellWidth = 100;
 
     public int getCellLeftMargin() {
         return cellLeftMargin;
