@@ -77,19 +77,19 @@ public class paintModule {
         this.paintText(g, xCo2,yCo2, text);
     }
 
-    public void paintBorder(Graphics g, int xCo, int yCo, int width, int height, String color){
-        Color borderColor = new Color(255, 0, 0, 195);
-        g.setColor(borderColor);
-
+    public void paintBorder(Graphics g, int xCo, int yCo, int width, int height, Color color){
+        g.setColor(color);
         g.drawRect(xCo,yCo,width,height);
         g.drawRect(xCo-1, yCo-1, width+2, height+2);
 
     }
 
     public void paintCursor(Graphics g, int xCo, int yCo, int width, int height, String text){
+        if(xCo != -1 || yCo != -1){
         clearCell(g, xCo, yCo, width, height);
         g.setColor(Color.BLACK);
-        paintRectText(g, xCo, yCo, width, height, text + "|");
+        paintRectText(g, xCo, yCo, width, height, text + "|");}
+
     }
 
     public void clearCell(Graphics g, int xCo, int yCo, int width, int height){
@@ -112,6 +112,9 @@ public class paintModule {
     //Simple method that draws text on screen
     public void paintText(Graphics g, int xCo, int yCo, String text){
         g.drawString(text, xCo,yCo);
+    }
+    public void setColor(Graphics g, Color c){
+        g.setColor(c);
     }
 
 }

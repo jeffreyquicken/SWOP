@@ -7,6 +7,8 @@ import Data.Table;
 import Data.dataController;
 import paintModule.paintModule;
 import EventHandlers.mouseEventHandler;
+import sun.font.TrueTypeFont;
+
 import java.util.*;
 import java.awt.*;
 import java.util.List;
@@ -15,9 +17,10 @@ import java.util.ArrayList;
 public class UITablesModule {
     private paintModule paintModule;
     private mouseEventHandler mouseEventHandler;
-    private String currMode;
+    private String currMode = "normal";
     private int[] activeCell;
     private String tempText;
+    private Boolean invalidInput;
 
 
 
@@ -26,38 +29,68 @@ public class UITablesModule {
     public UITablesModule(){
         paintModule = new paintModule();
         mouseEventHandler = new mouseEventHandler();
+        invalidInput = false;
     }
 
     //Handles mousevent and returns if UImode need to change
     public String handleMouseEvent(int xCo, int yCo,int count, int ID,  dataController data){
         //EVENT DOUBLE CLICKS UNDER TABLE
+
         String nextUImode = "table";
-        if(mouseEventHandler.doubleClickUnderTable(yCo,count,ID,data.getLowestY())){
+        if(mouseEventHandler.doubleClickUnderTable(yCo,count,ID,data.getLowestY()) && currMode != "edit"){
            int numberOfTable =  data.getTableList().size() + 1;
             Table newTable = new Table("Table" + numberOfTable);
             data.addTable(newTable);
         }
         //EVENT CLICK CELL
         //TODO: check if margin clicked
-        activeCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1);
-        if (activeCell[1]!= -1){
+        int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1);
+        if (clickedCell[1]!= -1 && clickedCell[0] != -1 && !invalidInput){
+            activeCell = clickedCell;
             currMode = "edit";
             tempText = data.getTableList().get(activeCell[0]).getTableName();
+            //EVENT edit mode and clicked outside table
+        }else if(currMode == "edit" && !invalidInput){
+            currMode = "normal";
+            data.getTableList().get(activeCell[0]).setTableName(tempText);
+        }
+        //check if input is invalid
+        if(tempText.length() != 0){
+            invalidInput = false;
         }
          nextUImode = "table";
         return nextUImode;
     }
 
     //Handles mousevent and returns if UImode need to change
-    public String handleKeyEvent(int id, int keyCode, char keyChar,   dataController tableController){
+    public String handleKeyEvent(int id, int keyCode, char keyChar, dataController data){
         //EVENT: r pressed
         String nextUImode = "table";
-        if(keyChar == 'r'){
+        if(keyCode > 31 && keyCode < 123){
+            tempText = tempText + keyChar;
+        }
+        else if(keyCode == 9){
             nextUImode = "row";
         }
         //Todo: move to new keyEventHandler class
+
+        //EVENT BS pressed and in edit mode
         else if(keyCode == 8 && currMode == "edit"){
-            tempText = tempText.substring(0, tempText.length()-1);
+
+            //Check if string is not empty
+            if(tempText.length() != 0){
+            tempText = tempText.substring(0, tempText.length()-1);}
+            //empty string, display red border
+        }
+        //EVENT ENTER pressed
+        else if(keyCode == 10 && currMode == "edit" && !invalidInput){
+            currMode = "normal";
+            data.getTableList().get(activeCell[0]).setTableName(tempText);
+        }
+        if (tempText.length() == 0){
+            invalidInput = true;
+        } else{
+            invalidInput = false;
         }
         return nextUImode;
     }
@@ -72,8 +105,14 @@ public class UITablesModule {
 
         //Check mode
         if (currMode == "edit"){
-d .
             paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0], paintModule.getCellCoords(activeCell[0], activeCell[1])[1], paintModule.getCellWidth(), paintModule.getCellHeight(), tempText);
+        }
+
+        //check if there are warnings
+        if(invalidInput){
+            paintModule.paintBorder(g,paintModule.getCellCoords(activeCell[0], activeCell[1])[0], paintModule.getCellCoords(activeCell[0], activeCell[1])[1], paintModule.getCellWidth(), paintModule.getCellHeight(), Color.RED );
+        }else{
+            paintModule.setColor(g, Color.BLACK);
         }
         //paintModule.paintBorder(g,paintModule.getxCoStart(), paintModule.getyCoStart(), 80, 20, "red");
     }
