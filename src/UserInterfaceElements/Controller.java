@@ -63,12 +63,11 @@ public class Controller {
     public void paint (Graphics g){
 
         if (this.getCurrentMode() == "table"){
-
             //Let UImodule paint canvas
             this.getTablemodule().paint(g, tableDataController);
         }
         else if (this.getCurrentMode() == "row"){
-            this.getRowmodule().paint(g, tableDataController.getTableList().get(1));
+            this.getRowmodule().paint(g, tableDataController.getSelectedTable());
         }
         else{
 

@@ -6,6 +6,16 @@ import java.util.List;
 public class dataController {
     private List<Table> tableList;
 
+    public Table getSelectedTable() {
+        return selectedTable;
+    }
+
+    public void setSelectedTable(Table selectedTable) {
+        this.selectedTable = selectedTable;
+    }
+
+    private Table selectedTable;
+
     public dataController(){
         Table table1 = new Table("Table 1");
         Table table2 = new Table("Table 2");

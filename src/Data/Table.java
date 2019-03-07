@@ -21,9 +21,9 @@ public class Table {
     public Table(String name){
         tableRows = new ArrayList<Row>();
         tableName = name;
-        Row row1 = new Row("Row1");
-        Row row2 = new Row("Row2");
-        Row row3 = new Row("Row3");
+        Row row1 = new Row("Row1" + tableName);
+        Row row2 = new Row("Row2" + tableName);
+        Row row3 = new Row("Row3" + tableName);
         this.addRow(row1);
         this.addRow(row2);
         this.addRow(row3);
