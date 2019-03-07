@@ -22,8 +22,6 @@ public class UITablesModule {
     private String tempText;
     private Boolean invalidInput;
 
-
-
     //Constructor that init/creates paintModule and an empty list with tablenames
     //Each UImodule has own paintmodule to save settings (e.g. size, bg, ...)
     public UITablesModule(){
