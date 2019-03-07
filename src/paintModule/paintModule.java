@@ -10,6 +10,11 @@ import java.util.List;
 public class paintModule {
     private int cellHeight = 20;
     private int cellWidth = 80;
+
+    public int getCellLeftMargin() {
+        return cellLeftMargin;
+    }
+
     private int cellLeftMargin = 10;
     private int cellTopMargin = 5;
     private int titleX = 10;
