@@ -2,7 +2,7 @@ package UserInterfaceElements;
 
 
 
-import paintModule.Square;
+
 import Data.Table;
 import Data.dataController;
 import paintModule.paintModule;
@@ -15,8 +15,9 @@ import java.util.ArrayList;
 public class UITablesModule {
     private paintModule paintModule;
     private mouseEventHandler mouseEventHandler;
-    private int xCoStart = 50 ;
-    private int yCoStart = 50;
+    private String currMode;
+    private int[] activeCell;
+
 
 
     //Constructor that init/creates paintModule and an empty list with tablenames
@@ -29,12 +30,19 @@ public class UITablesModule {
     //Handles mousevent and returns if UImode need to change
     public String handleMouseEvent(int xCo, int yCo,int count, int ID,  dataController tableController){
         //EVENT DOUBLE CLICKS UNDER TABLE
+        String nextUImode = "table";
         if(mouseEventHandler.doubleClickUnderTable(yCo,count,ID,tableController.getLowestY())){
            int numberOfTable =  tableController.getTableList().size() + 1;
             Table newTable = new Table("Table" + numberOfTable);
             tableController.addTable(newTable);
         }
-        String nextUImode = "table";
+        //EVENT CLICK CELL
+        //TODO: check if margin clicked
+        activeCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(), tableController.getTableList().size(), 1);
+        if (activeCell[1]!= -1){
+            currMode = "edit";
+        }
+         nextUImode = "table";
         return nextUImode;
     }
 
@@ -49,12 +57,19 @@ public class UITablesModule {
     }
     //Method that takes care of painting the canvas
     //It calls method from paintModule
-    public void paint(Graphics g, List<Table> tables){
+    public void paint(Graphics g, dataController data){
         //Creates title
         paintModule.paintTitle(g, "Table Mode");
 
         //print tables in tabular view
-        paintModule.paintTableView(g,tables, xCoStart,yCoStart);
+        paintModule.paintTableView(g,data.getTableList(), paintModule.getxCoStart(),paintModule.getyCoStart());
+
+        //Check mode
+        if (currMode == "edit"){
+            String text = data.getTableList().get(activeCell[0]).getTableName();
+            paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0], paintModule.getCellCoords(activeCell[0], activeCell[1])[1], paintModule.getCellWidth(), paintModule.getCellHeight(), text);
+        }
+        //paintModule.paintBorder(g,paintModule.getxCoStart(), paintModule.getyCoStart(), 80, 20, "red");
     }
 
 

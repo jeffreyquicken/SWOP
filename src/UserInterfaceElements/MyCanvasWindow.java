@@ -27,14 +27,14 @@ public class MyCanvasWindow extends CanvasWindow {
 	//TODO: Add seperate eventhandler?
 	public void handleMouseEvent(int id, int x, int y, int clickCount) {
 		//Controller handles Click event
-		controller.handleMouseEvent(id,  x,  y,  clickCount);
+		controller.relayMouseEvent(id,  x,  y,  clickCount);
 		//After the changes canvas will be repainted
 		this.repaint();
 	}
 
 	public void handleKeyEvent(int id, int keyCode, char keyChar) {
 		//Controller handles Keyevent
-		controller.handleKeyEvent(id, keyCode, keyChar);
+		controller.relayKeyEvent(id, keyCode, keyChar);
 		this.repaint();
 
 	}

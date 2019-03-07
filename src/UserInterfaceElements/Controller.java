@@ -36,7 +36,7 @@ public class Controller {
     }
 
     //HAndle MouseEvent
-    public void handleMouseEvent(int id, int xCo, int yCo, int count){
+    public void relayMouseEvent(int id, int xCo, int yCo, int count){
 
         if (this.getCurrentMode() == "table"){
             //if mode will be swtitched mouseevent will tell
@@ -46,9 +46,9 @@ public class Controller {
     }
 
     //Handle keyevent
-    public void handleKeyEvent(int id, int keyCode, char keyChar){
+    public void relayKeyEvent(int id, int keyCode, char keyChar){
         if (this.getCurrentMode() == "table"){
-            //if mode will be swtitched mouseevent will tell
+            //if mode will be switched mouseevent will tell
             this.setCurrentMode(this.getTablemodule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
         }else if (this.getCurrentMode() == "row"){
             //if mode will be swtitched mouseevent will tell
@@ -66,7 +66,7 @@ public class Controller {
         if (this.getCurrentMode() == "table"){
 
             //Let UImodule paint canvas
-            this.getTablemodule().paint(g, tableDataController.getTableList());
+            this.getTablemodule().paint(g, tableDataController);
         }
         else if (this.getCurrentMode() == "row"){
             this.getRowmodule().paint(g, tableDataController.getTableList().get(1));

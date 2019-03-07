@@ -18,9 +18,10 @@ public class mouseEventHandler {
     //margin = margin per cel
     //returns rij en kolom nummer van de cel als er op de linker margin van een cel geklikt wordt
     //anders null
+    // EXTRA: Use recursion to split table and search for margin clicked without for loops
     public int[] marginLeftClicked(int xCo, int yCo, int firstX, int firstY, int height, int width, int numberOfRows, int numberOfColumns, int margin ){
         int[] coordinates = new int[2];
-        if (xCo > firstX || xCo < (firstX + (numberOfRows * width)) || yCo > firstY || yCo < (firstY + (numberOfColumns * height))){
+        if (isInTableHeight(yCo, firstY, height, numberOfRows) && isInTableWidth(xCo, firstX, width, numberOfColumns)){
             for( int i = 0; i < numberOfColumns; i++){
                 if(firstX + i * width  < xCo && xCo < firstX + i*width + margin){
                     coordinates[0] = i;
@@ -29,14 +30,8 @@ public class mouseEventHandler {
                     return null;
                 }
             }
-            for (int i = 0; i < numberOfRows; i++){
-                if(firstY + i * height  < yCo && yCo < firstY + ((i + 1) *width) ){
-                    coordinates[1] = i;
-                    break;
-                }else{
-                    return null;
-                }
-            }
+
+            coordinates[1] = calculateRowID(yCo, firstY, height, numberOfRows);
             return coordinates;
         }else{
           return null;
@@ -68,21 +63,34 @@ public class mouseEventHandler {
     	int[] cellID = {-1,-1};
     	if(this.isInTableWidth(xCo, firstX, width, numberOfColumns) && this.isInTableHeight(yCo, firstY, height, numberOfRows)){
     		//calculates the in which column the user clicked
-    		for(int i = 0; i< numberOfColumns; i++) {
-    			if((xCo > firstX + i*width) && (xCo < firstX + (i+1)*width)) {
-    				cellID[1] = i; 
-    			}
-    		}
-    		//calculates in which row the user clicked
-    		for(int i = 0; i< numberOfRows; i++) {
-    			if((yCo > firstY + i*height) && (yCo < firstY + (i+1)*height)) {
-    				cellID[0] = i; 
-    			}
-    		}
-    	}
+            cellID[1] = calculateColumnID(xCo, firstX, width, numberOfColumns);
+            //calculates in which row the user clicked
+            cellID[0] = calculateRowID(yCo, firstY, height, numberOfRows);
+        }
     	return cellID;
     }
-    
+
+    private int calculateColumnID(int xCo, int firstX, int width, int numberOfColumns) {
+        int colID = -1;
+        for(int i = 0; i< numberOfColumns; i++) {
+            if((xCo > firstX + i*width) && (xCo < firstX + (i+1)*width)) {
+                colID = i;
+            }
+        }
+        return colID;
+    }
+
+    private int calculateRowID(int yCo, int firstY, int height, int numberOfRows) {
+        int rowID = -1;
+        for (int i = 0; i < numberOfRows; i++) {
+            if ((yCo > firstY + i * height) && (yCo < firstY + (i + 1) * height)) {
+                rowID = i;
+            }
+        }
+        return rowID;
+    }
+
+
     /**
      * @param xCo
      * the X coordinate to check
