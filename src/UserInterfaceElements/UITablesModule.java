@@ -17,6 +17,7 @@ public class UITablesModule {
     private mouseEventHandler mouseEventHandler;
     private String currMode;
     private int[] activeCell;
+    private String tempText;
 
 
 
@@ -28,19 +29,20 @@ public class UITablesModule {
     }
 
     //Handles mousevent and returns if UImode need to change
-    public String handleMouseEvent(int xCo, int yCo,int count, int ID,  dataController tableController){
+    public String handleMouseEvent(int xCo, int yCo,int count, int ID,  dataController data){
         //EVENT DOUBLE CLICKS UNDER TABLE
         String nextUImode = "table";
-        if(mouseEventHandler.doubleClickUnderTable(yCo,count,ID,tableController.getLowestY())){
-           int numberOfTable =  tableController.getTableList().size() + 1;
+        if(mouseEventHandler.doubleClickUnderTable(yCo,count,ID,data.getLowestY())){
+           int numberOfTable =  data.getTableList().size() + 1;
             Table newTable = new Table("Table" + numberOfTable);
-            tableController.addTable(newTable);
+            data.addTable(newTable);
         }
         //EVENT CLICK CELL
         //TODO: check if margin clicked
-        activeCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(), tableController.getTableList().size(), 1);
+        activeCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1);
         if (activeCell[1]!= -1){
             currMode = "edit";
+            tempText = data.getTableList().get(activeCell[0]).getTableName();
         }
          nextUImode = "table";
         return nextUImode;
@@ -50,8 +52,12 @@ public class UITablesModule {
     public String handleKeyEvent(int id, int keyCode, char keyChar,   dataController tableController){
         //EVENT: r pressed
         String nextUImode = "table";
-        if(keyChar == 'r'){ nextUImode = "row";}else{
-            nextUImode = "table";
+        if(keyChar == 'r'){
+            nextUImode = "row";
+        }
+        //Todo: move to new keyEventHandler class
+        else if(keyCode == 8 && currMode == "edit"){
+            tempText = tempText.substring(0, tempText.length()-1);
         }
         return nextUImode;
     }
@@ -66,8 +72,8 @@ public class UITablesModule {
 
         //Check mode
         if (currMode == "edit"){
-            String text = data.getTableList().get(activeCell[0]).getTableName();
-            paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0], paintModule.getCellCoords(activeCell[0], activeCell[1])[1], paintModule.getCellWidth(), paintModule.getCellHeight(), text);
+d .
+            paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0], paintModule.getCellCoords(activeCell[0], activeCell[1])[1], paintModule.getCellWidth(), paintModule.getCellHeight(), tempText);
         }
         //paintModule.paintBorder(g,paintModule.getxCoStart(), paintModule.getyCoStart(), 80, 20, "red");
     }

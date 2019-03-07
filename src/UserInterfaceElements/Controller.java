@@ -54,8 +54,7 @@ public class Controller {
             //if mode will be swtitched mouseevent will tell
             this.setCurrentMode(this.getRowmodule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
         }
-        keyEvent = "Key eventID= " + id + " | Key pressed: " + keyChar +  " | KeyCode: " + keyCode;
-
+        keyEvent = "Key eventID= " + id + " | Key pressed: " + keyChar +  " | KeyCode: " + Integer.toString(keyCode);
     }
 
 

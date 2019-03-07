@@ -87,7 +87,14 @@ public class paintModule {
     }
 
     public void paintCursor(Graphics g, int xCo, int yCo, int width, int height, String text){
+        clearCell(g, xCo, yCo, width, height);
+        g.setColor(Color.BLACK);
         paintRectText(g, xCo, yCo, width, height, text + "|");
+    }
+
+    public void clearCell(Graphics g, int xCo, int yCo, int width, int height){
+        g.setColor(Color.WHITE);
+        g.fillRect(xCo, yCo, width, height);
     }
 
     public int[] getCellCoords(int x,int y){
