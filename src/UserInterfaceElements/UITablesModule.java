@@ -54,21 +54,22 @@ public class UITablesModule {
             currMode = "normal";
             data.getTableList().get(activeCell[0]).setTableName(tempText);
         }
-        //check if input is invalid
-        if(tempText.length() != 0){
-            invalidInput = false;
-        }
-         nextUImode = "table";
+        invalidInput = !textIsValid(tempText, data);
+        nextUImode = "table";
         return nextUImode;
     }
 
     //Handles mousevent and returns if UImode need to change
     public String handleKeyEvent(int id, int keyCode, char keyChar, dataController data){
-        //EVENT: r pressed
+
         String nextUImode = "table";
+
+        //EVENT: ASCSII char pressed
         if(keyCode > 31 && keyCode < 123){
             tempText = tempText + keyChar;
+            invalidInput = !textIsValid(tempText, data);
         }
+        //EVENT: TAB pressed
         else if(keyCode == 9){
             nextUImode = "row";
         }
@@ -86,12 +87,14 @@ public class UITablesModule {
         else if(keyCode == 10 && currMode == "edit" && !invalidInput){
             currMode = "normal";
             data.getTableList().get(activeCell[0]).setTableName(tempText);
+
         }
-        if (tempText.length() == 0){
-            invalidInput = true;
-        } else{
-            invalidInput = false;
+        //EVENT: ESC char pressed
+        else if(keyCode == 27){
+            currMode = "normal";
+            tempText = "default_text";
         }
+        invalidInput = !textIsValid(tempText, data);
         return nextUImode;
     }
     //Method that takes care of painting the canvas
@@ -115,6 +118,19 @@ public class UITablesModule {
             paintModule.setColor(g, Color.BLACK);
         }
         //paintModule.paintBorder(g,paintModule.getxCoStart(), paintModule.getyCoStart(), 80, 20, "red");
+    }
+    public boolean textIsValid(String text,dataController data ){
+        for(Table table: data.getTableList()){
+            if(table.getTableName().equals(text)){
+                if(!table.getTableName().equals(data.getTableList().get(activeCell[0]).getTableName())){
+                    return false;
+                }
+            }
+        }
+        if (text.length() == 0){
+            return false;
+        }
+        return true;
     }
 
 
