@@ -1,4 +1,4 @@
-import Testing.MouseTests;
+import Tests.MouseTests;
 import UserInterfaceElements.MyCanvasWindow;
 
 public class Main {
