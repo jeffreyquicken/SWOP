@@ -2,14 +2,10 @@
 
 
 import EventHandlers.mouseEventHandler;
-<<<<<<< HEAD
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-=======
-import org.junit.Test;
-//import org.junit.jupiter.api.Test;
->>>>>>> 62b4f9afd282689967d44eb0864e6e2abff3fce7
 
 public class MouseTests {
 

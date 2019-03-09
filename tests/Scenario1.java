@@ -1,4 +1,4 @@
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import UserInterfaceElements.Controller;
 import Data.dataController;
 
@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class Scenario1 {
     Controller bestuurder = new Controller();
     dataController dc = bestuurder.getTableDataController();
+
     @Test
     public void doubleClickUnderTableAddsNewTableWithCorrectName() {
        bestuurder.setCurrentMode("table");
