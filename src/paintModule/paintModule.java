@@ -1,15 +1,31 @@
 package paintModule;
 
+import Data.Column;
 import Data.Row;
 import Data.Table;
 
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class paintModule {
+    //DEFAULT VALUES
     private int cellHeight = 20;
     private int cellWidth = 100;
+
+
+    public int getMinCellWidth() {
+        return minCellWidth;
+    }
+
+    public void setMinCellWidth(int minCellWidth) {
+        this.minCellWidth = minCellWidth;
+    }
+
+    //MINIMUM VALUES
+    private int minCellWidth = 80;
+
 
     public int getCellLeftMargin() {
         return cellLeftMargin;
@@ -21,6 +37,17 @@ public class paintModule {
     private int titleY = 10;
     private int xCoStart = 50 ;
     private int yCoStart = 50;
+
+
+    public List<Integer> getWidthList() {
+        return widthList;
+    }
+
+    public void setWidthList(List<Integer> widthList) {
+        this.widthList = widthList;
+    }
+
+    private List<Integer> widthList = new ArrayList<>();
 
     public int getxCoStart() {
         return xCoStart;
@@ -39,10 +66,24 @@ public class paintModule {
     }
 
 
+    /**
+     * Constructor that add default table widths in list
+     */
+    public paintModule(int rows){
+        for(int i=0; i<rows; i++){
+        widthList.add(cellWidth);}
 
-
+    }
 
     public void paintTable(Graphics g, Table table, int startXco, int startYco){
+        int headerXco = startXco;
+        int i =0;
+        for(Column column: table.getColumnNames()){
+            this.paintRectText(g,headerXco, startYco - cellHeight, widthList.get(i),cellHeight,column.getName());
+            headerXco += widthList.get(i);
+            i++;
+
+        }
         for(Row row: table.getTableRows()){
             this.paintRow(g,row.getColcumnList(),startXco,startYco);
             startYco = startYco + 20;
@@ -53,9 +94,10 @@ public class paintModule {
     //Method that draw list of table names in a collumn
     //For every element in its list it calls the printRectText method
     //TODO: should accept list with table elements (instead of strings) and iterate over that list and get table name
-     public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startyCo){
+     public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startyCo ){
+        this.paintRectText(g,startXco, startyCo - cellHeight , widthList.get(0),cellHeight, "HEADER" );
         for(Table tableItem : tableList){
-            this.paintRectText(g,startXco, startyCo , cellWidth,cellHeight, tableItem.getTableName() );
+            this.paintRectText(g,startXco, startyCo , widthList.get(0),cellHeight, tableItem.getTableName() );
             startyCo = startyCo + cellHeight;
         }
     }
@@ -64,9 +106,11 @@ public class paintModule {
     //For every element in its list it calls the printRectText method
     //TODO: should accept list with Row elements (instead of strings) and iterate over that list and get row elements
     public void paintRow(Graphics g, List<String> rowList, int startxCo, int startyCo){
+        int i = 0;
         for(String rowItem : rowList){
-            this.paintRectText(g, startxCo, startyCo,cellWidth, cellHeight , rowItem );
-            startxCo = startxCo + cellWidth;
+            this.paintRectText(g, startxCo, startyCo,widthList.get(i), cellHeight , rowItem );
+            startxCo = startxCo + widthList.get(i);
+            i++;
         }
     }
 

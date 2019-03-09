@@ -1,6 +1,7 @@
 package EventHandlers;
 
 
+import java.util.List;
 
 public class mouseEventHandler {
 
@@ -130,5 +131,51 @@ public class mouseEventHandler {
     	}
     	return validity;
     }
+
+    /**
+     * Checks of right header border is clicked
+     * returns column if true
+     * if false it returns -1
+     * @param xCo
+     * @param yCo
+     * @param startX
+     * @param startY
+     * @param numberOfColumns
+     * @param height
+     * @param widthList
+     * @return
+     */
+    public int rightBorderClicked(int xCo, int yCo, int startX, int startY, int numberOfColumns, int height, List<Integer> widthList){
+        if (headerClicked(xCo,yCo,startX,startY,numberOfColumns,height,widthList)) {
+            int length =0 ;
+            for(int i = 0; i < numberOfColumns; i++){
+                length = length + widthList.get(i);
+                if(xCo == startX + length){
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Check if header is clicked, returns boolean
+     * @param xCo
+     * @param yCo
+     * @param startX
+     * @param startY
+     * @param numberofColums
+     * @param height
+     * @param widthList
+     * @return
+     */
+    public boolean headerClicked(int xCo, int yCo, int startX, int startY, int numberofColums, int height, List<Integer> widthList)
+    {
+        int sum = widthList.stream().mapToInt(Integer::intValue).sum();
+        if (yCo > (startY - height) && yCo < startY && xCo > startX && xCo - startX <= sum ){
+            return true;
+
+        }else{
+        return false;}}
     
 }

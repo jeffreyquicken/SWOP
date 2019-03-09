@@ -9,7 +9,6 @@ public class Main {
 			 new MyCanvasWindow("Tables").show();
 		});
 
-
 	}
 
 }
