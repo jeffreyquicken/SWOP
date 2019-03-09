@@ -5,21 +5,49 @@ import java.util.List;
 
 public class mouseEventHandler {
 
-    public Boolean doubleClickUnderTable(int Y, int count, int ID,int lowestY){
-        if( count==2 && Y > lowestY && ID == 501){
+    /**
+     * @param yCo
+     * Y coordinate of the click to check
+     * @param count
+     * Number of clicks
+     * @param ID
+     * Type of click
+     * @param lowestY
+     * Lowest Y coordinate of table
+     * @return boolean
+     * Returns if the click is a double click under the table
+     */
+    public Boolean doubleClickUnderTable(int yCo, int count, int ID,int lowestY){
+        if( count==2 && yCo > lowestY && ID == 501){
             return true;
         } else{
             return false;
         }
     }
-    // xco, yco = mouseclick coordinaates
-    //firstX, firstY = coordinaten linker bovenhoek tabel
-    //width, height = per cel
-    // numberOf... = aantal kolommen/rijen
-    //margin = margin per cel
-    //returns rij en kolom nummer van de cel als er op de linker margin van een cel geklikt wordt
-    //anders null
-    // EXTRA: Use recursion to split table and search for margin clicked without for loops
+
+    /**
+     * @param xCo
+     * X coordinate of the click to check
+     * @param yCo
+     * Y coordinate of the click to check
+     * @param firstX
+     * X coordinate of leftmost part of table
+     * @param firstY
+     * Y coordinate of uppermost part of table
+     * @param height
+     * Height of table cell
+     * @param width
+     * Width of table cell
+     * @param numberOfRows
+     * Number of rows
+     * @param numberOfColumns
+     * Number of columns of table
+     * @param margin
+     * Left margin of cell of table
+     * @return
+     * Returns coordinates of cell if margin is clicked, else NULL
+     */
+    // TODO: Use recursion to split table and search for margin clicked without for loops
     public int[] marginLeftClicked(int xCo, int yCo, int firstX, int firstY, int height, int width, int numberOfRows, int numberOfColumns, int margin ){
         int[] coordinates = new int[2];
         if (isInTableHeight(yCo, firstY, height, numberOfRows) && isInTableWidth(xCo, firstX, width, numberOfColumns)){
@@ -56,7 +84,7 @@ public class mouseEventHandler {
      * @param numberOfRows
      * the number of rows. this determines the overall height of a table
      * @param numberOfColumns
-     * the number of columns. this determines the overall wifth od a table
+     * the number of columns. this determines the overall width of a table
      * @return CellID
      * CellID is an array containing which row and which column the user clicked in, determining the unique ID of a cell as followed: [Row, Column]
      */
@@ -71,6 +99,18 @@ public class mouseEventHandler {
     	return cellID;
     }
 
+    /**
+     * @param xCo
+     * X coordinate to check
+     * @param firstX
+     * First X coordinate of table
+     * @param width
+     * Width of table cell
+     * @param numberOfColumns
+     * Number of columns
+     * @return colID
+     * returns the number of the column that corresponds to the X coordinate
+     */
     private int calculateColumnID(int xCo, int firstX, int width, int numberOfColumns) {
         int colID = -1;
         for(int i = 0; i< numberOfColumns; i++) {
@@ -81,6 +121,18 @@ public class mouseEventHandler {
         return colID;
     }
 
+    /**
+     * @param yCo
+     * Y coordinate to check
+     * @param firstY
+     * First Y coordinate of table
+     * @param height
+     * Height of table cell
+     * @param numberOfRows
+     * Number of rows
+     * @return rowID
+     * returns the number of the row that corresponds to the Y coordinate
+     */
     private int calculateRowID(int yCo, int firstY, int height, int numberOfRows) {
         int rowID = -1;
         for (int i = 0; i < numberOfRows; i++) {
@@ -134,16 +186,20 @@ public class mouseEventHandler {
 
     /**
      * Checks of right header border is clicked
-     * returns column if true
-     * if false it returns -1
+     *
      * @param xCo
+     * X coordinate
      * @param yCo
+     * Ycoordinate
      * @param startX
      * @param startY
      * @param numberOfColumns
+     * Number of columns in table
      * @param height
+     * Height of cell
      * @param widthList
      * @return
+     * Returns column if right border is clicked, if false returns -1
      */
     public int rightBorderClicked(int xCo, int yCo, int startX, int startY, int numberOfColumns, int height, List<Integer> widthList){
         if (headerClicked(xCo,yCo,startX,startY,numberOfColumns,height,widthList)) {
