@@ -98,7 +98,7 @@ public class UITablesModule {
         return nextUImode;
     }
 
-    //Handles mousevent and returns if UImode need to change
+    //Handles keyevent and returns if UImode need to change
     public String handleKeyEvent(int id, int keyCode, char keyChar, dataController data) {
 
         String nextUImode = "table";
