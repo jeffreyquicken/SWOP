@@ -102,4 +102,8 @@ public class Controller {
     public UIDesignModule getDesignModule() {
         return designModule;
     }
+
+    public dataController getTableDataController() {
+        return tableDataController;
+    }
 }
