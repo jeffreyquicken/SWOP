@@ -29,7 +29,7 @@ public class Main {
 			testsSucc++;
 		}
 
-	//	System.out.println("Results of testing: "+ testsSucc +"/"+totTests);
+	System.out.println("Results of testing: "+ testsSucc +"/"+totTests);
 	}
 
 }

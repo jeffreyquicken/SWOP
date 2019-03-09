@@ -19,15 +19,18 @@ public class UITablesModule {
     private int[] activeCell;
     private String tempText;
     private Boolean invalidInput;
-
+    private int draggedColumn;
+    private int draggedX;
 
     //Constructor that init/creates paintModule and an empty list with tablenames
     //Each UImodule has own paintmodule to save settings (e.g. size, bg, ...)
     public UITablesModule() {
-        paintModule = new paintModule();
+        paintModule = new paintModule(1);
         mouseEventHandler = new mouseEventHandler();
         invalidInput = false;
         tempText = "Default_Text";
+        draggedColumn = 1;
+        draggedX = 1;
     }
 
     //Handles mousevent and returns if UImode need to change
@@ -43,9 +46,23 @@ public class UITablesModule {
         //EVENT CLICK CELL
         //TODO: check if margin clicked
         int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1);
-
+       //Checks if user is dragging border
+            if(currMode == "drag"){
+                if(ID == 506){
+                    int delta = xCo - draggedX;
+                    int previousWidth = paintModule.getWidthList().get(draggedColumn);
+                    int newWidth = previousWidth +delta;
+                    int sum = paintModule.getWidthList().stream().mapToInt(Integer::intValue).sum();
+                    if(newWidth >= paintModule.getMinCellWidth() && sum + delta < 590 - paintModule.getxCoStart() ){
+                        paintModule.getWidthList().set(draggedColumn, newWidth);
+                        draggedX = xCo;
+                    }
+                }else{
+                    currMode ="normal";
+                }
+        }
         //check if leftmargin is clicked
-        if(currMode != "edit" && mouseEventHandler.marginLeftClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1, paintModule.getCellLeftMargin()) != null) {
+        else if(currMode != "edit" && mouseEventHandler.marginLeftClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1, paintModule.getCellLeftMargin()) != null) {
             currMode = "delete";
             activeCell = clickedCell;
         }
@@ -60,9 +77,16 @@ public class UITablesModule {
                 nextUImode = "row";
                 return nextUImode;
             }
-
+            }
+        //Check if header is clicked
+        else if(mouseEventHandler.rightBorderClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getWidthList().size(), paintModule.getCellHeight(), paintModule.getWidthList()) != -1){
+            System.out.println("RIGHT BORDER CLICKED");
+            currMode ="drag";
+            draggedColumn= mouseEventHandler.rightBorderClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getWidthList().size(), paintModule.getCellHeight(), paintModule.getWidthList());
+            draggedX = xCo;
+        }
             //EVENT edit mode and clicked outside table
-        } else if (currMode == "edit"  && !invalidInput) {
+        else if (currMode == "edit"  && !invalidInput) {
             currMode = "normal";
             data.getTableList().get(activeCell[0]).setTableName(tempText);
         }
@@ -128,12 +152,12 @@ public class UITablesModule {
 
         //Check mode
         if (currMode == "edit" ) {
-            paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0], paintModule.getCellCoords(activeCell[0], activeCell[1])[1], paintModule.getCellWidth(), paintModule.getCellHeight(), tempText);
+            paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0], paintModule.getCellCoords(activeCell[0], activeCell[1])[1], paintModule.getWidthList().get(activeCell[1]), paintModule.getCellHeight(), tempText);
         }
 
         //check if there are warnings
         if (invalidInput || currMode == "delete") {
-            paintModule.paintBorder(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0], paintModule.getCellCoords(activeCell[0], activeCell[1])[1], paintModule.getCellWidth(), paintModule.getCellHeight(), Color.RED);
+            paintModule.paintBorder(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0], paintModule.getCellCoords(activeCell[0], activeCell[1])[1],  paintModule.getWidthList().get(activeCell[1]), paintModule.getCellHeight(), Color.RED);
         } else {
             paintModule.setColor(g, Color.BLACK);
         }

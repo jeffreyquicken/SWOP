@@ -5,6 +5,7 @@ public class Column {
     public String getName() {
         return name;
     }
+    public int width;
 
     /**
      * @param name

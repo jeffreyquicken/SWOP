@@ -41,6 +41,9 @@ public class Controller {
         if (this.getCurrentMode() == "table"){
             //if mode will be swtitched mouseevent will tell
             this.setCurrentMode(this.getTablemodule().handleMouseEvent(xCo, yCo, count, id, tableDataController));
+        }else if (this.getCurrentMode().equals("row")){
+            this.setCurrentMode(this.rowmodule.handleMouseEvent(xCo,yCo,count,id,tableDataController));
+
         }
         mouseEvent = "Mouse eventID= " + id + " | Coordinates clicked" + xCo + ", " + yCo + "| Amount clicked: " + count;
     }
