@@ -131,7 +131,6 @@ public class UITablesModule {
             paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0], paintModule.getCellCoords(activeCell[0], activeCell[1])[1], paintModule.getCellWidth(), paintModule.getCellHeight(), tempText);
         }
 
-
         //check if there are warnings
         if (invalidInput || currMode == "delete") {
             paintModule.paintBorder(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0], paintModule.getCellCoords(activeCell[0], activeCell[1])[1], paintModule.getCellWidth(), paintModule.getCellHeight(), Color.RED);

@@ -1,5 +1,6 @@
 package paintModule;
 
+import Data.Column;
 import Data.Row;
 import Data.Table;
 
@@ -43,6 +44,13 @@ public class paintModule {
 
 
     public void paintTable(Graphics g, Table table, int startXco, int startYco){
+        int headerXco = startXco;
+        for(Column column: table.getColumnNames()){
+            this.paintRectText(g,headerXco, startYco - cellHeight, cellWidth,cellHeight,column.getName());
+            headerXco += cellWidth;
+
+        }
+
         for(Row row: table.getTableRows()){
             this.paintRow(g,row.getColcumnList(),startXco,startYco);
             startYco = startYco + 20;
@@ -54,6 +62,7 @@ public class paintModule {
     //For every element in its list it calls the printRectText method
     //TODO: should accept list with table elements (instead of strings) and iterate over that list and get table name
      public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startyCo){
+        this.paintRectText(g,startXco, startyCo - cellHeight , cellWidth,cellHeight, "HEADER" );
         for(Table tableItem : tableList){
             this.paintRectText(g,startXco, startyCo , cellWidth,cellHeight, tableItem.getTableName() );
             startyCo = startyCo + cellHeight;
