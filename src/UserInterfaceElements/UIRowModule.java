@@ -1,5 +1,7 @@
 package UserInterfaceElements;
 
+import Data.Column;
+import Data.Row;
 import Data.Table;
 import Data.dataController;
 import EventHandlers.mouseEventHandler;
@@ -29,8 +31,14 @@ public class UIRowModule {
     }
 
     //Handles mousevent and returns if UImode need to change
-    public String handleMouseEvent(int xCo, int yCo,int count, int ID,  dataController tableController){
+    public String handleMouseEvent(int xCo, int yCo,int count, int ID,  dataController data){
 
+
+        //EVENT DOUBLE CLICKS UNDER TABLE
+        if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getSelectedTable().getLengthTable() + paintModule.getyCoStart()) ) {
+            data.getSelectedTable().addRow(new Row("Test"));
+        }
+        
         //Check if header is clicked
         if(mouseEventHandler.rightBorderClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getWidthList().size(), paintModule.getCellHeight(), paintModule.getWidthList()) != -1){
             System.out.println("RIGHT BORDER CLICKED");
@@ -52,6 +60,7 @@ public class UIRowModule {
                     currMode ="normal";
                 }
             }
+
         String nextUImode = "row";
         return nextUImode;
     }

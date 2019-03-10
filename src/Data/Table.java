@@ -65,5 +65,11 @@ public class Table {
         return tableName;
     }
 
+    public int getLengthTable() {
+        int i = this.tableRows.size() * 20;
+        return i;
+
+    }
+
 
 }
