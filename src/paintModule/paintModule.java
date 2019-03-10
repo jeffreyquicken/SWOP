@@ -102,6 +102,24 @@ public class paintModule {
         }
     }
 
+    public void paintDesignView(Graphics g, Table table){
+        int headerXco = getxCoStart();
+        int headerYco = getyCoStart() - cellHeight;
+        String[] names = {"Name", "Type", "Default value", "Blank?"};
+        for(int i = 0; i <4; i++){
+            this.paintRectText(g,headerXco, headerYco, widthList.get(i),cellHeight, names[i]);
+            System.out.println(names[i]);
+            headerXco += widthList.get(i);
+        }
+        int startYco = this.getyCoStart();
+        for(Column column: table.getColumnNames()){
+            List<String> rowInfo = column.getInfo();
+            this.paintRow(g,rowInfo,this.getxCoStart(),startYco);
+            startYco = startYco + cellHeight;
+        }
+
+    }
+
     //Method that draws list of rownelements in a row
     //For every element in its list it calls the printRectText method
     //TODO: should accept list with Row elements (instead of strings) and iterate over that list and get row elements

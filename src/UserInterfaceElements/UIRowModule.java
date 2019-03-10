@@ -38,7 +38,7 @@ public class UIRowModule {
         if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getSelectedTable().getLengthTable() + paintModule.getyCoStart()) ) {
             data.getSelectedTable().addRow(new Row("Test"));
         }
-        
+
         //Check if header is clicked
         if(mouseEventHandler.rightBorderClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getWidthList().size(), paintModule.getCellHeight(), paintModule.getWidthList()) != -1){
             System.out.println("RIGHT BORDER CLICKED");
@@ -69,8 +69,9 @@ public class UIRowModule {
     public String handleKeyEvent(int id, int keyCode, char keyChar,   dataController tableController){
         //EVENT: t pressed
         String nextUImode = "row";
-        if(keyChar == 't'){ nextUImode = "table";}else{
-            nextUImode = "row";
+        if(keyChar == 't'){ nextUImode = "table";}
+        else if(keyChar == 'd'){
+            nextUImode = "design";
         }
         return nextUImode;
     }

@@ -73,6 +73,7 @@ public class Controller {
             this.getRowmodule().paint(g, tableDataController.getSelectedTable());
         }
         else{
+            this.getDesignModule().paint(g,tableDataController.getSelectedTable());
 
         }
         //drawing of mousevent, keyevent just for debugging

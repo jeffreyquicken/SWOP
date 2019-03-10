@@ -26,10 +26,10 @@ public class Table {
         columnNames = new ArrayList<Column>();
         tableName = name;
 
-        Column col1 = new Column("Col 1");
-        Column col2= new Column("Col 2");
-        Column col3 = new Column("Col 3");
-        Column col4 = new Column("Col 4");
+        Column col1 = new Column("Col 1","Col 1", "String", true);
+        Column col2= new Column("Col 2","Col 1", "String", true);
+        Column col3 = new Column("Col 3", "Col 1", "String", true);
+        Column col4 = new Column("Col 4","Col 1", "String", true);
         this.addCollumn(col1);
         this.addCollumn(col2);
         this.addCollumn(col3);
