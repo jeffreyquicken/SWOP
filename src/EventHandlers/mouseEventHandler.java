@@ -48,9 +48,9 @@ public class mouseEventHandler {
      * Returns coordinates of cell if margin is clicked, else NULL
      */
     // TODO: Use recursion to split table and search for margin clicked without for loops
-    public int[] marginLeftClicked(int xCo, int yCo, int firstX, int firstY, int height, int width, int numberOfRows, int numberOfColumns, int margin ){
+    public int[] marginLeftClicked(int xCo, int yCo, int firstX, int firstY, int height, int width, int numberOfRows, int numberOfColumns, int margin, List<Integer> widthList ){
         int[] coordinates = new int[2];
-        if (isInTableHeight(yCo, firstY, height, numberOfRows) && isInTableWidth(xCo, firstX, width, numberOfColumns)){
+        if (isInTableHeight(yCo, firstY, height, numberOfRows) && isInTableWidth(xCo, firstX, widthList)){
             for( int i = 0; i < numberOfColumns; i++){
                 if(firstX + i * width  < xCo && xCo < firstX + i*width + margin){
                     coordinates[0] = i;
@@ -88,11 +88,11 @@ public class mouseEventHandler {
      * @return CellID
      * CellID is an array containing which row and which column the user clicked in, determining the unique ID of a cell as followed: [Row, Column]
      */
-    public int[] getCellID(int xCo, int yCo, int firstX, int firstY, int height, int width, int numberOfRows, int numberOfColumns){
+    public int[] getCellID(int xCo, int yCo, int firstX, int firstY, int height, int width, int numberOfRows, int numberOfColumns, List<Integer> widthList){
     	int[] cellID = {-1,-1};
-    	if(this.isInTableWidth(xCo, firstX, width, numberOfColumns) && this.isInTableHeight(yCo, firstY, height, numberOfRows)){
+    	if(this.isInTableWidth(xCo, firstX, widthList) && this.isInTableHeight(yCo, firstY, height, numberOfRows)){
     		//calculates the in which column the user clicked
-            cellID[1] = calculateColumnID(xCo, firstX, width, numberOfColumns);
+            cellID[1] = calculateColumnID(xCo, firstX, widthList);
             //calculates in which row the user clicked
             cellID[0] = calculateRowID(yCo, firstY, height, numberOfRows);
         }
@@ -104,19 +104,17 @@ public class mouseEventHandler {
      * X coordinate to check
      * @param firstX
      * First X coordinate of table
-     * @param width
-     * Width of table cell
-     * @param numberOfColumns
-     * Number of columns
      * @return colID
      * returns the number of the column that corresponds to the X coordinate
      */
-    private int calculateColumnID(int xCo, int firstX, int width, int numberOfColumns) {
+    private int calculateColumnID(int xCo, int firstX, List<Integer> widthList) {
         int colID = -1;
-        for(int i = 0; i< numberOfColumns; i++) {
-            if((xCo > firstX + i*width) && (xCo < firstX + (i+1)*width)) {
+        int tempWidth = firstX;
+        for(int i = 0; i< widthList.size(); i++) {
+            if((xCo > (tempWidth) ) && (xCo < tempWidth + widthList.get(i))) {
                 colID = i;
             }
+            tempWidth += widthList.get(i);
         }
         return colID;
     }
@@ -149,16 +147,13 @@ public class mouseEventHandler {
      * the X coordinate to check
      * @param firstX
      * the X coordinate in the upper left corner of the table
-     * @param width
-     * the width of a table cell
-     * @param numberOfColumns
-     * the number of columns. this determines the overall width of the table
      * @return validity 
      * a boolean describing whether or not the given x coordinate is inside of the table or not
      */
-    public boolean isInTableWidth(int xCo, int firstX, int width, int numberOfColumns){
+    public boolean isInTableWidth(int xCo, int firstX, List<Integer> widthList){
     	boolean validity = false;
-    	if(xCo > firstX && xCo < (firstX + (numberOfColumns * width))){
+        int sum = widthList.stream().mapToInt(Integer::intValue).sum();
+    	if(xCo > firstX && xCo < (firstX + sum)){
     		validity = true;
     	}
     	return validity;
