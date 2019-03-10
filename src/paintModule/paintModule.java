@@ -126,7 +126,10 @@ public class paintModule {
     public void paintRow(Graphics g, List<String> rowList, int startxCo, int startyCo){
         int i = 0;
         for(String rowItem : rowList){
-            this.paintRectText(g, startxCo, startyCo,widthList.get(i), cellHeight , rowItem );
+            if (rowItem.equals("true")){
+                this.checkBox(g,startxCo,startyCo, widthList.get(i));
+            }else{
+            this.paintRectText(g, startxCo, startyCo,widthList.get(i), cellHeight , rowItem );}
             startxCo = startxCo + widthList.get(i);
             i++;
         }
@@ -182,6 +185,10 @@ public class paintModule {
     }
     public void setColor(Graphics g, Color c){
         g.setColor(c);
+    }
+    public void checkBox(Graphics g, int xCo, int yCo, int width){
+        g.drawRect(xCo,yCo, width, cellHeight);
+        g.fillRect(xCo + width/2 - 5,yCo + 5,8,8);
     }
 
 }

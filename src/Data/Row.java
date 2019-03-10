@@ -13,7 +13,7 @@ public class Row {
         columnList = new ArrayList<String>();
         rowName = name;
         String value1 = "A " + name ;
-        String value2 = "B " + name ;
+        String value2 = "true" ;
         String value3 = "C " + name ;
         String value4 = "D " + name ;
         columnList.add(value1);

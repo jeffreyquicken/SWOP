@@ -45,7 +45,7 @@ public class UITablesModule {
 
         //EVENT CLICK CELL
         //TODO: check if margin clicked
-        int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1);
+        int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1,paintModule.getWidthList());
        //Checks if user is dragging border
             if(currMode == "drag"){
                 if(ID == 506){
@@ -62,7 +62,7 @@ public class UITablesModule {
                 }
         }
         //check if leftmargin is clicked
-        else if(currMode != "edit" && mouseEventHandler.marginLeftClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1, paintModule.getCellLeftMargin()) != null) {
+        else if(currMode != "edit" && mouseEventHandler.marginLeftClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1, paintModule.getCellLeftMargin(), paintModule.getWidthList()) != null) {
             currMode = "delete";
             activeCell = clickedCell;
         }
