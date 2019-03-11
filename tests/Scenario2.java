@@ -22,16 +22,44 @@ public class Scenario2 {
     }
 
     @Test
-    public void StandardEditTableNameByPressingEnter() {
+    public void StandardEditTableNameByClickingNextToTable() {
         bestuurder.relayMouseEvent(500,115,60,1);
         //we should be in table name editing mode right now
-        char car = 'a';
-        bestuurder.relayKeyEvent(400,0,car);
+        bestuurder.relayKeyEvent(400,101,'a');
         bestuurder.relayMouseEvent(500,350,60,1);
         List<Table> table = dc.getTableList();
         String tbleName = table.get(0).getTableName();
         assertEquals("Table 1a",tbleName);
 
+    }
+
+    @Test
+    public void StandardEditTableNameByPressingEnter() {
+        bestuurder.relayMouseEvent(500,115,60,1);
+        //we should be in table name editing mode right now
+        bestuurder.relayKeyEvent(400,101,'a');
+        bestuurder.relayKeyEvent(400,10,'o');
+        List<Table> table = dc.getTableList();
+        String tbleName = table.get(0).getTableName();
+        assertEquals("Table 1a",tbleName);
+    }
+
+    @Test
+    public void StandardEditTableNameUsingBackspaceByClickingNextToTable() {
+        bestuurder.relayMouseEvent(500,115,60,1);
+        //we should be in table name editing mode right now
+        for(int i=0; i<7;i++) {
+            bestuurder.relayKeyEvent(400,8,'o');
+        }
+
+
+        bestuurder.relayKeyEvent(400,101,'a');
+        bestuurder.relayKeyEvent(400,101,'b');
+        bestuurder.relayKeyEvent(400,101,'c');
+        bestuurder.relayMouseEvent(500,350,60,1);
+        List<Table> table = dc.getTableList();
+        String tbleName = table.get(0).getTableName();
+        assertEquals("abc",tbleName);
 
     }
 
