@@ -114,8 +114,7 @@ public class UITablesModule {
         else if (currMode == "delete"){
             currMode = "normal";
         }
-        String currName = data.getTableList().get(activeCell[0]).getTableName();
-        invalidInput = !textIsValid(tempText, data, currName);
+
 
         return nextUImode;
     }
@@ -137,6 +136,9 @@ public class UITablesModule {
                 //Check if string is not empty
                 if (tempText.length() != 0) {
                     tempText = tempText.substring(0, tempText.length() - 1);
+                    String currName = data.getTableList().get(activeCell[0]).getTableName();
+                    invalidInput = !textIsValid(tempText, data, currName);
+
                 }
                 //empty string, display red border
             }
@@ -151,7 +153,7 @@ public class UITablesModule {
         //DEL key only has functionality in delete mode
         //EVENT: DEL pressed
         else if (currMode == "delete" ){
-            if(eventHandler.isDelete(keyCode)){
+            if(eventHandler.isDelete(keyCode) || keyChar == 'd'){
             List<Table> list = data.getTableList();
             Table selectedTable = list.get(activeCell[0]);
             data.deleteTable(selectedTable);
@@ -164,8 +166,7 @@ public class UITablesModule {
             currMode = "normal";
             tempText = "default_text";
         }
-        String currName = data.getTableList().get(activeCell[0]).getTableName();
-        invalidInput = !textIsValid(tempText, data, currName);
+
         return "table";
     }
 
