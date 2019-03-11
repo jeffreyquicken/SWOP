@@ -118,7 +118,7 @@ public class paintModule {
         List<Integer> widthList = setting.getWidthList();
         for(String rowItem : rowList){
             if (rowItem.equals("true")){
-                this.checkBox(g,startxCo,startyCo, widthList.get(i));
+                this.checkBoxTrue(g,startxCo,startyCo, widthList.get(i));
             }else{
             this.paintRectText(g, startxCo, startyCo,widthList.get(i), cellHeight , rowItem );}
             startxCo = startxCo + widthList.get(i);
@@ -177,9 +177,15 @@ public class paintModule {
     public void setColor(Graphics g, Color c){
         g.setColor(c);
     }
-    public void checkBox(Graphics g, int xCo, int yCo, int width){
+    public void checkBoxTrue(Graphics g, int xCo, int yCo, int width){
         g.drawRect(xCo,yCo, width, cellHeight);
-        g.fillRect(xCo + width/2 - 5,yCo + 5,8,8);
+        g.drawRect(xCo + width/2 - 5,yCo + 5,8,8);
+        xCo = xCo + width/2 - 5;
+        yCo = yCo + 5;
+        g.setColor(Color.BLACK);
+        g.drawLine(xCo+2, yCo+2, xCo+4, yCo+6);
+        g.drawLine(xCo+4, yCo+6, xCo+6, yCo+2);
+        g.setColor(Color.BLACK);
     }
 
 }
