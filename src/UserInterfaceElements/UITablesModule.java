@@ -23,7 +23,7 @@ public class UITablesModule {
     private int draggedX;
 
     //Constructor that init/creates paintModule and an empty list with tablenames
-    //Each UImodule has own paintmodule to save settings (e.g. size, bg, ...)
+    //Each UImodule has own paintmodule to save settings.settings (e.g. size, bg, ...)
     public UITablesModule() {
         paintModule = new paintModule(1);
         mouseEventHandler = new mouseEventHandler();

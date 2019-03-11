@@ -6,6 +6,7 @@ import Data.Table;
 import Data.dataController;
 import EventHandlers.mouseEventHandler;
 import paintModule.paintModule;
+import settings.settings;
 
 import java.awt.*;
 import java.util.List;
@@ -24,15 +25,15 @@ public class UIRowModule {
 
 
     //Constructor that init/creates paintModule and an empty list with tablenames
-    //Each UImodule has own paintmodule to save settings (e.g. size, bg, ...)
+    //Each UImodule has own paintmodule to save settings.settings (e.g. size, bg, ...)
     public UIRowModule(){
-        paintModule = new paintModule(4);
+        paintModule = new paintModule();
         mouseEventHandler = new mouseEventHandler();
     }
 
     //Handles mousevent and returns if UImode need to change
     public String handleMouseEvent(int xCo, int yCo,int count, int ID,  dataController data){
-
+        List<Integer> widthList = data.getSelectedTable().getSetting().getWidthList();
 
         //EVENT DOUBLE CLICKS UNDER TABLE
         if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getSelectedTable().getLengthTable() + paintModule.getyCoStart()) ) {
@@ -40,20 +41,20 @@ public class UIRowModule {
         }
 
         //Check if header is clicked
-        if(mouseEventHandler.rightBorderClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getWidthList().size(), paintModule.getCellHeight(), paintModule.getWidthList()) != -1){
+        if(mouseEventHandler.rightBorderClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(), widthList.size(), paintModule.getCellHeight(), widthList) != -1){
             System.out.println("RIGHT BORDER CLICKED");
             currMode ="drag";
-            draggedColumn= mouseEventHandler.rightBorderClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getWidthList().size(), paintModule.getCellHeight(), paintModule.getWidthList());
+            draggedColumn= mouseEventHandler.rightBorderClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(), widthList.size(), paintModule.getCellHeight(), widthList);
             draggedX = xCo;
             //Checks if user is dragging border
         }else if(currMode == "drag"){
                 if(ID == 506){
                     int delta = xCo - draggedX;
-                    int previousWidth = paintModule.getWidthList().get(draggedColumn);
+                    int previousWidth = widthList.get(draggedColumn);
                     int newWidth = previousWidth +delta;
-                    int sum = paintModule.getWidthList().stream().mapToInt(Integer::intValue).sum();
+                    int sum = widthList.stream().mapToInt(Integer::intValue).sum();
                     if(newWidth >= paintModule.getMinCellWidth() && sum + delta < 590 - paintModule.getxCoStart() ){
-                        paintModule.getWidthList().set(draggedColumn, newWidth);
+                        widthList.set(draggedColumn, newWidth);
                         draggedX = xCo;
                     }
                 }else{
@@ -66,7 +67,7 @@ public class UIRowModule {
     }
 
     //Handles mousevent and returns if UImode need to change
-    public String handleKeyEvent(int id, int keyCode, char keyChar,   dataController tableController){
+    public String handleKeyEvent(int id, int keyCode, char keyChar,   dataController data){
         //EVENT: t pressed
         String nextUImode = "row";
         if(keyChar == 't'){ nextUImode = "table";}
@@ -83,6 +84,6 @@ public class UIRowModule {
         paintModule.paintTitle(g, "Row Mode");
 
         //print tables in tabular view
-        paintModule.paintTable(g,table, xCoStart,yCoStart);
+        paintModule.paintTable(g,table, xCoStart,yCoStart, table.getSetting());
     }
 }
