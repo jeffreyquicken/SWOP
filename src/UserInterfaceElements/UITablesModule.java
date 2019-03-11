@@ -3,7 +3,7 @@ package UserInterfaceElements;
 import Data.Table;
 import Data.dataController;
 import paintModule.paintModule;
-import EventHandlers.mouseEventHandler;
+import EventHandlers.*;
 import sun.font.TrueTypeFont;
 
 import java.util.*;
@@ -100,45 +100,49 @@ public class UITablesModule {
 
     //Handles keyevent and returns if UImode need to change
     public String handleKeyEvent(int id, int keyCode, char keyChar, dataController data) {
-
-        String nextUImode = "table";
-
-        //EVENT: ASCSII char pressed
-        if (keyCode > 31 && keyCode < 123) {
-            tempText = tempText + keyChar;
-            invalidInput = !textIsValid(tempText, data);
-        }
-        //EVENT: DEL pressed
-        else if (currMode == "delete" && keyCode == 127) {
-           List<Table> list = data.getTableList();
-           Table selectedTable = list.get(activeCell[0]);
-           data.deleteTable(selectedTable);
-           currMode = "normal";
-        }
-        //Todo: move to new keyEventHandler class
-
-        //EVENT BS pressed and in edit mode
-        else if (keyCode == 8 && currMode == "edit") {
-
-            //Check if string is not empty
-            if (tempText.length() != 0) {
-                tempText = tempText.substring(0, tempText.length() - 1);
+        keyEventHandler eventHandler = new keyEventHandler();
+        if (currMode == "edit") {
+            //EVENT: ASCSII char pressed
+            if (eventHandler.isChar(keyCode)) {
+                tempText = tempText + keyChar;
+                invalidInput = !textIsValid(tempText, data);
             }
-            //empty string, display red border
-        }
-        //EVENT ENTER pressed
-        else if (keyCode == 10 && currMode == "edit" && !invalidInput) {
-            currMode = "normal";
-            data.getTableList().get(activeCell[0]).setTableName(tempText);
+
+            //EVENT BS pressed and in edit mode
+            else if (eventHandler.isBackspace(keyCode)) {
+
+                //Check if string is not empty
+                if (tempText.length() != 0) {
+                    tempText = tempText.substring(0, tempText.length() - 1);
+                }
+                //empty string, display red border
+            }
+            //EVENT ENTER pressed
+            else if (eventHandler.isEnter(keyCode)) {
+                currMode = "normal";
+                data.getTableList().get(activeCell[0]).setTableName(tempText);
+
+            }
 
         }
+        //DEL key only has functionality in delete mode
+        //EVENT: DEL pressed
+        else if (currMode == "delete" ){
+            if(eventHandler.isDelete(keyCode)){
+            List<Table> list = data.getTableList();
+            Table selectedTable = list.get(activeCell[0]);
+            data.deleteTable(selectedTable);
+            currMode = "normal";
+            }
+        }
+        //out of if checks: functionality doesn't depend on mode and works as  a way to reset the previous state
         //EVENT: ESC char pressed
-        else if (keyCode == 27) {
+        if (eventHandler.isEscape(keyCode)) {
             currMode = "normal";
             tempText = "default_text";
         }
         invalidInput = !textIsValid(tempText, data);
-        return nextUImode;
+        return "table";
     }
 
     //Method that takes care of painting the canvas
