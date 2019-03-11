@@ -3,6 +3,7 @@ package paintModule;
 import Data.Column;
 import Data.Row;
 import Data.Table;
+import settings.settings;
 
 
 import java.awt.*;
@@ -39,15 +40,6 @@ public class paintModule {
     private int yCoStart = 50;
 
 
-    public List<Integer> getWidthList() {
-        return widthList;
-    }
-
-    public void setWidthList(List<Integer> widthList) {
-        this.widthList = widthList;
-    }
-
-    private List<Integer> widthList = new ArrayList<>();
 
     public int getxCoStart() {
         return xCoStart;
@@ -66,18 +58,12 @@ public class paintModule {
     }
 
 
-    /**
-     * Constructor that add default table widths in list
-     */
-    public paintModule(int rows){
-        for(int i=0; i<rows; i++){
-        widthList.add(cellWidth);}
 
-    }
 
-    public void paintTable(Graphics g, Table table, int startXco, int startYco){
+    public void paintTable(Graphics g, Table table, int startXco, int startYco, settings setting){
         int headerXco = startXco;
         int i =0;
+        List<Integer> widthList = setting.getWidthList();
         for(Column column: table.getColumnNames()){
             this.paintRectText(g,headerXco, startYco - cellHeight, widthList.get(i),cellHeight,column.getName());
             headerXco += widthList.get(i);
@@ -85,7 +71,7 @@ public class paintModule {
 
         }
         for(Row row: table.getTableRows()){
-            this.paintRow(g,row.getColcumnList(),startXco,startYco);
+            this.paintRow(g,row.getColcumnList(),startXco,startYco, setting);
             startYco = startYco + 20;
         }
 
@@ -94,7 +80,8 @@ public class paintModule {
     //Method that draw list of table names in a collumn
     //For every element in its list it calls the printRectText method
     //TODO: should accept list with table elements (instead of strings) and iterate over that list and get table name
-     public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startyCo ){
+     public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startyCo, settings setting ){
+         List<Integer> widthList = setting.getWidthList();
         this.paintRectText(g,startXco, startyCo - cellHeight , widthList.get(0),cellHeight, "HEADER" );
         for(Table tableItem : tableList){
             this.paintRectText(g,startXco, startyCo , widthList.get(0),cellHeight, tableItem.getTableName() );
@@ -102,9 +89,10 @@ public class paintModule {
         }
     }
 
-    public void paintDesignView(Graphics g, Table table){
+    public void paintDesignView(Graphics g, Table table, settings setting){
         int headerXco = getxCoStart();
         int headerYco = getyCoStart() - cellHeight;
+        List<Integer> widthList = setting.getWidthList();
         String[] names = {"Name", "Type", "Default value", "Blank?"};
         for(int i = 0; i <4; i++){
             this.paintRectText(g,headerXco, headerYco, widthList.get(i),cellHeight, names[i]);
@@ -114,7 +102,7 @@ public class paintModule {
         int startYco = this.getyCoStart();
         for(Column column: table.getColumnNames()){
             List<String> rowInfo = column.getInfo();
-            this.paintRow(g,rowInfo,this.getxCoStart(),startYco);
+            this.paintRow(g,rowInfo,this.getxCoStart(),startYco, setting);
             startYco = startYco + cellHeight;
         }
 
@@ -123,8 +111,9 @@ public class paintModule {
     //Method that draws list of rownelements in a row
     //For every element in its list it calls the printRectText method
     //TODO: should accept list with Row elements (instead of strings) and iterate over that list and get row elements
-    public void paintRow(Graphics g, List<String> rowList, int startxCo, int startyCo){
+    public void paintRow(Graphics g, List<String> rowList, int startxCo, int startyCo, settings setting){
         int i = 0;
+        List<Integer> widthList = setting.getWidthList();
         for(String rowItem : rowList){
             if (rowItem.equals("true")){
                 this.checkBox(g,startxCo,startyCo, widthList.get(i));

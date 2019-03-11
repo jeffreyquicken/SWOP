@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import Data.Column;
+import settings.settings;
 
 public class Table {
     private String tableName;
     private List<Row> tableRows;
     private List<Column> columnNames;
+    private settings setting;
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
@@ -25,6 +27,7 @@ public class Table {
         tableRows = new ArrayList<Row>();
         columnNames = new ArrayList<Column>();
         tableName = name;
+        setting = new settings(4); //Todo: start with empty tableview
 
         Column col1 = new Column("Col 1","Col 1", "String", true);
         Column col2= new Column("Col 2","Col 1", "String", true);
@@ -45,7 +48,15 @@ public class Table {
     }
 
     /**
-     * Adds a collum to table
+     *
+     * @return
+     */
+    public settings getSetting() {
+        return setting;
+    }
+
+    /**
+     * Adds a collumn to table
      * @param column
      */
     public void addCollumn(Column column){

@@ -1,3 +1,5 @@
+package settings;
+
 import java.util.List;
 
 public class settings {

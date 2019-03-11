@@ -22,7 +22,7 @@ public class UIDesignModule {
 
 
     //Constructor that init/creates paintModule and an empty list with tablenames
-    //Each UImodule has own paintmodule to save settings (e.g. size, bg, ...)
+    //Each UImodule has own paintmodule to save settings.settings (e.g. size, bg, ...)
     public UIDesignModule(){
         paintModule = new paintModule(4);
         mouseEventHandler = new mouseEventHandler();
