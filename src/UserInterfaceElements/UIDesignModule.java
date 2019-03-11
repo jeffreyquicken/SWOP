@@ -5,6 +5,7 @@ import Data.Table;
 import Data.dataController;
 import EventHandlers.mouseEventHandler;
 import paintModule.paintModule;
+import settings.settings;
 
 import java.awt.*;
 
@@ -24,7 +25,7 @@ public class UIDesignModule {
     //Constructor that init/creates paintModule and an empty list with tablenames
     //Each UImodule has own paintmodule to save settings.settings (e.g. size, bg, ...)
     public UIDesignModule(){
-        paintModule = new paintModule(4);
+        paintModule = new paintModule();
         mouseEventHandler = new mouseEventHandler();
     }
 

@@ -79,11 +79,11 @@ public class UIRowModule {
 
     //Method that takes care of painting the canvas
     //It calls method from paintModule
-    public void paint(Graphics g, Table table, dataController data){
+    public void paint(Graphics g, Table table){
         //Creates title
         paintModule.paintTitle(g, "Row Mode");
 
         //print tables in tabular view
-        paintModule.paintTable(g,table, xCoStart,yCoStart, data.getSelectedTable().getSetting());
+        paintModule.paintTable(g,table, xCoStart,yCoStart, table.getSetting());
     }
 }

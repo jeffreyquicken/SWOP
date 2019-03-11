@@ -60,9 +60,10 @@ public class paintModule {
 
 
 
-    public void paintTable(Graphics g, Table table, int startXco, int startYco, settings setting){
+    public void paintTable(Graphics g, Table table, int startXco, int startYco){
         int headerXco = startXco;
         int i =0;
+        settings setting = table.getSetting();
         List<Integer> widthList = setting.getWidthList();
         for(Column column: table.getColumnNames()){
             this.paintRectText(g,headerXco, startYco - cellHeight, widthList.get(i),cellHeight,column.getName());
@@ -89,9 +90,10 @@ public class paintModule {
         }
     }
 
-    public void paintDesignView(Graphics g, Table table, settings setting){
+    public void paintDesignView(Graphics g, Table table){
         int headerXco = getxCoStart();
         int headerYco = getyCoStart() - cellHeight;
+        settings setting = table.getSetting();
         List<Integer> widthList = setting.getWidthList();
         String[] names = {"Name", "Type", "Default value", "Blank?"};
         for(int i = 0; i <4; i++){
