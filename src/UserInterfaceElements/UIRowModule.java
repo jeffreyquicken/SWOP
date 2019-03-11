@@ -84,6 +84,6 @@ public class UIRowModule {
         paintModule.paintTitle(g, "Row Mode");
 
         //print tables in tabular view
-        paintModule.paintTable(g,table, xCoStart,yCoStart, table.getSetting());
+        paintModule.paintTable(g,table, xCoStart,yCoStart);
     }
 }

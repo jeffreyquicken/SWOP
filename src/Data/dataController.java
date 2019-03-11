@@ -2,6 +2,7 @@ package Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import settings.settings;
 
 public class dataController {
     private List<Table> tableList;
@@ -16,7 +17,10 @@ public class dataController {
 
     private Table selectedTable;
 
+    private settings setting;
+
     public dataController(){
+        setting = new settings(1);
         Table table1 = new Table("Table 1");
         Table table2 = new Table("Table 2");
         Table table3 = new Table("Table 3");
@@ -49,6 +53,11 @@ public class dataController {
 
 
     }
+
+    public settings getSetting(){
+        return setting;
+    }
+
 
 
 

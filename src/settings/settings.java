@@ -1,5 +1,6 @@
 package settings;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class settings {
@@ -9,6 +10,7 @@ public class settings {
     private int defaultWidth = 100;
 
     public settings(int numberOfCols){
+        widthList = new ArrayList<>();
         for ( int i = 0; i < numberOfCols; i++){
             widthList.add(defaultWidth);
         }

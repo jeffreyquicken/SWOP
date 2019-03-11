@@ -4,6 +4,7 @@ import Data.Table;
 import Data.dataController;
 import paintModule.paintModule;
 import EventHandlers.*;
+import settings.settings;
 import sun.font.TrueTypeFont;
 
 import java.util.*;
@@ -22,10 +23,11 @@ public class UITablesModule {
     private int draggedColumn;
     private int draggedX;
 
+
     //Constructor that init/creates paintModule and an empty list with tablenames
     //Each UImodule has own paintmodule to save settings.settings (e.g. size, bg, ...)
     public UITablesModule() {
-        paintModule = new paintModule(1);
+        paintModule = new paintModule();
         mouseEventHandler = new mouseEventHandler();
         invalidInput = false;
         tempText = "Default_Text";
@@ -45,16 +47,25 @@ public class UITablesModule {
 
         //EVENT CLICK CELL
         //TODO: check if margin clicked
-        int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1,paintModule.getWidthList());
+        settings setting;
+        if (data.getSelectedTable() == null){
+            setting = data.getSetting();
+        }
+        else{
+            setting = data.getSelectedTable().getSetting();
+        }
+        List<Integer> widthList = setting.getWidthList();
+        int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
+                paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1,widthList);
        //Checks if user is dragging border
             if(currMode == "drag"){
                 if(ID == 506){
                     int delta = xCo - draggedX;
-                    int previousWidth = paintModule.getWidthList().get(draggedColumn);
+                    int previousWidth = widthList.get(draggedColumn);
                     int newWidth = previousWidth +delta;
-                    int sum = paintModule.getWidthList().stream().mapToInt(Integer::intValue).sum();
+                    int sum = widthList.stream().mapToInt(Integer::intValue).sum();
                     if(newWidth >= paintModule.getMinCellWidth() && sum + delta < 590 - paintModule.getxCoStart() ){
-                        paintModule.getWidthList().set(draggedColumn, newWidth);
+                        widthList.set(draggedColumn, newWidth);
                         draggedX = xCo;
                     }
                 }else{
@@ -62,7 +73,9 @@ public class UITablesModule {
                 }
         }
         //check if leftmargin is clicked
-        else if(currMode != "edit" && mouseEventHandler.marginLeftClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1, paintModule.getCellLeftMargin(), paintModule.getWidthList()) != null) {
+        else if(currMode != "edit" && mouseEventHandler.marginLeftClicked(xCo,yCo,paintModule.getxCoStart(),
+                    paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(),
+                    data.getTableList().size(), 1, paintModule.getCellLeftMargin(), widthList) != null) {
             currMode = "delete";
             activeCell = clickedCell;
         }
@@ -79,10 +92,12 @@ public class UITablesModule {
             }
             }
         //Check if header is clicked
-        else if(mouseEventHandler.rightBorderClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getWidthList().size(), paintModule.getCellHeight(), paintModule.getWidthList()) != -1){
+        else if(mouseEventHandler.rightBorderClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(),
+                    widthList.size(), paintModule.getCellHeight(), widthList) != -1){
             System.out.println("RIGHT BORDER CLICKED");
             currMode ="drag";
-            draggedColumn= mouseEventHandler.rightBorderClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(), paintModule.getWidthList().size(), paintModule.getCellHeight(), paintModule.getWidthList());
+            draggedColumn= mouseEventHandler.rightBorderClicked(xCo,yCo,paintModule.getxCoStart(),
+                    paintModule.getyCoStart(), widthList.size(), paintModule.getCellHeight(), widthList);
             draggedX = xCo;
         }
             //EVENT edit mode and clicked outside table
@@ -148,20 +163,33 @@ public class UITablesModule {
     //Method that takes care of painting the canvas
     //It calls method from paintModule
     public void paint(Graphics g, dataController data) {
+        settings setting;
+        if (data.getSelectedTable() == null){
+            setting = data.getSetting();
+        }
+        else{
+            setting = data.getSelectedTable().getSetting();
+        }
+
+        List<Integer> widthList = setting.getWidthList();
         //Creates title
         paintModule.paintTitle(g, "Table Mode");
 
         //print tables in tabular view
-        paintModule.paintTableView(g, data.getTableList(), paintModule.getxCoStart(), paintModule.getyCoStart());
+        paintModule.paintTableView(g, data.getTableList(), paintModule.getxCoStart(), paintModule.getyCoStart(), setting);
 
         //Check mode
         if (currMode == "edit" ) {
-            paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0], paintModule.getCellCoords(activeCell[0], activeCell[1])[1], paintModule.getWidthList().get(activeCell[1]), paintModule.getCellHeight(), tempText);
+            paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0],
+                    paintModule.getCellCoords(activeCell[0], activeCell[1])[1], widthList.get(activeCell[1]),
+                    paintModule.getCellHeight(), tempText);
         }
 
         //check if there are warnings
         if (invalidInput || currMode == "delete") {
-            paintModule.paintBorder(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0], paintModule.getCellCoords(activeCell[0], activeCell[1])[1],  paintModule.getWidthList().get(activeCell[1]), paintModule.getCellHeight(), Color.RED);
+            paintModule.paintBorder(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0],
+                    paintModule.getCellCoords(activeCell[0], activeCell[1])[1],  widthList.get(activeCell[1]),
+                    paintModule.getCellHeight(), Color.RED);
         } else {
             paintModule.setColor(g, Color.BLACK);
         }
