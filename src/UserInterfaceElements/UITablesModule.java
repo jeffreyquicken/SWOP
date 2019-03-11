@@ -41,7 +41,13 @@ public class UITablesModule {
         //EVENT DOUBLE CLICKS UNDER TABLE
         if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getLowestY()) ) {
             int numberOfTable = data.getTableList().size() + 1;
-            Table newTable = new Table("Table" + numberOfTable);
+            String newName = "Table" + numberOfTable;
+            int i = numberOfTable;
+            while (!textIsValid(newName, data, null)){
+                i++;
+                newName = "Table" + i;
+            }
+            Table newTable = new Table(newName);
             data.addTable(newTable);
         }
 
@@ -108,7 +114,8 @@ public class UITablesModule {
         else if (currMode == "delete"){
             currMode = "normal";
         }
-        invalidInput = !textIsValid(tempText, data);
+        String currName = data.getTableList().get(activeCell[0]).getTableName();
+        invalidInput = !textIsValid(tempText, data, currName);
 
         return nextUImode;
     }
@@ -120,7 +127,8 @@ public class UITablesModule {
             //EVENT: ASCSII char pressed
             if (eventHandler.isChar(keyCode)) {
                 tempText = tempText + keyChar;
-                invalidInput = !textIsValid(tempText, data);
+                String currName = data.getTableList().get(activeCell[0]).getTableName();
+                invalidInput = !textIsValid(tempText, data, currName);
             }
 
             //EVENT BS pressed and in edit mode
@@ -156,7 +164,8 @@ public class UITablesModule {
             currMode = "normal";
             tempText = "default_text";
         }
-        invalidInput = !textIsValid(tempText, data);
+        String currName = data.getTableList().get(activeCell[0]).getTableName();
+        invalidInput = !textIsValid(tempText, data, currName);
         return "table";
     }
 
@@ -197,10 +206,10 @@ public class UITablesModule {
     }
 
     //method that checks if a string is valid as a table name
-    public boolean textIsValid(String text, dataController data) {
+    public boolean textIsValid(String text, dataController data, String currName) {
         for (Table table : data.getTableList()) {
             if (table.getTableName().equals(text)) {
-                if (!table.getTableName().equals(data.getTableList().get(activeCell[0]).getTableName())) {
+                if (!table.getTableName().equals(currName)) {
                     return false;
                 }
             }
@@ -210,6 +219,7 @@ public class UITablesModule {
         }
         return true;
     }
+
 
 
 }
