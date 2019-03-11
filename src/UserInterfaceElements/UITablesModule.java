@@ -41,7 +41,13 @@ public class UITablesModule {
         //EVENT DOUBLE CLICKS UNDER TABLE
         if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getLowestY()) ) {
             int numberOfTable = data.getTableList().size() + 1;
-            Table newTable = new Table("Table" + numberOfTable);
+            String newName = "Table" + numberOfTable;
+            int i = numberOfTable;
+            while (!textIsValid(newName, data, null)){
+                i++;
+                newName = "Table" + i;
+            }
+            Table newTable = new Table(newName);
             data.addTable(newTable);
         }
 
@@ -108,7 +114,7 @@ public class UITablesModule {
         else if (currMode == "delete"){
             currMode = "normal";
         }
-        invalidInput = !textIsValid(tempText, data);
+
 
         return nextUImode;
     }
@@ -120,7 +126,8 @@ public class UITablesModule {
             //EVENT: ASCSII char pressed
             if (eventHandler.isChar(keyCode)) {
                 tempText = tempText + keyChar;
-                invalidInput = !textIsValid(tempText, data);
+                String currName = data.getTableList().get(activeCell[0]).getTableName();
+                invalidInput = !textIsValid(tempText, data, currName);
             }
 
             //EVENT BS pressed and in edit mode
@@ -129,6 +136,9 @@ public class UITablesModule {
                 //Check if string is not empty
                 if (tempText.length() != 0) {
                     tempText = tempText.substring(0, tempText.length() - 1);
+                    String currName = data.getTableList().get(activeCell[0]).getTableName();
+                    invalidInput = !textIsValid(tempText, data, currName);
+
                 }
                 //empty string, display red border
             }
@@ -143,7 +153,7 @@ public class UITablesModule {
         //DEL key only has functionality in delete mode
         //EVENT: DEL pressed
         else if (currMode == "delete" ){
-            if(eventHandler.isDelete(keyCode)){
+            if(eventHandler.isDelete(keyCode) || keyChar == 'd'){
             List<Table> list = data.getTableList();
             Table selectedTable = list.get(activeCell[0]);
             data.deleteTable(selectedTable);
@@ -156,7 +166,7 @@ public class UITablesModule {
             currMode = "normal";
             tempText = "default_text";
         }
-        invalidInput = !textIsValid(tempText, data);
+
         return "table";
     }
 
@@ -197,10 +207,10 @@ public class UITablesModule {
     }
 
     //method that checks if a string is valid as a table name
-    public boolean textIsValid(String text, dataController data) {
+    public boolean textIsValid(String text, dataController data, String currName) {
         for (Table table : data.getTableList()) {
             if (table.getTableName().equals(text)) {
-                if (!table.getTableName().equals(data.getTableList().get(activeCell[0]).getTableName())) {
+                if (!table.getTableName().equals(currName)) {
                     return false;
                 }
             }
@@ -210,6 +220,7 @@ public class UITablesModule {
         }
         return true;
     }
+
 
 
 }

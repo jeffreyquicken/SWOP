@@ -153,7 +153,7 @@ public class mouseEventHandler {
     public boolean isInTableWidth(int xCo, int firstX, List<Integer> widthList){
     	boolean validity = false;
         int sum = widthList.stream().mapToInt(Integer::intValue).sum();
-    	if(xCo > firstX && xCo < (firstX + sum)){
+    	if(xCo >= firstX && xCo <= (firstX + sum)){
     		validity = true;
     	}
     	return validity;
@@ -173,7 +173,7 @@ public class mouseEventHandler {
      */
     public boolean isInTableHeight(int yCo, int firstY, int height, int numberOfRows){
     	boolean validity = false;
-    	if( yCo > firstY || yCo < (firstY + (numberOfRows * height))) {
+    	if( yCo >= firstY && yCo <= (firstY + (numberOfRows * height))) {
     		validity = true;
     	}
     	return validity;
