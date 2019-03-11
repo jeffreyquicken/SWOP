@@ -6,6 +6,8 @@ import settings.settings;
 
 public class dataController {
     private List<Table> tableList;
+    private Table selectedTable;
+    private settings setting;
 
     public Table getSelectedTable() {
         return selectedTable;
@@ -14,10 +16,6 @@ public class dataController {
     public void setSelectedTable(Table selectedTable) {
         this.selectedTable = selectedTable;
     }
-
-    private Table selectedTable;
-
-    private settings setting;
 
     public dataController(){
         setting = new settings(1);
