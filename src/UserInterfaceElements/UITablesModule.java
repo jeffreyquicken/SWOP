@@ -156,6 +156,14 @@ public class UITablesModule extends UISuperClass{
         return true;
     }
    
+    /*
+     * (non-Javadoc)
+     * @see UserInterfaceElements.UISuperClass#handleKeyEditMode(int, int, char, Data.dataController)
+     * 
+     * the next methods will be called using the superclass method handleKeyEvent
+     * the method in the superclass works as a flow controller but doesn't have the functionality needed for the specific UI modules
+     * this is implemented in the next few methods
+     */
     @Override
     protected void handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){
     	keyEventHandler eventHandler = new keyEventHandler();
@@ -186,6 +194,7 @@ public class UITablesModule extends UISuperClass{
         }
 
     }
+    
     @Override
     protected void handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){}
     

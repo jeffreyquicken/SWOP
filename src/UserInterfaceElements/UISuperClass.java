@@ -10,7 +10,7 @@ import settings.settings;
 import java.awt.*;
 import java.util.List;
 
-public class UISuperClass {
+public abstract class UISuperClass {
     protected paintModule paintModule;
     protected mouseEventHandler mouseEventHandler;
     protected String currMode = "normal";
