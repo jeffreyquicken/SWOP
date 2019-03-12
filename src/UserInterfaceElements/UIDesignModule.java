@@ -5,8 +5,10 @@ import Data.Table;
 import Data.dataController;
 import EventHandlers.mouseEventHandler;
 import paintModule.paintModule;
+import settings.settings;
 
 import java.awt.*;
+import java.util.List;
 
 public class UIDesignModule extends UISuperClass {
     private paintModule paintModule;
@@ -26,10 +28,23 @@ public class UIDesignModule extends UISuperClass {
     public UIDesignModule(){
         paintModule = new paintModule();
         mouseEventHandler = new mouseEventHandler();
+        invalidInput = false;
     }
 
     //Handles mousevent and returns if UImode need to change
     public String handleMouseEvent(int xCo, int yCo,int count, int ID,  dataController data){
+
+        settings setting;
+        if (data.getSelectedTable() == null){
+            setting = data.getSelectedTable().getDesignSetting();
+        }
+        else{
+            setting = data.getSelectedTable().getDesignSetting();
+        }
+        List<Integer> widthList = setting.getWidthList();
+        int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
+                paintModule.getCellHeight(), paintModule.getCellWidth(), data.getSelectedTable().getColumnNames().size(), 1,widthList);
+
         //EVENT DOUBLE CLICKS UNDER TABLE
         int lowestY = (data.getSelectedTable().getColumnNames().size()*paintModule.getCellHeight())+paintModule.getyCoStart();
         if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, lowestY) ) {
@@ -42,6 +57,18 @@ public class UIDesignModule extends UISuperClass {
             }
             Column newCol = new Column(newName, "", "String", true);
             data.getSelectedTable().addColumn(newCol);
+        }
+
+        //Check if a cell is clicked
+
+        else if (!invalidInput && currMode!= "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
+            if (count != 2){
+                activeCell = clickedCell;
+                currMode = "edit";
+                tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]).getName();}
+            else{
+                data.setSelectedTable(data.getTableList().get(clickedCell[0]));
+            }
         }
         return "design";
     }
@@ -73,12 +100,33 @@ public class UIDesignModule extends UISuperClass {
 
     //Method that takes care of painting the canvas
     //It calls method from paintModule
-    public void paint(Graphics g, Table table){
+    public void paint(Graphics g, Table table, dataController data){
+        settings setting;
+        if (data.getSelectedTable() == null){
+            setting = data.getSelectedTable().getDesignSetting();
+        }
+        else{
+            setting = data.getSelectedTable().getDesignSetting();
+        }
+        List<Integer> widthList = setting.getWidthList();
+
         //Creates title
         paintModule.paintTitle(g, "Design Mode");
 
         //print tables in tabular view
         paintModule.paintDesignView(g, table);
+
+        //Check mode
+        if (currMode == "edit" ) {
+            paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0],
+                    paintModule.getCellCoords(activeCell[0], activeCell[1])[1], widthList.get(activeCell[1]),
+                    paintModule.getCellHeight(), tempText);
+        }
+
+
+
+
+
     }
 
 

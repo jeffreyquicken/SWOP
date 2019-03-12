@@ -10,6 +10,7 @@ public class Table {
     private List<Row> tableRows;
     private List<Column> columnNames;
     private settings setting;
+    private settings designSetting;
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
@@ -27,6 +28,7 @@ public class Table {
         columnNames = new ArrayList<Column>();
         tableName = name;
         setting = new settings(4); //Todo: start with empty tableview
+        designSetting = new settings(4);
 
         Column col1 = new Column("Column1","", "String", true);
         Column col2= new Column("Column2","", "String", true);
@@ -79,6 +81,10 @@ public class Table {
         int i = this.tableRows.size() * 20;
         return i;
 
+    }
+
+    public settings getDesignSetting() {
+        return designSetting;
     }
 
 
