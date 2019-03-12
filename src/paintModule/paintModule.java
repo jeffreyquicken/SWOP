@@ -95,7 +95,7 @@ public class paintModule {
         int headerYco = getyCoStart() - cellHeight;
         settings setting = table.getSetting();
         List<Integer> widthList = setting.getWidthList();
-        String[] names = {"Name", "Type", "Default value", "Blank?"};
+        String[] names = {"Name", "Default value", "Type", "Blank?"};
         for(int i = 0; i <4; i++){
             this.paintRectText(g,headerXco, headerYco, widthList.get(i),cellHeight, names[i]);
             System.out.println(names[i]);

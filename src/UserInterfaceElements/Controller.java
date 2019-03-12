@@ -45,6 +45,9 @@ public class Controller {
             this.setCurrentMode(this.rowmodule.handleMouseEvent(xCo,yCo,count,id,tableDataController));
 
         }
+        else if (this.getCurrentMode().equals("design")){
+            this.setCurrentMode(this.getDesignModule().handleMouseEvent(xCo,yCo,count,id,tableDataController));
+        }
         mouseEvent = "Mouse eventID= " + id + " | Coordinates clicked" + xCo + ", " + yCo + "| Amount clicked: " + count;
     }
 
@@ -72,9 +75,8 @@ public class Controller {
         else if (this.getCurrentMode() == "row"){
             this.getRowmodule().paint(g, tableDataController.getSelectedTable());
         }
-        else{
+        else if (this.getCurrentMode() == "design"){
             this.getDesignModule().paint(g,tableDataController.getSelectedTable());
-
         }
         //drawing of mousevent, keyevent just for debugging
         g.drawString(mouseEvent, 10,400);

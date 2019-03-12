@@ -1,9 +1,8 @@
 package Data;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import Data.Column;
+
 import settings.settings;
 
 public class Table {
@@ -29,14 +28,14 @@ public class Table {
         tableName = name;
         setting = new settings(4); //Todo: start with empty tableview
 
-        Column col1 = new Column("Col 1","Col 1", "String", true);
-        Column col2= new Column("Col 2","Col 1", "String", true);
-        Column col3 = new Column("Col 3", "Col 1", "String", true);
-        Column col4 = new Column("Col 4","Col 1", "String", true);
-        this.addCollumn(col1);
-        this.addCollumn(col2);
-        this.addCollumn(col3);
-        this.addCollumn(col4);
+        Column col1 = new Column("Column1","", "String", true);
+        Column col2= new Column("Column2","", "String", true);
+        Column col3 = new Column("Column3", "", "String", true);
+        Column col4 = new Column("Column4","", "String", true);
+        this.addColumn(col1);
+        this.addColumn(col2);
+        this.addColumn(col3);
+        this.addColumn(col4);
 
         Row row1 = new Row("Row1" + tableName);
         Row row2 = new Row("Row2" + tableName);
@@ -59,7 +58,7 @@ public class Table {
      * Adds a collumn to table
      * @param column
      */
-    public void addCollumn(Column column){
+    public void addColumn(Column column){
         columnNames.add(column);
     }
 

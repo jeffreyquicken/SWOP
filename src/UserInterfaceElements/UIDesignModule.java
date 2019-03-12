@@ -1,11 +1,10 @@
 package UserInterfaceElements;
 
-import Data.Row;
+import Data.Column;
 import Data.Table;
 import Data.dataController;
 import EventHandlers.mouseEventHandler;
 import paintModule.paintModule;
-import settings.settings;
 
 import java.awt.*;
 
@@ -31,7 +30,34 @@ public class UIDesignModule extends UISuperClass {
 
     //Handles mousevent and returns if UImode need to change
     public String handleMouseEvent(int xCo, int yCo,int count, int ID,  dataController data){
+        //EVENT DOUBLE CLICKS UNDER TABLE
+        int lowestY = (data.getSelectedTable().getColumnNames().size()*paintModule.getCellHeight())+paintModule.getyCoStart();
+        if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, lowestY) ) {
+            int numberOfCols = data.getSelectedTable().getColumnNames().size() + 1;
+            String newName = "Column" + numberOfCols;
+            int i = numberOfCols;
+            while (!textIsValid(newName, data, null)){
+                i++;
+                newName = "Column" + i;
+            }
+            Column newCol = new Column(newName, "", "String", true);
+            data.getSelectedTable().addColumn(newCol);
+        }
         return "design";
+    }
+
+    private boolean textIsValid(String text, dataController data, String currName) {
+        for (Column col : data.getSelectedTable().getColumnNames()) {
+            if (col.getName().equals(text)) {
+                if (!col.getName().equals(currName)) {
+                    return false;
+                }
+            }
+        }
+        if (text.length() == 0) {
+            return false;
+        }
+        return true;
     }
 
     //Handles mousevent and returns if UImode need to change
@@ -41,6 +67,7 @@ public class UIDesignModule extends UISuperClass {
         if(keyChar == 't'){ nextUImode = "table";}else{
             nextUImode = "row";
         }
+
         return nextUImode;
     }
 
