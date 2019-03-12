@@ -7,7 +7,6 @@ import settings.settings;
 
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class paintModule {
@@ -72,7 +71,7 @@ public class paintModule {
 
         }
         for(Row row: table.getTableRows()){
-            this.paintRow(g,row.getColcumnList(),startXco,startYco, setting);
+            this.paintRow(g,row.getColumnList(),startXco,startYco, setting);
             startYco = startYco + 20;
         }
 
