@@ -9,7 +9,7 @@ import settings.settings;
 
 import java.awt.*;
 
-public class UIDesignModule {
+public class UIDesignModule extends UISuperClass {
     private paintModule paintModule;
     private EventHandlers.mouseEventHandler mouseEventHandler;
     private int xCoStart = 50 ;

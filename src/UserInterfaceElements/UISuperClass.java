@@ -11,14 +11,14 @@ import java.awt.*;
 import java.util.List;
 
 public class UISuperClass {
-    private paintModule paintModule;
-    private mouseEventHandler mouseEventHandler;
-    private String currMode = "normal";
-    private int[] activeCell;
-    private String tempText;
-    private Boolean invalidInput;
-    private int draggedColumn;
-    private int draggedX;
+    protected paintModule paintModule;
+    protected mouseEventHandler mouseEventHandler;
+    protected String currMode = "normal";
+    protected int[] activeCell;
+    protected String tempText;
+    protected Boolean invalidInput;
+    protected int draggedColumn;
+    protected int draggedX;
 
     //TODO rewrite other UI modules to use superclass methods
     public UISuperClass() {
@@ -83,8 +83,8 @@ public class UISuperClass {
         //paintModule.paintBorder(g,paintModule.getxCoStart(), paintModule.getyCoStart(), 80, 20, "red");
     }
 
-    private String handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){return "";}
-    private String handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){return "";}
-    private String handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data){return "";}
-    private String handleNonModeDependantKeys (int id, int keyCode, char keyChar, dataController data){return "";}
+    protected void handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){}
+    protected void handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){}
+    protected void handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data){}
+    protected void handleNonModeDependantKeys (int id, int keyCode, char keyChar, dataController data){}
 }

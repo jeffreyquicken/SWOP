@@ -12,27 +12,13 @@ import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
 
-public class UITablesModule {
-
-    private paintModule paintModule;
-    private mouseEventHandler mouseEventHandler;
-    private String currMode = "normal";
-    private int[] activeCell;
-    private String tempText;
-    private Boolean invalidInput;
-    private int draggedColumn;
-    private int draggedX;
-
+public class UITablesModule extends UISuperClass{
 
     //Constructor that init/creates paintModule and an empty list with tablenames
     //Each UImodule has own paintmodule to save settings.settings (e.g. size, bg, ...)
+	//constructor inherited from SuperClass
     public UITablesModule() {
-        paintModule = new paintModule();
-        mouseEventHandler = new mouseEventHandler();
-        invalidInput = false;
-        tempText = "Default_Text";
-        draggedColumn = 1;
-        draggedX = 1;
+        super();
     }
 
     //Handles mousevent and returns if UImode need to change
@@ -119,57 +105,6 @@ public class UITablesModule {
         return nextUImode;
     }
 
-    //Handles keyevent and returns if UImode need to change
-    public String handleKeyEvent(int id, int keyCode, char keyChar, dataController data) {
-        keyEventHandler eventHandler = new keyEventHandler();
-        if (currMode == "edit") {
-            //EVENT: ASCSII char pressed
-            if (eventHandler.isChar(keyCode)) {
-                tempText = tempText + keyChar;
-                String currName = data.getTableList().get(activeCell[0]).getTableName();
-                invalidInput = !textIsValid(tempText, data, currName);
-            }
-
-            //EVENT BS pressed and in edit mode
-            else if (eventHandler.isBackspace(keyCode)) {
-
-                //Check if string is not empty
-                if (tempText.length() != 0) {
-                    tempText = tempText.substring(0, tempText.length() - 1);
-                    String currName = data.getTableList().get(activeCell[0]).getTableName();
-                    invalidInput = !textIsValid(tempText, data, currName);
-
-                }
-                //empty string, display red border
-            }
-            //EVENT ENTER pressed
-            else if (eventHandler.isEnter(keyCode)) {
-                currMode = "normal";
-                data.getTableList().get(activeCell[0]).setTableName(tempText);
-
-            }
-
-        }
-        //DEL key only has functionality in delete mode
-        //EVENT: DEL pressed
-        else if (currMode == "delete" ){
-            if(eventHandler.isDelete(keyCode) || keyChar == 'd'){
-            List<Table> list = data.getTableList();
-            Table selectedTable = list.get(activeCell[0]);
-            data.deleteTable(selectedTable);
-            currMode = "normal";
-            }
-        }
-        //out of if checks: functionality doesn't depend on mode and works as  a way to reset the previous state
-        //EVENT: ESC char pressed
-        if (eventHandler.isEscape(keyCode)) {
-            currMode = "normal";
-            tempText = "default_text";
-        }
-
-        return "table";
-    }
-
     //Method that takes care of painting the canvas
     //It calls method from paintModule
     public void paint(Graphics g, dataController data) {
@@ -220,7 +155,59 @@ public class UITablesModule {
         }
         return true;
     }
+   
+    @Override
+    protected void handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){
+    	keyEventHandler eventHandler = new keyEventHandler();
+        //EVENT: ASCSII char pressed
+        if (eventHandler.isChar(keyCode)) {
+            tempText = tempText + keyChar;
+            String currName = data.getTableList().get(activeCell[0]).getTableName();
+            invalidInput = !textIsValid(tempText, data, currName);
+        }
 
+        //EVENT BS pressed and in edit mode
+        else if (eventHandler.isBackspace(keyCode)) {
 
+            //Check if string is not empty
+            if (tempText.length() != 0) {
+                tempText = tempText.substring(0, tempText.length() - 1);
+                String currName = data.getTableList().get(activeCell[0]).getTableName();
+                invalidInput = !textIsValid(tempText, data, currName);
+
+            }
+            //empty string, display red border
+        }
+        //EVENT ENTER pressed
+        else if (eventHandler.isEnter(keyCode)) {
+            currMode = "normal";
+            data.getTableList().get(activeCell[0]).setTableName(tempText);
+
+        }
+
+    }
+    @Override
+    protected void handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){}
+    
+    @Override
+    protected void handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data){
+    	keyEventHandler eventHandler = new keyEventHandler();
+    	//DEL key pressed
+        if(eventHandler.isDelete(keyCode) || keyChar == 'd'){
+        List<Table> list = data.getTableList();
+        Table selectedTable = list.get(activeCell[0]);
+        data.deleteTable(selectedTable);
+        currMode = "normal";
+        }
+    }
+    
+    @Override
+    protected void handleNonModeDependantKeys (int id, int keyCode, char keyChar, dataController data){
+    	keyEventHandler eventHandler = new keyEventHandler();
+    	if (eventHandler.isEscape(keyCode)) {
+            currMode = "normal";
+            tempText = "default_text";
+        }
+    }
 
 }
