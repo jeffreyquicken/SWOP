@@ -55,6 +55,10 @@ public class Column {
         this.name = name;
     }
 
+    public String getDefaultV() {
+        return this.defaultV;
+    }
+
 
 
 

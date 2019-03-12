@@ -22,7 +22,7 @@ public class Row {
         columnList.add(value4);
 
     }
-    public List<String> getColcumnList() {
+    public List<String> getColumnList() {
         return columnList;
     }
 
