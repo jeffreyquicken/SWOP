@@ -22,7 +22,7 @@ public class UITablesModule extends UISuperClass{
     }
 
     //Handles mousevent and returns if UImode need to change
-    public String handleMouseEvent(int xCo, int yCo, int count, int ID, dataController data) {
+    public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data) {
         String nextUImode = "table";
         //EVENT DOUBLE CLICKS UNDER TABLE
         if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getLowestY()) ) {
@@ -80,7 +80,6 @@ public class UITablesModule extends UISuperClass{
             else{
                 data.setSelectedTable(data.getTableList().get(clickedCell[0]));
                 nextUImode = "row";
-                return nextUImode;
             }
             }
         //Check if header is clicked
@@ -102,7 +101,10 @@ public class UITablesModule extends UISuperClass{
         }
 
 
-        return nextUImode;
+        List<String> result = new ArrayList<>();
+        result.add(currMode);
+        result.add(nextUImode);
+        return result;
     }
 
     //Method that takes care of painting the canvas
@@ -165,7 +167,7 @@ public class UITablesModule extends UISuperClass{
      * this is implemented in the next few methods
      */
     @Override
-    protected void handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){
+    protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){
     	keyEventHandler eventHandler = new keyEventHandler();
         //EVENT: ASCSII char pressed
         if (eventHandler.isChar(keyCode)) {
@@ -192,14 +194,26 @@ public class UITablesModule extends UISuperClass{
             data.getTableList().get(activeCell[0]).setTableName(tempText);
 
         }
+        List<String> result = new ArrayList<>();
+        result.add(currMode);
+        result.add("table");
+        return result;
+
 
     }
     
     @Override
-    protected void handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){}
+    protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){
+        List<String> result = new ArrayList<>();
+        result.add("normal");
+        result.add("table");
+        return result;
+
+
+    }
     
     @Override
-    protected void handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data){
+    protected List<String> handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data){
     	keyEventHandler eventHandler = new keyEventHandler();
     	//DEL key pressed
         if(eventHandler.isDelete(keyCode) || keyChar == 'd'){
@@ -208,6 +222,10 @@ public class UITablesModule extends UISuperClass{
         data.deleteTable(selectedTable);
         currMode = "normal";
         }
+        List<String> result = new ArrayList<>();
+        result.add(currMode);
+        result.add("table");
+        return result;
     }
     
     @Override

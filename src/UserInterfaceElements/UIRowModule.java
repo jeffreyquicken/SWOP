@@ -9,9 +9,10 @@ import paintModule.paintModule;
 import settings.settings;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
-public class UIRowModule {
+public class UIRowModule extends UISuperClass{
     private paintModule paintModule;
     private EventHandlers.mouseEventHandler mouseEventHandler;
     private int xCoStart = 50 ;
@@ -32,7 +33,7 @@ public class UIRowModule {
     }
 
     //Handles mousevent and returns if UImode need to change
-    public String handleMouseEvent(int xCo, int yCo,int count, int ID,  dataController data){
+    public List<String> handleMouseEvent2(int xCo, int yCo,int count, int ID,  dataController data){
         List<Integer> widthList = data.getSelectedTable().getSetting().getWidthList();
 
         //EVENT DOUBLE CLICKS UNDER TABLE
@@ -63,18 +64,39 @@ public class UIRowModule {
             }
 
         String nextUImode = "row";
-        return nextUImode;
+        List<String> result = new ArrayList<>();
+        result.add(currMode);
+        result.add("table");
+        return result;
     }
 
-    //Handles mousevent and returns if UImode need to change
-    public String handleKeyEvent(int id, int keyCode, char keyChar,   dataController data){
+
+    protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){
+
+        List<String> result = new ArrayList<>();
+        result.add("edit");
+        result.add("row");
+        return result;
+
+    }
+    protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){
         //EVENT: t pressed
         String nextUImode = "row";
         if(keyChar == 't'){ nextUImode = "table";}
         else if(keyChar == 'd'){
             nextUImode = "design";
         }
-        return nextUImode;
+        List<String> result = new ArrayList<>();
+        result.add("normal");
+        result.add(nextUImode);
+        return result;
+    }
+    protected List<String> handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data){
+
+        List<String> result = new ArrayList<>();
+        result.add(currMode);
+        result.add("table");
+        return result;
     }
 
     //Method that takes care of painting the canvas
@@ -85,5 +107,7 @@ public class UIRowModule {
 
         //print tables in tabular view
         paintModule.paintTable(g,table, xCoStart,yCoStart);
+
     }
+
 }

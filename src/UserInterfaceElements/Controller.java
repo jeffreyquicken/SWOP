@@ -60,6 +60,9 @@ public class Controller {
             //if mode will be swtitched mouseevent will tell
             this.setCurrentMode(this.getRowmodule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
         }
+        else if (this.getCurrentMode() == "design"){
+            this.setCurrentMode(this.getDesignModule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
+        }
         keyEvent = "Key eventID= " + id + " | Key pressed: " + keyChar +  " | KeyCode: " + Integer.toString(keyCode);
     }
 
@@ -76,7 +79,7 @@ public class Controller {
             this.getRowmodule().paint(g, tableDataController.getSelectedTable());
         }
         else if (this.getCurrentMode() == "design"){
-            this.getDesignModule().paint(g,tableDataController.getSelectedTable(), tableDataController);
+            this.getDesignModule().paint(g, tableDataController);
         }
         //drawing of mousevent, keyevent just for debugging
         g.drawString(mouseEvent, 10,400);

@@ -3,11 +3,13 @@ package UserInterfaceElements;
 import Data.Column;
 import Data.Table;
 import Data.dataController;
+import EventHandlers.keyEventHandler;
 import EventHandlers.mouseEventHandler;
 import paintModule.paintModule;
 import settings.settings;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UIDesignModule extends UISuperClass {
@@ -32,7 +34,7 @@ public class UIDesignModule extends UISuperClass {
     }
 
     //Handles mousevent and returns if UImode need to change
-    public String handleMouseEvent(int xCo, int yCo,int count, int ID,  dataController data){
+    public List<String> handleMouseEvent2(int xCo, int yCo,int count, int ID,  dataController data){
 
         settings setting;
         if (data.getSelectedTable() == null){
@@ -70,7 +72,10 @@ public class UIDesignModule extends UISuperClass {
                 data.setSelectedTable(data.getTableList().get(clickedCell[0]));
             }
         }
-        return "design";
+        List<String> result = new ArrayList<>();
+        result.add(currMode);
+        result.add("design");
+        return result;
     }
 
     private boolean textIsValid(String text, dataController data, String currName) {
@@ -87,20 +92,11 @@ public class UIDesignModule extends UISuperClass {
         return true;
     }
 
-    //Handles mousevent and returns if UImode need to change
-    public String handleKeyEvent(int id, int keyCode, char keyChar,   dataController tableController){
-        //EVENT: t pressed
-        String nextUImode = "row";
-        if(keyChar == 't'){ nextUImode = "table";}else{
-            nextUImode = "row";
-        }
 
-        return nextUImode;
-    }
 
     //Method that takes care of painting the canvas
-    //It calls method from paintModule
-    public void paint(Graphics g, Table table, dataController data){
+    //It calls method from paintModules
+    public void paint(Graphics g, dataController data){
         settings setting;
         if (data.getSelectedTable() == null){
             setting = data.getSelectedTable().getDesignSetting();
@@ -114,7 +110,7 @@ public class UIDesignModule extends UISuperClass {
         paintModule.paintTitle(g, "Design Mode");
 
         //print tables in tabular view
-        paintModule.paintDesignView(g, table);
+        paintModule.paintDesignView(g, data.getSelectedTable());
 
         //Check mode
         if (currMode == "edit" ) {
@@ -129,7 +125,59 @@ public class UIDesignModule extends UISuperClass {
 
     }
 
+    /*
+     * (non-Javadoc)
+     * @see UserInterfaceElements.UISuperClass#handleKeyEditMode(int, int, char, Data.dataController)
+     *
+     * the next methods will be called using the superclass method handleKeyEvent
+     * the method in the superclass works as a flow controller but doesn't have the functionality needed for the specific UI modules
+     * this is implemented in the next few methods
+     */
+    @Override
+    protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){
+        keyEventHandler eventHandler = new keyEventHandler();
+        //EVENT: ASCSII char pressed
+        if (eventHandler.isChar(keyCode)) {
+            tempText = tempText + keyChar;
+            String currName = data.getSelectedTable().getColumnNames().get(activeCell[0]).getName();
+            invalidInput = !textIsValid(tempText, data, currName);
+        }
 
+        //EVENT BS pressed and in edit mode
+        else if (eventHandler.isBackspace(keyCode)) {
+
+            //Check if string is not empty
+            if (tempText.length() != 0) {
+                tempText = tempText.substring(0, tempText.length() - 1);
+                String currName = data.getSelectedTable().getColumnNames().get(activeCell[0]).getName();
+                invalidInput = !textIsValid(tempText, data, currName);
+
+            }
+            //empty string, display red border
+        }
+        //EVENT ENTER pressed
+        else if (eventHandler.isEnter(keyCode)) {
+            currMode = "normal";
+            data.getSelectedTable().getColumnNames().get(activeCell[0]).getName();
+
+        }
+        List<String> result = new ArrayList<>();
+        result.add(currMode);
+        result.add("design");
+        return result;
+
+    }
+
+    protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){ List<String> result = new ArrayList<>();
+        result.add("normal");
+        result.add("design");
+        return result;}
+    protected List<String> handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data){
+        List<String> result = new ArrayList<>();
+
+        result.add("normal");
+        result.add("design");
+        return result;}
 
 
 }

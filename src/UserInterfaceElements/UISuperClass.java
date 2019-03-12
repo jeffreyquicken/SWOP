@@ -34,17 +34,25 @@ public abstract class UISuperClass {
     //Handles keyevent and returns if UImode need to change
     public String handleKeyEvent(int id, int keyCode, char keyChar, dataController data) {
         keyEventHandler eventHandler = new keyEventHandler();
+        String nextUIMode = "";
         if (currMode == "edit") {
-            this.handleKeyEditMode(id, keyCode, keyChar, data);
+            List<String> result = this.handleKeyEditMode(id, keyCode, keyChar, data);
+            currMode = result.get(0);
+            nextUIMode = result.get(1);
+
         }
         else if (currMode == "delete" ){
-            this.handleKeyDeleteMode(id, keyCode, keyChar, data);
+            List<String> result = this.handleKeyDeleteMode(id, keyCode, keyChar, data);
+            currMode = result.get(0);
+            nextUIMode = result.get(1);
         }
         else if (currMode == "normal"){
-            this.handleKeyNormalMode(id, keyCode, keyChar, data);
+            List<String> result = this.handleKeyNormalMode(id, keyCode, keyChar, data);
+            currMode = result.get(0);
+            nextUIMode = result.get(1);
         }
         this.handleNonModeDependantKeys(id, keyCode, keyChar, data);
-        return "table";
+        return nextUIMode;
     }
 
     //Method that takes care of painting the canvas
@@ -83,8 +91,19 @@ public abstract class UISuperClass {
         //paintModule.paintBorder(g,paintModule.getxCoStart(), paintModule.getyCoStart(), 80, 20, "red");
     }
 
-    protected void handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){}
-    protected void handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){}
-    protected void handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data){}
+    protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){return null;}
+    protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){return null;}
+    protected List<String> handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data){return null;}
+    protected String handleMouseEvent(int xCo, int yCo, int count, int ID, dataController data){
+
+        List<String> result = this.handleMouseEvent2(xCo,  yCo,  count, ID,  data);
+        currMode = result.get(0);
+        return result.get(1);
+
+    }
+
+    protected List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data){
+
+        return null;}
     protected void handleNonModeDependantKeys (int id, int keyCode, char keyChar, dataController data){}
 }
