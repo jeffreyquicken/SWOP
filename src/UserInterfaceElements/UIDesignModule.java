@@ -64,14 +64,12 @@ public class UIDesignModule extends UISuperClass {
         //Check if a cell is clicked
 
         else if (!invalidInput && currMode!= "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
-            if (count != 2){
+            //check which collumn
+            if (count != 2 && clickedCell[1] == 0 ){
                 activeCell = clickedCell;
                 currMode = "edit";
-                tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]).getName();}
-            else{
-                data.setSelectedTable(data.getTableList().get(clickedCell[0]));
-            }
-        }
+                tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]).getName();}}
+
         List<String> result = new ArrayList<>();
         result.add(currMode);
         result.add("design");
