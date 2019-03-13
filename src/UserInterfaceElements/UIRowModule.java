@@ -4,6 +4,7 @@ import Data.Column;
 import Data.Row;
 import Data.Table;
 import Data.dataController;
+import EventHandlers.keyEventHandler;
 import EventHandlers.mouseEventHandler;
 import paintModule.paintModule;
 import settings.settings;
@@ -81,15 +82,27 @@ public class UIRowModule extends UISuperClass{
     }
     protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){
         //EVENT: t pressed
-        String nextUImode = "row";
-        if(keyChar == 't'){ nextUImode = "table";}
-        else if(keyChar == 'd'){
-            nextUImode = "design";
+        String nextUIMode = "row";
+        keyEventHandler eventHandler = new keyEventHandler();
+        if(keyChar == 't'){ nextUIMode = "table";}
+
+        else if (keyCode == 17){
+            ctrlPressed = true;
+        }
+        else if (ctrlPressed) {
+            if (eventHandler.isEnter(keyCode)) {
+                nextUIMode = "design";
+                ctrlPressed = false;
+            }
+        }
+        else{
+            ctrlPressed = false;
         }
         List<String> result = new ArrayList<>();
         result.add("normal");
-        result.add(nextUImode);
+        result.add(nextUIMode);
         return result;
+
     }
     protected List<String> handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data){
 
