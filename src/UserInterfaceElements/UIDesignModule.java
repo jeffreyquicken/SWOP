@@ -1,6 +1,7 @@
 package UserInterfaceElements;
 
 import Data.Column;
+import Data.Row;
 import Data.Table;
 import Data.dataController;
 import EventHandlers.keyEventHandler;
@@ -63,16 +64,37 @@ public class UIDesignModule extends UISuperClass {
 
         //Check if a cell is clicked
 
-        else if (!invalidInput && currMode!= "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
+        else if (!invalidInput && ID == 500 && currMode!= "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
             //check which collumn
             if (count != 2 && clickedCell[1] == 0 ){
                 activeCell = clickedCell;
                 currMode = "edit";
                 tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]).getName();}
+            //change checkbox
             else if(clickedCell[1] == 3){
                 Boolean prevBool = data.getSelectedTable().getColumnNames().get(clickedCell[0]).getBlanksAllowed();
                 data.getSelectedTable().getColumnNames().get(clickedCell[0]).setBlanksAllowed(!prevBool);
+
+                 //if default is false
+                if(prevBool){
+                 if(data.getSelectedTable().getColumnNames().get(clickedCell[0]).getDefaultV().equals("")){
+                    invalidInput = true;
+                    activeCell = clickedCell;
+                }else{
+                     List<Row> rowList = data.getSelectedTable().getTableRows();
+                     int index = clickedCell[0];
+                     for(Row row: rowList){
+                         if(row.getColumnList().get(index).equals("")){
+                             invalidInput = true;
+                             activeCell = clickedCell;
+                         }
+                     }
+                 }
+                }
         }}
+            else if(invalidInput && ID ==500 && clickedCell[1] == 3 && clickedCell[0] == activeCell[0]){
+                data.getSelectedTable().getColumnNames().get(clickedCell[0]).setBlanksAllowed(true);
+                invalidInput = false; }
 
         List<String> result = new ArrayList<>();
         result.add(currMode);
