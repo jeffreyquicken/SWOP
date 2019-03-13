@@ -391,7 +391,8 @@ public class UIDesignModule extends UISuperClass {
     protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data) {
         String nextUIMode = "design";
         keyEventHandler eventHandler = new keyEventHandler();
-        if (keyCode == 17){
+        if(keyCode == 27){ nextUIMode = "table";}
+        else if (keyCode == 17){
             ctrlPressed = true;
         }
         else if (ctrlPressed) {

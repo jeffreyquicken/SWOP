@@ -84,7 +84,7 @@ public class UIRowModule extends UISuperClass{
         //EVENT: t pressed
         String nextUIMode = "row";
         keyEventHandler eventHandler = new keyEventHandler();
-        if(keyChar == 't'){ nextUIMode = "table";}
+        if(keyCode == 27){ nextUIMode = "table";}
 
         else if (keyCode == 17){
             ctrlPressed = true;
