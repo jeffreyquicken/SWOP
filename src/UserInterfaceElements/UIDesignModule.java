@@ -68,7 +68,11 @@ public class UIDesignModule extends UISuperClass {
             if (count != 2 && clickedCell[1] == 0 ){
                 activeCell = clickedCell;
                 currMode = "edit";
-                tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]).getName();}}
+                tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]).getName();}
+            else if(clickedCell[1] == 3){
+                Boolean prevBool = data.getSelectedTable().getColumnNames().get(clickedCell[0]).getBlanksAllowed();
+                data.getSelectedTable().getColumnNames().get(clickedCell[0]).setBlanksAllowed(!prevBool);
+        }}
 
         List<String> result = new ArrayList<>();
         result.add(currMode);

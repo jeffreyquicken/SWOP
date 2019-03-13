@@ -118,8 +118,12 @@ public class paintModule {
         for(String rowItem : rowList){
             if (rowItem.equals("true")){
                 this.checkBoxTrue(g,startxCo,startyCo, widthList.get(i));
-            }else{
-            this.paintRectText(g, startxCo, startyCo,widthList.get(i), cellHeight , rowItem );}
+            } else if (rowItem.equals("false")) {
+                this.checkBoxFalse(g,startxCo,startyCo, widthList.get(i));
+            }
+            else {
+                this.paintRectText(g, startxCo, startyCo, widthList.get(i), cellHeight, rowItem);
+            }
             startxCo = startxCo + widthList.get(i);
             i++;
         }
@@ -155,6 +159,7 @@ public class paintModule {
     public void clearCell(Graphics g, int xCo, int yCo, int width, int height){
         g.setColor(Color.WHITE);
         g.fillRect(xCo, yCo, width, height);
+        g.setColor(Color.BLACK);
     }
 
     public int[] getCellCoords(int x,int y){
@@ -184,6 +189,14 @@ public class paintModule {
         g.setColor(Color.BLACK);
         g.drawLine(xCo+2, yCo+2, xCo+4, yCo+6);
         g.drawLine(xCo+4, yCo+6, xCo+6, yCo+2);
+        g.setColor(Color.BLACK);
+    }
+    public void checkBoxFalse(Graphics g, int xCo, int yCo, int width){
+        clearCell(g,xCo,yCo,width, cellHeight);//cellheight needs to be given
+        g.drawRect(xCo,yCo, width, cellHeight);
+        g.drawRect(xCo + width/2 - 5,yCo + 5,8,8);
+        xCo = xCo + width/2 - 5;
+        yCo = yCo + 5;
         g.setColor(Color.BLACK);
     }
 

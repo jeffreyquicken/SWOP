@@ -59,6 +59,15 @@ public class Column {
         return this.defaultV;
     }
 
+    public Boolean getBlanksAllowed() {
+        return blanksAllowed;
+    }
+
+    public void setBlanksAllowed(Boolean blanksAllowed) {
+        this.blanksAllowed = blanksAllowed;
+    }
+
+
 
 
 
