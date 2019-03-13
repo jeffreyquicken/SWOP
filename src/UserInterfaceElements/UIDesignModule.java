@@ -118,6 +118,14 @@ public class UIDesignModule extends UISuperClass {
                     paintModule.getCellCoords(activeCell[0], activeCell[1])[1], widthList.get(activeCell[1]),
                     paintModule.getCellHeight(), tempText);
         }
+        //check if there are warnings
+        if (invalidInput || currMode == "delete") {
+            paintModule.paintBorder(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0],
+                    paintModule.getCellCoords(activeCell[0], activeCell[1])[1],  widthList.get(activeCell[1]),
+                    paintModule.getCellHeight(), Color.RED);
+        } else {
+            paintModule.setColor(g, Color.BLACK);
+        }
 
 
 
