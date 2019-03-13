@@ -47,6 +47,7 @@ public class UIDesignModule extends UISuperClass {
         int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
                 paintModule.getCellHeight(), paintModule.getCellWidth(), data.getSelectedTable().getColumnNames().size(), 1, widthList);
 
+
         //EVENT DOUBLE CLICKS UNDER TABLE
         int lowestY = (data.getSelectedTable().getColumnNames().size() * paintModule.getCellHeight()) + paintModule.getyCoStart();
         if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, lowestY)) {
@@ -61,8 +62,10 @@ public class UIDesignModule extends UISuperClass {
             data.getSelectedTable().addColumn(newCol);
         }
 
-        //Check if a cell is clicked
 
+
+
+        //EVENT CELL CLICKED (VALID INPUT)
         else if (!invalidInput && ID == 500 && currMode != "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
             //check which collumn
             if (count != 2 && clickedCell[1] == 0) {
@@ -77,26 +80,29 @@ public class UIDesignModule extends UISuperClass {
             }
             //type of input
             else if(clickedCell[1] == 2){
-               String prevType =  data.getSelectedTable().getColumnNames().get(clickedCell[0]).getType();
-               String newType;
-               if (prevType.equals("String")){
-                   newType = "Email";
-               }else if(prevType.equals("Email")){
-                    newType = "Boolean";
-               }else if(prevType.equals("Boolean")){
-                   newType = "Integer";
-               }else{
-                    newType = "String";
-               }
-               invalidInput = textIsValid(newType, data, null);
-               if (invalidInput){
-                   currMode = "edit";
-               }
-               else{
-                   currMode = "normal";
-               }
-               data.getSelectedTable().getColumnNames().get(clickedCell[0]).setType(newType);
+
+                    String prevType = data.getSelectedTable().getColumnNames().get(clickedCell[0]).getType();
+                    String newType;
+                    if (prevType.equals("String")) {
+                        newType = "Email";
+                    } else if (prevType.equals("Email")) {
+                        newType = "Boolean";
+                    } else if (prevType.equals("Boolean")) {
+                        newType = "Integer";
+                    } else {
+                        newType = "String";
+                    }
+                    activeCell = clickedCell;
+                    invalidInput = !textIsValid(newType, data, null);
+                    if (invalidInput) {
+                        currMode = "edit";
+                    } else {
+                        currMode = "normal";
+                    }
+                    data.getSelectedTable().getColumnNames().get(clickedCell[0]).setType(newType);
+
             }
+
             //change checkbox
             else if (clickedCell[1] == 3) {
                 Boolean prevBool = data.getSelectedTable().getColumnNames().get(clickedCell[0]).getBlanksAllowed();
@@ -122,13 +128,51 @@ public class UIDesignModule extends UISuperClass {
                     }
                 }
             }
-        } else if (invalidInput && ID == 500 && clickedCell[1] == 3 && clickedCell[0] == activeCell[0]) {
+
+        }
+
+
+
+        //EVENT TYPE CLICKED (INVALID INPUT)
+        else if (invalidInput && ID == 500 && clickedCell[1] == 2){
+            if (currMode == "edit"){
+                if (activeCell[1] == 2 && clickedCell[0] == activeCell[0]){
+                    String prevType =  data.getSelectedTable().getColumnNames().get(clickedCell[0]).getType();
+                    String newType;
+                    if (prevType.equals("String")){
+                        newType = "Email";
+                    }else if(prevType.equals("Email")){
+                        newType = "Boolean";
+                    }else if(prevType.equals("Boolean")){
+                        newType = "Integer";
+                    }else{
+                        newType = "String";
+                    }
+                    activeCell = clickedCell;
+                    invalidInput = !textIsValid(newType, data, null);
+                    if (invalidInput){
+                        currMode = "edit";
+                    }
+                    else{
+                        currMode = "normal";
+                    }
+                    data.getSelectedTable().getColumnNames().get(clickedCell[0]).setType(newType);
+                }
+            }
+        }
+
+        //EVENT CHECKBOX CLICKED (INVALID INPUT)
+        else if (invalidInput && ID == 500 && clickedCell[1] == 3 && clickedCell[0] == activeCell[0] && clickedCell[1] == activeCell[1]) {
             data.getSelectedTable().getColumnNames().get(clickedCell[0]).setBlanksAllowed(true);
             invalidInput = false;
         }
-        else{
+
+        //EVENT EXIT EDIT MODE
+        else if(clickedCell[0] == -1 || clickedCell[1] == -1){
             saveText(data);
         }
+
+
         List<String> result = new ArrayList<>();
         result.add(currMode);
         result.add("design");
@@ -181,7 +225,7 @@ public class UIDesignModule extends UISuperClass {
                     return true;
                 }
                 else if (text.equals("Boolean")){
-                    if (colValue.equals("true") || colValue.equals("false")){
+                    if ((colValue.equals("true") || colValue.equals("false")) && (value.equals("true") || value.equals("false"))){
                         return true;
                     }
                     return false;
@@ -189,6 +233,7 @@ public class UIDesignModule extends UISuperClass {
                 else if (text.equals("Integer")){
                     try{
                         Integer.parseInt(colValue);
+                        Integer.parseInt(value);
                         return true;
                     }
                     catch (Exception e){
@@ -196,7 +241,7 @@ public class UIDesignModule extends UISuperClass {
                     }
                 }
                 else if (text.equals("Email")){
-                    if (colValue.contains("@")){
+                    if (colValue.contains("@") && value.contains("@")){
                         return true;
                     }
                     return false;

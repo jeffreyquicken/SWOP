@@ -61,7 +61,16 @@ public class Table {
      * @param column
      */
     public void addColumn(Column column){
+
+
         columnNames.add(column);
+        for(Row row: tableRows){
+            row.addColumn(column.getDefaultV());
+        }
+
+
+
+
     }
 
     /**

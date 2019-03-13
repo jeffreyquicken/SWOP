@@ -25,6 +25,9 @@ public class Row {
     public List<String> getColumnList() {
         return columnList;
     }
+    public void addColumn(String value){
+        columnList.add(value);
+    }
 
 
 
