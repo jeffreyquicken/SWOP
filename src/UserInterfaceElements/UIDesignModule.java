@@ -16,7 +16,7 @@ import java.util.List;
 public class UIDesignModule extends UISuperClass {
     private paintModule paintModule;
     private EventHandlers.mouseEventHandler mouseEventHandler;
-    private int xCoStart = 50 ;
+    private int xCoStart = 50;
     private int yCoStart = 50;
     private String currMode = "normal";
     private int[] activeCell;
@@ -28,33 +28,32 @@ public class UIDesignModule extends UISuperClass {
 
     //Constructor that init/creates paintModule and an empty list with tablenames
     //Each UImodule has own paintmodule to save settings.settings (e.g. size, bg, ...)
-    public UIDesignModule(){
+    public UIDesignModule() {
         paintModule = new paintModule();
         mouseEventHandler = new mouseEventHandler();
         invalidInput = false;
     }
 
     //Handles mousevent and returns if UImode need to change
-    public List<String> handleMouseEvent2(int xCo, int yCo,int count, int ID,  dataController data){
+    public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data) {
 
         settings setting;
-        if (data.getSelectedTable() == null){
+        if (data.getSelectedTable() == null) {
             setting = data.getSelectedTable().getDesignSetting();
-        }
-        else{
+        } else {
             setting = data.getSelectedTable().getDesignSetting();
         }
         List<Integer> widthList = setting.getWidthList();
         int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
-                paintModule.getCellHeight(), paintModule.getCellWidth(), data.getSelectedTable().getColumnNames().size(), 1,widthList);
+                paintModule.getCellHeight(), paintModule.getCellWidth(), data.getSelectedTable().getColumnNames().size(), 1, widthList);
 
         //EVENT DOUBLE CLICKS UNDER TABLE
-        int lowestY = (data.getSelectedTable().getColumnNames().size()*paintModule.getCellHeight())+paintModule.getyCoStart();
-        if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, lowestY) ) {
+        int lowestY = (data.getSelectedTable().getColumnNames().size() * paintModule.getCellHeight()) + paintModule.getyCoStart();
+        if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, lowestY)) {
             int numberOfCols = data.getSelectedTable().getColumnNames().size() + 1;
             String newName = "Column" + numberOfCols;
             int i = numberOfCols;
-            while (!textIsValid(newName, data, null)){
+            while (!textIsValid(newName, data, null)) {
                 i++;
                 newName = "Column" + i;
             }
@@ -64,37 +63,54 @@ public class UIDesignModule extends UISuperClass {
 
         //Check if a cell is clicked
 
-        else if (!invalidInput && ID == 500 && currMode!= "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
+        else if (!invalidInput && ID == 500 && currMode != "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
             //check which collumn
-            if (count != 2 && clickedCell[1] == 0 ){
+            if (count != 2 && clickedCell[1] == 0) {
                 activeCell = clickedCell;
                 currMode = "edit";
-                tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]).getName();}
+                tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]).getName();
+            }
+            //type of input
+            else if(clickedCell[1] == 2){
+               String prevType =  data.getSelectedTable().getColumnNames().get(clickedCell[0]).getType();
+               String newType;
+               if (prevType.equals("String")){
+                   newType = "Email";
+               }else if(prevType.equals("Email")){
+                    newType = "Boolean";
+               }else if(prevType.equals("Boolean")){
+                   newType = "Integer";
+               }else{
+                    newType = "String";
+               }
+               data.getSelectedTable().getColumnNames().get(clickedCell[0]).setType(newType);
+            }
             //change checkbox
-            else if(clickedCell[1] == 3){
+            else if (clickedCell[1] == 3) {
                 Boolean prevBool = data.getSelectedTable().getColumnNames().get(clickedCell[0]).getBlanksAllowed();
                 data.getSelectedTable().getColumnNames().get(clickedCell[0]).setBlanksAllowed(!prevBool);
 
-                 //if default is false
-                if(prevBool){
-                 if(data.getSelectedTable().getColumnNames().get(clickedCell[0]).getDefaultV().equals("")){
-                    invalidInput = true;
-                    activeCell = clickedCell;
-                }else{
-                     List<Row> rowList = data.getSelectedTable().getTableRows();
-                     int index = clickedCell[0];
-                     for(Row row: rowList){
-                         if(row.getColumnList().get(index).equals("")){
-                             invalidInput = true;
-                             activeCell = clickedCell;
-                         }
-                     }
-                 }
+                //if default is false
+                if (prevBool) {
+                    if (data.getSelectedTable().getColumnNames().get(clickedCell[0]).getDefaultV().equals("")) {
+                        invalidInput = true;
+                        activeCell = clickedCell;
+                    } else {
+                        List<Row> rowList = data.getSelectedTable().getTableRows();
+                        int index = clickedCell[0];
+                        for (Row row : rowList) {
+                            if (row.getColumnList().get(index).equals("")) {
+                                invalidInput = true;
+                                activeCell = clickedCell;
+                            }
+                        }
+                    }
                 }
-        }}
-            else if(invalidInput && ID ==500 && clickedCell[1] == 3 && clickedCell[0] == activeCell[0]){
-                data.getSelectedTable().getColumnNames().get(clickedCell[0]).setBlanksAllowed(true);
-                invalidInput = false; }
+            }
+        } else if (invalidInput && ID == 500 && clickedCell[1] == 3 && clickedCell[0] == activeCell[0]) {
+            data.getSelectedTable().getColumnNames().get(clickedCell[0]).setBlanksAllowed(true);
+            invalidInput = false;
+        }
 
         List<String> result = new ArrayList<>();
         result.add(currMode);
@@ -117,15 +133,13 @@ public class UIDesignModule extends UISuperClass {
     }
 
 
-
     //Method that takes care of painting the canvas
     //It calls method from paintModules
-    public void paint(Graphics g, dataController data){
+    public void paint(Graphics g, dataController data) {
         settings setting;
-        if (data.getSelectedTable() == null){
+        if (data.getSelectedTable() == null) {
             setting = data.getSelectedTable().getDesignSetting();
-        }
-        else{
+        } else {
             setting = data.getSelectedTable().getDesignSetting();
         }
         List<Integer> widthList = setting.getWidthList();
@@ -137,7 +151,7 @@ public class UIDesignModule extends UISuperClass {
         paintModule.paintDesignView(g, data.getSelectedTable());
 
         //Check mode
-        if (currMode == "edit" ) {
+        if (currMode == "edit") {
             paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0],
                     paintModule.getCellCoords(activeCell[0], activeCell[1])[1], widthList.get(activeCell[1]),
                     paintModule.getCellHeight(), tempText);
@@ -145,14 +159,11 @@ public class UIDesignModule extends UISuperClass {
         //check if there are warnings
         if (invalidInput || currMode == "delete") {
             paintModule.paintBorder(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0],
-                    paintModule.getCellCoords(activeCell[0], activeCell[1])[1],  widthList.get(activeCell[1]),
+                    paintModule.getCellCoords(activeCell[0], activeCell[1])[1], widthList.get(activeCell[1]),
                     paintModule.getCellHeight(), Color.RED);
         } else {
             paintModule.setColor(g, Color.BLACK);
         }
-
-
-
 
 
     }
@@ -166,7 +177,7 @@ public class UIDesignModule extends UISuperClass {
      * this is implemented in the next few methods
      */
     @Override
-    protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){
+    protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data) {
         keyEventHandler eventHandler = new keyEventHandler();
         //EVENT: ASCSII char pressed
         if (eventHandler.isChar(keyCode)) {
@@ -200,16 +211,20 @@ public class UIDesignModule extends UISuperClass {
 
     }
 
-    protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){ List<String> result = new ArrayList<>();
+    protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data) {
+        List<String> result = new ArrayList<>();
         result.add("normal");
         result.add("design");
-        return result;}
-    protected List<String> handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data){
+        return result;
+    }
+
+    protected List<String> handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data) {
         List<String> result = new ArrayList<>();
 
         result.add("normal");
         result.add("design");
-        return result;}
+        return result;
+    }
 
 
 }

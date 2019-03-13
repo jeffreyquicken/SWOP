@@ -9,6 +9,16 @@ public class Column {
     private String type;
     private Boolean blanksAllowed;
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+
+
     /**
      *
      * @param name
