@@ -70,6 +70,11 @@ public class UIDesignModule extends UISuperClass {
                 currMode = "edit";
                 tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]).getName();
             }
+            else if(clickedCell[1] == 1){
+                activeCell = clickedCell;
+                currMode = "edit";
+                tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]).getDefaultV();
+            }
             //type of input
             else if(clickedCell[1] == 2){
                String prevType =  data.getSelectedTable().getColumnNames().get(clickedCell[0]).getType();
@@ -89,13 +94,16 @@ public class UIDesignModule extends UISuperClass {
             else if (clickedCell[1] == 3) {
                 Boolean prevBool = data.getSelectedTable().getColumnNames().get(clickedCell[0]).getBlanksAllowed();
                 data.getSelectedTable().getColumnNames().get(clickedCell[0]).setBlanksAllowed(!prevBool);
-
+                tempText = String.valueOf(!prevBool);
                 //if default is false
                 if (prevBool) {
+
                     if (data.getSelectedTable().getColumnNames().get(clickedCell[0]).getDefaultV().equals("")) {
                         invalidInput = true;
                         activeCell = clickedCell;
-                    } else {
+                    }
+                    else {
+
                         List<Row> rowList = data.getSelectedTable().getTableRows();
                         int index = clickedCell[0];
                         for (Row row : rowList) {
@@ -111,7 +119,9 @@ public class UIDesignModule extends UISuperClass {
             data.getSelectedTable().getColumnNames().get(clickedCell[0]).setBlanksAllowed(true);
             invalidInput = false;
         }
-
+        else{
+            saveText(data);
+        }
         List<String> result = new ArrayList<>();
         result.add(currMode);
         result.add("design");
@@ -119,19 +129,44 @@ public class UIDesignModule extends UISuperClass {
     }
 
     private boolean textIsValid(String text, dataController data, String currName) {
-        for (Column col : data.getSelectedTable().getColumnNames()) {
-            if (col.getName().equals(text)) {
-                if (!col.getName().equals(currName)) {
+        if(activeCell[1] == 0) {
+            for (Column col : data.getSelectedTable().getColumnNames()) {
+                if (col.getName().equals(text)) {
+                    if (!col.getName().equals(currName)) {
+                        return false;
+                    }
+                }
+            }
+            if (text.length() == 0) {
+                return false;
+            }
+            return true;
+        }
+        else if(activeCell[1] == 1){
+            if (!data.getSelectedTable().getColumnNames().get(activeCell[0]).getBlanksAllowed()){
+                if (text.length() == 0){
                     return false;
                 }
             }
-        }
-        if (text.length() == 0) {
-            return false;
+
         }
         return true;
     }
 
+    /**
+     * Saves the edited text to the datacontroller
+     * @param data
+     * datacontroller
+     */
+    private void saveText(dataController data){
+        currMode = "normal";
+        if (activeCell[1] == 1) {
+            data.getSelectedTable().getColumnNames().get(activeCell[0]).setDefaultV(tempText);
+        }
+        else if (activeCell[1] == 0){
+            data.getSelectedTable().getColumnNames().get(activeCell[0]).setName(tempText);
+        }
+    }
 
     //Method that takes care of painting the canvas
     //It calls method from paintModules
@@ -152,9 +187,17 @@ public class UIDesignModule extends UISuperClass {
 
         //Check mode
         if (currMode == "edit") {
-            paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0],
-                    paintModule.getCellCoords(activeCell[0], activeCell[1])[1], widthList.get(activeCell[1]),
-                    paintModule.getCellHeight(), tempText);
+            if (activeCell[1] == 0 || activeCell[1] == 1){
+                paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0],
+                        paintModule.getCellCoords(activeCell[0], activeCell[1])[1], widthList.get(activeCell[1]),
+                        paintModule.getCellHeight(), tempText);
+            }
+            else if(activeCell[1] == 2){
+            }
+            else if (activeCell[1] == 3){
+            }
+
+
         }
         //check if there are warnings
         if (invalidInput || currMode == "delete") {
@@ -199,10 +242,8 @@ public class UIDesignModule extends UISuperClass {
             //empty string, display red border
         }
         //EVENT ENTER pressed
-        else if (eventHandler.isEnter(keyCode)) {
-            currMode = "normal";
-            data.getSelectedTable().getColumnNames().get(activeCell[0]).getName();
-
+        else if (eventHandler.isEnter(keyCode) && !invalidInput) {
+            saveText(data);
         }
         List<String> result = new ArrayList<>();
         result.add(currMode);

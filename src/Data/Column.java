@@ -76,6 +76,9 @@ public class Column {
     public void setBlanksAllowed(Boolean blanksAllowed) {
         this.blanksAllowed = blanksAllowed;
     }
+    public void setDefaultV(String defaultV) {
+        this.defaultV = defaultV;
+    }
 
 
 

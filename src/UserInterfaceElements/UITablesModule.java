@@ -189,7 +189,7 @@ public class UITablesModule extends UISuperClass{
             //empty string, display red border
         }
         //EVENT ENTER pressed
-        else if (eventHandler.isEnter(keyCode)) {
+        else if (eventHandler.isEnter(keyCode) && !invalidInput) {
             currMode = "normal";
             data.getTableList().get(activeCell[0]).setTableName(tempText);
 
