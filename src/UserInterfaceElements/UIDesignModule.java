@@ -88,6 +88,13 @@ public class UIDesignModule extends UISuperClass {
                }else{
                     newType = "String";
                }
+               invalidInput = textIsValid(newType, data, null);
+               if (invalidInput){
+                   currMode = "edit";
+               }
+               else{
+                   currMode = "normal";
+               }
                data.getSelectedTable().getColumnNames().get(clickedCell[0]).setType(newType);
             }
             //change checkbox
@@ -161,6 +168,37 @@ public class UIDesignModule extends UISuperClass {
                     Integer.parseInt(text);
                     return true;
                 } catch (Exception e) {
+                    return false;
+                }
+            }
+
+        }
+        else if (activeCell[1] == 2){
+            String value = data.getSelectedTable().getColumnNames().get(activeCell[0]).getDefaultV();
+            for (Row row : data.getSelectedTable().getTableRows()){
+                String colValue = row.getColumnList().get(activeCell[0]);
+                if (text.equals("String")){
+                    return true;
+                }
+                else if (text.equals("Boolean")){
+                    if (colValue.equals("true") || colValue.equals("false")){
+                        return true;
+                    }
+                    return false;
+                }
+                else if (text.equals("Integer")){
+                    try{
+                        Integer.parseInt(colValue);
+                        return true;
+                    }
+                    catch (Exception e){
+                        return false;
+                    }
+                }
+                else if (text.equals("Email")){
+                    if (colValue.contains("@")){
+                        return true;
+                    }
                     return false;
                 }
             }
