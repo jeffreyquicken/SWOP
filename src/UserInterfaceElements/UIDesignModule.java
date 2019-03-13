@@ -129,7 +129,7 @@ public class UIDesignModule extends UISuperClass {
     }
 
     private boolean textIsValid(String text, dataController data, String currName) {
-        if(activeCell[1] == 0) {
+        if (activeCell[1] == 0) {
             for (Column col : data.getSelectedTable().getColumnNames()) {
                 if (col.getName().equals(text)) {
                     if (!col.getName().equals(currName)) {
@@ -141,10 +141,26 @@ public class UIDesignModule extends UISuperClass {
                 return false;
             }
             return true;
-        }
-        else if(activeCell[1] == 1){
-            if (!data.getSelectedTable().getColumnNames().get(activeCell[0]).getBlanksAllowed()){
-                if (text.length() == 0){
+        } else if (activeCell[1] == 1) {
+            String type = data.getSelectedTable().getColumnNames().get(activeCell[0]).getType();
+            if (type.equals("String")) {
+                if (!data.getSelectedTable().getColumnNames().get(activeCell[0]).getBlanksAllowed()) {
+                    if (text.length() == 0) {
+                        return false;
+                    }
+                }
+                return true;
+            } else if (type.equals("Boolean")) {
+            } else if (type.equals("Email")) {
+                if (text.contains("@")) {
+                    return true;
+                } else return false;
+            } else if (type.equals("Integer")) {
+
+                try {
+                    Integer.parseInt(text);
+                    return true;
+                } catch (Exception e) {
                     return false;
                 }
             }
