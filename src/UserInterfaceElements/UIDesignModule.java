@@ -6,6 +6,7 @@ import Data.Table;
 import Data.dataController;
 import EventHandlers.keyEventHandler;
 import EventHandlers.mouseEventHandler;
+import com.sun.xml.internal.bind.v2.model.core.ID;
 import paintModule.paintModule;
 import settings.settings;
 
@@ -24,6 +25,7 @@ public class UIDesignModule extends UISuperClass {
     private Boolean invalidInput;
     private int draggedColumn;
     private int draggedX;
+
 
 
     //Constructor that init/creates paintModule and an empty list with tablenames
@@ -387,9 +389,23 @@ public class UIDesignModule extends UISuperClass {
     }
 
     protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data) {
+        String nextUIMode = "design";
+        keyEventHandler eventHandler = new keyEventHandler();
+        if (keyCode == 17){
+            ctrlPressed = true;
+        }
+        else if (ctrlPressed) {
+            if (eventHandler.isEnter(keyCode)) {
+                nextUIMode = "row";
+                ctrlPressed = false;
+            }
+        }
+        else{
+            ctrlPressed = false;
+        }
         List<String> result = new ArrayList<>();
         result.add("normal");
-        result.add("design");
+        result.add(nextUIMode);
         return result;
     }
 

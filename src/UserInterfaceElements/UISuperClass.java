@@ -19,6 +19,7 @@ public abstract class UISuperClass {
     protected Boolean invalidInput;
     protected int draggedColumn;
     protected int draggedX;
+    protected boolean ctrlPressed;
 
     //TODO rewrite other UI modules to use superclass methods
     public UISuperClass() {
@@ -39,12 +40,14 @@ public abstract class UISuperClass {
             List<String> result = this.handleKeyEditMode(id, keyCode, keyChar, data);
             currMode = result.get(0);
             nextUIMode = result.get(1);
+            ctrlPressed = false;
 
         }
         else if (currMode == "delete" ){
             List<String> result = this.handleKeyDeleteMode(id, keyCode, keyChar, data);
             currMode = result.get(0);
             nextUIMode = result.get(1);
+            ctrlPressed = false;
         }
         else if (currMode == "normal"){
             List<String> result = this.handleKeyNormalMode(id, keyCode, keyChar, data);
