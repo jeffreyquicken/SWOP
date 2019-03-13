@@ -30,8 +30,8 @@ public class Table {
         setting = new settings(4); //Todo: start with empty tableview
         designSetting = new settings(4);
 
-        Column col1 = new Column("Column1","", "String", true);
-        Column col2= new Column("Column2","", "String", true);
+        Column col1 = new Column("Column1","true", "Boolean", true);
+        Column col2= new Column("Column2","true", "Boolean", true);
         Column col3 = new Column("Column3", "", "String", true);
         Column col4 = new Column("Column4","", "String", true);
         this.addColumn(col1);

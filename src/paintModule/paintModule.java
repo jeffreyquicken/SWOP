@@ -121,6 +121,9 @@ public class paintModule {
             } else if (rowItem.equals("false")) {
                 this.checkBoxFalse(g,startxCo,startyCo, widthList.get(i));
             }
+            else if (rowItem.equals("empty")){
+                checkBoxEmpty(g, startxCo, startyCo, widthList.get(i));
+            }
             else {
                 this.paintRectText(g, startxCo, startyCo, widthList.get(i), cellHeight, rowItem);
             }
@@ -195,9 +198,20 @@ public class paintModule {
         clearCell(g,xCo,yCo,width, cellHeight);//cellheight needs to be given
         g.drawRect(xCo,yCo, width, cellHeight);
         g.drawRect(xCo + width/2 - 5,yCo + 5,8,8);
-        xCo = xCo + width/2 - 5;
-        yCo = yCo + 5;
         g.setColor(Color.BLACK);
     }
+    public void checkBoxEmpty(Graphics g, int xCo, int yCo, int width){
+
+        clearCell(g,xCo,yCo,width, cellHeight);//cellheight needs to be given
+
+        g.drawRect(xCo,yCo, width, cellHeight);
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(xCo + width/2 - 4,yCo  + 6,7,7);
+        g.setColor(Color.BLACK);
+        g.drawRect(xCo + width/2 - 5,yCo + 5,8,8);
+        g.setColor(Color.BLACK);
+
+    }
+
 
 }

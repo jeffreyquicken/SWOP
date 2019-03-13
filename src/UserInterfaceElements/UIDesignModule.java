@@ -67,18 +67,46 @@ public class UIDesignModule extends UISuperClass {
 
         //EVENT CELL CLICKED (VALID INPUT)
         else if (!invalidInput && ID == 500 && currMode != "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
+
             //check which collumn
             if (count != 2 && clickedCell[1] == 0) {
                 activeCell = clickedCell;
                 currMode = "edit";
                 tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]).getName();
             }
+
+
+            //DEFAULTVALUE CLICKED
             else if(clickedCell[1] == 1){
                 activeCell = clickedCell;
                 currMode = "edit";
-                tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]).getDefaultV();
+                if (data.getSelectedTable().getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
+                    tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]).getDefaultV();
+                    if (tempText.equals("true")){
+                        tempText = "false";
+                    }
+                    else if (tempText.equals("false")){
+                        if (data.getSelectedTable().getColumnNames().get(activeCell[0]).getBlanksAllowed()){
+                            tempText = "empty";
+                        }
+                        else{
+                            tempText = "true";
+                        }
+
+                    }
+                    else{
+                        tempText = "true";
+                    }
+
+                }
+                else {
+                    tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]).getDefaultV();
+                }
+                saveText(data);
             }
-            //type of input
+
+
+            //TYPE CLICKED
             else if(clickedCell[1] == 2){
 
                     String prevType = data.getSelectedTable().getColumnNames().get(clickedCell[0]).getType();
@@ -103,7 +131,7 @@ public class UIDesignModule extends UISuperClass {
 
             }
 
-            //change checkbox
+            //CHECKBOX CLICKED
             else if (clickedCell[1] == 3) {
                 Boolean prevBool = data.getSelectedTable().getColumnNames().get(clickedCell[0]).getBlanksAllowed();
                 data.getSelectedTable().getColumnNames().get(clickedCell[0]).setBlanksAllowed(!prevBool);
@@ -286,10 +314,17 @@ public class UIDesignModule extends UISuperClass {
 
         //Check mode
         if (currMode == "edit") {
-            if (activeCell[1] == 0 || activeCell[1] == 1){
+            if (activeCell[1] == 0){
                 paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0],
                         paintModule.getCellCoords(activeCell[0], activeCell[1])[1], widthList.get(activeCell[1]),
                         paintModule.getCellHeight(), tempText);
+            }
+            else if(activeCell[1] == 1){
+                if (!data.getSelectedTable().getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
+                    paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0],
+                            paintModule.getCellCoords(activeCell[0], activeCell[1])[1], widthList.get(activeCell[1]),
+                            paintModule.getCellHeight(), tempText);
+                }
             }
             else if(activeCell[1] == 2){
             }
