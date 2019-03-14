@@ -40,6 +40,9 @@ public class Row {
     public void deleteColumnCell(int index){
         columnList.remove(index);
     }
+    public void setColumnCell(int index, String newvalue){
+        columnList.set(index, newvalue);
+    }
 
 
 

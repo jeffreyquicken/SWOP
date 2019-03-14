@@ -6,6 +6,7 @@ import Data.dataController;
 import EventHandlers.keyEventHandler;
 import EventHandlers.mouseEventHandler;
 import paintModule.paintModule;
+import settings.settings;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class UIRowModule extends UISuperClass{
     private String currMode = "normal";
     private int[] activeCell;
     private String tempText;
-    private Boolean invalidInput;
+    private Boolean invalidInput= false;
     private int draggedColumn;
     private int draggedX;
 
@@ -35,11 +36,51 @@ public class UIRowModule extends UISuperClass{
     public List<String> handleMouseEvent2(int xCo, int yCo,int count, int ID,  dataController data){
         List<Integer> widthList = data.getSelectedTable().getRowSetting().getWidthList();
 
+
+        int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
+                paintModule.getCellHeight(), paintModule.getCellWidth(), data.getSelectedTable().getTableRows().size(), data.getSelectedTable().getColumnNames().size(), widthList);
+        int lowestY = (data.getSelectedTable().getColumnNames().size() * paintModule.getCellHeight()) + paintModule.getyCoStart();
+
+
         //EVENT DOUBLE CLICKS UNDER TABLE
         if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getSelectedTable().getLengthTable() + paintModule.getyCoStart()) ) {
            Row row = new Row(data.getSelectedTable().getColumnNames());
            data.getSelectedTable().addRow(row);
         }
+
+        //EVENT CELL CLICKED (VALID INPUT)
+        else if (!invalidInput && ID == 500 && currMode != "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
+                activeCell = clickedCell;
+                currMode = "edit";
+                if (data.getSelectedTable().getColumnNames().get(activeCell[1]).getType().equals("Boolean")){
+
+                    tempText = data.getSelectedTable().getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]);
+
+                    if (tempText.equals("true")){
+                        tempText = "false";
+                    }
+                    else if (tempText.equals("false")){
+                        if (data.getSelectedTable().getColumnNames().get(activeCell[0]).getBlanksAllowed()){
+                            tempText = "empty";
+                        }
+                        else{
+                            tempText = "true";
+                        }
+
+                    }
+                    else{
+                        tempText = "true";
+                    }
+                    saveText(data);
+
+                }
+                else {
+                    tempText = data.getSelectedTable().getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]);
+                }
+            }
+
+
+
 
         //Check if header is clicked
         if(mouseEventHandler.rightBorderClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(), widthList.size(), paintModule.getCellHeight(), widthList) != -1){
@@ -120,6 +161,15 @@ public class UIRowModule extends UISuperClass{
         //print tables in tabular view
         paintModule.paintTable(g,table, xCoStart,yCoStart);
 
+    }
+    /**
+     * Saves the edited text to the datacontroller
+     * @param data
+     * datacontroller
+     */
+    private void saveText(dataController data){
+        currMode = "normal";
+        data.getSelectedTable().getTableRows().get(activeCell[0]).setColumnCell(activeCell[1], tempText);
     }
 
 }
