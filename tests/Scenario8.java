@@ -18,8 +18,17 @@ public class Scenario8 {
         bestuurder = new Controller();
         dc = bestuurder.getTableDataController();
         bestuurder.setCurrentMode("table");
-        bestuurder.relayMouseEvent(500,115,60,2);
+        bestuurder.relayMouseEvent(500,115,60,2); //Now in row mode
+
+
     }
+
+    //Precondition
+    @Test
+    public void IsInRightMode() {
+        assertEquals("row",bestuurder.getCurrentMode());
+    }
+
     @Test
     public void UserDoubleClicksUnderTableAndAddsNewRow() {
         int l1 = dc.getTableList().get(0).getTableRows().size();

@@ -18,6 +18,12 @@ public class Scenario9 {
         bestuurder.relayMouseEvent(500,115,60,2);
     }
 
+    //Precondition
+    @Test
+    public void IsInRightMode() {
+        assertEquals("row",bestuurder.getCurrentMode());
+    }
+
     @Test
     public void EditRowValueFirstRowFirstColumn() {
         String originalValue = dc.getTableList().get(0).getTableRows().get(0).getColumnList().get(0);
