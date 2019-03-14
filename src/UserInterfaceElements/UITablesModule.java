@@ -48,7 +48,7 @@ public class UITablesModule extends UISuperClass{
                 paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1,widthList);
        //Checks if user is dragging border
             if(currMode == "drag"){
-                if(ID == 506){
+                if(ID == 506 || ID == 502){
                     int delta = xCo - draggedX;
                     int previousWidth = widthList.get(draggedColumn);
                     int newWidth = previousWidth +delta;

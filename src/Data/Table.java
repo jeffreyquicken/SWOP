@@ -40,9 +40,9 @@ public class Table {
         this.addColumn(col3);
         this.addColumn(col4);
 
-        Row row1 = new Row("Row1" + tableName);
-        Row row2 = new Row("Row2" + tableName);
-        Row row3 = new Row("Row3" + tableName);
+        Row row1 = new Row(columnNames);
+        Row row2 = new Row(columnNames);
+        Row row3 = new Row(columnNames);
 
         this.addRow(row1);
         this.addRow(row2);
