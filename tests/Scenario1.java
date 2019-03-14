@@ -22,6 +22,12 @@ public class Scenario1 {
         bestuurder.setCurrentMode("table");
     }
 
+    //Precondition
+    @Test
+    public void IsInRightMode() {
+        assertEquals("table",bestuurder.getCurrentMode());
+    }
+
     @Test
     public void doubleClickUnderTableAddsNewTable() {
 

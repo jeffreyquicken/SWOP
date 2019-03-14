@@ -17,6 +17,12 @@ public class Scenario3 {
         bestuurder.setCurrentMode("table");
     }
 
+    //Precondition
+    @Test
+    public void IsInRightMode() {
+        assertEquals("table",bestuurder.getCurrentMode());
+    }
+
     @Test
     public void UserDeletesFirstTable() {
         int lenOriginal = dc.getTableList().size();

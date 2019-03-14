@@ -21,6 +21,12 @@ public class Scenario2 {
         bestuurder.setCurrentMode("table");
     }
 
+    //Precondition
+    @Test
+    public void IsInRightMode() {
+        assertEquals("table",bestuurder.getCurrentMode());
+    }
+
     @Test
     public void StandardEditTableNameByClickingNextToTable() {
         bestuurder.relayMouseEvent(500,115,60,1);

@@ -16,6 +16,12 @@ public class Scenario4 {
         bestuurder.setCurrentMode("table");
     }
 
+    //Precondition
+    @Test
+    public void IsInRightMode() {
+        assertEquals("table",bestuurder.getCurrentMode());
+    }
+
     @Test
     public void DoubleClickingTableNameGoesToTableRowsMode() {
         bestuurder.relayMouseEvent(500,115,60,2);
