@@ -106,12 +106,12 @@ public class UIDesignModule extends UISuperClass {
                     else{
                         tempText = "true";
                     }
+                    saveText(data);
 
                 }
                 else {
                     tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]).getDefaultV();
                 }
-                saveText(data);
             }
 
 
@@ -140,7 +140,7 @@ public class UIDesignModule extends UISuperClass {
 
             }
 
-            //CHECKBOX CLICKED
+            //CHECKBOX BLANKS CLICKED
             else if (clickedCell[1] == 3) {
                 Boolean prevBool = data.getSelectedTable().getColumnNames().get(clickedCell[0]).getBlanksAllowed();
                 data.getSelectedTable().getColumnNames().get(clickedCell[0]).setBlanksAllowed(!prevBool);
@@ -205,7 +205,7 @@ public class UIDesignModule extends UISuperClass {
         }
 
         //EVENT EXIT EDIT MODE
-        else if(currMode == "edit" && (clickedCell[0] == -1 || clickedCell[1] == -1)){
+        else if(!invalidInput && currMode == "edit" && (clickedCell[0] == -1 || clickedCell[1] == -1)){
             saveText(data);
             currMode = "normal";
         }
@@ -403,7 +403,11 @@ public class UIDesignModule extends UISuperClass {
     protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data) {
         String nextUIMode = "design";
         keyEventHandler eventHandler = new keyEventHandler();
-        if(keyCode == 27){ nextUIMode = "table";}
+        //ESCAPE
+        if(keyCode == 27){
+            nextUIMode = "table";
+        }
+
         else if (keyCode == 17){
             ctrlPressed = true;
         }
