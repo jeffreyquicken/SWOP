@@ -62,7 +62,7 @@ public class paintModule {
     public void paintTable(Graphics g, Table table, int startXco, int startYco){
         int headerXco = startXco;
         int i =0;
-        settings setting = table.getSetting();
+        settings setting = table.getRowSetting();
         List<Integer> widthList = setting.getWidthList();
         for(Column column: table.getColumnNames()){
             this.paintRectText(g,headerXco, startYco - cellHeight, widthList.get(i),cellHeight,column.getName());
@@ -92,7 +92,7 @@ public class paintModule {
     public void paintDesignView(Graphics g, Table table){
         int headerXco = getxCoStart();
         int headerYco = getyCoStart() - cellHeight;
-        settings setting = table.getSetting();
+        settings setting = table.getDesignSetting();
         List<Integer> widthList = setting.getWidthList();
         String[] names = {"Name", "Default value", "Type", "Blank?"};
         for(int i = 0; i <4; i++){
@@ -109,7 +109,7 @@ public class paintModule {
 
     }
 
-    //Method that draws list of rownelements in a row
+    //Method that draws list of rowelements in a row
     //For every element in its list it calls the printRectText method
     //TODO: should accept list with Row elements (instead of strings) and iterate over that list and get row elements
     public void paintRow(Graphics g, List<String> rowList, int startxCo, int startyCo, settings setting){

@@ -2,12 +2,9 @@ package UserInterfaceElements;
 
 import Data.Table;
 import Data.dataController;
-import paintModule.paintModule;
 import EventHandlers.*;
 import settings.settings;
-import sun.font.TrueTypeFont;
 
-import java.util.*;
 import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -44,7 +41,7 @@ public class UITablesModule extends UISuperClass{
             setting = data.getSetting();
         }
         else{
-            setting = data.getSelectedTable().getSetting();
+            setting = data.getSelectedTable().getRowSetting();
         }
         List<Integer> widthList = setting.getWidthList();
         int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
@@ -115,7 +112,7 @@ public class UITablesModule extends UISuperClass{
             setting = data.getSetting();
         }
         else{
-            setting = data.getSelectedTable().getSetting();
+            setting = data.getSelectedTable().getRowSetting();
         }
 
         List<Integer> widthList = setting.getWidthList();

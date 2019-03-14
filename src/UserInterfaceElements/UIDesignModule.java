@@ -20,7 +20,7 @@ public class UIDesignModule extends UISuperClass {
     private int xCoStart = 50;
     private int yCoStart = 50;
     private String currMode = "normal";
-    private int[] activeCell;
+    private int[] activeCell = {-1,-1};
     private String tempText;
     private Boolean invalidInput;
     private int draggedColumn;
@@ -48,11 +48,18 @@ public class UIDesignModule extends UISuperClass {
         List<Integer> widthList = setting.getWidthList();
         int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
                 paintModule.getCellHeight(), paintModule.getCellWidth(), data.getSelectedTable().getColumnNames().size(), 1, widthList);
-
-
-        //EVENT DOUBLE CLICKS UNDER TABLE
         int lowestY = (data.getSelectedTable().getColumnNames().size() * paintModule.getCellHeight()) + paintModule.getyCoStart();
-        if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, lowestY)) {
+
+        //check if leftmargin is clicked
+        if(clickedCell[1] == 0 && currMode != "edit" && mouseEventHandler.marginLeftClicked(xCo,yCo,paintModule.getxCoStart(),
+                paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(),
+                data.getSelectedTable().getColumnNames().size(), 1, paintModule.getCellLeftMargin(), widthList) != null) {
+            currMode = "delete";
+            activeCell = clickedCell;
+        }
+        //EVENT DOUBLE CLICKS UNDER TABLE
+
+        else if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, lowestY)) {
             int numberOfCols = data.getSelectedTable().getColumnNames().size() + 1;
             String newName = "Column" + numberOfCols;
             int i = numberOfCols;
@@ -198,8 +205,9 @@ public class UIDesignModule extends UISuperClass {
         }
 
         //EVENT EXIT EDIT MODE
-        else if(clickedCell[0] == -1 || clickedCell[1] == -1){
+        else if(currMode == "edit" && (clickedCell[0] == -1 || clickedCell[1] == -1)){
             saveText(data);
+            currMode = "normal";
         }
 
 
@@ -210,19 +218,9 @@ public class UIDesignModule extends UISuperClass {
     }
 
     private boolean textIsValid(String text, dataController data, String currName) {
-        if (activeCell[1] == 0) {
-            for (Column col : data.getSelectedTable().getColumnNames()) {
-                if (col.getName().equals(text)) {
-                    if (!col.getName().equals(currName)) {
-                        return false;
-                    }
-                }
-            }
-            if (text.length() == 0) {
-                return false;
-            }
-            return true;
-        } else if (activeCell[1] == 1) {
+
+
+        if (activeCell[1] == 1) {
             String type = data.getSelectedTable().getColumnNames().get(activeCell[0]).getType();
             if (type.equals("String")) {
                 if (!data.getSelectedTable().getColumnNames().get(activeCell[0]).getBlanksAllowed()) {
@@ -278,6 +276,19 @@ public class UIDesignModule extends UISuperClass {
                 }
             }
 
+        }
+        else {
+            for (Column col : data.getSelectedTable().getColumnNames()) {
+                if (col.getName().equals(text)) {
+                    if (!col.getName().equals(currName)) {
+                        return false;
+                    }
+                }
+            }
+            if (text.length() == 0) {
+                return false;
+            }
+            return true;
         }
         return true;
     }
@@ -380,6 +391,7 @@ public class UIDesignModule extends UISuperClass {
         //EVENT ENTER pressed
         else if (eventHandler.isEnter(keyCode) && !invalidInput) {
             saveText(data);
+            currMode ="normal";
         }
         List<String> result = new ArrayList<>();
         result.add(currMode);
@@ -411,9 +423,20 @@ public class UIDesignModule extends UISuperClass {
     }
 
     protected List<String> handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data) {
+       keyEventHandler eventHandler = new keyEventHandler();
+        //DEL key pressed
+        if(eventHandler.isDelete(keyCode) || keyChar == 'd'){
+            List<Row> rowList = data.getSelectedTable().getTableRows();
+            for (Row row: rowList){
+                row.deleteColumnCell(activeCell[0]);
+            }
+            data.getSelectedTable().getRowSetting().removeFromWidthList(activeCell[0]);
+            Column col = data.getSelectedTable().getColumnNames().get(activeCell[0]);
+            data.getSelectedTable().deleteColumn(col);
+            currMode = "normal";
+        }
         List<String> result = new ArrayList<>();
-
-        result.add("normal");
+        result.add(currMode);
         result.add("design");
         return result;
     }

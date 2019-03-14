@@ -9,8 +9,9 @@ public class Table {
     private String tableName;
     private List<Row> tableRows;
     private List<Column> columnNames;
-    private settings setting;
+    private settings rowSetting;
     private settings designSetting;
+
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
@@ -27,7 +28,7 @@ public class Table {
         tableRows = new ArrayList<Row>();
         columnNames = new ArrayList<Column>();
         tableName = name;
-        setting = new settings(4); //Todo: start with empty tableview
+        rowSetting = new settings(4); //Todo: start with empty tableview
         designSetting = new settings(4);
 
         Column col1 = new Column("Column1","true", "Boolean", true);
@@ -52,8 +53,8 @@ public class Table {
      *
      * @return
      */
-    public settings getSetting() {
-        return setting;
+    public settings getRowSetting() {
+        return rowSetting;
     }
 
     /**
@@ -67,17 +68,17 @@ public class Table {
         for(Row row: tableRows){
             row.addColumn(column.getDefaultV());
         }
-
-
-
-
+        int defaultWidth = rowSetting.getDefaultWidth();
+        rowSetting.getWidthList().add(defaultWidth);
     }
+
+
 
     /**
      * Deletes a column
      * @param column
      */
-    public void deleteCollumn(Column column){
+    public void deleteColumn(Column column){
         columnNames.remove(column);
     }
 

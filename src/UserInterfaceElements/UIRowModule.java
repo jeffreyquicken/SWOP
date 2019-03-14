@@ -1,13 +1,11 @@
 package UserInterfaceElements;
 
-import Data.Column;
 import Data.Row;
 import Data.Table;
 import Data.dataController;
 import EventHandlers.keyEventHandler;
 import EventHandlers.mouseEventHandler;
 import paintModule.paintModule;
-import settings.settings;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -35,7 +33,7 @@ public class UIRowModule extends UISuperClass{
 
     //Handles mousevent and returns if UImode need to change
     public List<String> handleMouseEvent2(int xCo, int yCo,int count, int ID,  dataController data){
-        List<Integer> widthList = data.getSelectedTable().getSetting().getWidthList();
+        List<Integer> widthList = data.getSelectedTable().getRowSetting().getWidthList();
 
         //EVENT DOUBLE CLICKS UNDER TABLE
         if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getSelectedTable().getLengthTable() + paintModule.getyCoStart()) ) {
