@@ -14,11 +14,9 @@ public class settings {
 
     private int defaultWidth = 100;
 
-    public settings(int numberOfCols){
+    public settings(){
         widthList = new ArrayList<>();
-        for ( int i = 0; i < numberOfCols; i++){
-            widthList.add(defaultWidth);
-        }
+
     }
 
     public List<Integer> getWidthList() {

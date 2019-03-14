@@ -28,8 +28,14 @@ public class Table {
         tableRows = new ArrayList<Row>();
         columnNames = new ArrayList<Column>();
         tableName = name;
-        rowSetting = new settings(4); //Todo: start with empty tableview
-        designSetting = new settings(4);
+        rowSetting = new settings(); //Todo: start with empty tableview
+        designSetting = new settings();
+        for(int i = 0; i< 5;i++ ){
+            designSetting.getWidthList().add(designSetting.getDefaultWidth());
+        }
+
+
+
 
         Column col1 = new Column("Column1","true", "Boolean", true);
         Column col2= new Column("Column2","true", "Boolean", true);

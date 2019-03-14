@@ -76,7 +76,7 @@ public class Controller {
             this.getTablemodule().paint(g, tableDataController);
         }
         else if (this.getCurrentMode() == "row"){
-            this.getRowmodule().paint(g, tableDataController.getSelectedTable());
+            this.getRowmodule().paint(g, tableDataController.getSelectedTable(), tableDataController);
         }
         else if (this.getCurrentMode() == "design"){
             this.getDesignModule().paint(g, tableDataController);
