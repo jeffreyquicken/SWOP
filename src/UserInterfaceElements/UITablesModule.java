@@ -41,7 +41,7 @@ public class UITablesModule extends UISuperClass{
             setting = data.getSetting();
         }
         else{
-            setting = data.getSelectedTable().getRowSetting();
+            setting = data.getSetting();
         }
         List<Integer> widthList = setting.getWidthList();
         int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
