@@ -37,7 +37,8 @@ public class UIRowModule extends UISuperClass{
 
         //EVENT DOUBLE CLICKS UNDER TABLE
         if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getSelectedTable().getLengthTable() + paintModule.getyCoStart()) ) {
-            data.getSelectedTable().addRow(new Row("Test"));
+           Row row = new Row(data.getSelectedTable().getColumnNames());
+           data.getSelectedTable().addRow(row);
         }
 
         //Check if header is clicked
