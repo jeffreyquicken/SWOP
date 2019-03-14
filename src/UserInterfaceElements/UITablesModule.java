@@ -108,12 +108,8 @@ public class UITablesModule extends UISuperClass{
     //It calls method from paintModule
     public void paint(Graphics g, dataController data) {
         settings setting;
-        if (data.getSelectedTable() == null){
-            setting = data.getSetting();
-        }
-        else{
-            setting = data.getSelectedTable().getRowSetting();
-        }
+        setting = data.getSetting();
+
 
         List<Integer> widthList = setting.getWidthList();
         //Creates title
@@ -227,11 +223,11 @@ public class UITablesModule extends UISuperClass{
     
     @Override
     protected void handleNonModeDependantKeys (int id, int keyCode, char keyChar, dataController data){
-    	keyEventHandler eventHandler = new keyEventHandler();
-    	if (eventHandler.isEscape(keyCode)) {
-            currMode = "normal";
-            tempText = "default_text";
-        }
+    	//keyEventHandler eventHandler = new keyEventHandler();
+    	//if (eventHandler.isEscape(keyCode)) {
+         //   currMode = "normal";
+         //   tempText = "default_text";
+       // }
     }
 
 }

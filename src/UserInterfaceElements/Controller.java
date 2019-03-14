@@ -53,7 +53,7 @@ public class Controller {
 
     //Handle keyevent
     public void relayKeyEvent(int id, int keyCode, char keyChar){
-        if (this.getCurrentMode() == "table"){
+        if (this.getCurrentMode() == "table" ){
             //if mode will be switched mouseevent will tell
             this.setCurrentMode(this.getTablemodule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
         }else if (this.getCurrentMode() == "row"){

@@ -53,8 +53,14 @@ public abstract class UISuperClass {
             List<String> result = this.handleKeyNormalMode(id, keyCode, keyChar, data);
             currMode = result.get(0);
             nextUIMode = result.get(1);
+
         }
-        this.handleNonModeDependantKeys(id, keyCode, keyChar, data);
+        else if (currMode == "drag"){
+            List<String> result = this.handleKeyNormalMode(id, keyCode, keyChar, data);
+            currMode = result.get(0);
+            nextUIMode = result.get(1);
+        }
+        //this.handleNonModeDependantKeys(id, keyCode, keyChar, data);
         return nextUIMode;
     }
 

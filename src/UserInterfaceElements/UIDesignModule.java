@@ -114,7 +114,6 @@ public class UIDesignModule extends UISuperClass {
                 }
             }
 
-
             //TYPE CLICKED
             else if(clickedCell[1] == 2){
 
@@ -166,6 +165,27 @@ public class UIDesignModule extends UISuperClass {
                 }
             }
 
+        }
+        //Check if header is clicked
+        if (mouseEventHandler.rightBorderClicked(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), widthList.size(), paintModule.getCellHeight(), widthList) != -1) {
+            System.out.println("RIGHT BORDER CLICKED");
+            currMode = "drag";
+            draggedColumn = mouseEventHandler.rightBorderClicked(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), widthList.size(), paintModule.getCellHeight(), widthList);
+            draggedX = xCo;
+            //Checks if user is dragging border
+        } else if (currMode == "drag") {
+            if (ID == 506 ||  ID == 502) {
+                int delta = xCo - draggedX;
+                int previousWidth = widthList.get(draggedColumn);
+                int newWidth = previousWidth + delta;
+                int sum = widthList.stream().mapToInt(Integer::intValue).sum();
+                if ((newWidth >= paintModule.getMinCellWidth()) && (sum + delta < 590 - paintModule.getxCoStart())) {
+                    widthList.set(draggedColumn, newWidth);
+                    draggedX = xCo;
+                }
+            } else {
+                currMode = "normal";
+            }
         }
 
 

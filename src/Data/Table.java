@@ -23,6 +23,9 @@ public class Table {
     public void addRow(Row row){
         tableRows.add(row);
     }
+    public void deleteRow(Row row){
+        tableRows.remove(row);
+    }
 
     public Table(String name){
         tableRows = new ArrayList<Row>();
@@ -30,7 +33,7 @@ public class Table {
         tableName = name;
         rowSetting = new settings(); //Todo: start with empty tableview
         designSetting = new settings();
-        for(int i = 0; i< 5;i++ ){
+        for(int i = 0; i< 4;i++ ){
             designSetting.getWidthList().add(designSetting.getDefaultWidth());
         }
 

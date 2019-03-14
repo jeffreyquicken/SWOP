@@ -42,7 +42,13 @@ public class UIRowModule extends UISuperClass {
                 paintModule.getCellHeight(), paintModule.getCellWidth(), data.getSelectedTable().getTableRows().size(), data.getSelectedTable().getColumnNames().size(), widthList);
         int lowestY = (data.getSelectedTable().getColumnNames().size() * paintModule.getCellHeight()) + paintModule.getyCoStart();
 
-
+        //check if leftmargin is clicked
+        if(clickedCell[1] == 0 && currMode != "edit" && mouseEventHandler.marginLeftClicked(xCo,yCo,paintModule.getxCoStart(),
+                paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(),
+                data.getSelectedTable().getTableRows().size(), 1, paintModule.getCellLeftMargin(), widthList) != null) {
+            currMode = "delete";
+            activeCell = clickedCell;
+        }
         //EVENT DOUBLE CLICKS UNDER TABLE
         if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getSelectedTable().getLengthTable() + paintModule.getyCoStart())) {
             Row row = new Row(data.getSelectedTable().getColumnNames());
@@ -60,7 +66,7 @@ public class UIRowModule extends UISuperClass {
                 if (tempText.equals("true")) {
                     tempText = "false";
                 } else if (tempText.equals("false")) {
-                    if (data.getSelectedTable().getColumnNames().get(activeCell[0]).getBlanksAllowed()) {
+                    if (data.getSelectedTable().getColumnNames().get(activeCell[1]).getBlanksAllowed()) {
                         tempText = "empty";
                     } else {
                         tempText = "true";
@@ -171,9 +177,19 @@ public class UIRowModule extends UISuperClass {
 
     protected List<String> handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data) {
 
+        keyEventHandler eventHandler = new keyEventHandler();
+        //DEL key pressed
+        if(eventHandler.isDelete(keyCode) || keyChar == 'd'){
+
+
+
+            Row row = data.getSelectedTable().getTableRows().get(activeCell[0]);
+            data.getSelectedTable().deleteRow(row);
+            currMode = "normal";
+        }
         List<String> result = new ArrayList<>();
         result.add(currMode);
-        result.add("table");
+        result.add("row");
         return result;
     }
 
@@ -194,6 +210,15 @@ public class UIRowModule extends UISuperClass {
             paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0],
                     paintModule.getCellCoords(activeCell[0], activeCell[1])[1], widthList.get(activeCell[1]),
                     paintModule.getCellHeight(), tempText);
+        }
+
+        //check if there are warnings
+        if (invalidInput || currMode == "delete") {
+            paintModule.paintBorder(g, paintModule.getCellCoords(activeCell[0], activeCell[1])[0],
+                    paintModule.getCellCoords(activeCell[0], activeCell[1])[1], widthList.get(activeCell[1]),
+                    paintModule.getCellHeight(), Color.RED);
+        } else {
+            paintModule.setColor(g, Color.BLACK);
         }
 
     }
