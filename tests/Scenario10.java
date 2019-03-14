@@ -19,6 +19,12 @@ public class Scenario10 {
         bestuurder.relayMouseEvent(500,115,60,2);
     }
 
+    //Precondition
+    @Test
+    public void IsInRightMode() {
+        assertEquals("row",bestuurder.getCurrentMode());
+    }
+
     @Test
     public void UserDeletesFirstRow() {
         int originalSize = dc.getTableList().get(0).getTableRows().size();
