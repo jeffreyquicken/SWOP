@@ -65,7 +65,7 @@ public class UIRowModule extends UISuperClass{
         String nextUImode = "row";
         List<String> result = new ArrayList<>();
         result.add(currMode);
-        result.add("table");
+        result.add("row");
         return result;
     }
 
