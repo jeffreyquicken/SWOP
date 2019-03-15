@@ -18,10 +18,12 @@ public class Column {
     }
 
 
-
     /**
-     *
-     * @param name
+     * Constructor that initiates a column object with a name, default value, type and blank allowance
+     * @param name  the name of the column
+     * @param defaultValue  the default value of all cells in this column
+     * @param Type  the type of values of all cells in this column (string, boolean, integer or email)
+     * @param blanks    whether blanks are allowed in the cells of this column
      */
     public Column(String name, String defaultValue, String Type, Boolean blanks){
         this.name = name;
@@ -32,7 +34,7 @@ public class Column {
 
     /**
      * Method to get basic column info
-     * @return list with name,deafault value, type and if blanks are allowed
+     * @return list with name,default value, type and if blanks are allowed
      */
     public List<String>  getInfo(){
         List<String> info = new ArrayList<>();
