@@ -184,6 +184,14 @@ public class UITablesModule extends UISuperClass{
             data.getTableList().get(activeCell[0]).setTableName(tempText);
 
         }
+        //ESCAPE
+        if(keyCode == 27){
+        	if (eventHandler.isEscape(keyCode)) {
+                currMode = "normal";
+                tempText = "default_text";
+        		}        
+        	}
+
         List<String> result = new ArrayList<>();
         result.add(currMode);
         result.add("table");
@@ -220,11 +228,5 @@ public class UITablesModule extends UISuperClass{
     
     @Override
     protected void handleNonModeDependantKeys (int id, int keyCode, char keyChar, dataController data){
-    	//keyEventHandler eventHandler = new keyEventHandler();
-    	//if (eventHandler.isEscape(keyCode)) {
-            //currMode = "normal";
-            //tempText = "default_text";
-       //}
     }
-
 }
