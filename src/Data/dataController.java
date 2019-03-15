@@ -39,6 +39,12 @@ public class dataController {
     public void deleteTable(Table table){
         tableList.remove(table);
     }
+
+    /**
+     * Method that returns the lowest Y coordinate based on how many tables there are
+     * and the set height of 20 for these tables
+     * @return the lowes Y coordinate
+     */
     public int getLowestY(){
         int lowestY = 50;
         try{

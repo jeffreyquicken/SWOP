@@ -27,6 +27,10 @@ public class Table {
         tableRows.remove(row);
     }
 
+    /**
+     * Initiates a table object with a given name and creates th right settings objects for that table
+     * @param name  the name of the table
+     */
     public Table(String name){
         tableRows = new ArrayList<Row>();
         columnNames = new ArrayList<Column>();
