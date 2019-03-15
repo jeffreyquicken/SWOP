@@ -18,7 +18,16 @@ public class UITablesModule extends UISuperClass{
         super();
     }
 
-    //Handles mousevent and returns if UImode need to change
+    /**
+     * Eventhandler that takes care of a mouseclick, and returns the new state of the program
+     *
+     * @param xCo x-coordinate of click
+     * @param yCo y-coordinate of click
+     * @param count number of  clicked
+     * @param ID Id of mouseclick
+     * @param data datacontroller to make changes to the data
+     * @return returns a list with the nextUIMode and the state of the UI
+     */
     public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data) {
         String nextUImode = "table";
 
@@ -103,6 +112,13 @@ public class UITablesModule extends UISuperClass{
 
     //Method that takes care of painting the canvas
     //It calls method from paintModule
+
+    /**
+     * Method that paints the correct view on the canvas
+     *
+     * @param g graphics object
+     * @param data datacontroller
+     */
     public void paint(Graphics g, dataController data) {
         settings setting;
         setting = data.getSetting();
@@ -133,7 +149,15 @@ public class UITablesModule extends UISuperClass{
         //paintModule.paintBorder(g,paintModule.getxCoStart(), paintModule.getyCoStart(), 80, 20, "red");
     }
 
-    //method that checks if a string is valid as a table name
+
+    /**
+     * Checks if updated text is valid
+     *
+     * @param text text to be validated
+     * @param data datacontroller
+     * @param currName old name
+     * @return Wheter the name of the table is valid (hence unique and non-empty)
+     */
     public boolean textIsValid(String text, dataController data, String currName) {
         for (Table table : data.getTableList()) {
             if (table.getTableName().equals(text)) {
@@ -155,6 +179,15 @@ public class UITablesModule extends UISuperClass{
      * the next methods will be called using the superclass method handleKeyEvent
      * the method in the superclass works as a flow controller but doesn't have the functionality needed for the specific UI modules
      * this is implemented in the next few methods
+     */
+    /**
+     * Method that handles key event when the UI is in edit-mode and returns state of program
+     *
+     * @param id id of key pressed
+     * @param keyCode keycde of key pressed
+     * @param keyChar keychar of key pressed
+     * @param data datacontroller
+     * @return returns a list with the nextUImode and the current mode of the UI
      */
     @Override
     protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){
@@ -199,7 +232,16 @@ public class UITablesModule extends UISuperClass{
 
 
     }
-    
+
+    /**
+     * Method that handles key event when the UI is in normal-mode and returns state of program
+     *
+     * @param id id of key pressed
+     * @param keyCode keycde of key pressed
+     * @param keyChar keychar of key pressed
+     * @param data datacontroller
+     * @return returns a list with the nextUImode and the current mode of the UI
+     */
     @Override
     protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){
         List<String> result = new ArrayList<>();
@@ -209,7 +251,16 @@ public class UITablesModule extends UISuperClass{
 
 
     }
-    
+
+    /**
+     * Method that handles key event when the UI is in delete-mode and returns state of program
+     *
+     * @param id id of key pressed
+     * @param keyCode keycde of key pressed
+     * @param keyChar keychar of key pressed
+     * @param data datacontroller
+     * @return returns a list with the nextUImode and the current mode of the UI
+     */
     @Override
     protected List<String> handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data){
     	keyEventHandler eventHandler = new keyEventHandler();
@@ -225,7 +276,7 @@ public class UITablesModule extends UISuperClass{
         result.add("table");
         return result;
     }
-    
+
     @Override
     protected void handleNonModeDependantKeys (int id, int keyCode, char keyChar, dataController data){
     }

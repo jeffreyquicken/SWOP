@@ -27,9 +27,9 @@ public class UIDesignModule extends UISuperClass {
     private int draggedX;
 
 
-
-    //Constructor that init/creates paintModule and an empty list with tablenames
-    //Each UImodule has own paintmodule to save settings.settings (e.g. size, bg, ...)
+    /**
+     * Creates/init a paintmodule and a mouseventhandler
+     */
     public UIDesignModule() {
         paintModule = new paintModule();
         mouseEventHandler = new mouseEventHandler();
@@ -37,6 +37,17 @@ public class UIDesignModule extends UISuperClass {
     }
 
     //Handles mousevent and returns if UImode need to change
+
+    /**
+     * Eventhandler that takes care of a mouseclick, and returns the new state of the program
+     *
+     * @param xCo x-coordinate of click
+     * @param yCo y-coordinate of click
+     * @param count number of  clicked
+     * @param ID Id of mouseclick
+     * @param data datacontroller to make changes to the data
+     * @return returns a list with the nextUIMode and the state of the UI
+     */
     public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data) {
 
         settings setting;
@@ -238,6 +249,14 @@ public class UIDesignModule extends UISuperClass {
         return result;
     }
 
+    /**
+     * Checks if updated text is valid according to the type of it's cell
+     *
+     * @param text text to be validated
+     * @param data datacontroller
+     * @param currName old name
+     * @return Wheter the text is in the correct fromat according to the type of it's cell
+     */
     private boolean textIsValid(String text, dataController data, String currName) {
 
 
@@ -316,8 +335,8 @@ public class UIDesignModule extends UISuperClass {
 
     /**
      * Saves the edited text to the datacontroller
-     * @param data
-     * datacontroller
+     *
+     * @param data datacontroller to make changes to the data
      */
     private void saveText(dataController data){
         currMode = "normal";
@@ -331,6 +350,13 @@ public class UIDesignModule extends UISuperClass {
 
     //Method that takes care of painting the canvas
     //It calls method from paintModules
+
+    /**
+     * Method that paints the correct view on the canvas
+     *
+     * @param g graphics object
+     * @param data datacontroller
+     */
     public void paint(Graphics g, dataController data) {
         settings setting;
         if (data.getSelectedTable() == null) {
@@ -387,6 +413,16 @@ public class UIDesignModule extends UISuperClass {
      * the method in the superclass works as a flow controller but doesn't have the functionality needed for the specific UI modules
      * this is implemented in the next few methods
      */
+
+    /**
+     * Method that handles key event when the UI is in edit-mode and returns state of program
+     *
+     * @param id id of key pressed
+     * @param keyCode keycde of key pressed
+     * @param keyChar keychar of key pressed
+     * @param data datacontroller
+     * @return returns a list with the nextUImode and the current mode of the UI
+     */
     @Override
     protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data) {
         keyEventHandler eventHandler = new keyEventHandler();
@@ -421,6 +457,15 @@ public class UIDesignModule extends UISuperClass {
 
     }
 
+    /**
+     * Method that handles key event when the UI is in normal-mode and returns state of program
+     *
+     * @param id id of key pressed
+     * @param keyCode keycde of key pressed
+     * @param keyChar keychar of key pressed
+     * @param data datacontroller
+     * @return returns a list with the nextUImode and the current mode of the UI
+     */
     protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data) {
         String nextUIMode = "design";
         keyEventHandler eventHandler = new keyEventHandler();
@@ -447,6 +492,15 @@ public class UIDesignModule extends UISuperClass {
         return result;
     }
 
+    /**
+     * Method that handles key event when the UI is in delete-mode and returns state of program
+     *
+     * @param id id of key pressed
+     * @param keyCode keycde of key pressed
+     * @param keyChar keychar of key pressed
+     * @param data datacontroller
+     * @return returns a list with the nextUImode and the current mode of the UI
+     */
     protected List<String> handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data) {
        keyEventHandler eventHandler = new keyEventHandler();
         //DEL key pressed
