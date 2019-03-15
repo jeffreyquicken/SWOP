@@ -209,13 +209,12 @@ public class paintModule {
      * @param y
      * @return
      */
-    public int[] getCellCoords(int x,int y){
-        int xCoord = this.getxCoStart() + y*this.getCellWidth();
-
-
+    public int[] getCellCoords(int x,int y, List<Integer> widthList){
+        int xCoord = this.getxCoStart();
+        for(int i= 0; i < y; i++){
+            xCoord += widthList.get(i);
+        }
         int yCoord = this.getyCoStart() + x*this.getCellHeight();
-
-
         int[] result = {xCoord,yCoord};
         return result;
     }
