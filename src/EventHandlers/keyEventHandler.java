@@ -8,9 +8,9 @@ import java.util.List;
 public class keyEventHandler {
 
     /**
-     * Check if keycode is a normal char
-     * @param keyCode
-     * @return
+     * Check if keycode is a normal character
+     * @param keyCode   the keycode to be checked
+     * @return whether the keycode is a normal character
      */
     public Boolean isChar(int keyCode){
         return (keyCode > 31 && keyCode < 123);
@@ -18,8 +18,8 @@ public class keyEventHandler {
 
     /**
      * Check if keycode is delete
-     * @param keyCode
-     * @return
+     * @param keyCode   the keycode to be checked
+     * @return  whether the keycode is delete
      */
     public Boolean isDelete(int keyCode){
         return (keyCode == 127);
@@ -27,8 +27,8 @@ public class keyEventHandler {
 
     /**
      * Checks of keycode is a Backspace
-     * @param keyCode
-     * @return
+     * @param keyCode   the keycode to be checked
+     * @return  whether the keycode is a backspace
      */
     public boolean isBackspace (int keyCode){
         return (keyCode == 8);
@@ -36,8 +36,8 @@ public class keyEventHandler {
 
     /**
      * Cheks if keycode is enter
-     * @param keyCode
-     * @return
+     * @param keyCode   the keycode to be checked
+     * @return  whether the keycode is enter
      */
     public boolean isEnter(int keyCode){
         return(keyCode == 10);
@@ -45,8 +45,8 @@ public class keyEventHandler {
 
     /**
      * Checks is keycode is escape
-     * @param keyCode
-     * @return
+     * @param keyCode   the keycode to be checked
+     * @return  whether the keycode is escape
      */
     public boolean isEscape(int keyCode){
         return(keyCode == 27);
