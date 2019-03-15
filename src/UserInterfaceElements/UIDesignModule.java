@@ -167,7 +167,8 @@ public class UIDesignModule extends UISuperClass {
 
         }
         //Check if header is clicked
-        if (mouseEventHandler.rightBorderClicked(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), widthList.size(), paintModule.getCellHeight(), widthList) != -1) {
+        //ADDED ELSE : 15 Mar 2019
+       else  if (mouseEventHandler.rightBorderClicked(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), widthList.size(), paintModule.getCellHeight(), widthList) != -1) {
             System.out.println("RIGHT BORDER CLICKED");
             currMode = "drag";
             draggedColumn = mouseEventHandler.rightBorderClicked(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), widthList.size(), paintModule.getCellHeight(), widthList);
