@@ -196,6 +196,12 @@ public class UIRowModule extends UISuperClass {
 
     //Method that takes care of painting the canvas
     //It calls method from paintModule
+    /**
+     * Method that paints the correct view on the canvas
+     *
+     * @param g graphics object
+     * @param data datacontroller
+     */
     public void paint(Graphics g, Table table, dataController data) {
         List<Integer> widthList = data.getSelectedTable().getRowSetting().getWidthList();
 
