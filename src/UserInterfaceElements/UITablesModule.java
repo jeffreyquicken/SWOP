@@ -225,9 +225,9 @@ public class UITablesModule extends UISuperClass{
     protected void handleNonModeDependantKeys (int id, int keyCode, char keyChar, dataController data){
     	//keyEventHandler eventHandler = new keyEventHandler();
     	//if (eventHandler.isEscape(keyCode)) {
-         //   currMode = "normal";
-         //   tempText = "default_text";
-       // }
+            //currMode = "normal";
+            //tempText = "default_text";
+       //}
     }
 
 }
