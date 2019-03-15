@@ -104,6 +104,7 @@ public class UIRowModule extends UISuperClass {
                 currMode = "normal";
             }
         }
+
         //EVENT EXIT EDIT MODE
         else if(!invalidInput && currMode == "edit" && (clickedCell[0] == -1 || clickedCell[1] == -1)){
             saveText(data);

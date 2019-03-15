@@ -37,7 +37,7 @@ public class UITablesModule extends UISuperClass{
 
         //EVENT CLICK CELL
         //TODO: check if margin clicked
-           settings setting = data.getSetting();
+        settings setting = data.getSetting();
 
         List<Integer> widthList = setting.getWidthList();
         int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
