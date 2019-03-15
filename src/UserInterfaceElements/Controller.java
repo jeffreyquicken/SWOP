@@ -99,7 +99,7 @@ public class Controller {
         g.drawString(mouseEvent, 10, 400);
         g.drawString(keyEvent, 10, 420);
     }
-    
+
     public String getCurrentMode() {
         return currentMode;
     }

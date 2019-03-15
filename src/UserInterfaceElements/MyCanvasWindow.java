@@ -9,22 +9,37 @@ public class MyCanvasWindow extends CanvasWindow {
 	private Controller controller  ;
 
 
-	//Contstructor that creates a blank canvas and title
-	//Initialisation of our controller
+
+
+	/**
+	 *Constructor that creates a blank canvas and title and initialises the controller
+	 * @param title title of the canvas
+	 */
 	public MyCanvasWindow(String title) {
 		super(title);
 		controller = new Controller();
 	}
 
-	//This method will be called at start when "painting" canvaselements
-	//This method will also be called when we update screen (repaint)
-	//This method will call our controller to handle the painting
+
+
+	/**
+	 * This method will be called at the start when "painting" canvaselements.
+	 * It will also be called when we update screen (repaint) and it will call the controller to handle the painting
+	 * @param g graphics object
+	 */
 	public void paint(Graphics g) {
 		controller.paint(g);
 	}
 
-	//if mouseevent happens (click, drag, doubleclick,...) it calls controller to handle event
+
 	//TODO: Add seperate eventhandler?
+	/**
+	 * Relays a mouseEvent to the controller
+	 * @param id id of mouseEvent
+	 * @param x X coordinate of click
+	 * @param y Y coordinate of click
+	 * @param clickCount number of clicks
+	 */
 	public void handleMouseEvent(int id, int x, int y, int clickCount) {
 		//Controller handles Click event
 		controller.relayMouseEvent(id,  x,  y,  clickCount);
@@ -32,6 +47,12 @@ public class MyCanvasWindow extends CanvasWindow {
 		this.repaint();
 	}
 
+	/**
+	 * Relays a keyEvent to the controller
+	 * @param id key id of key pressed
+	 * @param keyCode keycode of key pressed
+	 * @param keyChar keychar of key pressed
+	 */
 	public void handleKeyEvent(int id, int keyCode, char keyChar) {
 		//Controller handles Keyevent
 		controller.relayKeyEvent(id, keyCode, keyChar);
