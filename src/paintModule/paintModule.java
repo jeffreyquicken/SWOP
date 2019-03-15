@@ -25,12 +25,6 @@ public class paintModule {
 
     //MINIMUM VALUES
     private int minCellWidth = 80;
-
-
-    public int getCellLeftMargin() {
-        return cellLeftMargin;
-    }
-
     private int cellLeftMargin = 10;
     private int cellTopMargin = 5;
     private int titleX = 10;
@@ -40,25 +34,17 @@ public class paintModule {
 
 
 
-    public int getxCoStart() {
-        return xCoStart;
-    }
-
-    public int getyCoStart() {
-        return yCoStart;
-    }
-
-    public int getCellHeight() {
-        return cellHeight;
-    }
-
-    public int getCellWidth() {
-        return cellWidth;
-    }
 
 
 
 
+    /**
+     * Method that paints a given table in tabular view
+     * @param g
+     * @param table
+     * @param startXco
+     * @param startYco
+     */
     public void paintTable(Graphics g, Table table, int startXco, int startYco){
         int headerXco = startXco;
         int i =0;
@@ -77,8 +63,14 @@ public class paintModule {
 
     }
 
-    //Method that draw list of table names in a collumn
-    //For every element in its list it calls the printRectText method
+    /**
+     * Method that paints a tabular view from a list of Tables
+     * @param g
+     * @param tableList
+     * @param startXco
+     * @param startyCo
+     * @param setting
+     */
     //TODO: should accept list with table elements (instead of strings) and iterate over that list and get table name
      public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startyCo, settings setting ){
          List<Integer> widthList = setting.getWidthList();
@@ -89,6 +81,12 @@ public class paintModule {
         }
     }
 
+    /**
+     * Method that paints the design view
+     * It shows for each column the name, default value, type & if blanks are allowed
+     * @param g
+     * @param table
+     */
     public void paintDesignView(Graphics g, Table table){
         int headerXco = getxCoStart();
         int headerYco = getyCoStart() - cellHeight;
@@ -109,8 +107,14 @@ public class paintModule {
 
     }
 
-    //Method that draws list of rowelements in a row
-    //For every element in its list it calls the printRectText method
+    /**
+     * Methdd that paints a single row given a List of strings
+     * @param g
+     * @param rowList
+     * @param startxCo
+     * @param startyCo
+     * @param setting
+     */
     //TODO: should accept list with Row elements (instead of strings) and iterate over that list and get row elements
     public void paintRow(Graphics g, List<String> rowList, int startxCo, int startyCo, settings setting){
         int i = 0;
@@ -132,7 +136,15 @@ public class paintModule {
         }
     }
 
-    //Simple Method that draws a rectangle and places text in it
+    /**
+     * Method that draws a rectangle and places text in it
+     * @param g
+     * @param xCo
+     * @param yCo
+     * @param width
+     * @param height
+     * @param text
+     */
     //TODO: margin, width, length are now hardcoded should be stored in variables
     public void paintRectText(Graphics g, int xCo, int yCo,int width, int height, String text){
         //int rectWidth = (int)(text.length()*8.5);
@@ -144,6 +156,15 @@ public class paintModule {
         this.paintText(g, xCo2,yCo2, text);
     }
 
+    /**
+     * Method that paints a border
+     * @param g
+     * @param xCo
+     * @param yCo
+     * @param width
+     * @param height
+     * @param color
+     */
     public void paintBorder(Graphics g, int xCo, int yCo, int width, int height, Color color){
         g.setColor(color);
         g.drawRect(xCo,yCo,width,height);
@@ -151,6 +172,15 @@ public class paintModule {
 
     }
 
+    /**
+     * method that paints a box and cursor behind a string of text in the box
+     * @param g
+     * @param xCo
+     * @param yCo
+     * @param width
+     * @param height
+     * @param text
+     */
     public void paintCursor(Graphics g, int xCo, int yCo, int width, int height, String text){
         if(xCo != -1 || yCo != -1){
         clearCell(g, xCo, yCo, width, height);
@@ -159,12 +189,26 @@ public class paintModule {
 
     }
 
+    /**
+     * Methid that clears a specific cell, by painting it white
+     * @param g
+     * @param xCo
+     * @param yCo
+     * @param width
+     * @param height
+     */
     public void clearCell(Graphics g, int xCo, int yCo, int width, int height){
         g.setColor(Color.WHITE);
         g.fillRect(xCo, yCo, width, height);
         g.setColor(Color.BLACK);
     }
 
+    /**
+     * Method to get the coords of a specific painted cell
+     * @param x
+     * @param y
+     * @return
+     */
     public int[] getCellCoords(int x,int y){
         int xCoord = this.getxCoStart() + y*this.getCellWidth();
         int yCoord = this.getyCoStart() + x*this.getCellHeight();
@@ -173,17 +217,43 @@ public class paintModule {
     }
 
     //Simple method that draws a title in left upper corner
+
+    /**
+     * Method to paint a title
+     * @param g
+     * @param text
+     */
     public void paintTitle(Graphics g, String text){
         g.drawString("Current mode:" + text, titleX,titleY);
     }
 
-    //Simple method that draws text on screen
+    /**
+     * Method that draws text on the screen
+     * @param g
+     * @param xCo
+     * @param yCo
+     * @param text
+     */
     public void paintText(Graphics g, int xCo, int yCo, String text){
         g.drawString(text, xCo,yCo);
     }
+
+    /**
+     * Method to change the color
+     * @param g
+     * @param c
+     */
     public void setColor(Graphics g, Color c){
         g.setColor(c);
     }
+
+    /**
+     * Method that draws a checked checkbox
+     * @param g
+     * @param xCo
+     * @param yCo
+     * @param width
+     */
     public void checkBoxTrue(Graphics g, int xCo, int yCo, int width){
         g.drawRect(xCo,yCo, width, cellHeight);
         g.drawRect(xCo + width/2 - 5,yCo + 5,8,8);
@@ -194,12 +264,28 @@ public class paintModule {
         g.drawLine(xCo+4, yCo+6, xCo+6, yCo+2);
         g.setColor(Color.BLACK);
     }
+
+    /**
+     * Method that draws an unchecked checkbox
+     * @param g
+     * @param xCo
+     * @param yCo
+     * @param width
+     */
     public void checkBoxFalse(Graphics g, int xCo, int yCo, int width){
         clearCell(g,xCo,yCo,width, cellHeight);//cellheight needs to be given
         g.drawRect(xCo,yCo, width, cellHeight);
         g.drawRect(xCo + width/2 - 5,yCo + 5,8,8);
         g.setColor(Color.BLACK);
     }
+
+    /**
+     * Method that draws a greyed out checkbox
+     * @param g
+     * @param xCo
+     * @param yCo
+     * @param width
+     */
     public void checkBoxEmpty(Graphics g, int xCo, int yCo, int width){
 
         clearCell(g,xCo,yCo,width, cellHeight);//cellheight needs to be given
@@ -211,6 +297,24 @@ public class paintModule {
         g.drawRect(xCo + width/2 - 5,yCo + 5,8,8);
         g.setColor(Color.BLACK);
 
+    }
+    public int getxCoStart() {
+        return xCoStart;
+    }
+
+    public int getyCoStart() {
+        return yCoStart;
+    }
+
+    public int getCellHeight() {
+        return cellHeight;
+    }
+
+    public int getCellWidth() {
+        return cellWidth;
+    }
+    public int getCellLeftMargin() {
+        return cellLeftMargin;
     }
 
 
