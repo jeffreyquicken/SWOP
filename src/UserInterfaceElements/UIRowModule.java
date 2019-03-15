@@ -56,7 +56,7 @@ public class UIRowModule extends UISuperClass {
         }
 
         //EVENT CELL CLICKED (VALID INPUT)
-        else if (!invalidInput && ID == 500 && currMode != "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
+        else if (!invalidInput && ID == 500 && currMode!="edit" && currMode != "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
             activeCell = clickedCell;
             currMode = "edit";
             if (data.getSelectedTable().getColumnNames().get(activeCell[1]).getType().equals("Boolean")) {
