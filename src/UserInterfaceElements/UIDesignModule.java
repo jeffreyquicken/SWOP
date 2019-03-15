@@ -250,12 +250,12 @@ public class UIDesignModule extends UISuperClass {
     }
 
     /**
-     * Checks if updated text is valid according to the place in the table
+     * Checks if updated text is valid according to the type of it's cell
      *
      * @param text text to be validated
      * @param data datacontroller
      * @param currName old name
-     * @return Wheter the text is in the correct fromat according to it's type
+     * @return Wheter the text is in the correct fromat according to the type of it's cell
      */
     private boolean textIsValid(String text, dataController data, String currName) {
 

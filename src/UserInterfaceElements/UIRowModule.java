@@ -34,6 +34,16 @@ public class UIRowModule extends UISuperClass {
     }
 
     //Handles mousevent and returns if UImode need to change
+    /**
+     * Eventhandler that takes care of a mouseclick, and returns the new state of the program and the nextUIview
+     *
+     * @param xCo x-coordinate of click
+     * @param yCo y-coordinate of click
+     * @param count number of  clicked
+     * @param ID Id of mouseclick
+     * @param data datacontroller to make changes to the data
+     * @return returns a list with the nextUIMode and the state of the UI
+     */
     public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data) {
         List<Integer> widthList = data.getSelectedTable().getRowSetting().getWidthList();
 
@@ -119,6 +129,15 @@ public class UIRowModule extends UISuperClass {
     }
 
 
+    /**
+     * Method that handles key event when the UI is in edit-mode and returns state of program
+     *
+     * @param id id of key pressed
+     * @param keyCode keycde of key pressed
+     * @param keyChar keychar of key pressed
+     * @param data datacontroller
+     * @return returns a list with the nextUImode and the current mode of the UI
+     */
     protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data) {
         keyEventHandler eventHandler = new keyEventHandler();
         String currName = data.getSelectedTable().getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]);
@@ -153,6 +172,15 @@ public class UIRowModule extends UISuperClass {
 
     }
 
+    /**
+     * Method that handles key event when the UI is in normal-mode and returns state of program
+     *
+     * @param id id of key pressed
+     * @param keyCode keycde of key pressed
+     * @param keyChar keychar of key pressed
+     * @param data datacontroller
+     * @return returns a list with the nextUImode and the current mode of the UI
+     */
     protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data) {
         //EVENT: t pressed
         String nextUIMode = "row";
@@ -175,7 +203,15 @@ public class UIRowModule extends UISuperClass {
         return result;
 
     }
-
+    /**
+     * Method that handles key event when the UI is in delete-mode and returns state of program
+     *
+     * @param id id of key pressed
+     * @param keyCode keycde of key pressed
+     * @param keyChar keychar of key pressed
+     * @param data datacontroller
+     * @return returns a list with the nextUImode and the current mode of the UI
+     */
     protected List<String> handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data) {
 
         keyEventHandler eventHandler = new keyEventHandler();
@@ -240,6 +276,14 @@ public class UIRowModule extends UISuperClass {
         data.getSelectedTable().getTableRows().get(activeCell[0]).setColumnCell(activeCell[1], tempText);
     }
 
+    /**
+     * Checks if updated text is valid according to the place in the table it is updated
+     *
+     * @param text text to be validated
+     * @param data datacontroller
+     * @param currName old name
+     * @return Wheter the text is in the correct fromat according to the type of it's cell
+     */
     private boolean textIsValid(String text, dataController data, String currName) {
 
 
