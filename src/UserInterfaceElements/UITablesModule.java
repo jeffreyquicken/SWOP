@@ -21,6 +21,7 @@ public class UITablesModule extends UISuperClass{
     //Handles mousevent and returns if UImode need to change
     public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data) {
         String nextUImode = "table";
+
         //EVENT DOUBLE CLICKS UNDER TABLE
         if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getLowestY()) ) {
             int numberOfTable = data.getTableList().size() + 1;
@@ -36,16 +37,12 @@ public class UITablesModule extends UISuperClass{
 
         //EVENT CLICK CELL
         //TODO: check if margin clicked
-        settings setting;
-        if (data.getSelectedTable() == null){
-            setting = data.getSetting();
-        }
-        else{
-            setting = data.getSetting();
-        }
+           settings setting = data.getSetting();
+
         List<Integer> widthList = setting.getWidthList();
         int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
                 paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1,widthList);
+
        //Checks if user is dragging border
             if(currMode == "drag"){
                 if(ID == 506 || ID == 502){
@@ -69,7 +66,7 @@ public class UITablesModule extends UISuperClass{
             activeCell = clickedCell;
         }
         //Check if a cell is clicked
-        else if (!invalidInput && currMode!= "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
+        else if (!invalidInput && currMode!="edit" && currMode!= "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
             if (count != 2){
             activeCell = clickedCell;
             currMode = "edit";

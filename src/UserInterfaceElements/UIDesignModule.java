@@ -75,7 +75,7 @@ public class UIDesignModule extends UISuperClass {
 
 
         //EVENT CELL CLICKED (VALID INPUT)
-        else if (!invalidInput && ID == 500 && currMode != "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
+        else if (!invalidInput && ID == 500 && currMode!="edit" && currMode != "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
 
             //check which collumn
             if (count != 2 && clickedCell[1] == 0) {
