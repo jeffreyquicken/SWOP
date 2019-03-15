@@ -16,7 +16,7 @@ public class Controller {
     private String currentMode;
 
 
-    //Display key/mousevent TODO: Delete
+    //Display key/mousevent
     private String mouseEvent = "";
     private String keyEvent = "";
 
@@ -56,7 +56,7 @@ public class Controller {
         } else if (this.getCurrentMode().equals("design")) {
             this.setCurrentMode(this.getDesignModule().handleMouseEvent(xCo, yCo, count, id, tableDataController));
         }
-        mouseEvent = "Mouse eventID= " + id + " | Coordinates clicked" + xCo + ", " + yCo + "| Amount clicked: " + count;
+       // mouseEvent = "Mouse eventID= " + id + " | Coordinates clicked" + xCo + ", " + yCo + "| Amount clicked: " + count;
     }
 
     /**
@@ -76,7 +76,7 @@ public class Controller {
         } else if (this.getCurrentMode() == "design") {
             this.setCurrentMode(this.getDesignModule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
         }
-        keyEvent = "Key eventID= " + id + " | Key pressed: " + keyChar + " | KeyCode: " + Integer.toString(keyCode);
+       // keyEvent = "Key eventID= " + id + " | Key pressed: " + keyChar + " | KeyCode: " + Integer.toString(keyCode);
     }
 
 
@@ -96,8 +96,8 @@ public class Controller {
             this.getDesignModule().paint(g, tableDataController);
         }
         //drawing of mousevent, keyevent just for debugging
-        g.drawString(mouseEvent, 10, 400);
-        g.drawString(keyEvent, 10, 420);
+     //   g.drawString(mouseEvent, 10, 400);
+     //   g.drawString(keyEvent, 10, 420);
     }
 
     public String getCurrentMode() {

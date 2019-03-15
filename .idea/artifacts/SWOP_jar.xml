@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SWOP:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SWOP_jar</output-path>
+    <root id="archive" name="SWOP.jar">
+      <element id="module-output" name="SWOP" />
+    </root>
+  </artifact>
+</component>

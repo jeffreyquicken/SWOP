@@ -21,7 +21,7 @@ public abstract class UISuperClass {
     protected int draggedX;
     protected boolean ctrlPressed;
 
-    //TODO rewrite other UI modules to use superclass methods
+
     public UISuperClass() {
         paintModule = new paintModule();
         mouseEventHandler = new mouseEventHandler();

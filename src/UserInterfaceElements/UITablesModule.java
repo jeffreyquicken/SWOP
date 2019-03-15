@@ -82,7 +82,10 @@ public class UITablesModule extends UISuperClass{
             tempText = data.getTableList().get(activeCell[0]).getTableName();}
             else{
                 data.setSelectedTable(data.getTableList().get(clickedCell[0]));
-                nextUImode = "row";
+                if(data.getSelectedTable().getColumnNames().size() == 0){
+                    nextUImode = "design";
+                }else{
+                nextUImode = "row";}
             }
             }
         //Check if header is clicked

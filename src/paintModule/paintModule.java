@@ -71,7 +71,6 @@ public class paintModule {
      * @param startYco  start Y coordinate where tableview should be painted
      * @param setting   settings object for this view
      */
-    //TODO: should accept list with table elements (instead of strings) and iterate over that list and get table name
      public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startYco, settings setting ){
          List<Integer> widthList = setting.getWidthList();
         this.paintRectText(g,startXco, startYco - cellHeight , widthList.get(0),cellHeight, "HEADER" );

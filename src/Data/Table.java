@@ -35,15 +35,12 @@ public class Table {
         tableRows = new ArrayList<Row>();
         columnNames = new ArrayList<Column>();
         tableName = name;
-        rowSetting = new settings(); //Todo: start with empty tableview
+        rowSetting = new settings();
         designSetting = new settings();
         for(int i = 0; i< 4;i++ ){
             designSetting.getWidthList().add(designSetting.getDefaultWidth());
         }
-
-
-
-
+/**
         Column col1 = new Column("Column1","true", "Boolean", true);
         Column col2= new Column("Column2","true", "Boolean", true);
         Column col3 = new Column("Column3", "", "String", true);
@@ -59,7 +56,7 @@ public class Table {
 
         this.addRow(row1);
         this.addRow(row2);
-        this.addRow(row3);
+        this.addRow(row3);*/
     }
 
     /**
