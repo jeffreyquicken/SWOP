@@ -21,13 +21,14 @@ public class dataController {
         setting = new settings();
         setting.getWidthList().add(setting.getDefaultWidth());
         tableList = new ArrayList<>();
-       /** Table table1 = new Table("Table 1");
+       // /**
+        Table table1 = new Table("Table 1");
         Table table2 = new Table("Table 2");
         Table table3 = new Table("Table 3");
         tableList = new ArrayList<Table>();
         tableList.add(table1);
         tableList.add(table2);
-        tableList.add(table3);*/
+        tableList.add(table3);// */
     }
 
     public List<Table> getTableList(){
