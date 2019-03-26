@@ -21,7 +21,9 @@ public abstract class UISuperClass {
     protected int draggedX;
     protected boolean ctrlPressed;
 
-
+    /**
+     * constructor for UISuperclass
+     */
     public UISuperClass() {
         paintModule = new paintModule();
         mouseEventHandler = new mouseEventHandler();
