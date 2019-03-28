@@ -122,17 +122,19 @@ public class UITablesModule extends UISuperClass{
      * @param g graphics object
      * @param data datacontroller
      */
-    public void paint(Graphics g, dataController data) {
+    @Override
+    public void paint(Graphics g, dataController data, Integer[] coords, Integer[] dimensions) {
         settings setting;
         setting = data.getSetting();
 
+        paintModule.paintBorderSubwindow( g, coords, dimensions );
 
         List<Integer> widthList = setting.getWidthList();
         //Creates title
         paintModule.paintTitle(g, "Table Mode");
 
         //print tables in tabular view
-        paintModule.paintTableView(g, data.getTableList(), paintModule.getxCoStart(), paintModule.getyCoStart(), setting);
+        paintModule.paintTableView(g, data.getTableList(), coords[0], coords[1], setting);
 
         //Check mode
         if (currMode == "edit" ) {

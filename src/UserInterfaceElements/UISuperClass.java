@@ -66,6 +66,8 @@ public abstract class UISuperClass {
         return nextUIMode;
     }
 
+    protected void paint(Graphics g, dataController data, Integer[] coords, Integer[] dimensions){ }
+
 
 
     protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){return null;}

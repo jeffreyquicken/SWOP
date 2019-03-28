@@ -134,6 +134,9 @@ public class paintModule {
             i++;
         }
     }
+    public void paintBorderSubwindow(Graphics g, Integer[] coords, Integer[] dimension){
+        paintRectText(g, coords[0]-30, coords[1]-30, dimension[0]+60, dimension[1]+60, "");
+    }
 
     /**
      * Method that draws a rectangle and places text in it

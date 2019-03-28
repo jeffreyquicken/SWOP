@@ -14,6 +14,7 @@ public class Controller {
     private UIDesignModule designModule;
     private Data.dataController tableDataController;
     private String currentMode;
+    private UITopLevelWindow topLevelWindow;
 
 
     //Display key/mousevent
@@ -22,14 +23,22 @@ public class Controller {
 
 
     /**
-     * Creates/init the three different UI modules/controller, creates empty table list and sets current view to table-view
+     * Creates/init the three different UI modules/controller, creates the topLevelWindow, creates empty table list and sets current view to table-view
      */
     public Controller() {
+        //rowmodule = new UIRowModule();
+        //designModule = new UIDesignModule();
+
+
+        //topLevelWindow
+        topLevelWindow = new UITopLevelWindow();
+
         //three UI modules
         tablemodule = new UITablesModule();
-        rowmodule = new UIRowModule();
-        designModule = new UIDesignModule();
+        UITablesModule tablemodule2 = new UITablesModule();
 
+        topLevelWindow.addSubWindow(tablemodule);
+        topLevelWindow.addSubWindow(tablemodule2);
         //dataController
         tableDataController = new dataController();
 
@@ -86,7 +95,11 @@ public class Controller {
      * @param g graphics object
      */
     public void paint(Graphics g) {
+        for (UISuperClass subWindow: topLevelWindow.getSubWindows()){
+            subWindow.paint(g, tableDataController,topLevelWindow.getStartCoords(subWindow), topLevelWindow.getDimensions(subWindow));
+        }
 
+        /**
         if (this.getCurrentMode() == "table") {
             //Let UImodule paint canvas
             this.getTablemodule().paint(g, tableDataController);
@@ -97,7 +110,7 @@ public class Controller {
         }
         //drawing of mousevent, keyevent just for debugging
      //   g.drawString(mouseEvent, 10, 400);
-     //   g.drawString(keyEvent, 10, 420);
+     //   g.drawString(keyEvent, 10, 420);*/
     }
 
     public String getCurrentMode() {
