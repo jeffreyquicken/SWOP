@@ -6,13 +6,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class UITopLevelWindow {
 
-    UISuperClass activeSubWindow;
+    List<UISuperClass> activeSubWindow;
     settings setting;
 
+    /**
+     * List with activeSubwindow in chronological order. The last active subwindow is in the first position in the list.
+     */
     List<UISuperClass> subWindows;
+    /**
+     * Dictionary with subwindows as keys and a list with Xco,Yco,Width, Height as value
+     */
     Map<UISuperClass, List<Integer>> subwindowInfo;
 
     /**
@@ -22,16 +29,24 @@ public class UITopLevelWindow {
         setting = new settings();
         subWindows = new ArrayList<>();
         subwindowInfo = new HashMap<UISuperClass, List<Integer>>();
+        activeSubWindow = new ArrayList<>();
+        // Adds a null object to the list to avoid NullPointerException
+        activeSubWindow.add(null);
 
     }
 
 
     public UISuperClass getActiveSubWindow() {
-        return activeSubWindow;
+        return activeSubWindow.get(0);
     }
 
-    public void setActiveSubWindow(UISuperClass activeSubWindow) {
-        this.activeSubWindow = activeSubWindow;
+    /**
+     * Sets the first element of the activeSubwindow list and removes any duplicates of the subwindow
+     * @param subWindow the subwindow to be added
+     */
+    public void setActiveSubWindow(UISuperClass subWindow) {
+     activeSubWindow.set(0, subWindow);
+
     }
 
     public List<UISuperClass> getSubWindows() {
@@ -41,6 +56,8 @@ public class UITopLevelWindow {
     public void setSubWindows(List<UISuperClass> subWindows) {
         this.subWindows = subWindows;
     }
+
+
 
 
 
@@ -64,13 +81,14 @@ public class UITopLevelWindow {
         //TODO: only for debugging
         if(subWindows.size() == 1){
         values.add(20);
-        values.add(50);}else{
-            values.add(180);
-            values.add(50);
+        values.add(20);}else{
+            values.add(200);
+            values.add(30);
         }
         //Default width
-        values.add(100);
-        values.add(100);
+        //WARNING HARDCODED
+        values.add(30+100+30);
+        values.add(200);
         subwindowInfo.put(addingSubWindow,values);
 
     }
@@ -99,6 +117,27 @@ public class UITopLevelWindow {
         result[1] = subwindowInfo.get(subWindow).get(3);
         return result;
 
+    }
+
+    public Integer[] relayCoordinates(int xCo, int yCo){
+        Integer[] result = {-1,-1};
+        for(UISuperClass subWindow:subWindows){
+            List<Integer> info = subwindowInfo.get(subWindow);
+            int X = info.get(0);
+            int Y = info.get(1);
+            int width = info.get(2);
+            int height = info.get(3);
+            if (xCo > X && xCo < X+width && yCo > Y && yCo < Y+height){
+                setActiveSubWindow(subWindow);
+                int relayX = xCo-X;
+                int relayY = yCo-Y;
+                result[0] = relayX;
+                result[1] = relayY;
+                return result;
+            }
+
+        }
+        return result;
     }
 
 

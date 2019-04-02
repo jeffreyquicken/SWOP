@@ -55,16 +55,10 @@ public class Controller {
      * @param count number of clicks
      */
     public void relayMouseEvent(int id, int xCo, int yCo, int count) {
+        //if mode will be swtitched mouseevent will tell
+        Integer[] result =  topLevelWindow.relayCoordinates(xCo,yCo);
+        topLevelWindow.getActiveSubWindow().handleMouseEvent(result[0], result[1], count, id, tableDataController);
 
-        if (this.getCurrentMode() == "table") {
-            //if mode will be swtitched mouseevent will tell
-            this.setCurrentMode(this.getTablemodule().handleMouseEvent(xCo, yCo, count, id, tableDataController));
-        } else if (this.getCurrentMode().equals("row")) {
-            this.setCurrentMode(this.rowmodule.handleMouseEvent(xCo, yCo, count, id, tableDataController));
-
-        } else if (this.getCurrentMode().equals("design")) {
-            this.setCurrentMode(this.getDesignModule().handleMouseEvent(xCo, yCo, count, id, tableDataController));
-        }
        // mouseEvent = "Mouse eventID= " + id + " | Coordinates clicked" + xCo + ", " + yCo + "| Amount clicked: " + count;
     }
 

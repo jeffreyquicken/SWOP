@@ -29,8 +29,19 @@ public class paintModule {
     private int cellTopMargin = 5;
     private int titleX = 10;
     private int titleY = 10;
-    private int xCoStart = 50 ;
-    private int yCoStart = 50;
+    private int xCoStart = 30 ;
+    private int yCoStart = 30;
+
+    public int getMargin() {
+        return margin;
+    }
+
+    public void setMargin(int margin) {
+        this.margin = margin;
+    }
+
+    private  int margin = 30;
+
 
 
 
@@ -135,7 +146,7 @@ public class paintModule {
         }
     }
     public void paintBorderSubwindow(Graphics g, Integer[] coords, Integer[] dimension){
-        paintRectText(g, coords[0]-30, coords[1]-30, dimension[0]+60, dimension[1]+60, "");
+        paintRectText(g, coords[0], coords[1], dimension[0]+60, dimension[1]+60, "");
     }
 
     /**

@@ -47,8 +47,8 @@ public class dataController {
      * and the set height of 20 for these tables
      * @return the lowes Y coordinate
      */
-    public int getLowestY(){
-        int lowestY = 50;
+    public int getLowestY(int i){
+        int lowestY = i;
         try{
         for (Table table : this.getTableList()){
             lowestY += setting.getHeight();
