@@ -1,21 +1,21 @@
 package UserInterfaceElements;
-import javafx.util.Pair;
+
 import settings.settings;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
 
 public class UITopLevelWindow {
 
-    List<UISuperClass> activeSubWindow;
-    settings setting;
+    private List<UISuperClass> activeSubWindow;
+    private settings setting;
 
     //EVENTS VARIABLES
-    boolean headerClicked = false;
-    int[] draggedCoords = {-1,-1};
+    private boolean headerClicked = false;
+    private int[] draggedCoords = {-1,-1};
 
     /**
      * List with activeSubwindow in chronological order. The last active subwindow is in the first position in the list.
@@ -125,7 +125,10 @@ public class UITopLevelWindow {
 
     public Integer[] relayCoordinates(int xCo, int yCo, int id){
         Integer[] result = {-1,-1};
-        if (headerClicked && (id == 506 || id == 502)){
+        if (id == 502){
+            headerClicked = false;
+        }
+        if (headerClicked && (id == 506 )){
             List<Integer> info = subwindowInfo.get(activeSubWindow.get(0));
             int deltaX = xCo-draggedCoords[0];
             int deltaY = yCo-draggedCoords[1];

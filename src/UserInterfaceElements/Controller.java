@@ -61,7 +61,8 @@ public class Controller {
         Integer[] result =  topLevelWindow.relayCoordinates(xCo,yCo, id);
         topLevelWindow.getActiveSubWindow().handleMouseEvent(result[0], result[1], count, id, tableDataController);
 
-       // mouseEvent = "Mouse eventID= " + id + " | Coordinates clicked" + xCo + ", " + yCo + "| Amount clicked: " + count;
+        mouseEvent = "Mouse eventID= " + id + " | Coordinates clicked" + xCo + ", " + yCo + "| Amount clicked: " + count;
+        System.out.println(mouseEvent);
     }
 
     /**
