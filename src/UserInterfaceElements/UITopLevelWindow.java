@@ -181,6 +181,8 @@ public class UITopLevelWindow {
                     result[1] = relayY;
                     if (isClosingButtonClicked(relayX, relayY) && id == 502) {
                         subWindows.remove(subWindow);
+                        getActiveSubWindowList().removeIf(subWindow :: equals);
+
                         return result;
                     }
 
