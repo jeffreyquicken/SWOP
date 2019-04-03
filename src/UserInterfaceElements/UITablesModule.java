@@ -126,7 +126,7 @@ public class UITablesModule extends UISuperClass{
     public void paint(Graphics g, dataController data, Integer[] coords, Integer[] dimensions) {
         settings setting;
         setting = data.getSetting();
-
+        paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
         paintModule.paintBorderSubwindow( g, coords, dimensions, "Table Mode");
 
         List<Integer> widthList = setting.getWidthList();
