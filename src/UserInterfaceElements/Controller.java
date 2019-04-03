@@ -14,6 +14,7 @@ public class Controller {
     private UIDesignModule designModule;
     private Data.dataController tableDataController;
     private String currentMode;
+    private UITopLevelWindow topLevelWindow;
 
 
     //Display key/mousevent
@@ -22,19 +23,29 @@ public class Controller {
 
 
     /**
-     * Creates/init the three different UI modules/controller, creates empty table list and sets current view to table-view
+     * Creates/init the three different UI modules/controller, creates the topLevelWindow, creates empty table list and sets current view to table-view
      */
     public Controller() {
+        //rowmodule = new UIRowModule();
+        //designModule = new UIDesignModule();
+
+
+        //topLevelWindow
+        topLevelWindow = new UITopLevelWindow();
+
         //three UI modules
         tablemodule = new UITablesModule();
-        rowmodule = new UIRowModule();
-        designModule = new UIDesignModule();
+        UITablesModule tablemodule2 = new UITablesModule();
 
+        topLevelWindow.addSubWindow(tablemodule);
+        topLevelWindow.addSubWindow(tablemodule2);
         //dataController
         tableDataController = new dataController();
 
         //Sets defaultmode to table-mode
         currentMode = "table";
+
+
     }
 
     /**
@@ -46,16 +57,10 @@ public class Controller {
      * @param count number of clicks
      */
     public void relayMouseEvent(int id, int xCo, int yCo, int count) {
+        //if mode will be swtitched mouseevent will tell
+        Integer[] result =  topLevelWindow.relayCoordinates(xCo,yCo, id);
+        topLevelWindow.getActiveSubWindow().handleMouseEvent(result[0], result[1], count, id, tableDataController);
 
-        if (this.getCurrentMode() == "table") {
-            //if mode will be swtitched mouseevent will tell
-            this.setCurrentMode(this.getTablemodule().handleMouseEvent(xCo, yCo, count, id, tableDataController));
-        } else if (this.getCurrentMode().equals("row")) {
-            this.setCurrentMode(this.rowmodule.handleMouseEvent(xCo, yCo, count, id, tableDataController));
-
-        } else if (this.getCurrentMode().equals("design")) {
-            this.setCurrentMode(this.getDesignModule().handleMouseEvent(xCo, yCo, count, id, tableDataController));
-        }
        // mouseEvent = "Mouse eventID= " + id + " | Coordinates clicked" + xCo + ", " + yCo + "| Amount clicked: " + count;
     }
 
@@ -67,15 +72,16 @@ public class Controller {
      * @param keyChar keychar of the pressed key
      */
     public void relayKeyEvent(int id, int keyCode, char keyChar) {
-        if (this.getCurrentMode() == "table") {
-            //if mode will be switched mouseevent will tell
-            this.setCurrentMode(this.getTablemodule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
-        } else if (this.getCurrentMode() == "row") {
-            //if mode will be swtitched mouseevent will tell
-            this.setCurrentMode(this.getRowmodule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
-        } else if (this.getCurrentMode() == "design") {
-            this.setCurrentMode(this.getDesignModule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
-        }
+        topLevelWindow.getActiveSubWindow().handleKeyEvent(id, keyCode, keyChar, tableDataController);
+//        if (this.getCurrentMode() == "table") {
+//            //if mode will be switched mouseevent will tell
+//            this.setCurrentMode(this.getTablemodule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
+//        } else if (this.getCurrentMode() == "row") {
+//            //if mode will be swtitched mouseevent will tell
+//            this.setCurrentMode(this.getRowmodule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
+//        } else if (this.getCurrentMode() == "design") {
+//            this.setCurrentMode(this.getDesignModule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
+//        }
        // keyEvent = "Key eventID= " + id + " | Key pressed: " + keyChar + " | KeyCode: " + Integer.toString(keyCode);
     }
 
@@ -86,7 +92,11 @@ public class Controller {
      * @param g graphics object
      */
     public void paint(Graphics g) {
+        for (UISuperClass subWindow: topLevelWindow.getSubWindows()){
+            subWindow.paint(g, tableDataController,topLevelWindow.getStartCoords(subWindow), topLevelWindow.getDimensions(subWindow));
+        }
 
+        /**
         if (this.getCurrentMode() == "table") {
             //Let UImodule paint canvas
             this.getTablemodule().paint(g, tableDataController);
@@ -97,7 +107,7 @@ public class Controller {
         }
         //drawing of mousevent, keyevent just for debugging
      //   g.drawString(mouseEvent, 10, 400);
-     //   g.drawString(keyEvent, 10, 420);
+     //   g.drawString(keyEvent, 10, 420);*/
     }
 
     public String getCurrentMode() {

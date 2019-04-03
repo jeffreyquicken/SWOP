@@ -21,7 +21,9 @@ public abstract class UISuperClass {
     protected int draggedX;
     protected boolean ctrlPressed;
 
-
+    /**
+     * constructor for UISuperclass
+     */
     public UISuperClass() {
         paintModule = new paintModule();
         mouseEventHandler = new mouseEventHandler();
@@ -63,6 +65,8 @@ public abstract class UISuperClass {
         //this.handleNonModeDependantKeys(id, keyCode, keyChar, data);
         return nextUIMode;
     }
+
+    protected void paint(Graphics g, dataController data, Integer[] coords, Integer[] dimensions){ }
 
 
 
