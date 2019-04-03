@@ -46,12 +46,16 @@ public class UITopLevelWindow {
         return activeSubWindow.get(0);
     }
 
+    public List<UISuperClass> getActiveSubWindowList(){
+        return activeSubWindow;
+    }
+
     /**
      * Sets the first element of the activeSubwindow list and removes any duplicates of the subwindow
      * @param subWindow the subwindow to be added
      */
     public void setActiveSubWindow(UISuperClass subWindow) {
-     activeSubWindow.set(0, subWindow);
+     activeSubWindow.add(0, subWindow);
 
     }
 
@@ -175,7 +179,7 @@ public class UITopLevelWindow {
                     int relayY = yCo - Y;
                     result[0] = relayX;
                     result[1] = relayY;
-                    if (isClosingButtonClicked(relayX, relayY)) {
+                    if (isClosingButtonClicked(relayX, relayY) && id == 502) {
                         subWindows.remove(subWindow);
                         return result;
                     }

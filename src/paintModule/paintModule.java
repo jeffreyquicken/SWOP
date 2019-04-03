@@ -199,6 +199,12 @@ public class paintModule {
 
     }
 
+    public void setBackground(Graphics g, int xco, int yco, int width, int height, Color color){
+        g.setColor(color);
+        g.fillRect(xco, yco, width, height);
+        g.setColor(Color.BLACK);
+    }
+
     /**
      * Method that paints a box and cursor behind a string of text in the box
      * @param g graphics object

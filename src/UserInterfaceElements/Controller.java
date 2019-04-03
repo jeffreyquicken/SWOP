@@ -46,6 +46,7 @@ public class Controller {
         currentMode = "table";
 
 
+
     }
 
     /**
@@ -73,7 +74,9 @@ public class Controller {
      * @param keyChar keychar of the pressed key
      */
     public void relayKeyEvent(int id, int keyCode, char keyChar) {
+
         topLevelWindow.getActiveSubWindow().handleKeyEvent(id, keyCode, keyChar, tableDataController);
+
 //        if (this.getCurrentMode() == "table") {
 //            //if mode will be switched mouseevent will tell
 //            this.setCurrentMode(this.getTablemodule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
@@ -93,9 +96,18 @@ public class Controller {
      * @param g graphics object
      */
     public void paint(Graphics g) {
-        for (UISuperClass subWindow: topLevelWindow.getSubWindows()){
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(0,0,10000, 10000);
+        g.setColor(Color.BLACK);
+        for (UISuperClass subWindow : topLevelWindow.getSubWindows()) {
             subWindow.paint(g, tableDataController,topLevelWindow.getStartCoords(subWindow), topLevelWindow.getDimensions(subWindow));
         }
+        UISuperClass subWindow = topLevelWindow.getActiveSubWindow();
+        if(subWindow != null){
+            subWindow.paint(g, tableDataController,topLevelWindow.getStartCoords(subWindow), topLevelWindow.getDimensions(subWindow));
+        }
+
+
 
         /**
         if (this.getCurrentMode() == "table") {

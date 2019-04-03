@@ -28,6 +28,7 @@ public class MyCanvasWindow extends CanvasWindow {
 	 * @param g graphics object
 	 */
 	public void paint(Graphics g) {
+
 		controller.paint(g);
 	}
 
@@ -59,4 +60,5 @@ public class MyCanvasWindow extends CanvasWindow {
 		this.repaint();
 
 	}
+
 }
