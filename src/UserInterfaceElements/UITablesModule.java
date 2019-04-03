@@ -130,8 +130,7 @@ public class UITablesModule extends UISuperClass{
         paintModule.paintBorderSubwindow( g, coords, dimensions, "Table Mode");
 
         List<Integer> widthList = setting.getWidthList();
-        //Creates title
-        paintModule.paintTitle(g, "Table Mode");
+
 
         //print tables in tabular view
         paintModule.paintTableView(g, data.getTableList(), coords[0] + paintModule.getMargin(), coords[1] +paintModule.getMargin(), setting);
