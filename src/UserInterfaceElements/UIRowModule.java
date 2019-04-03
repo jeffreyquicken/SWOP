@@ -24,6 +24,7 @@ public class UIRowModule extends UISuperClass {
     private Boolean invalidInput = false;
     private int draggedColumn;
     private int draggedX;
+    private Table table;
 
 
     //Constructor that init/creates paintModule and an empty list with tablenames
@@ -31,6 +32,7 @@ public class UIRowModule extends UISuperClass {
     public UIRowModule() {
         paintModule = new paintModule();
         mouseEventHandler = new mouseEventHandler();
+
     }
 
     //Handles mousevent and returns if UImode need to change
@@ -121,10 +123,10 @@ public class UIRowModule extends UISuperClass {
             currMode = "normal";
         }
 
-        String nextUImode = "row";
+        String nextUImode = "";
         List<String> result = new ArrayList<>();
         result.add(currMode);
-        result.add("row");
+        result.add("");
         return result;
     }
 
@@ -238,27 +240,32 @@ public class UIRowModule extends UISuperClass {
      * @param g graphics object
      * @param data datacontroller
      */
-    public void paint(Graphics g, Table table, dataController data) {
+    @Override
+    public void paint(Graphics g,  dataController data, Integer[] coords, Integer[] dimensions) {
         List<Integer> widthList = data.getSelectedTable().getRowSetting().getWidthList();
+        paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
+        paintModule.paintBorderSubwindow( g, coords, dimensions, "Row Mode");
 
         //Creates title
         paintModule.paintTitle(g, "Row Mode");
 
         //print tables in tabular view
-        paintModule.paintTable(g, table, xCoStart, yCoStart);
+        paintModule.paintTable(g, data.getSelectedTable(),coords[0] + paintModule.getMargin(), coords[1] +paintModule.getMargin());
 
 
         //Check mode
-        if (currMode == "edit") {
-            paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1], widthList)[0],
-                    paintModule.getCellCoords(activeCell[0], activeCell[1], widthList)[1], widthList.get(activeCell[1]),
+        if (currMode == "edit" ) {
+            int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList);
+            paintModule.paintCursor(g, coords1[0] + coords[0],
+                    coords1[1] + coords[1], widthList.get(activeCell[1]),
                     paintModule.getCellHeight(), tempText);
         }
 
         //check if there are warnings
         if (invalidInput || currMode == "delete") {
-            paintModule.paintBorder(g, paintModule.getCellCoords(activeCell[0], activeCell[1], widthList)[0],
-                    paintModule.getCellCoords(activeCell[0], activeCell[1], widthList)[1], widthList.get(activeCell[1]),
+            int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList);
+            paintModule.paintBorder(g, coords[0] + coords1[0],
+                    coords[1] + coords1[1],  widthList.get(activeCell[1]),
                     paintModule.getCellHeight(), Color.RED);
         } else {
             paintModule.setColor(g, Color.BLACK);

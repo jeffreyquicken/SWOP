@@ -75,7 +75,7 @@ public class UITablesModule extends UISuperClass{
             activeCell = clickedCell;
         }
         //Check if a cell is clicked
-        else if (!invalidInput && currMode!="edit" && currMode!= "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
+        else if (!invalidInput  && currMode!= "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
             if (count != 2){
             activeCell = clickedCell;
             currMode = "edit";
