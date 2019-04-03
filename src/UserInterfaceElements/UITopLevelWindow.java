@@ -1,5 +1,5 @@
 package UserInterfaceElements;
-import javafx.util.Pair;
+
 import settings.settings;
 
 import java.util.ArrayList;
