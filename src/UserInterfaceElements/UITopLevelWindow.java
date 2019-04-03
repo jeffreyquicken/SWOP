@@ -133,11 +133,21 @@ public class UITopLevelWindow {
                 int relayY = yCo-Y;
                 result[0] = relayX;
                 result[1] = relayY;
+                if (isClosingButtonClicked(relayX, relayY)) {
+                    subWindows.remove(subWindow);
+                }
                 return result;
             }
 
         }
         return result;
+    }
+
+    public boolean isClosingButtonClicked(int relayXCo, int relayYCo){
+        if (relayXCo > 8 && relayXCo < 18 && relayYCo > 3 && relayYCo < 13) {
+            return true;
+        }
+        return false;
     }
 
 

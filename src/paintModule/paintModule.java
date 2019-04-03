@@ -13,6 +13,7 @@ public class paintModule {
     //DEFAULT VALUES
     private int cellHeight = 20;
     private int cellWidth = 100;
+    private int titleHeight = 15;
 
 
     public int getMinCellWidth() {
@@ -82,13 +83,17 @@ public class paintModule {
      * @param startYco  start Y coordinate where tableview should be painted
      * @param setting   settings object for this view
      */
-     public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startYco, settings setting ){
+     public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startYco, settings setting){
          List<Integer> widthList = setting.getWidthList();
-        this.paintRectText(g,startXco, startYco - cellHeight , widthList.get(0),cellHeight, "HEADER" );
+        this.paintRectText(g,startXco, startYco - cellHeight+10 , widthList.get(0),10, "" );
+        g.setColor(Color.GRAY);
+        g.fillRect(startXco+1, startYco-cellHeight+11, widthList.get(0)-1, 9 );
+        g.setColor(Color.BLACK);
         for(Table tableItem : tableList){
             this.paintRectText(g,startXco, startYco , widthList.get(0),cellHeight, tableItem.getTableName() );
             startYco = startYco + cellHeight;
         }
+
     }
 
     /**
@@ -145,8 +150,16 @@ public class paintModule {
             i++;
         }
     }
-    public void paintBorderSubwindow(Graphics g, Integer[] coords, Integer[] dimension){
-        paintRectText(g, coords[0], coords[1], dimension[0]+60, dimension[1]+60, "");
+
+    /**
+     * Method that paints the border around the subwindow and the title bar.
+     * @param g Graphics object
+     * @param coords Start coordinates of the subwindow
+     * @param dimension Dimensions of the subwindow
+     */
+    public void paintBorderSubwindow(Graphics g, Integer[] coords, Integer[] dimension, String title){
+        paintRectText(g, coords[0], coords[1], dimension[0], dimension[1], "");
+        this.paintTitleBar(g, coords[0], coords[1], dimension[0], title);
     }
 
     /**
@@ -182,6 +195,7 @@ public class paintModule {
         g.setColor(color);
         g.drawRect(xCo,yCo,width,height);
         g.drawRect(xCo-1, yCo-1, width+2, height+2);
+        g.setColor(Color.BLACK);
 
     }
 
@@ -314,6 +328,27 @@ public class paintModule {
         g.setColor(Color.BLACK);
 
     }
+
+    /**
+     * Method that paints the title bar of a subwindow
+     * @param g Graphics object
+     * @param xCo Start X coordinate
+     * @param yCo   Start Y coordinate
+     * @param width width of the subwindow
+     * @param title text to be displayed as title
+     */
+    public  void paintTitleBar(Graphics g, int xCo, int yCo, int width, String title){
+        paintRectText(g, xCo, yCo, width, titleHeight, "");
+        paintText(g, xCo+30, yCo+13, title);
+        g.setColor(Color.RED);
+        paintClosingButton(g, xCo+5+titleHeight/4, yCo+titleHeight/4);
+        g.setColor(Color.BLACK);
+    }
+
+    public void paintClosingButton(Graphics g, int xCo, int yCo){
+        g.fillOval(xCo, yCo, titleHeight-5, titleHeight-5);
+    }
+
     public int getxCoStart() {
         return xCoStart;
     }

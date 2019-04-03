@@ -127,7 +127,7 @@ public class UITablesModule extends UISuperClass{
         settings setting;
         setting = data.getSetting();
 
-        paintModule.paintBorderSubwindow( g, coords, dimensions );
+        paintModule.paintBorderSubwindow( g, coords, dimensions, "Table Mode");
 
         List<Integer> widthList = setting.getWidthList();
         //Creates title
