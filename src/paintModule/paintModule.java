@@ -63,7 +63,7 @@ public class paintModule {
         settings setting = table.getRowSetting();
         List<Integer> widthList = setting.getWidthList();
         for(Column column: table.getColumnNames()){
-            this.paintRectText(g,headerXco, startYco - cellHeight, widthList.get(i),cellHeight,column.getName());
+            this.paintRectText(g,headerXco, startYco - cellHeight/2, widthList.get(i),cellHeight,column.getName());
             headerXco += widthList.get(i);
             i++;
 

@@ -75,7 +75,7 @@ public class UITablesModule extends UISuperClass{
             activeCell = clickedCell;
         }
         //Check if a cell is clicked
-        else if (!invalidInput && currMode!="edit" && currMode!= "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
+        else if (!invalidInput  && currMode!= "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
             if (count != 2){
             activeCell = clickedCell;
             currMode = "edit";
@@ -130,8 +130,7 @@ public class UITablesModule extends UISuperClass{
         paintModule.paintBorderSubwindow( g, coords, dimensions, "Table Mode");
 
         List<Integer> widthList = setting.getWidthList();
-        //Creates title
-        paintModule.paintTitle(g, "Table Mode");
+
 
         //print tables in tabular view
         paintModule.paintTableView(g, data.getTableList(), coords[0] + paintModule.getMargin(), coords[1] +paintModule.getMargin(), setting);

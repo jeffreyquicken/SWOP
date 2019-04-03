@@ -24,13 +24,15 @@ public class UIRowModule extends UISuperClass {
     private Boolean invalidInput = false;
     private int draggedColumn;
     private int draggedX;
+    private Table table;
 
 
     //Constructor that init/creates paintModule and an empty list with tablenames
     //Each UImodule has own paintmodule to save settings.settings (e.g. size, bg, ...)
-    public UIRowModule() {
+    public UIRowModule(Table tableInput) {
         paintModule = new paintModule();
         mouseEventHandler = new mouseEventHandler();
+        table = tableInput;
     }
 
     //Handles mousevent and returns if UImode need to change
@@ -45,38 +47,38 @@ public class UIRowModule extends UISuperClass {
      * @return returns a list with the nextUIMode and the state of the UI
      */
     public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data) {
-        List<Integer> widthList = data.getSelectedTable().getRowSetting().getWidthList();
+        List<Integer> widthList = table.getRowSetting().getWidthList();
 
 
         int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
-                paintModule.getCellHeight(), paintModule.getCellWidth(), data.getSelectedTable().getTableRows().size(), data.getSelectedTable().getColumnNames().size(), widthList);
-        int lowestY = (data.getSelectedTable().getColumnNames().size() * paintModule.getCellHeight()) + paintModule.getyCoStart();
+                paintModule.getCellHeight(), paintModule.getCellWidth(), table.getTableRows().size(), table.getColumnNames().size(), widthList);
+        int lowestY = (table.getColumnNames().size() * paintModule.getCellHeight()) + paintModule.getyCoStart();
 
         //check if leftmargin is clicked
         if(clickedCell[1] == 0 && currMode != "edit" && mouseEventHandler.marginLeftClicked(xCo,yCo,paintModule.getxCoStart(),
                 paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(),
-                data.getSelectedTable().getTableRows().size(), 1, paintModule.getCellLeftMargin(), widthList) != null) {
+                table.getTableRows().size(), 1, paintModule.getCellLeftMargin(), widthList) != null) {
             currMode = "delete";
             activeCell = clickedCell;
         }
         //EVENT DOUBLE CLICKS UNDER TABLE
-        if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getSelectedTable().getLengthTable() + paintModule.getyCoStart())) {
-            Row row = new Row(data.getSelectedTable().getColumnNames());
-            data.getSelectedTable().addRow(row);
+        if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, table.getLengthTable() + paintModule.getyCoStart())) {
+            Row row = new Row(table.getColumnNames());
+            table.addRow(row);
         }
 
         //EVENT CELL CLICKED (VALID INPUT)
         else if (!invalidInput && ID == 500 && currMode!="edit" && currMode != "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
             activeCell = clickedCell;
             currMode = "edit";
-            if (data.getSelectedTable().getColumnNames().get(activeCell[1]).getType().equals("Boolean")) {
+            if (table.getColumnNames().get(activeCell[1]).getType().equals("Boolean")) {
 
-                tempText = data.getSelectedTable().getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]);
+                tempText = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]);
 
                 if (tempText.equals("true")) {
                     tempText = "false";
                 } else if (tempText.equals("false")) {
-                    if (data.getSelectedTable().getColumnNames().get(activeCell[1]).getBlanksAllowed()) {
+                    if (table.getColumnNames().get(activeCell[1]).getBlanksAllowed()) {
                         tempText = "empty";
                     } else {
                         tempText = "true";
@@ -88,7 +90,7 @@ public class UIRowModule extends UISuperClass {
                 saveText(data);
 
             } else {
-                tempText = data.getSelectedTable().getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]);
+                tempText = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]);
             }
         }
 
@@ -121,10 +123,10 @@ public class UIRowModule extends UISuperClass {
             currMode = "normal";
         }
 
-        String nextUImode = "row";
+        String nextUImode = "";
         List<String> result = new ArrayList<>();
         result.add(currMode);
-        result.add("row");
+        result.add("");
         return result;
     }
 
@@ -140,7 +142,7 @@ public class UIRowModule extends UISuperClass {
      */
     protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data) {
         keyEventHandler eventHandler = new keyEventHandler();
-        String currName = data.getSelectedTable().getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]);
+        String currName = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]);
         //EVENT: ASCSII char pressed
         if (eventHandler.isChar(keyCode)) {
             tempText = tempText + keyChar;
@@ -220,8 +222,8 @@ public class UIRowModule extends UISuperClass {
 
 
 
-            Row row = data.getSelectedTable().getTableRows().get(activeCell[0]);
-            data.getSelectedTable().deleteRow(row);
+            Row row = table.getTableRows().get(activeCell[0]);
+            table.deleteRow(row);
             currMode = "normal";
         }
         List<String> result = new ArrayList<>();
@@ -238,27 +240,31 @@ public class UIRowModule extends UISuperClass {
      * @param g graphics object
      * @param data datacontroller
      */
-    public void paint(Graphics g, Table table, dataController data) {
-        List<Integer> widthList = data.getSelectedTable().getRowSetting().getWidthList();
+    @Override
+    public void paint(Graphics g,  dataController data, Integer[] coords, Integer[] dimensions) {
+        List<Integer> widthList = table.getRowSetting().getWidthList();
+        paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
+        paintModule.paintBorderSubwindow( g, coords, dimensions, "Row Mode (" + table.getTableName() + ")");
 
-        //Creates title
-        paintModule.paintTitle(g, "Row Mode");
+
 
         //print tables in tabular view
-        paintModule.paintTable(g, table, xCoStart, yCoStart);
+        paintModule.paintTable(g, table,coords[0] + paintModule.getMargin(), coords[1] + paintModule.getMargin());
 
 
         //Check mode
-        if (currMode == "edit") {
-            paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1], widthList)[0],
-                    paintModule.getCellCoords(activeCell[0], activeCell[1], widthList)[1], widthList.get(activeCell[1]),
+        if (currMode == "edit" ) {
+            int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList);
+            paintModule.paintCursor(g, coords1[0] + coords[0],
+                    coords1[1] + coords[1], widthList.get(activeCell[1]),
                     paintModule.getCellHeight(), tempText);
         }
 
         //check if there are warnings
         if (invalidInput || currMode == "delete") {
-            paintModule.paintBorder(g, paintModule.getCellCoords(activeCell[0], activeCell[1], widthList)[0],
-                    paintModule.getCellCoords(activeCell[0], activeCell[1], widthList)[1], widthList.get(activeCell[1]),
+            int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList);
+            paintModule.paintBorder(g, coords[0] + coords1[0],
+                    coords[1] + coords1[1],  widthList.get(activeCell[1]),
                     paintModule.getCellHeight(), Color.RED);
         } else {
             paintModule.setColor(g, Color.BLACK);
@@ -273,7 +279,7 @@ public class UIRowModule extends UISuperClass {
      */
     private void saveText(dataController data) {
         currMode = "normal";
-        data.getSelectedTable().getTableRows().get(activeCell[0]).setColumnCell(activeCell[1], tempText);
+        table.getTableRows().get(activeCell[0]).setColumnCell(activeCell[1], tempText);
     }
 
     /**
@@ -287,9 +293,9 @@ public class UIRowModule extends UISuperClass {
     private boolean textIsValid(String text, dataController data, String currName) {
 
 
-        String type = data.getSelectedTable().getColumnNames().get(activeCell[0]).getType();
+        String type = table.getColumnNames().get(activeCell[0]).getType();
         if (type.equals("String")) {
-            if (!data.getSelectedTable().getColumnNames().get(activeCell[0]).getBlanksAllowed()) {
+            if (!table.getColumnNames().get(activeCell[0]).getBlanksAllowed()) {
                 if (text.length() == 0) {
                     return false;
                 }

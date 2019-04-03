@@ -60,7 +60,13 @@ public class Controller {
     public void relayMouseEvent(int id, int xCo, int yCo, int count) {
         //if mode will be swtitched mouseevent will tell
         Integer[] result =  topLevelWindow.relayCoordinates(xCo,yCo, id);
-        topLevelWindow.getActiveSubWindow().handleMouseEvent(result[0], result[1], count, id, tableDataController);
+        if(topLevelWindow.getActiveSubWindow() != null  ) {
+            String nextUIMode = topLevelWindow.getActiveSubWindow().handleMouseEvent(result[0], result[1], count, id, tableDataController);
+            if (nextUIMode.equals("row")){
+                UIRowModule rowModule = new UIRowModule(tableDataController.getSelectedTable());
+                topLevelWindow.addSubWindow(rowModule);
+            }
+        }
 
         mouseEvent = "Mouse eventID= " + id + " | Coordinates clicked" + xCo + ", " + yCo + "| Amount clicked: " + count;
         System.out.println(mouseEvent);
