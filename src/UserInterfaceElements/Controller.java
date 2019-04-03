@@ -70,15 +70,16 @@ public class Controller {
      * @param keyChar keychar of the pressed key
      */
     public void relayKeyEvent(int id, int keyCode, char keyChar) {
-        if (this.getCurrentMode() == "table") {
-            //if mode will be switched mouseevent will tell
-            this.setCurrentMode(this.getTablemodule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
-        } else if (this.getCurrentMode() == "row") {
-            //if mode will be swtitched mouseevent will tell
-            this.setCurrentMode(this.getRowmodule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
-        } else if (this.getCurrentMode() == "design") {
-            this.setCurrentMode(this.getDesignModule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
-        }
+        topLevelWindow.getActiveSubWindow().handleKeyEvent(id, keyCode, keyChar, tableDataController);
+//        if (this.getCurrentMode() == "table") {
+//            //if mode will be switched mouseevent will tell
+//            this.setCurrentMode(this.getTablemodule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
+//        } else if (this.getCurrentMode() == "row") {
+//            //if mode will be swtitched mouseevent will tell
+//            this.setCurrentMode(this.getRowmodule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
+//        } else if (this.getCurrentMode() == "design") {
+//            this.setCurrentMode(this.getDesignModule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
+//        }
        // keyEvent = "Key eventID= " + id + " | Key pressed: " + keyChar + " | KeyCode: " + Integer.toString(keyCode);
     }
 
