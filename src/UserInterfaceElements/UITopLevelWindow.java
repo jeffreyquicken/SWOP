@@ -6,16 +6,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
 
 public class UITopLevelWindow {
 
-    List<UISuperClass> activeSubWindow;
-    settings setting;
+    private List<UISuperClass> activeSubWindow;
+    private settings setting;
+    private int minWidth = 150;
+    private int minHeight = 150;
 
     //EVENTS VARIABLES
-    boolean headerClicked = false;
-    int[] draggedCoords = {-1,-1};
+    private String state = "normal";
+    private int[] savedCoords = {-1,-1};
 
     /**
      * List with activeSubwindow in chronological order. The last active subwindow is in the first position in the list.
@@ -125,44 +127,76 @@ public class UITopLevelWindow {
 
     public Integer[] relayCoordinates(int xCo, int yCo, int id){
         Integer[] result = {-1,-1};
-        if (headerClicked && (id == 506 || id == 502)){
+        if (id == 502){
+            state = "normal";
+        }
+        if (state.equals("drag") && (id == 506 )){
             List<Integer> info = subwindowInfo.get(activeSubWindow.get(0));
-            int deltaX = xCo-draggedCoords[0];
-            int deltaY = yCo-draggedCoords[1];
+            int deltaX = xCo- savedCoords[0];
+            int deltaY = yCo- savedCoords[1];
             int newX = info.get(0)+deltaX;
             int newY = info.get(1)+deltaY;
             info.set(0,newX);
             info.set(1, newY);
+            savedCoords[0] = xCo;
+            savedCoords[1] = yCo;
+
         }
-        for(UISuperClass subWindow:subWindows){
-            List<Integer> info = subwindowInfo.get(subWindow);
-            int X = info.get(0);
-            int Y = info.get(1);
-            int width = info.get(2);
-            int height = info.get(3);
-            if (xCo > X && xCo < X+width && yCo > Y && yCo < Y+height){
-                setActiveSubWindow(subWindow);
-                int relayX = xCo-X;
-                int relayY = yCo-Y;
-                result[0] = relayX;
-                result[1] = relayY;
-                if (isClosingButtonClicked(relayX, relayY)) {
-                    subWindows.remove(subWindow);
+        else if (state.equals("resize") && id == 506){
+            List<Integer> info = subwindowInfo.get(activeSubWindow.get(0));
+            int deltaX = xCo- savedCoords[0];
+            int deltaY = yCo- savedCoords[1];
+            int newWidth = info.get(2)+deltaX;
+            int newHeight = info.get(3)+deltaY;
+            if (newWidth >= minWidth){
+                info.set(2,newWidth);
+            }
+            if (newHeight >= minHeight){
+                info.set(3, newHeight);
+            }
+            else{
+                info.set(2, minWidth);
+                info.set(3, minHeight);
+            }
+
+            savedCoords[0] = xCo;
+            savedCoords[1] = yCo;
+        }
+        else {
+            for (UISuperClass subWindow : subWindows) {
+                List<Integer> info = subwindowInfo.get(subWindow);
+                int X = info.get(0);
+                int Y = info.get(1);
+                int width = info.get(2);
+                int height = info.get(3);
+                if (xCo >= X && xCo <= X + width && yCo >= Y && yCo <= Y + height) {
+                    setActiveSubWindow(subWindow);
+                    int relayX = xCo - X;
+                    int relayY = yCo - Y;
+                    result[0] = relayX;
+                    result[1] = relayY;
+                    if (isClosingButtonClicked(relayX, relayY)) {
+                        subWindows.remove(subWindow);
+                        return result;
+                    }
+
+                    if (isTitleBarClicked(relayX, relayY, width)) {
+                        state = "drag";
+                        savedCoords[0] = xCo;
+                        savedCoords[1] = yCo;
+                    } else if (whichBorderClicked(relayX, relayX, width, height) != -1) {
+                        state = "resize";
+                        savedCoords[0] = xCo;
+                        savedCoords[1] = yCo;
+                    } else {
+                        state = "normal";
+                    }
                     return result;
                 }
 
-                if (isTitleBarClicked(relayX, relayY, width)){
-                    headerClicked = true;
-                    draggedCoords[0] = xCo;
-                    draggedCoords[1] = yCo;
-                }
-                else {
-                    headerClicked = false;
-                }
-                return result;
             }
-
         }
+
         return result;
     }
 
@@ -191,6 +225,51 @@ public class UITopLevelWindow {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Method that returns a number corresponding to the clicked edge or corner.
+     * The numbers are as shown in the figure
+     *
+     *  1___5___2
+     *  |       |
+     * 8|       |6
+     *  |       |
+     *  |_______|
+     *  4   7   3
+     *
+     * @param relayXco
+     * @param relayYco
+     * @param width
+     * @param height
+     * @return the number corresponding to the clicked edge or corner
+     */
+    public int whichBorderClicked(int relayXco, int relayYco, int width, int height){
+        if (relayXco == 0 && relayYco ==0){
+            return 1;
+        }
+        else if(relayXco == width && relayYco ==0){
+            return 2;
+        }
+        else if(relayXco == width && relayYco ==height){
+            return 3;
+        }
+        else if(relayXco == 0 && relayYco ==height){
+            return 4;
+        }
+        else if (relayYco == 0 && (relayXco > 0 && relayXco < width)){
+            return 5;
+        }
+        else if (relayXco == width && (relayYco > 0 && relayYco < height)){
+            return 6;
+        }
+        else if (relayYco == height && (relayXco > 0 && relayXco < width)){
+            return 7;
+        }
+        else if (relayXco == 0 && (relayYco > 0 && relayYco < height)){
+            return 8;
+        }
+        return -1;
     }
 
 
