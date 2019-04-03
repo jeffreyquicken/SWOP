@@ -13,6 +13,10 @@ public class UITopLevelWindow {
     List<UISuperClass> activeSubWindow;
     settings setting;
 
+    //EVENTS VARIABLES
+    boolean headerClicked = false;
+    int[] draggedCoords = {-1,-1};
+
     /**
      * List with activeSubwindow in chronological order. The last active subwindow is in the first position in the list.
      */
@@ -119,8 +123,17 @@ public class UITopLevelWindow {
 
     }
 
-    public Integer[] relayCoordinates(int xCo, int yCo){
+    public Integer[] relayCoordinates(int xCo, int yCo, int id){
         Integer[] result = {-1,-1};
+        if (headerClicked && (id == 506 || id == 502)){
+            List<Integer> info = subwindowInfo.get(activeSubWindow.get(0));
+            int deltaX = xCo-draggedCoords[0];
+            int deltaY = yCo-draggedCoords[1];
+            int newX = info.get(0)+deltaX;
+            int newY = info.get(1)+deltaY;
+            info.set(0,newX);
+            info.set(1, newY);
+        }
         for(UISuperClass subWindow:subWindows){
             List<Integer> info = subwindowInfo.get(subWindow);
             int X = info.get(0);
@@ -135,6 +148,16 @@ public class UITopLevelWindow {
                 result[1] = relayY;
                 if (isClosingButtonClicked(relayX, relayY)) {
                     subWindows.remove(subWindow);
+                    return result;
+                }
+
+                if (isTitleBarClicked(relayX, relayY, width)){
+                    headerClicked = true;
+                    draggedCoords[0] = xCo;
+                    draggedCoords[1] = yCo;
+                }
+                else {
+                    headerClicked = false;
                 }
                 return result;
             }
@@ -143,8 +166,28 @@ public class UITopLevelWindow {
         return result;
     }
 
+    /**
+     * Method that checks whether the closing button is clicked
+     * @param relayXCo
+     * @param relayYCo
+     * @return whether the closing button is clicked
+     */
     public boolean isClosingButtonClicked(int relayXCo, int relayYCo){
         if (relayXCo > 8 && relayXCo < 18 && relayYCo > 3 && relayYCo < 13) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Method that checks whether the title bar is clicked
+     * @param relayXco
+     * @param relayYCo
+     * @param width
+     * @return whether the title bar is clicked
+     */
+    public boolean isTitleBarClicked(int relayXco, int relayYCo, int width){
+        if (relayXco > 0 && relayXco < width && relayYCo > 0 && relayYCo < 15){
             return true;
         }
         return false;
