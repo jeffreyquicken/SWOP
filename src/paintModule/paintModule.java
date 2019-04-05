@@ -357,6 +357,10 @@ public class paintModule {
      * @param title text to be displayed as title
      */
     public  void paintTitleBar(Graphics g, int xCo, int yCo, int width, String title){
+        Color myColor1 = new Color(240,248,255);
+        g.setColor(myColor1);
+        g.fillRect(xCo,yCo,width,titleHeight);
+        g.setColor(Color.BLACK);
         paintRectText(g, xCo, yCo, width, titleHeight, "");
         paintText(g, xCo+30, yCo+13, title);
         g.setColor(Color.RED);
