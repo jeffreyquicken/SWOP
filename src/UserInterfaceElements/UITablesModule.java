@@ -29,7 +29,7 @@ public class UITablesModule extends UISuperClass{
      * @return returns a list with the nextUIMode and the state of the UI
      */
     public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data) {
-        String nextUImode = "table";
+        String nextUImode = "";
 
         //EVENT DOUBLE CLICKS UNDER TABLE
         if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getLowestY(30)) ) {
@@ -233,7 +233,7 @@ public class UITablesModule extends UISuperClass{
 
         List<String> result = new ArrayList<>();
         result.add(currMode);
-        result.add("table");
+        result.add("");
         return result;
 
 
@@ -252,7 +252,7 @@ public class UITablesModule extends UISuperClass{
     protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){
         List<String> result = new ArrayList<>();
         result.add("normal");
-        result.add("table");
+        result.add("");
         return result;
 
 
@@ -279,7 +279,7 @@ public class UITablesModule extends UISuperClass{
         }
         List<String> result = new ArrayList<>();
         result.add(currMode);
-        result.add("table");
+        result.add("");
         return result;
     }
 

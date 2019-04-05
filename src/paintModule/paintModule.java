@@ -62,12 +62,19 @@ public class paintModule {
         int i =0;
         settings setting = table.getRowSetting();
         List<Integer> widthList = setting.getWidthList();
+        Font currentFont = g.getFont();
+        Font newFont = currentFont.deriveFont(currentFont.getSize() * 0.89F);
+        g.setFont(newFont);
         for(Column column: table.getColumnNames()){
-            this.paintRectText(g,headerXco, startYco - cellHeight/2, widthList.get(i),cellHeight,column.getName());
+            g.setColor(Color.GRAY);
+            g.fillRect(headerXco,startYco - cellHeight/2, widthList.get(i), cellHeight/2);
+            g.setColor(Color.BLACK);
+            this.paintRectText(g,headerXco, startYco - cellHeight/2, widthList.get(i),cellHeight/2,column.getName());
             headerXco += widthList.get(i);
             i++;
 
         }
+        g.setFont(currentFont);
         for(Row row: table.getTableRows()){
             this.paintRow(g,row.getColumnList(),startXco,startYco, setting);
             startYco = startYco + 20;
@@ -102,21 +109,27 @@ public class paintModule {
      * @param g graphics object
      * @param table table for which design view has to be painted
      */
-    public void paintDesignView(Graphics g, Table table){
-        int headerXco = getxCoStart();
-        int headerYco = getyCoStart() - cellHeight;
-        settings setting = table.getDesignSetting();
+    public void paintDesignView(Graphics g, Table table, int startXco, int startYco, settings setting){
+        int headerXco = startXco;
+        int headerYco = startYco - cellHeight/2;;
         List<Integer> widthList = setting.getWidthList();
+
+        Font currentFont = g.getFont();
+        Font newFont = currentFont.deriveFont(currentFont.getSize() * 0.9F);
+        g.setFont(newFont);
         String[] names = {"Name", "Default value", "Type", "Blank?"};
         for(int i = 0; i <4; i++){
-            this.paintRectText(g,headerXco, headerYco, widthList.get(i),cellHeight, names[i]);
+            g.setColor(Color.GRAY);
+            g.fillRect(headerXco, headerYco, widthList.get(i),cellHeight/2);
+            g.setColor(Color.BLACK);
+            this.paintRectText(g,headerXco, headerYco, widthList.get(i),cellHeight/2, names[i]);
             System.out.println(names[i]);
             headerXco += widthList.get(i);
         }
-        int startYco = this.getyCoStart();
+        g.setFont(currentFont);
         for(Column column: table.getColumnNames()){
             List<String> rowInfo = column.getInfo();
-            this.paintRow(g,rowInfo,this.getxCoStart(),startYco, setting);
+            this.paintRow(g,rowInfo,startXco,startYco, setting);
             startYco = startYco + cellHeight;
         }
 

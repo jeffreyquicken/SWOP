@@ -61,10 +61,15 @@ public class Controller {
         //if mode will be swtitched mouseevent will tell
         Integer[] result =  topLevelWindow.relayCoordinates(xCo,yCo, id);
         if(topLevelWindow.getActiveSubWindow() != null  ) {
+
             String nextUIMode = topLevelWindow.getActiveSubWindow().handleMouseEvent(result[0], result[1], count, id, tableDataController);
             if (nextUIMode.equals("row")){
                 UIRowModule rowModule = new UIRowModule(tableDataController.getSelectedTable());
                 topLevelWindow.addSubWindow(rowModule);
+            }
+            else if(nextUIMode.equals("design")){
+                UIDesignModule designModule = new UIDesignModule(tableDataController.getSelectedTable());
+                topLevelWindow.addSubWindow(designModule);
             }
         }
 
@@ -81,7 +86,18 @@ public class Controller {
      */
     public void relayKeyEvent(int id, int keyCode, char keyChar) {
 
-        topLevelWindow.getActiveSubWindow().handleKeyEvent(id, keyCode, keyChar, tableDataController);
+        String nextUIMode = topLevelWindow.getActiveSubWindow().handleKeyEvent(id, keyCode, keyChar, tableDataController);
+        if (nextUIMode.equals("row")){
+            UIRowModule rowModule = new UIRowModule(tableDataController.getSelectedTable());
+            topLevelWindow.addSubWindow(rowModule);
+        }
+        else if(nextUIMode.equals("design")){
+            UIDesignModule designModule = new UIDesignModule(tableDataController.getSelectedTable());
+            topLevelWindow.addSubWindow(designModule);
+        }else if(nextUIMode.equals("table")){
+            UITablesModule tablesModule = new UITablesModule();
+            topLevelWindow.addSubWindow(tablesModule);
+        }
 
 //        if (this.getCurrentMode() == "table") {
 //            //if mode will be switched mouseevent will tell

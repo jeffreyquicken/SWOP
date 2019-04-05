@@ -169,7 +169,7 @@ public class UIRowModule extends UISuperClass {
 
         List<String> result = new ArrayList<>();
         result.add("edit");
-        result.add("row");
+        result.add("");
         return result;
 
     }
@@ -185,11 +185,14 @@ public class UIRowModule extends UISuperClass {
      */
     protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data) {
         //EVENT: t pressed
-        String nextUIMode = "row";
+        String nextUIMode = "";
         keyEventHandler eventHandler = new keyEventHandler();
         if (keyCode == 27) {
             nextUIMode = "table";
-        } else if (keyCode == 17) {
+        } else if(keyChar=='d'){
+            nextUIMode = "design";
+
+        }else if (keyCode == 17) {
             ctrlPressed = true;
         } else if (ctrlPressed) {
             if (eventHandler.isEnter(keyCode)) {
@@ -228,7 +231,7 @@ public class UIRowModule extends UISuperClass {
         }
         List<String> result = new ArrayList<>();
         result.add(currMode);
-        result.add("row");
+        result.add("");
         return result;
     }
 
@@ -249,7 +252,7 @@ public class UIRowModule extends UISuperClass {
 
 
         //print tables in tabular view
-        paintModule.paintTable(g, table,coords[0] + paintModule.getMargin(), coords[1] + paintModule.getMargin());
+        paintModule.paintTable(g, table,coords[0] + paintModule.getMargin() +10, coords[1] + paintModule.getMargin() +10);
 
 
         //Check mode
