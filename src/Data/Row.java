@@ -6,9 +6,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+
 public class Row {
 
-    private List<String> columnList;
+    private List<Cell> columnList;
     private String rowName;
 
     /**
@@ -16,7 +17,7 @@ public class Row {
      * @param colList   the list of columns that belong to the row
      */
     public Row( List<Column> colList){
-        columnList = new ArrayList<String>();
+        columnList = new ArrayList<Cell>();
         for(Column col: colList){
             columnList.add(col.getDefaultV());
         }
@@ -32,17 +33,17 @@ public class Row {
         columnList.add(value4);**/
     }
 
-    public List<String> getColumnList() {
+    public List<Cell> getColumnList() {
         return columnList;
     }
-    public void addColumn(String value){
+    public void addColumn(Cell value){
         columnList.add(value);
     }
 
     public void deleteColumnCell(int index){
         columnList.remove(index);
     }
-    public void setColumnCell(int index, String newvalue){
+    public void setColumnCell(int index, Cell newvalue){
         columnList.set(index, newvalue);
     }
 

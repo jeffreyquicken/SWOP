@@ -1,9 +1,6 @@
 package UserInterfaceElements;
 
-import Data.Column;
-import Data.Row;
-import Data.Table;
-import Data.dataController;
+import Data.*;
 import EventHandlers.keyEventHandler;
 import EventHandlers.mouseEventHandler;
 import paintModule.paintModule;
@@ -20,7 +17,7 @@ public class UIRowModule extends UISuperClass {
     private int yCoStart = 50;
     private String currMode = "normal";
     private int[] activeCell;
-    private String tempText;
+    private Cell<?> tempText;
     private Boolean invalidInput = false;
     private int draggedColumn;
     private int draggedX;
@@ -75,17 +72,17 @@ public class UIRowModule extends UISuperClass {
 
                 tempText = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]);
 
-                if (tempText.equals("true")) {
-                    tempText = "false";
-                } else if (tempText.equals("false")) {
+                if (tempText.getValue().equals(true)) {
+                    ((CellBoolean) tempText).setValue(false);
+                } else if (tempText.getValue().equals(false)) {
                     if (table.getColumnNames().get(activeCell[1]).getBlanksAllowed()) {
-                        tempText = "empty";
+                        tempText = "empty"; // empty is geen mogelijke boolean
                     } else {
-                        tempText = "true";
+                        ((CellBoolean) tempText).setValue(true);
                     }
 
                 } else {
-                    tempText = "true";
+                    ((CellBoolean) tempText).setValue(true);
                 }
                 saveText(data);
 
@@ -142,10 +139,10 @@ public class UIRowModule extends UISuperClass {
      */
     protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data) {
         keyEventHandler eventHandler = new keyEventHandler();
-        String currName = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]);
+        String currName = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]).getValue().toString(); // NOOIT GEBRUIKT, snap het nut niet
         //EVENT: ASCSII char pressed
         if (eventHandler.isChar(keyCode)) {
-            tempText = tempText + keyChar;
+            tempText.addChar(keyChar);
 
             invalidInput = !textIsValid(tempText, data, currName);
         }
@@ -154,8 +151,9 @@ public class UIRowModule extends UISuperClass {
         else if (eventHandler.isBackspace(keyCode)) {
 
             //Check if string is not empty
-            if (tempText.length() != 0) {
-                tempText = tempText.substring(0, tempText.length() - 1);
+            if (tempText.getValue().toString().length() != 0) {
+                tempText.delChar();
+
                 invalidInput = !textIsValid(tempText, data, currName);
 
             }
@@ -257,7 +255,7 @@ public class UIRowModule extends UISuperClass {
             int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList);
             paintModule.paintCursor(g, coords1[0] + coords[0],
                     coords1[1] + coords[1], widthList.get(activeCell[1]),
-                    paintModule.getCellHeight(), tempText);
+                    paintModule.getCellHeight(), tempText.getValue().toString());
         }
 
         //check if there are warnings
@@ -290,26 +288,27 @@ public class UIRowModule extends UISuperClass {
      * @param currName old name
      * @return Wheter the text is in the correct fromat according to the type of it's cell
      */
-    private boolean textIsValid(String text, dataController data, String currName) {
+    private boolean textIsValid(Cell text, dataController data, String currName) {
+
 
 
         String type = table.getColumnNames().get(activeCell[0]).getType();
         if (type.equals("String")) {
             if (!table.getColumnNames().get(activeCell[0]).getBlanksAllowed()) {
-                if (text.length() == 0) {
+                if (((CellText) text).getValue().length() == 0) {
                     return false;
                 }
             }
             return true;
         } else if (type.equals("Boolean")) {
         } else if (type.equals("Email")) {
-            if (text.contains("@")) {
+            if (((CellEmail) text).getValue().contains("@")) {
                 return true;
             } else return false;
         } else if (type.equals("Integer")) {
 
             try {
-                Integer.parseInt(text);
+                Integer.parseInt( ((CellNumerical) text).getValue().toString() );
                 return true;
             } catch (Exception e) {
                 return false;

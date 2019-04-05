@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Column {
     private String name;
-    private String defaultV;
+    private Cell defaultV;
     private String type;
     private Boolean blanksAllowed;
 
@@ -25,9 +25,9 @@ public class Column {
      * @param Type  the type of values of all cells in this column (string, boolean, integer or email)
      * @param blanks    whether blanks are allowed in the cells of this column
      */
-    public Column(String name, String defaultValue, String Type, Boolean blanks){
+    public Column(String name, Cell defaultValue, String Type, Boolean blanks){
         this.name = name;
-        defaultV= defaultValue;
+        defaultV.setValue(defaultValue);
         type = Type;
         blanksAllowed = blanks;
     }
@@ -39,7 +39,7 @@ public class Column {
     public List<String>  getInfo(){
         List<String> info = new ArrayList<>();
         info.add(name);
-        info.add(defaultV);
+        info.add(defaultV.getValue().toString());
         info.add(type);
         info.add(blanksAllowed.toString());
         return info;
@@ -67,7 +67,7 @@ public class Column {
         this.name = name;
     }
 
-    public String getDefaultV() {
+    public Cell getDefaultV() {
         return this.defaultV;
     }
 
@@ -78,7 +78,7 @@ public class Column {
     public void setBlanksAllowed(Boolean blanksAllowed) {
         this.blanksAllowed = blanksAllowed;
     }
-    public void setDefaultV(String defaultV) {
+    public void setDefaultV(Cell defaultV) {
         this.defaultV = defaultV;
     }
 

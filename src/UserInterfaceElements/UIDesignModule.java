@@ -1,8 +1,7 @@
 package UserInterfaceElements;
 
-import Data.Column;
-import Data.Row;
-import Data.Table;
+import Data.*;
+
 import Data.dataController;
 import EventHandlers.keyEventHandler;
 import EventHandlers.mouseEventHandler;
@@ -21,7 +20,7 @@ public class UIDesignModule extends UISuperClass {
     private int yCoStart = 50;
     private String currMode = "normal";
     private int[] activeCell = {-1,-1};
-    private String tempText;
+    private Cell tempText;
     private Boolean invalidInput;
     private int draggedColumn;
     private int draggedX;
@@ -78,7 +77,7 @@ public class UIDesignModule extends UISuperClass {
                 i++;
                 newName = "Column" + i;
             }
-            Column newCol = new Column(newName, "", "String", true);
+            Column newCol = new Column(newName, new CellText(""), "String", true);
             data.getSelectedTable().addColumn(newCol);
         }
 
@@ -92,7 +91,7 @@ public class UIDesignModule extends UISuperClass {
             if (count != 2 && clickedCell[1] == 0) {
                 activeCell = clickedCell;
                 currMode = "edit";
-                tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]).getName();
+                tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]);
             }
 
 
@@ -102,20 +101,20 @@ public class UIDesignModule extends UISuperClass {
                 currMode = "edit";
                 if (data.getSelectedTable().getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
                     tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]).getDefaultV();
-                    if (tempText.equals("true")){
-                        tempText = "false";
+                    if (tempText.getValue().equals(true)){
+                        tempText.setValue(false);
                     }
                     else if (tempText.equals("false")){
                         if (data.getSelectedTable().getColumnNames().get(activeCell[0]).getBlanksAllowed()){
                             tempText = "empty";
                         }
                         else{
-                            tempText = "true";
+                            tempText.setValue(true);
                         }
 
                     }
                     else{
-                        tempText = "true";
+                        tempText.setValue(true);
                     }
                     saveText(data);
 
@@ -257,27 +256,27 @@ public class UIDesignModule extends UISuperClass {
      * @param currName old name
      * @return Wheter the text is in the correct fromat according to the type of it's cell
      */
-    private boolean textIsValid(String text, dataController data, String currName) {
+    private boolean textIsValid(Cell text, dataController data, String currName) {
 
 
         if (activeCell[1] == 1) {
             String type = data.getSelectedTable().getColumnNames().get(activeCell[0]).getType();
             if (type.equals("String")) {
                 if (!data.getSelectedTable().getColumnNames().get(activeCell[0]).getBlanksAllowed()) {
-                    if (text.length() == 0) {
+                    if (((CellText)text).getValue().length() == 0) {
                         return false;
                     }
                 }
                 return true;
             } else if (type.equals("Boolean")) {
             } else if (type.equals("Email")) {
-                if (text.contains("@")) {
+                if (((CellEmail) text).getValue().contains("@")) {
                     return true;
                 } else return false;
             } else if (type.equals("Integer")) {
 
                 try {
-                    Integer.parseInt(text);
+                    Integer.parseInt( ((CellNumerical) text).getValue().toString() );
                     return true;
                 } catch (Exception e) {
                     return false;
@@ -286,9 +285,9 @@ public class UIDesignModule extends UISuperClass {
 
         }
         else if (activeCell[1] == 2){
-            String value = data.getSelectedTable().getColumnNames().get(activeCell[0]).getDefaultV();
+            String value = data.getSelectedTable().getColumnNames().get(activeCell[0]).getDefaultV().toString();
             for (Row row : data.getSelectedTable().getTableRows()){
-                String colValue = row.getColumnList().get(activeCell[0]);
+                String colValue = row.getColumnList().get(activeCell[0]).toString();
                 if (text.equals("String")){
                     return true;
                 }
@@ -325,7 +324,7 @@ public class UIDesignModule extends UISuperClass {
                     }
                 }
             }
-            if (text.length() == 0) {
+            if (text.getValue().toString().length() == 0) {
                 return false;
             }
             return true;
@@ -344,7 +343,7 @@ public class UIDesignModule extends UISuperClass {
             data.getSelectedTable().getColumnNames().get(activeCell[0]).setDefaultV(tempText);
         }
         else if (activeCell[1] == 0){
-            data.getSelectedTable().getColumnNames().get(activeCell[0]).setName(tempText);
+            data.getSelectedTable().getColumnNames().get(activeCell[0]).setName(tempText.getValue().toString());
         }
     }
 
@@ -377,13 +376,13 @@ public class UIDesignModule extends UISuperClass {
             if (activeCell[1] == 0){
                 paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1], widthList)[0],
                         paintModule.getCellCoords(activeCell[0], activeCell[1], widthList)[1], widthList.get(activeCell[1]),
-                        paintModule.getCellHeight(), tempText);
+                        paintModule.getCellHeight(), tempText.getValue().toString());
             }
             else if(activeCell[1] == 1){
                 if (!data.getSelectedTable().getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
                     paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1], widthList)[0],
                             paintModule.getCellCoords(activeCell[0], activeCell[1], widthList)[1], widthList.get(activeCell[1]),
-                            paintModule.getCellHeight(), tempText);
+                            paintModule.getCellHeight(), tempText.getValue().toString());
                 }
             }
             else if(activeCell[1] == 2){
@@ -428,7 +427,7 @@ public class UIDesignModule extends UISuperClass {
         keyEventHandler eventHandler = new keyEventHandler();
         //EVENT: ASCSII char pressed
         if (eventHandler.isChar(keyCode)) {
-            tempText = tempText + keyChar;
+            tempText.addChar(keyChar);
             String currName = data.getSelectedTable().getColumnNames().get(activeCell[0]).getName();
             invalidInput = !textIsValid(tempText, data, currName);
         }
@@ -437,8 +436,8 @@ public class UIDesignModule extends UISuperClass {
         else if (eventHandler.isBackspace(keyCode)) {
 
             //Check if string is not empty
-            if (tempText.length() != 0) {
-                tempText = tempText.substring(0, tempText.length() - 1);
+            if (tempText.getValue().toString().length() != 0) {
+                tempText.delChar();
                 String currName = data.getSelectedTable().getColumnNames().get(activeCell[0]).getName();
                 invalidInput = !textIsValid(tempText, data, currName);
 

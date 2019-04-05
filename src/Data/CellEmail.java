@@ -2,9 +2,11 @@ package Data;
 
 public class CellEmail extends Cell<String>{
     protected String value;
+    private String type;
 
     CellEmail(String arg){
     	this.setValue(arg);
+    	this.setType("Email");
     }
     
 	public void setEmail(String email) {
@@ -23,6 +25,26 @@ public class CellEmail extends Cell<String>{
 	            setEmail(value);
 	        }
 	  }
+
+	@Override
+	public String getType() {
+		return this.type;
+	}
+
+	@Override
+	public void setType(String type) {
+		this.type = type;
+	}
+
+
+	@Override
+	public void addChar(char keyChar) {
+		this.setValue(this.getValue() + keyChar);
+	}
+	@Override
+	public void delChar() {
+		this.setValue(this.getValue().substring(0,this.getValue().length()-1));
+	}
 
 	/**
 	 *Returns a boolean value that states if the text string is a valid email,
