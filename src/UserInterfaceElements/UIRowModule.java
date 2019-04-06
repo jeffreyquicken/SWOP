@@ -72,17 +72,19 @@ public class UIRowModule extends UISuperClass {
 
                 tempText = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]);
 
-                if (tempText.getValue().equals(true)) {
-                    ((CellBoolean) tempText).setValue(false);
+                if (tempText.getValue()== null) {
+                    ((CellBoolean) tempText).setValue(true);
+
                 } else if (tempText.getValue().equals(false)) {
                     if (table.getColumnNames().get(activeCell[1]).getBlanksAllowed()) {
-                        tempText = null; // empty is geen mogelijke boolean
+                        tempText.setValue(null);
                     } else {
+
                         ((CellBoolean) tempText).setValue(true);
                     }
 
                 } else {
-                    ((CellBoolean) tempText).setValue(true);
+                    ((CellBoolean) tempText).setValue(false);
                 }
                 saveText(data);
 
@@ -256,9 +258,14 @@ public class UIRowModule extends UISuperClass {
         //Check mode
         if (currMode == "edit" ) {
             int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList);
-            paintModule.paintCursor(g, coords1[0] + coords[0],
-                    coords1[1] + coords[1], widthList.get(activeCell[1]),
-                    paintModule.getCellHeight(), tempText.getValue().toString());
+            if (tempText.getValue() != null) {
+                paintModule.paintCursor(g, coords1[0] + coords[0],
+                        coords1[1] + coords[1], widthList.get(activeCell[1]),
+                        paintModule.getCellHeight(), tempText.getValue().toString());
+            }
+
+
+
         }
 
         //check if there are warnings

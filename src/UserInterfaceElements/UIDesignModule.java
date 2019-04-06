@@ -121,7 +121,7 @@ public class UIDesignModule extends UISuperClass {
                     }
                     else if (tempText.getValue().equals(false)){
                         if (table.getColumnNames().get(activeCell[0]).getBlanksAllowed()){
-                            tempText = null;
+                            tempText.setValue(null);
                         }
                         else{
                             tempText.setValue(true);

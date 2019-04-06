@@ -148,7 +148,7 @@ public class paintModule {
         int i = 0;
         List<Integer> widthList = setting.getWidthList();
         for(Cell rowItem : rowList){
-            if (rowItem == null){
+            if (rowItem.getValue() == null){
                 checkBoxEmpty(g, startxCo, startyCo, widthList.get(i));
 
             } else if (rowItem.getValue().equals(false)) {

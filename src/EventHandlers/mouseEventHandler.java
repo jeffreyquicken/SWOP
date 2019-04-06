@@ -75,6 +75,7 @@ public class mouseEventHandler {
             //calculates in which row the user clicked
             cellID[0] = calculateRowID(yCo, firstY, height, numberOfRows);
         }
+    	System.out.println("CellID: " + cellID[0] + ", " + cellID[1]);
     	return cellID;
     }
 
@@ -107,7 +108,7 @@ public class mouseEventHandler {
     private int calculateRowID(int yCo, int firstY, int height, int numberOfRows) {
         int rowID = -1;
         for (int i = 0; i < numberOfRows; i++) {
-            if ((yCo > firstY + i * height) && (yCo < firstY + (i + 1) * height)) {
+            if ((yCo > (firstY + i * height)) && (yCo < (firstY + (i + 1) * height))) {
                 rowID = i;
             }
         }

@@ -82,9 +82,9 @@ public class UITablesModule extends UISuperClass{
             tempText = data.getTableList().get(activeCell[0]).getTableName();}
             else{
                 data.setSelectedTable(data.getTableList().get(clickedCell[0]));
-                if(data.getSelectedTable().getColumnNames().size() == 0){
+                if((data.getSelectedTable().getColumnNames().size() == 0) && (ID == 502)){
                     nextUImode = "design";
-                }else{
+                }else if (ID == 502) {
                 nextUImode = "row";}
             }
             }
