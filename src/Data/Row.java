@@ -1,9 +1,8 @@
 package Data;
 
-import com.sun.xml.internal.ws.api.config.management.policy.ManagementAssertion;
 
 import java.util.ArrayList;
-import java.util.Collection;
+
 import java.util.List;
 
 
@@ -19,7 +18,20 @@ public class Row {
     public Row( List<Column> colList){
         columnList = new ArrayList<Cell>();
         for(Column col: colList){
-            columnList.add(col.getDefaultV());
+            Cell val = col.getDefaultV();
+            if(val.getType() == "Numerical") {
+                columnList.add(new CellNumerical(((CellNumerical) val).getValue()));
+            } else if(val.getType() == "Email") {
+                columnList.add(new CellEmail(((CellEmail) val).getValue()));
+            } else if(val.getType() == "Text") {
+                columnList.add(new CellText(((CellText) val).getValue()));
+             }else if(val.getType() == "Boolean") {
+                columnList.add(new CellBoolean(((CellBoolean) val).getValue()));
+            }
+
+
+
+
         }
         /**
         rowName = name;

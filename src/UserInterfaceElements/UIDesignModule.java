@@ -5,7 +5,6 @@ import Data.*;
 import Data.dataController;
 import EventHandlers.keyEventHandler;
 import EventHandlers.mouseEventHandler;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import paintModule.paintModule;
 import settings.settings;
 
@@ -16,24 +15,28 @@ import java.util.List;
 public class UIDesignModule extends UISuperClass {
     private paintModule paintModule;
     private EventHandlers.mouseEventHandler mouseEventHandler;
-    private int xCoStart = 50;
-    private int yCoStart = 50;
+    //private int xCoStart = 50;
+    //private int yCoStart = 50;
     private String currMode = "normal";
     private int[] activeCell = {-1,-1};
     private Cell tempText;
     private Boolean invalidInput;
     private int draggedColumn;
     private int draggedX;
+    private Table table;
 
 
     /**
      * Creates/init a paintmodule and a mouseventhandler
      */
-    public UIDesignModule() {
+    public UIDesignModule(Table inputTable) {
         paintModule = new paintModule();
         mouseEventHandler = new mouseEventHandler();
         invalidInput = false;
+        table = inputTable;
     }
+
+
 
     //Handles mousevent and returns if UImode need to change
 
@@ -50,35 +53,37 @@ public class UIDesignModule extends UISuperClass {
     public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data) {
 
         settings setting;
-        if (data.getSelectedTable() == null) {
-            setting = data.getSelectedTable().getDesignSetting();
+        if (table == null) {
+            setting = table.getDesignSetting();
         } else {
-            setting = data.getSelectedTable().getDesignSetting();
+            setting = table.getDesignSetting();
         }
         List<Integer> widthList = setting.getWidthList();
         int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
-                paintModule.getCellHeight(), paintModule.getCellWidth(), data.getSelectedTable().getColumnNames().size(), 1, widthList);
-        int lowestY = (data.getSelectedTable().getColumnNames().size() * paintModule.getCellHeight()) + paintModule.getyCoStart();
+                paintModule.getCellHeight(), paintModule.getCellWidth(), table.getColumnNames().size(), 1, widthList);
+        int lowestY = (table.getColumnNames().size() * paintModule.getCellHeight()) + paintModule.getyCoStart();
 
         //check if leftmargin is clicked
         if(clickedCell[1] == 0 && currMode != "edit" && mouseEventHandler.marginLeftClicked(xCo,yCo,paintModule.getxCoStart(),
                 paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(),
-                data.getSelectedTable().getColumnNames().size(), 1, paintModule.getCellLeftMargin(), widthList) != null) {
+                table.getColumnNames().size(), 1, paintModule.getCellLeftMargin(), widthList) != null) {
             currMode = "delete";
             activeCell = clickedCell;
         }
         //EVENT DOUBLE CLICKS UNDER TABLE
 
         else if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, lowestY)) {
-            int numberOfCols = data.getSelectedTable().getColumnNames().size() + 1;
-            String newName = "Column" + numberOfCols;
+            int numberOfCols = table.getColumnNames().size() + 1;
+            Cell newName = new CellText("Column" + numberOfCols);
             int i = numberOfCols;
             while (!textIsValid(newName, data, null)) {
                 i++;
-                newName = "Column" + i;
+                newName.setValue("Column" + i);
             }
-            Column newCol = new Column(newName, new CellText(""), "String", true);
-            data.getSelectedTable().addColumn(newCol);
+
+            Column newCol = new Column(((CellText) newName).getValue(), new CellText(""), "String", true);
+            table.addColumn(newCol);
+
         }
 
 
@@ -91,7 +96,9 @@ public class UIDesignModule extends UISuperClass {
             if (count != 2 && clickedCell[1] == 0) {
                 activeCell = clickedCell;
                 currMode = "edit";
-                tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]);
+
+                tempText = new CellText(table.getColumnNames().get(activeCell[0]).getName());
+
             }
 
 
@@ -99,14 +106,22 @@ public class UIDesignModule extends UISuperClass {
             else if(clickedCell[1] == 1){
                 activeCell = clickedCell;
                 currMode = "edit";
-                if (data.getSelectedTable().getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
-                    tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]).getDefaultV();
+
+                if (table.getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
+                    tempText = table.getColumnNames().get(activeCell[0]).getDefaultV();
                     if (tempText.getValue().equals(true)){
                         tempText.setValue(false);
                     }
-                    else if (tempText.equals("false")){
-                        if (data.getSelectedTable().getColumnNames().get(activeCell[0]).getBlanksAllowed()){
-                            tempText = "empty";
+                }
+                if (table.getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
+                    tempText = table.getColumnNames().get(activeCell[0]).getDefaultV();
+                    if (tempText.getValue().equals(true)){
+                        tempText.setValue(false);
+
+                    }
+                    else if (tempText.getValue().equals(false)){
+                        if (table.getColumnNames().get(activeCell[0]).getBlanksAllowed()){
+                            tempText = null;
                         }
                         else{
                             tempText.setValue(true);
@@ -120,23 +135,23 @@ public class UIDesignModule extends UISuperClass {
 
                 }
                 else {
-                    tempText = data.getSelectedTable().getColumnNames().get(activeCell[0]).getDefaultV();
+                    tempText = table.getColumnNames().get(activeCell[0]).getDefaultV();
                 }
             }
 
             //TYPE CLICKED
             else if(clickedCell[1] == 2){
 
-                    String prevType = data.getSelectedTable().getColumnNames().get(clickedCell[0]).getType();
-                    String newType;
+                    String prevType = table.getColumnNames().get(clickedCell[0]).getType();
+                    Cell newType;
                     if (prevType.equals("String")) {
-                        newType = "Email";
+                        newType = new CellText("Email");
                     } else if (prevType.equals("Email")) {
-                        newType = "Boolean";
+                        newType = new CellText("Boolean");
                     } else if (prevType.equals("Boolean")) {
-                        newType = "Integer";
+                        newType = new CellText("Integer");
                     } else {
-                        newType = "String";
+                        newType = new CellText("String");
                     }
                     activeCell = clickedCell;
                     invalidInput = !textIsValid(newType, data, null);
@@ -145,25 +160,27 @@ public class UIDesignModule extends UISuperClass {
                     } else {
                         currMode = "normal";
                     }
-                    data.getSelectedTable().getColumnNames().get(clickedCell[0]).setType(newType);
+                table.getColumnNames().get(clickedCell[0]).setType(((CellText) newType).getValue());
 
             }
 
             //CHECKBOX BLANKS CLICKED
             else if (clickedCell[1] == 3) {
-                Boolean prevBool = data.getSelectedTable().getColumnNames().get(clickedCell[0]).getBlanksAllowed();
-                data.getSelectedTable().getColumnNames().get(clickedCell[0]).setBlanksAllowed(!prevBool);
-                tempText = String.valueOf(!prevBool);
+                Cell prevBool = new CellBoolean(table.getColumnNames().get(clickedCell[0]).getBlanksAllowed());
+                table.getColumnNames().get(clickedCell[0]).setBlanksAllowed(!(((CellBoolean) prevBool).getValue()));
+                Boolean val = ((CellBoolean) prevBool).getValue();
+                prevBool.setValue(!val);
+                tempText = prevBool;
                 //if default is false
-                if (prevBool) {
+                if (((CellBoolean) prevBool).getValue()) {
 
-                    if (data.getSelectedTable().getColumnNames().get(clickedCell[0]).getDefaultV().equals("")) {
+                    if (table.getColumnNames().get(clickedCell[0]).getDefaultV().equals("")) {
                         invalidInput = true;
                         activeCell = clickedCell;
                     }
                     else {
 
-                        List<Row> rowList = data.getSelectedTable().getTableRows();
+                        List<Row> rowList = table.getTableRows();
                         int index = clickedCell[0];
                         for (Row row : rowList) {
                             if (row.getColumnList().get(index).equals("")) {
@@ -205,16 +222,16 @@ public class UIDesignModule extends UISuperClass {
         else if (invalidInput && ID == 500 && clickedCell[1] == 2){
             if (currMode == "edit"){
                 if (activeCell[1] == 2 && clickedCell[0] == activeCell[0]){
-                    String prevType =  data.getSelectedTable().getColumnNames().get(clickedCell[0]).getType();
-                    String newType;
-                    if (prevType.equals("String")){
-                        newType = "Email";
-                    }else if(prevType.equals("Email")){
-                        newType = "Boolean";
-                    }else if(prevType.equals("Boolean")){
-                        newType = "Integer";
+                    Cell prevType = new CellText(table.getColumnNames().get(clickedCell[0]).getType());
+                    Cell newType;
+                    if (prevType.getValue().equals("String")){
+                        newType = new CellText("Email");
+                    }else if(prevType.getValue().equals("Email")){
+                        newType = new CellText("Boolean");
+                    }else if(prevType.getValue().equals("Boolean")){
+                        newType = new CellText("Integer");
                     }else{
-                        newType = "String";
+                        newType = new CellText("String");
                     }
                     activeCell = clickedCell;
                     invalidInput = !textIsValid(newType, data, null);
@@ -224,14 +241,14 @@ public class UIDesignModule extends UISuperClass {
                     else{
                         currMode = "normal";
                     }
-                    data.getSelectedTable().getColumnNames().get(clickedCell[0]).setType(newType);
+                    table.getColumnNames().get(clickedCell[0]).setType(((CellText) newType).getValue());
                 }
             }
         }
 
         //EVENT CHECKBOX CLICKED (INVALID INPUT)
         else if (invalidInput && ID == 500 && clickedCell[1] == 3 && clickedCell[0] == activeCell[0] && clickedCell[1] == activeCell[1]) {
-            data.getSelectedTable().getColumnNames().get(clickedCell[0]).setBlanksAllowed(true);
+            table.getColumnNames().get(clickedCell[0]).setBlanksAllowed(true);
             invalidInput = false;
         }
 
@@ -244,7 +261,7 @@ public class UIDesignModule extends UISuperClass {
 
         List<String> result = new ArrayList<>();
         result.add(currMode);
-        result.add("design");
+        result.add("");
         return result;
     }
 
@@ -260,10 +277,12 @@ public class UIDesignModule extends UISuperClass {
 
 
         if (activeCell[1] == 1) {
-            String type = data.getSelectedTable().getColumnNames().get(activeCell[0]).getType();
+            String type = table.getColumnNames().get(activeCell[0]).getType();
             if (type.equals("String")) {
-                if (!data.getSelectedTable().getColumnNames().get(activeCell[0]).getBlanksAllowed()) {
+
+                if (!table.getColumnNames().get(activeCell[0]).getBlanksAllowed()) {
                     if (((CellText)text).getValue().length() == 0) {
+
                         return false;
                     }
                 }
@@ -285,9 +304,10 @@ public class UIDesignModule extends UISuperClass {
 
         }
         else if (activeCell[1] == 2){
-            String value = data.getSelectedTable().getColumnNames().get(activeCell[0]).getDefaultV().toString();
-            for (Row row : data.getSelectedTable().getTableRows()){
+            String value = table.getColumnNames().get(activeCell[0]).getDefaultV().toString();
+            for (Row row : table.getTableRows()){
                 String colValue = row.getColumnList().get(activeCell[0]).toString();
+
                 if (text.equals("String")){
                     return true;
                 }
@@ -317,7 +337,7 @@ public class UIDesignModule extends UISuperClass {
 
         }
         else {
-            for (Column col : data.getSelectedTable().getColumnNames()) {
+            for (Column col : table.getColumnNames()) {
                 if (col.getName().equals(text)) {
                     if (!col.getName().equals(currName)) {
                         return false;
@@ -340,10 +360,10 @@ public class UIDesignModule extends UISuperClass {
     private void saveText(dataController data){
         currMode = "normal";
         if (activeCell[1] == 1) {
-            data.getSelectedTable().getColumnNames().get(activeCell[0]).setDefaultV(tempText);
+            table.getColumnNames().get(activeCell[0]).setDefaultV(tempText);
         }
         else if (activeCell[1] == 0){
-            data.getSelectedTable().getColumnNames().get(activeCell[0]).setName(tempText.getValue().toString());
+            table.getColumnNames().get(activeCell[0]).setName(tempText.getValue().toString());
         }
     }
 
@@ -356,33 +376,36 @@ public class UIDesignModule extends UISuperClass {
      * @param g graphics object
      * @param data datacontroller
      */
-    public void paint(Graphics g, dataController data) {
+    @Override
+    public void paint(Graphics g,  dataController data, Integer[] coords, Integer[] dimensions) {
         settings setting;
-        if (data.getSelectedTable() == null) {
-            setting = data.getSelectedTable().getDesignSetting();
-        } else {
-            setting = data.getSelectedTable().getDesignSetting();
-        }
-        List<Integer> widthList = setting.getWidthList();
+        List<Integer> widthList = table.getRowSetting().getWidthList();
+
+        paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
+        paintModule.paintBorderSubwindow( g, coords, dimensions, "Design Mode (" + table.getTableName() + ")");
+
 
         //Creates title
-        paintModule.paintTitle(g, "Design Mode");
+       // paintModule.paintTitle(g, "Design Mode");
 
         //print tables in tabular view
-        paintModule.paintDesignView(g, data.getSelectedTable());
+        paintModule.paintDesignView(g, table,coords[0] +paintModule.getMargin(), coords[1]+paintModule.getMargin(), table.getDesignSetting());
 
         //Check mode
         if (currMode == "edit") {
             if (activeCell[1] == 0){
-                paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1], widthList)[0],
-                        paintModule.getCellCoords(activeCell[0], activeCell[1], widthList)[1], widthList.get(activeCell[1]),
+                int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList);
+                paintModule.paintCursor(g, coords1[0] + coords[0],
+                        coords1[1] + coords[1], widthList.get(activeCell[1]),
                         paintModule.getCellHeight(), tempText.getValue().toString());
             }
             else if(activeCell[1] == 1){
-                if (!data.getSelectedTable().getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
-                    paintModule.paintCursor(g, paintModule.getCellCoords(activeCell[0], activeCell[1], widthList)[0],
-                            paintModule.getCellCoords(activeCell[0], activeCell[1], widthList)[1], widthList.get(activeCell[1]),
+                if (!table.getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
+                    int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList);
+                    paintModule.paintCursor(g, coords1[0] + coords[0],
+                            coords1[1] + coords[1], widthList.get(activeCell[1]),
                             paintModule.getCellHeight(), tempText.getValue().toString());
+
                 }
             }
             else if(activeCell[1] == 2){
@@ -394,8 +417,9 @@ public class UIDesignModule extends UISuperClass {
         }
         //check if there are warnings
         if (invalidInput || currMode == "delete") {
-            paintModule.paintBorder(g, paintModule.getCellCoords(activeCell[0], activeCell[1], widthList)[0],
-                    paintModule.getCellCoords(activeCell[0], activeCell[1], widthList)[1], widthList.get(activeCell[1]),
+            int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList);
+            paintModule.paintBorder(g, coords[0] + coords1[0],
+                    coords[1] + coords1[1],  widthList.get(activeCell[1]),
                     paintModule.getCellHeight(), Color.RED);
         } else {
             paintModule.setColor(g, Color.BLACK);
@@ -428,7 +452,8 @@ public class UIDesignModule extends UISuperClass {
         //EVENT: ASCSII char pressed
         if (eventHandler.isChar(keyCode)) {
             tempText.addChar(keyChar);
-            String currName = data.getSelectedTable().getColumnNames().get(activeCell[0]).getName();
+            String currName = table.getColumnNames().get(activeCell[0]).getName();
+
             invalidInput = !textIsValid(tempText, data, currName);
         }
 
@@ -438,7 +463,8 @@ public class UIDesignModule extends UISuperClass {
             //Check if string is not empty
             if (tempText.getValue().toString().length() != 0) {
                 tempText.delChar();
-                String currName = data.getSelectedTable().getColumnNames().get(activeCell[0]).getName();
+                String currName = table.getColumnNames().get(activeCell[0]).getName();
+
                 invalidInput = !textIsValid(tempText, data, currName);
 
             }
@@ -451,7 +477,7 @@ public class UIDesignModule extends UISuperClass {
         }
         List<String> result = new ArrayList<>();
         result.add(currMode);
-        result.add("design");
+        result.add("");
         return result;
 
     }
@@ -466,7 +492,7 @@ public class UIDesignModule extends UISuperClass {
      * @return returns a list with the nextUImode and the current mode of the UI
      */
     protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data) {
-        String nextUIMode = "design";
+        String nextUIMode = "";
         keyEventHandler eventHandler = new keyEventHandler();
         //ESCAPE
         if(keyCode == 27){
@@ -504,18 +530,18 @@ public class UIDesignModule extends UISuperClass {
        keyEventHandler eventHandler = new keyEventHandler();
         //DEL key pressed
         if(eventHandler.isDelete(keyCode) || keyChar == 'd'){
-            List<Row> rowList = data.getSelectedTable().getTableRows();
+            List<Row> rowList = table.getTableRows();
             for (Row row: rowList){
                 row.deleteColumnCell(activeCell[0]);
             }
-            data.getSelectedTable().getRowSetting().removeFromWidthList(activeCell[0]);
-            Column col = data.getSelectedTable().getColumnNames().get(activeCell[0]);
-            data.getSelectedTable().deleteColumn(col);
+            table.getRowSetting().removeFromWidthList(activeCell[0]);
+            Column col = table.getColumnNames().get(activeCell[0]);
+            table.deleteColumn(col);
             currMode = "normal";
         }
         List<String> result = new ArrayList<>();
         result.add(currMode);
-        result.add("design");
+        result.add("");
         return result;
     }
 

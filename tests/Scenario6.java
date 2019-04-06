@@ -6,7 +6,7 @@ import UserInterfaceElements.Controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //Use case: Edit Column Characteristic
-public class Scenario6 {
+public class Scenario6 { /**
     //initialise class variables
     private Controller bestuurder;
     private dataController dc;
@@ -146,6 +146,6 @@ public class Scenario6 {
         assertEquals(originalLen,newLen);
     }
 
-
+*/
 
 }

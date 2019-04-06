@@ -4,7 +4,7 @@ public class CellNumerical extends Cell<Integer>{
     protected Integer value;
     private String type;
     
-    CellNumerical(Integer arg){
+    public CellNumerical(Integer arg){
     	this.setValue(arg);
     	this.setType("Numerical");
     }

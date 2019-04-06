@@ -27,7 +27,7 @@ public class Column {
      */
     public Column(String name, Cell defaultValue, String Type, Boolean blanks){
         this.name = name;
-        defaultV.setValue(defaultValue);
+        defaultV = defaultValue;
         type = Type;
         blanksAllowed = blanks;
     }
@@ -36,12 +36,12 @@ public class Column {
      * Method to get basic column info
      * @return list with name,default value, type and if blanks are allowed
      */
-    public List<String>  getInfo(){
-        List<String> info = new ArrayList<>();
-        info.add(name);
-        info.add(defaultV.getValue().toString());
-        info.add(type);
-        info.add(blanksAllowed.toString());
+    public List<Cell>  getInfo(){
+        List<Cell> info = new ArrayList<>();
+        info.add(new CellText(name));
+        info.add(defaultV);
+        info.add(new CellText(type));
+        info.add(new CellBoolean(blanksAllowed));
         return info;
     }
 

@@ -4,7 +4,7 @@ public class CellEmail extends Cell<String>{
     protected String value;
     private String type;
 
-    CellEmail(String arg){
+    public CellEmail(String arg){
     	this.setValue(arg);
     	this.setType("Email");
     }

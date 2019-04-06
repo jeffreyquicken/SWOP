@@ -1,5 +1,6 @@
 package paintModule;
 
+import Data.Cell;
 import Data.Column;
 import Data.Row;
 import Data.Table;
@@ -62,12 +63,19 @@ public class paintModule {
         int i =0;
         settings setting = table.getRowSetting();
         List<Integer> widthList = setting.getWidthList();
+        Font currentFont = g.getFont();
+        Font newFont = currentFont.deriveFont(currentFont.getSize() * 0.89F);
+        g.setFont(newFont);
         for(Column column: table.getColumnNames()){
-            this.paintRectText(g,headerXco, startYco - cellHeight/2, widthList.get(i),cellHeight,column.getName());
+            g.setColor(Color.GRAY);
+            g.fillRect(headerXco,startYco - cellHeight/2, widthList.get(i), cellHeight/2);
+            g.setColor(Color.BLACK);
+            this.paintRectText(g,headerXco, startYco - cellHeight/2, widthList.get(i),cellHeight/2,column.getName());
             headerXco += widthList.get(i);
             i++;
 
         }
+        g.setFont(currentFont);
         for(Row row: table.getTableRows()){
             this.paintRow(g,row.getColumnList(),startXco,startYco, setting);
             startYco = startYco + 20;
@@ -102,21 +110,27 @@ public class paintModule {
      * @param g graphics object
      * @param table table for which design view has to be painted
      */
-    public void paintDesignView(Graphics g, Table table){
-        int headerXco = getxCoStart();
-        int headerYco = getyCoStart() - cellHeight;
-        settings setting = table.getDesignSetting();
+    public void paintDesignView(Graphics g, Table table, int startXco, int startYco, settings setting){
+        int headerXco = startXco;
+        int headerYco = startYco - cellHeight/2;;
         List<Integer> widthList = setting.getWidthList();
+
+        Font currentFont = g.getFont();
+        Font newFont = currentFont.deriveFont(currentFont.getSize() * 0.9F);
+        g.setFont(newFont);
         String[] names = {"Name", "Default value", "Type", "Blank?"};
         for(int i = 0; i <4; i++){
-            this.paintRectText(g,headerXco, headerYco, widthList.get(i),cellHeight, names[i]);
+            g.setColor(Color.GRAY);
+            g.fillRect(headerXco, headerYco, widthList.get(i),cellHeight/2);
+            g.setColor(Color.BLACK);
+            this.paintRectText(g,headerXco, headerYco, widthList.get(i),cellHeight/2, names[i]);
             System.out.println(names[i]);
             headerXco += widthList.get(i);
         }
-        int startYco = this.getyCoStart();
+        g.setFont(currentFont);
         for(Column column: table.getColumnNames()){
-            List<String> rowInfo = column.getInfo();
-            this.paintRow(g,rowInfo,this.getxCoStart(),startYco, setting);
+            List<Cell> rowInfo = column.getInfo();
+            this.paintRow(g,rowInfo,startXco,startYco, setting);
             startYco = startYco + cellHeight;
         }
 
@@ -130,21 +144,21 @@ public class paintModule {
      * @param startyCo  start Y coordinate where row should be painted
      * @param setting settings object for this row view
      */
-    //TODO: should accept list with Row elements (instead of strings) and iterate over that list and get row elements
-    public void paintRow(Graphics g, List<String> rowList, int startxCo, int startyCo, settings setting){
+    public void paintRow(Graphics g, List<Cell> rowList, int startxCo, int startyCo, settings setting){
         int i = 0;
         List<Integer> widthList = setting.getWidthList();
-        for(String rowItem : rowList){
-            if (rowItem.equals("true")){
-                this.checkBoxTrue(g,startxCo,startyCo, widthList.get(i));
-            } else if (rowItem.equals("false")) {
+        for(Cell rowItem : rowList){
+            if (rowItem == null){
+                checkBoxEmpty(g, startxCo, startyCo, widthList.get(i));
+
+            } else if (rowItem.getValue().equals(false)) {
                 this.checkBoxFalse(g,startxCo,startyCo, widthList.get(i));
             }
-            else if (rowItem.equals("empty")){
-                checkBoxEmpty(g, startxCo, startyCo, widthList.get(i));
+            else if (rowItem.getValue().equals(true)){
+                this.checkBoxTrue(g,startxCo,startyCo, widthList.get(i));
             }
             else {
-                this.paintRectText(g, startxCo, startyCo, widthList.get(i), cellHeight, rowItem);
+                this.paintRectText(g, startxCo, startyCo, widthList.get(i), cellHeight, rowItem.getValue().toString());
             }
             startxCo = startxCo + widthList.get(i);
             i++;
@@ -344,6 +358,10 @@ public class paintModule {
      * @param title text to be displayed as title
      */
     public  void paintTitleBar(Graphics g, int xCo, int yCo, int width, String title){
+        Color myColor1 = new Color(240,248,255);
+        g.setColor(myColor1);
+        g.fillRect(xCo,yCo,width,titleHeight);
+        g.setColor(Color.BLACK);
         paintRectText(g, xCo, yCo, width, titleHeight, "");
         paintText(g, xCo+30, yCo+13, title);
         g.setColor(Color.RED);

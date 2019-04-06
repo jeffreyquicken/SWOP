@@ -40,11 +40,11 @@ public class Table {
         for(int i = 0; i< 4;i++ ){
             designSetting.getWidthList().add(designSetting.getDefaultWidth());
         }
- /**
-        Column col1 = new Column("Column1","true", "Boolean", true);
-        Column col2= new Column("Column2","true", "Boolean", true);
-        Column col3 = new Column("Column3", "", "String", true);
-        Column col4 = new Column("Column4","", "String", true);
+
+        Column col1 = new Column("Column1",new CellBoolean(true), "Boolean", true);
+        Column col2 = new Column("Column2",new CellBoolean(true), "Boolean", true);
+        Column col3 = new Column("Column3", new CellText(""), "String", true);
+        Column col4 = new Column("Column4",new CellText(""), "String", true);
         this.addColumn(col1);
         this.addColumn(col2);
         this.addColumn(col3);
@@ -56,7 +56,7 @@ public class Table {
 
         this.addRow(row1);
         this.addRow(row2);
-        this.addRow(row3); */
+        this.addRow(row3);
     }
 
     /**

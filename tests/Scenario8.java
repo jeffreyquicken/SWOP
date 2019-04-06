@@ -8,7 +8,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //Use case: AddRow
-public class Scenario8 {
+public class Scenario8 { /**
     //initialise class variables
     private Controller bestuurder;
     private dataController dc;
@@ -50,5 +50,5 @@ public class Scenario8 {
 
 
 
-    }
+    } */
 }

@@ -4,7 +4,7 @@ public class CellBoolean extends Cell<Boolean>{
     protected Boolean value;
     private String type;
 	
-    CellBoolean(Boolean arg){
+    public CellBoolean(Boolean arg){
     	this.setValue(arg);
     	this.setType("Boolean");
     }
