@@ -252,7 +252,7 @@ public class UIRowModule extends UISuperClass {
 
 
         //print tables in tabular view
-        paintModule.paintTable(g, table,coords[0] + paintModule.getMargin() +10, coords[1] + paintModule.getMargin() +10);
+        paintModule.paintTable(g, table,coords[0] + paintModule.getMargin() , coords[1] + paintModule.getMargin() ); // removed the "+10" behind the getmargin so that marggins are the same as tables mode
 
 
         //Check mode

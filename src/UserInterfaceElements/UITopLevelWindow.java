@@ -173,8 +173,29 @@ public class UITopLevelWindow {
                 int Y = info.get(1);
                 int width = info.get(2);
                 int height = info.get(3);
-                if (xCo >= X && xCo <= X + width && yCo >= Y && yCo <= Y + height) {
-                    setActiveSubWindow(subWindow);
+
+                List<Integer> activeInfo = subwindowInfo.get(getActiveSubWindow());
+                int activeX;
+                int activeY;
+                int activeWidth;
+                int activeHeight;
+                if (getActiveSubWindow() != null) {
+                    activeX = activeInfo.get(0);
+                    activeY = activeInfo.get(1);
+                    activeWidth = activeInfo.get(2);
+                    activeHeight = activeInfo.get(3);
+                } else {
+                    activeX = 0;
+                    activeY = 0;
+                    activeWidth = 0;
+                    activeHeight = 0;
+                }
+
+
+                if (ClickedWithinWindow(X,Y,xCo,yCo,width,height)) {
+                    if(!ClickedWithinWindow(activeX,activeY,xCo,yCo,activeWidth,activeHeight)) {
+                        setActiveSubWindow(subWindow);
+                    }
                     int relayX = xCo - X;
                     int relayY = yCo - Y;
                     result[0] = relayX;
@@ -197,6 +218,7 @@ public class UITopLevelWindow {
                     } else {
                         state = "normal";
                     }
+                    System.out.println("x: "+result[0] +", y: "+ result[1]);
                     return result;
                 }
 
@@ -276,6 +298,15 @@ public class UITopLevelWindow {
             return 8;
         }
         return -1;
+    }
+
+    public boolean ClickedWithinWindow(int X, int Y, int xCo, int yCo, int width, int height) {
+        if (xCo >= X && xCo <= X + width && yCo >= Y && yCo <= Y + height) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
 

@@ -16,6 +16,9 @@ public class Controller {
     private String currentMode;
     private UITopLevelWindow topLevelWindow;
 
+    //ctrlPressed var to detect if new tables module needs to be added
+    private boolean ctrlPressed;
+
 
     //Display key/mousevent
     private String mouseEvent = "";
@@ -85,8 +88,29 @@ public class Controller {
      * @param keyChar keychar of the pressed key
      */
     public void relayKeyEvent(int id, int keyCode, char keyChar) {
+        String nextUIMode;
 
-        String nextUIMode = topLevelWindow.getActiveSubWindow().handleKeyEvent(id, keyCode, keyChar, tableDataController);
+
+        if (topLevelWindow.getActiveSubWindow() != null ){
+            nextUIMode = topLevelWindow.getActiveSubWindow().handleKeyEvent(id, keyCode, keyChar, tableDataController);
+        } else {
+            nextUIMode = "nothing";
+        }
+
+
+        //if else statement to check if ctrl+t is clicked
+        if (keyCode == 17) {
+            setCtrlPressed(true);
+        } else if (getCtrlPressed()) {
+            if (keyCode == 84) {
+                nextUIMode = "table";
+                ctrlPressed = false;
+            }
+        } else {
+            setCtrlPressed(false);
+        }
+
+
         if (nextUIMode.equals("row")){
             UIRowModule rowModule = new UIRowModule(tableDataController.getSelectedTable());
             topLevelWindow.addSubWindow(rowModule);
@@ -167,5 +191,13 @@ public class Controller {
 
     public dataController getTableDataController() {
         return tableDataController;
+    }
+
+    public void setCtrlPressed(boolean ctrlPressed) {
+        this.ctrlPressed = ctrlPressed;
+    }
+
+    public boolean getCtrlPressed() {
+        return ctrlPressed;
     }
 }

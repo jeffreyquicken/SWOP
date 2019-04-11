@@ -38,6 +38,9 @@ public abstract class UISuperClass {
     public String handleKeyEvent(int id, int keyCode, char keyChar, dataController data) {
         keyEventHandler eventHandler = new keyEventHandler();
         String nextUIMode = "";
+
+
+
         if (currMode == "edit") {
             List<String> result = this.handleKeyEditMode(id, keyCode, keyChar, data);
             currMode = result.get(0);
