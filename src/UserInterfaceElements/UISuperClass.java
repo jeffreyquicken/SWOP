@@ -20,6 +20,7 @@ public abstract class UISuperClass {
     protected int draggedColumn;
     protected int draggedX;
     protected boolean ctrlPressed;
+    protected boolean active;
 
     /**
      * constructor for UISuperclass
@@ -31,6 +32,7 @@ public abstract class UISuperClass {
         tempText = "Default_Text";
         draggedColumn = 1;
         draggedX = 1;
+        active = false;
     }
 
 
@@ -88,4 +90,12 @@ public abstract class UISuperClass {
 
         return null;}
     protected void handleNonModeDependantKeys (int id, int keyCode, char keyChar, dataController data){}
+
+    public boolean getActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }

@@ -171,9 +171,9 @@ public class paintModule {
      * @param coords Start coordinates of the subwindow
      * @param dimension Dimensions of the subwindow
      */
-    public void paintBorderSubwindow(Graphics g, Integer[] coords, Integer[] dimension, String title){
+    public void paintBorderSubwindow(Graphics g, Integer[] coords, Integer[] dimension, String title, boolean active){
         paintRectText(g, coords[0], coords[1], dimension[0], dimension[1], "");
-        this.paintTitleBar(g, coords[0], coords[1], dimension[0], title);
+        this.paintTitleBar(g, coords[0], coords[1], dimension[0], title, active);
     }
 
     /**
@@ -357,8 +357,14 @@ public class paintModule {
      * @param width width of the subwindow
      * @param title text to be displayed as title
      */
-    public  void paintTitleBar(Graphics g, int xCo, int yCo, int width, String title){
-        Color myColor1 = new Color(240,248,255);
+    public  void paintTitleBar(Graphics g, int xCo, int yCo, int width, String title, boolean active){
+        Color myColor1;
+        if (active) {
+            myColor1 = new Color(0,248,255);
+        } else {
+            myColor1 = new Color(240,248,255);
+        }
+
         g.setColor(myColor1);
         g.fillRect(xCo,yCo,width,titleHeight);
         g.setColor(Color.BLACK);

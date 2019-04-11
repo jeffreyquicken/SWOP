@@ -7,6 +7,7 @@ import Data.dataController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 public class Controller {
     private UITablesModule tablemodule;
@@ -41,7 +42,7 @@ public class Controller {
         UITablesModule tablemodule2 = new UITablesModule();
 
         topLevelWindow.addSubWindow(tablemodule);
-        topLevelWindow.addSubWindow(tablemodule2);
+        topLevelWindow.getActiveSubWindowList().remove(null);
         //dataController
         tableDataController = new dataController();
 
@@ -145,9 +146,19 @@ public class Controller {
         g.setColor(Color.LIGHT_GRAY);
         g.fillRect(0,0,10000, 10000);
         g.setColor(Color.BLACK);
-        for (UISuperClass subWindow : topLevelWindow.getSubWindows()) {
-            subWindow.paint(g, tableDataController,topLevelWindow.getStartCoords(subWindow), topLevelWindow.getDimensions(subWindow));
+        List<UISuperClass> subWindows;
+        if (topLevelWindow.getActiveSubWindowList().size() > 0) {
+            subWindows = topLevelWindow.getActiveSubWindowList();
+        } else {
+            subWindows = topLevelWindow.getSubWindows();
         }
+        ListIterator listIterator = subWindows.listIterator(subWindows.size());
+        while (listIterator.hasPrevious()) {
+            UISuperClass subWindow = (UISuperClass) listIterator.previous();
+            subWindow.paint(g, tableDataController,topLevelWindow.getStartCoords(subWindow), topLevelWindow.getDimensions(subWindow));
+
+        }
+
         UISuperClass subWindow = topLevelWindow.getActiveSubWindow();
         if(subWindow != null){
             subWindow.paint(g, tableDataController,topLevelWindow.getStartCoords(subWindow), topLevelWindow.getDimensions(subWindow));

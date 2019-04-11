@@ -37,12 +37,15 @@ public class UITopLevelWindow {
         subwindowInfo = new HashMap<UISuperClass, List<Integer>>();
         activeSubWindow = new ArrayList<>();
         // Adds a null object to the list to avoid NullPointerException
-        activeSubWindow.add(null);
+        //activeSubWindow.add(null);
 
     }
 
 
     public UISuperClass getActiveSubWindow() {
+        if (activeSubWindow.size() == 0) {
+            return null;
+        }
         return activeSubWindow.get(0);
     }
 
@@ -55,7 +58,12 @@ public class UITopLevelWindow {
      * @param subWindow the subwindow to be added
      */
     public void setActiveSubWindow(UISuperClass subWindow) {
-     activeSubWindow.add(0, subWindow);
+        getActiveSubWindowList().remove(subWindow);
+        activeSubWindow.add(0, subWindow);
+        subWindow.setActive(true);
+        if (activeSubWindow.size() >= 2) {
+            activeSubWindow.get(1).setActive(false);
+        }
 
     }
 
@@ -78,7 +86,12 @@ public class UITopLevelWindow {
      * @param closingSubWindow The subwindow to be closed
      */
     public void closeSubWindow(UISuperClass closingSubWindow){
+        if(closingSubWindow.getActive() && activeSubWindow.size() > 1) {
+
+            activeSubWindow.get(1).setActive(true);
+        }
         subWindows.remove(closingSubWindow);
+        activeSubWindow.remove(closingSubWindow);
     }
 
     /**
@@ -87,6 +100,7 @@ public class UITopLevelWindow {
      */
     public void addSubWindow(UISuperClass addingSubWindow){
         subWindows.add(addingSubWindow);
+        setActiveSubWindow(addingSubWindow);
         List<Integer> values = new ArrayList<>();
         //TODO: only for debugging
         if(subWindows.size() == 1){
@@ -195,13 +209,14 @@ public class UITopLevelWindow {
                 if (ClickedWithinWindow(X,Y,xCo,yCo,width,height)) {
                     if(!ClickedWithinWindow(activeX,activeY,xCo,yCo,activeWidth,activeHeight)) {
                         setActiveSubWindow(subWindow);
+
                     }
                     int relayX = xCo - X;
                     int relayY = yCo - Y;
                     result[0] = relayX;
                     result[1] = relayY;
                     if (isClosingButtonClicked(relayX, relayY) && id == 502) {
-                        subWindows.remove(subWindow);
+                        closeSubWindow(subWindow);
                         getActiveSubWindowList().removeIf(subWindow :: equals);
 
                         return result;

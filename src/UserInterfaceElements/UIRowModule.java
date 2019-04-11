@@ -30,6 +30,7 @@ public class UIRowModule extends UISuperClass {
         paintModule = new paintModule();
         mouseEventHandler = new mouseEventHandler();
         table = tableInput;
+
     }
 
     //Handles mousevent and returns if UImode need to change
@@ -247,7 +248,7 @@ public class UIRowModule extends UISuperClass {
     public void paint(Graphics g,  dataController data, Integer[] coords, Integer[] dimensions) {
         List<Integer> widthList = table.getRowSetting().getWidthList();
         paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
-        paintModule.paintBorderSubwindow( g, coords, dimensions, "Row Mode (" + table.getTableName() + ")");
+        paintModule.paintBorderSubwindow( g, coords, dimensions, "Row Mode (" + table.getTableName() + ")", this.getActive());
 
 
 

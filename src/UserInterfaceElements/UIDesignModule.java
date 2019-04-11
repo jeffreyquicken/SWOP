@@ -34,6 +34,7 @@ public class UIDesignModule extends UISuperClass {
         mouseEventHandler = new mouseEventHandler();
         invalidInput = false;
         table = inputTable;
+
     }
 
 
@@ -382,7 +383,7 @@ public class UIDesignModule extends UISuperClass {
         List<Integer> widthList = table.getRowSetting().getWidthList();
 
         paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
-        paintModule.paintBorderSubwindow( g, coords, dimensions, "Design Mode (" + table.getTableName() + ")");
+        paintModule.paintBorderSubwindow( g, coords, dimensions, "Design Mode (" + table.getTableName() + ")", this.getActive());
 
 
         //Creates title
