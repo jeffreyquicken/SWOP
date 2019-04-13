@@ -1,47 +1,42 @@
 package Data;
 
-public class CellEmail extends Cell<String>{
+public class CellEmail implements CellEditable<String>{
     protected String value;
-    private String type;
+    private String type = "Email";
 
     public CellEmail(String arg){
     	this.setValue(arg);
-    	this.setType("Email");
     }
     
 	public void setEmail(String email) {
 	        this.value = email;
 	    }
 	
-	@Override
+	
 	public String getValue() {
 
 	        return value;
 	    }
 	
-	@Override
+	
 	  public void setValue(String value){
 	        if (isValidEmailAddress(value)){
 	            setEmail(value);
 	        }
 	  }
 
-	@Override
+	
 	public String getType() {
 		return this.type;
 	}
 
-	@Override
-	public void setType(String type) {
-		this.type = type;
-	}
 
 
-	@Override
+	
 	public void addChar(char keyChar) {
 		this.setValue(this.getValue() + keyChar);
 	}
-	@Override
+
 	public void delChar() {
 		this.setValue(this.getValue().substring(0,this.getValue().length()-1));
 	}

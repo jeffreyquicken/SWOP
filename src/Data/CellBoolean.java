@@ -1,12 +1,11 @@
 package Data;
 
-public class CellBoolean extends Cell<Boolean>{
+public class CellBoolean implements Cell<Boolean>{
     protected Boolean value;
-    private String type;
+    private final String type = "Boolean";
 	
     public CellBoolean(Boolean arg){
     	this.setValue(arg);
-    	this.setType("Boolean");
     }
 
 	public void setBool(Boolean bool) {
@@ -27,11 +26,5 @@ public class CellBoolean extends Cell<Boolean>{
     public String getType() {
         return this.type;
     }
-
-    @Override
-    public void setType(String type) {
-        this.type = type;
-    }
-
 
 }

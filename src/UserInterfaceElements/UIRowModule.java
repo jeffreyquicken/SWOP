@@ -145,7 +145,7 @@ public class UIRowModule extends UISuperClass {
         String currName = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]).getValue().toString(); // NOOIT GEBRUIKT, snap het nut niet
         //EVENT: ASCSII char pressed
         if (eventHandler.isChar(keyCode)) {
-            tempText.addChar(keyChar);
+            ((CellEditable)tempText).addChar(keyChar);
 
             invalidInput = !textIsValid(tempText, data, currName);
         }
@@ -155,7 +155,7 @@ public class UIRowModule extends UISuperClass {
 
             //Check if string is not empty
             if (tempText.getValue().toString().length() != 0) {
-                tempText.delChar();
+                ((CellEditable)tempText).delChar();
 
                 invalidInput = !textIsValid(tempText, data, currName);
 

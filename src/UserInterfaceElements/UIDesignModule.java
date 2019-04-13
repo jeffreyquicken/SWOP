@@ -1,8 +1,6 @@
 package UserInterfaceElements;
 
 import Data.*;
-
-import Data.dataController;
 import EventHandlers.keyEventHandler;
 import EventHandlers.mouseEventHandler;
 import paintModule.paintModule;
@@ -109,7 +107,7 @@ public class UIDesignModule extends UISuperClass {
                 currMode = "edit";
 
                 if (table.getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
-                    tempText = table.getColumnNames().get(activeCell[0]).getDefaultV();
+                    tempText = (CellEditable) table.getColumnNames().get(activeCell[0]).getDefaultV();
                     if (tempText.getValue().equals(true)){
                         tempText.setValue(false);
                     }
@@ -452,7 +450,7 @@ public class UIDesignModule extends UISuperClass {
         keyEventHandler eventHandler = new keyEventHandler();
         //EVENT: ASCSII char pressed
         if (eventHandler.isChar(keyCode)) {
-            tempText.addChar(keyChar);
+            ((CellEditable)tempText).addChar(keyChar);
             String currName = table.getColumnNames().get(activeCell[0]).getName();
 
             invalidInput = !textIsValid(tempText, data, currName);
@@ -463,7 +461,7 @@ public class UIDesignModule extends UISuperClass {
 
             //Check if string is not empty
             if (tempText.getValue().toString().length() != 0) {
-                tempText.delChar();
+                ((CellEditable)tempText).delChar();
                 String currName = table.getColumnNames().get(activeCell[0]).getName();
 
                 invalidInput = !textIsValid(tempText, data, currName);

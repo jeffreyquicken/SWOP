@@ -1,12 +1,11 @@
 package Data;
 
-public class CellText extends Cell<String>{
+public class CellText implements CellEditable<String>{
     protected String value;
-    private String type;
+    private final String type = "Text";
     
     public CellText(String arg){
     	this.setValue(arg);
-    	this.setType("Text");
     }
 
 	 public String getText() { //waarom was er alleen getText en geen getValue ?
@@ -17,30 +16,25 @@ public class CellText extends Cell<String>{
 	    }
 
 
-	 @Override
+	 
 	 public String getValue() {
     	return value;
 	 }
-	 @Override
+	 
 	 public void setValue(String Value) {
 	            setText(Value);
 	    }
 
-	@Override
+	
 	public String getType() {
 		return this.type;
 	}
 
-	@Override
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	@Override
+	
 	public void addChar(char keyChar) {
     	this.setValue(this.getValue() + keyChar);
 	}
-	@Override
+	
 	public void delChar() {
     	this.setValue(this.getValue().substring(0,this.getValue().length()-1));
 	}
