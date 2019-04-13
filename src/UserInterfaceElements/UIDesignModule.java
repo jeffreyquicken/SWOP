@@ -294,7 +294,7 @@ public class UIDesignModule extends UISuperClass {
             } else if (type.equals("Integer")) {
 
                 try {
-                    Integer.parseInt( ((CellNumerical) text).getValue().toString() );
+                    Integer.parseInt( ((CellInteger) text).getValue().toString() );
                     return true;
                 } catch (Exception e) {
                     return false;

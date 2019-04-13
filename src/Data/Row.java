@@ -20,7 +20,7 @@ public class Row {
         for(Column col: colList){
             Cell val = col.getDefaultV();
             if(val.getType() == "Numerical") {
-                columnList.add(new CellNumerical(((CellNumerical) val).getValue()));
+                columnList.add(new CellInteger(((CellInteger) val).getValue()));
             } else if(val.getType() == "Email") {
                 columnList.add(new CellEmail(((CellEmail) val).getValue()));
             } else if(val.getType() == "Text") {

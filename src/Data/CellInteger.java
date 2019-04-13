@@ -1,10 +1,10 @@
 package Data;
 
-public class CellNumerical implements CellEditable<Integer>{
+public class CellInteger implements CellEditable<Integer>{
     protected Integer value;
-    private final String type = "numerical";
+    private final String type = "Integer";
     
-    public CellNumerical(Integer arg){
+    public CellInteger(Integer arg){
     	this.setValue(arg);
     }
 
