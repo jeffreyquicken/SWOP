@@ -131,9 +131,26 @@ public class UITablesModule extends UISuperClass{
 
         List<Integer> widthList = setting.getWidthList();
 
+        int sum = widthList.stream().mapToInt(Integer::intValue).sum();
+        double percentageHorizontal = 0;
+        double percentageVertical =0;
+        if(sum > dimensions[0] - 31 ){
+            percentageHorizontal =  (Double.valueOf(dimensions[0]-30)/ Double.valueOf(sum));
+            System.out.println(percentageHorizontal);
+        }
+        if(data.getTableList().size() * 20 > dimensions[1] - 46){
+            percentageVertical = ( Double.valueOf(dimensions[1] - 46)/ Double.valueOf((data.getTableList().size() * 20)));
+            System.out.println(percentageVertical);
+        }
+
+        paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], percentageHorizontal);
+        paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, percentageVertical);
+
+
+
 
         //print tables in tabular view
-        paintModule.paintTableView(g, data.getTableList(), coords[0] + paintModule.getMargin(), coords[1] +paintModule.getMargin(), setting);
+        paintModule.paintTableView(g, data.getTableList(), coords[0] + paintModule.getMargin(), coords[1] +paintModule.getMargin(), setting, dimensions[0] - 45, dimensions[1] - 58);
 
         //Check mode
         if (currMode == "edit" ) {

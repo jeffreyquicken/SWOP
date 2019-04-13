@@ -58,7 +58,7 @@ public class paintModule {
      * @param startXco  start X coordinate where table should be painted
      * @param startYco  start Y coordinate wher table should be painted
      */
-    public void paintTable(Graphics g, Table table, int startXco, int startYco){
+    public void paintTable(Graphics g, Table table, int startXco, int startYco, int width, int height){
         int headerXco = startXco;
         int i =0;
         settings setting = table.getRowSetting();
@@ -66,19 +66,42 @@ public class paintModule {
         Font currentFont = g.getFont();
         Font newFont = currentFont.deriveFont(currentFont.getSize() * 0.89F);
         g.setFont(newFont);
+        int tempWidth = widthList.get(i);
+        boolean cutCollumn = false;
         for(Column column: table.getColumnNames()){
+            if(tempWidth < width){
+                g.setColor(Color.GRAY);
+                g.fillRect(headerXco,startYco - cellHeight/2, widthList.get(i), cellHeight/2);
+                g.setColor(Color.BLACK);
+                this.paintRectText(g,headerXco, startYco - cellHeight/2, widthList.get(i),cellHeight/2,column.getName());
+                headerXco += widthList.get(i);
+                tempWidth += widthList.get(i +1) ;
+                i++;}
+            else if(!cutCollumn){
+            int newWidth = width   -  (headerXco - startXco);
+            String name = column.getName();
+            if(newWidth < 100){
+                name = "";
+            }
             g.setColor(Color.GRAY);
-            g.fillRect(headerXco,startYco - cellHeight/2, widthList.get(i), cellHeight/2);
+            g.fillRect(headerXco,startYco - cellHeight/2, newWidth, cellHeight/2);
             g.setColor(Color.BLACK);
-            this.paintRectText(g,headerXco, startYco - cellHeight/2, widthList.get(i),cellHeight/2,column.getName());
+            this.paintRectText(g,headerXco, startYco - cellHeight/2, newWidth,cellHeight/2,name);
             headerXco += widthList.get(i);
             i++;
-
+            cutCollumn = true;
+        }
         }
         g.setFont(currentFont);
+        int tempHeight = 0;
         for(Row row: table.getTableRows()){
-            this.paintRow(g,row.getColumnList(),startXco,startYco, setting);
+
+            if (tempHeight < height) {
+            this.paintRow(g,row.getColumnList(),startXco,startYco, setting, width);
             startYco = startYco + 20;
+            tempHeight+= 20;
+            }
+
         }
 
     }
@@ -91,15 +114,29 @@ public class paintModule {
      * @param startYco  start Y coordinate where tableview should be painted
      * @param setting   settings object for this view
      */
-     public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startYco, settings setting){
+     public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startYco, settings setting, int width, int height){
          List<Integer> widthList = setting.getWidthList();
-        this.paintRectText(g,startXco, startYco - cellHeight+10 , widthList.get(0),10, "" );
+         int widthCells = widthList.get(0);
+         if(widthCells > width ){
+             widthCells = width;
+         }
+
+        this.paintRectText(g,startXco, startYco - cellHeight+10 , widthCells,10, "" );
+
         g.setColor(Color.GRAY);
-        g.fillRect(startXco+1, startYco-cellHeight+11, widthList.get(0)-1, 9 );
+        g.fillRect(startXco+1, startYco-cellHeight+11, widthCells-1, 9 );
         g.setColor(Color.BLACK);
+
+
+        int tempHeight = 0;
         for(Table tableItem : tableList){
-            this.paintRectText(g,startXco, startYco , widthList.get(0),cellHeight, tableItem.getTableName() );
-            startYco = startYco + cellHeight;
+            if(tempHeight < height){
+
+                this.paintRectText(g,startXco, startYco , widthCells,cellHeight, tableItem.getTableName() );
+                startYco = startYco + cellHeight;
+                tempHeight += cellHeight;
+            }
+
         }
 
     }
@@ -110,7 +147,7 @@ public class paintModule {
      * @param g graphics object
      * @param table table for which design view has to be painted
      */
-    public void paintDesignView(Graphics g, Table table, int startXco, int startYco, settings setting){
+    public void paintDesignView(Graphics g, Table table, int startXco, int startYco, settings setting, int width, int height){
         int headerXco = startXco;
         int headerYco = startYco - cellHeight/2;;
         List<Integer> widthList = setting.getWidthList();
@@ -119,19 +156,44 @@ public class paintModule {
         Font newFont = currentFont.deriveFont(currentFont.getSize() * 0.9F);
         g.setFont(newFont);
         String[] names = {"Name", "Default value", "Type", "Blank?"};
+        int tempWidth = widthList.get(0);
+        boolean cutCollumn = false;
         for(int i = 0; i <4; i++){
+            if(tempWidth < width){
             g.setColor(Color.GRAY);
             g.fillRect(headerXco, headerYco, widthList.get(i),cellHeight/2);
             g.setColor(Color.BLACK);
             this.paintRectText(g,headerXco, headerYco, widthList.get(i),cellHeight/2, names[i]);
             System.out.println(names[i]);
             headerXco += widthList.get(i);
+            if(i != 3){
+            tempWidth += widthList.get(i +1);}
+            }else if(!cutCollumn){
+                int newWidth = width - (headerXco - startXco);
+                String name = names[i];
+
+                if(newWidth < name.length() * 7){
+                    int delta = newWidth/8;
+                    name = name.substring(0,delta);
+                }
+                g.setColor(Color.GRAY);
+                g.fillRect(headerXco, headerYco,newWidth,cellHeight/2);
+                g.setColor(Color.BLACK);
+                this.paintRectText(g,headerXco, headerYco, newWidth,cellHeight/2, name);
+                System.out.println(names[i]);
+                headerXco += widthList.get(i);
+                cutCollumn = true;
+            }
         }
         g.setFont(currentFont);
         for(Column column: table.getColumnNames()){
+            int tempHeight = 0;
+            if(tempHeight < height){
             List<Cell> rowInfo = column.getInfo();
-            this.paintRow(g,rowInfo,startXco,startYco, setting);
+            this.paintRow(g,rowInfo,startXco,startYco, setting, width);
             startYco = startYco + cellHeight;
+            tempHeight += cellHeight;
+            }
         }
 
     }
@@ -144,24 +206,61 @@ public class paintModule {
      * @param startyCo  start Y coordinate where row should be painted
      * @param setting settings object for this row view
      */
-    public void paintRow(Graphics g, List<Cell> rowList, int startxCo, int startyCo, settings setting){
+    public void paintRow(Graphics g, List<Cell> rowList, int startxCo, int startyCo, settings setting, int width){
         int i = 0;
+        int ogStartxCo = startxCo;
         List<Integer> widthList = setting.getWidthList();
+        int tempWidth = widthList.get(i);
+        boolean cutCollumn = false;
         for(Cell rowItem : rowList){
-            if (rowItem.getValue() == null){
-                checkBoxEmpty(g, startxCo, startyCo, widthList.get(i));
+            if(tempWidth < width){
+                if (rowItem.getValue() == null){
+                    checkBoxEmpty(g, startxCo, startyCo, widthList.get(i));
 
-            } else if (rowItem.getValue().equals(false)) {
-                this.checkBoxFalse(g,startxCo,startyCo, widthList.get(i));
+                } else if (rowItem.getValue().equals(false)) {
+                    this.checkBoxFalse(g,startxCo,startyCo, widthList.get(i));
+                }
+                else if (rowItem.getValue().equals(true)){
+                    this.checkBoxTrue(g,startxCo,startyCo, widthList.get(i));
+                }
+                else {
+                    this.paintRectText(g, startxCo, startyCo, widthList.get(i), cellHeight, rowItem.getValue().toString());
+                }
+
+                startxCo = startxCo + widthList.get(i);
+                if(i != rowList.size()-1){
+                tempWidth += widthList.get(i+1);}
+                i++;
+
+            }else if(!cutCollumn){
+                int newWidth =  width - (startxCo - ogStartxCo) ;
+                if(newWidth < 20){
+                    int pass;
+                    g.drawRect( startxCo,startyCo,newWidth, cellHeight);
+                }
+                else if (rowItem.getValue() == null){
+                    checkBoxEmpty(g, startxCo, startyCo, newWidth);
+
+                } else if (rowItem.getValue().equals(false)) {
+                    this.checkBoxFalse(g,startxCo,startyCo, newWidth);
+                }
+                else if (rowItem.getValue().equals(true)){
+                    this.checkBoxTrue(g,startxCo,startyCo,newWidth);
+                }
+                else {
+                    String name = rowItem.getValue().toString();
+                    if(newWidth < name.length() * 7){
+                        int delta = newWidth/9;
+                        name = name.substring(0,delta);
+                    }
+                    this.paintRectText(g, startxCo, startyCo, newWidth, cellHeight, name );
+                }
+                startxCo = startxCo + widthList.get(i);
+                cutCollumn = true;
+                i++;
             }
-            else if (rowItem.getValue().equals(true)){
-                this.checkBoxTrue(g,startxCo,startyCo, widthList.get(i));
-            }
-            else {
-                this.paintRectText(g, startxCo, startyCo, widthList.get(i), cellHeight, rowItem.getValue().toString());
-            }
-            startxCo = startxCo + widthList.get(i);
-            i++;
+
+
         }
     }
 
@@ -374,6 +473,46 @@ public class paintModule {
         paintClosingButton(g, xCo+5+titleHeight/4, yCo+titleHeight/4);
         g.setColor(Color.BLACK);
     }
+
+    /**
+     * Method that paints a horizantal scrollbar, with a button to slide
+     * @param g
+     * @param xCo
+     * @param yCo
+     * @param width
+     * @param percentage
+     */
+    public void paintHScrollBar(Graphics g, int xCo, int yCo, int width, double percentage){
+        g.drawRect(xCo,yCo,width ,10);
+
+        int newWidth = (int) (percentage * (width-15) ) ;
+        width = newWidth;
+        g.drawRect( xCo ,yCo,width,10);
+        Color myColor = new Color(153, 153, 255);
+        g.setColor(myColor);
+        g.fillRect(xCo+1, yCo+1, width -1,9);
+        g.setColor(Color.BLACK);
+    }
+
+    /**
+     * Method that paints a vertical scrollbar, with a button to slide
+     * @param g
+     * @param xCo
+     * @param yCo
+     * @param height
+     * @param percentage
+     */
+    public void paintVScrollBar(Graphics g, int xCo, int yCo, int height, double percentage){
+        g.drawRect(xCo,yCo ,10,height);
+        int newHeight = (int) (percentage * (height-15));
+        height = newHeight;
+        g.drawRect( xCo,yCo ,10,height);
+        Color myColor = new Color(153, 153, 255);
+        g.setColor(myColor);
+        g.fillRect(xCo+1, yCo+1, 9,height -1);
+        g.setColor(Color.BLACK);
+    }
+
 
     public void paintClosingButton(Graphics g, int xCo, int yCo){
         g.fillOval(xCo, yCo, titleHeight-5, titleHeight-5);
