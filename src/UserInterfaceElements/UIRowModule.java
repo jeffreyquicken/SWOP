@@ -44,7 +44,7 @@ public class UIRowModule extends UISuperClass {
      * @param data datacontroller to make changes to the data
      * @return returns a list with the nextUIMode and the state of the UI
      */
-    public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data) {
+    public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data, Integer[] dimensions) {
         List<Integer> widthList = table.getRowSetting().getWidthList();
 
 
@@ -263,8 +263,8 @@ public class UIRowModule extends UISuperClass {
             System.out.println(percentageVertical);
         }
 
-        paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], percentageHorizontal);
-        paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, percentageVertical);
+        paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], percentageHorizontal, scrollbar);
+        paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, percentageVertical, scrollbar);
 
 
         //print tables in tabular view

@@ -66,7 +66,7 @@ public class Controller {
         Integer[] result =  topLevelWindow.relayCoordinates(xCo,yCo, id);
         if(topLevelWindow.getActiveSubWindow() != null  ) {
 
-            String nextUIMode = topLevelWindow.getActiveSubWindow().handleMouseEvent(result[0], result[1], count, id, tableDataController);
+            String nextUIMode = topLevelWindow.getActiveSubWindow().handleMouseEvent(result[0], result[1], count, id, tableDataController, topLevelWindow.getDimensions(topLevelWindow.getActiveSubWindow()));
             if (nextUIMode.equals("row")){
                 UIRowModule rowModule = new UIRowModule(tableDataController.getSelectedTable());
                 topLevelWindow.addSubWindow(rowModule);
@@ -76,7 +76,6 @@ public class Controller {
                 topLevelWindow.addSubWindow(designModule);
             }
         }
-
         mouseEvent = "Mouse eventID= " + id + " | Coordinates clicked" + xCo + ", " + yCo + "| Amount clicked: " + count;
         System.out.println(mouseEvent);
     }

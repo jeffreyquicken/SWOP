@@ -6,6 +6,7 @@ import EventHandlers.keyEventHandler;
 import EventHandlers.mouseEventHandler;
 import paintModule.paintModule;
 import settings.settings;
+import settings.scrollbar;
 
 import java.awt.*;
 import java.util.List;
@@ -21,11 +22,18 @@ public abstract class UISuperClass {
     protected int draggedX;
     protected boolean ctrlPressed;
     protected boolean active;
+    protected boolean scrollbarActive;
+    protected double percentageHorizontal;
+    protected double percentageVertical;
+    protected scrollbar scrollbar;
+
+
 
     /**
      * constructor for UISuperclass
      */
     public UISuperClass() {
+        scrollbarActive = false;
         paintModule = new paintModule();
         mouseEventHandler = new mouseEventHandler();
         invalidInput = false;
@@ -33,6 +41,7 @@ public abstract class UISuperClass {
         draggedColumn = 1;
         draggedX = 1;
         active = false;
+        scrollbar = new scrollbar();
     }
 
 
@@ -78,15 +87,15 @@ public abstract class UISuperClass {
     protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){return null;}
     protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){return null;}
     protected List<String> handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data){return null;}
-    protected String handleMouseEvent(int xCo, int yCo, int count, int ID, dataController data){
+    protected String handleMouseEvent(int xCo, int yCo, int count, int ID, dataController data, Integer[] dimensions){
 
-        List<String> result = this.handleMouseEvent2(xCo,  yCo,  count, ID,  data);
+        List<String> result = this.handleMouseEvent2(xCo,  yCo,  count, ID,  data, dimensions);
         currMode = result.get(0);
         return result.get(1);
 
     }
 
-    protected List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data){
+    protected List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data, Integer[] dimensions){
 
         return null;}
     protected void handleNonModeDependantKeys (int id, int keyCode, char keyChar, dataController data){}

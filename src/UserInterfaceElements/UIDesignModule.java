@@ -24,6 +24,7 @@ public class UIDesignModule extends UISuperClass {
     private Table table;
 
 
+
     /**
      * Creates/init a paintmodule and a mouseventhandler
      */
@@ -49,7 +50,7 @@ public class UIDesignModule extends UISuperClass {
      * @param data datacontroller to make changes to the data
      * @return returns a list with the nextUIMode and the state of the UI
      */
-    public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data) {
+    public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data, Integer[] dimensions) {
 
         settings setting;
         if (table == null) {
@@ -392,13 +393,13 @@ public class UIDesignModule extends UISuperClass {
             percentageHorizontal =  (Double.valueOf(dimensions[0]-30)/ Double.valueOf(sum));
             System.out.println(percentageHorizontal);
         }
-        if(data.getTableList().size() * 20 > dimensions[1] - 46){
+        if(table.getColumnNames().size() * 20 > dimensions[1] - 46){
             percentageVertical = ( Double.valueOf(dimensions[1] - 46)/ Double.valueOf((table.getColumnNames().size() * 20)));
             System.out.println(percentageVertical);
         }
 
-        paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], percentageHorizontal);
-        paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, percentageVertical);
+        paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], percentageHorizontal, this.scrollbar);
+        paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, percentageVertical, this.scrollbar);
 
         //print tables in tabular view
         paintModule.paintDesignView(g, table,coords[0] +paintModule.getMargin(), coords[1]+paintModule.getMargin(), table.getDesignSetting(), dimensions[0] - 48,dimensions[1]-58);

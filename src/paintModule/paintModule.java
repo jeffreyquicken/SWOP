@@ -5,6 +5,7 @@ import Data.Column;
 import Data.Row;
 import Data.Table;
 import settings.settings;
+import settings.scrollbar;
 
 
 import java.awt.*;
@@ -114,25 +115,32 @@ public class paintModule {
      * @param startYco  start Y coordinate where tableview should be painted
      * @param setting   settings object for this view
      */
-     public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startYco, settings setting, int width, int height){
+     public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startYco, settings setting, int width, int height, scrollbar scrollbar, int heigth){
+
          List<Integer> widthList = setting.getWidthList();
          int widthCells = widthList.get(0);
          if(widthCells > width ){
              widthCells = width;
          }
 
-        this.paintRectText(g,startXco, startYco - cellHeight+10 , widthCells,10, "" );
-
+         int offset = (int) ((heigth-titleHeight) * scrollbar.getOffsetpercentageVertical());
+         if (offset <= 0 ){
+        this.paintRectText(g,startXco, startYco - cellHeight+10 - offset  , widthCells,10, "" );
         g.setColor(Color.GRAY);
-        g.fillRect(startXco+1, startYco-cellHeight+11, widthCells-1, 9 );
-        g.setColor(Color.BLACK);
+        g.fillRect(startXco+1, startYco-cellHeight+11 - offset, widthCells-1, 9 );
+        g.setColor(Color.BLACK);}
 
 
-        int tempHeight = 0;
+        int tempHeight = -offset;
+         this.yCoStart =  startYco - offset;
         for(Table tableItem : tableList){
-            if(tempHeight < height){
+            if(tempHeight < (height-10  ) && tempHeight >= 0){
 
-                this.paintRectText(g,startXco, startYco , widthCells,cellHeight, tableItem.getTableName() );
+                this.paintRectText(g,startXco, startYco - offset , widthCells,cellHeight, tableItem.getTableName() );
+                startYco = startYco + cellHeight;
+                tempHeight += cellHeight;
+            }
+            else{
                 startYco = startYco + cellHeight;
                 tempHeight += cellHeight;
             }
@@ -482,7 +490,7 @@ public class paintModule {
      * @param width
      * @param percentage
      */
-    public void paintHScrollBar(Graphics g, int xCo, int yCo, int width, double percentage){
+    public void paintHScrollBar(Graphics g, int xCo, int yCo, int width, double percentage, scrollbar scrollbar){
         g.drawRect(xCo,yCo,width ,10);
 
         int newWidth = (int) (percentage * (width-15) ) ;
@@ -502,16 +510,20 @@ public class paintModule {
      * @param height
      * @param percentage
      */
-    public void paintVScrollBar(Graphics g, int xCo, int yCo, int height, double percentage){
+    public void paintVScrollBar(Graphics g, int xCo, int yCo, int height, double percentage, scrollbar scrollbar ){
+
         g.drawRect(xCo,yCo ,10,height);
-        int newHeight = (int) (percentage * (height-15));
+        int newHeight = (int) (percentage * (height-15)) ;
+
+        int offset = yCo +  (int) (scrollbar.getOffsetpercentageVertical() * (height -15));
         height = newHeight;
-        g.drawRect( xCo,yCo ,10,height);
+
+        g.drawRect( xCo,offset ,10,height);
         Color myColor = new Color(153, 153, 255);
         g.setColor(myColor);
-        g.fillRect(xCo+1, yCo+1, 9,height -1);
-        g.setColor(Color.BLACK);
-    }
+        g.fillRect(xCo+1, offset+1, 9,height -1);
+        g.setColor(Color.BLACK);}
+
 
 
     public void paintClosingButton(Graphics g, int xCo, int yCo){

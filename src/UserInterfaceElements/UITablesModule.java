@@ -28,7 +28,7 @@ public class UITablesModule extends UISuperClass{
      * @param data datacontroller to make changes to the data
      * @return returns a list with the nextUIMode and the state of the UI
      */
-    public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data) {
+    public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data, Integer[] dimensions) {
         String nextUImode = "";
 
         //EVENT DOUBLE CLICKS UNDER TABLE
@@ -49,9 +49,11 @@ public class UITablesModule extends UISuperClass{
         settings setting = data.getSetting();
 
         List<Integer> widthList = setting.getWidthList();
-        int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
+       int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
                 paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1,widthList);
 
+        //int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, 10, 10,
+              //  paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1,widthList);
        //Checks if user is dragging border
             if(currMode == "drag"){
                 if(ID == 506 || ID == 502){
@@ -60,8 +62,10 @@ public class UITablesModule extends UISuperClass{
                     int newWidth = previousWidth +delta;
                     int sum = widthList.stream().mapToInt(Integer::intValue).sum();
                     if(newWidth >= paintModule.getMinCellWidth() && sum + delta < 590 - paintModule.getxCoStart() ){
+
                         widthList.set(draggedColumn, newWidth);
                         draggedX = xCo;
+                        recalculateScrollbar(data, dimensions);
                     }
                 }else{
                     currMode ="normal";
@@ -74,7 +78,9 @@ public class UITablesModule extends UISuperClass{
             currMode = "delete";
             activeCell = clickedCell;
         }
-        //Check if a cell is clicked
+        else if(currMode!= "edit" && scrollbarClicked(xCo,yCo,dimensions)){
+
+            }
         else if (!invalidInput  && currMode!= "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
             if (count != 2){
             activeCell = clickedCell;
@@ -124,6 +130,7 @@ public class UITablesModule extends UISuperClass{
      */
     @Override
     public void paint(Graphics g, dataController data, Integer[] coords, Integer[] dimensions) {
+        recalculateScrollbar(data, dimensions);
         settings setting;
         setting = data.getSetting();
         paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
@@ -131,30 +138,21 @@ public class UITablesModule extends UISuperClass{
 
         List<Integer> widthList = setting.getWidthList();
 
-        int sum = widthList.stream().mapToInt(Integer::intValue).sum();
-        double percentageHorizontal = 0;
-        double percentageVertical =0;
-        if(sum > dimensions[0] - 31 ){
-            percentageHorizontal =  (Double.valueOf(dimensions[0]-30)/ Double.valueOf(sum));
-            System.out.println(percentageHorizontal);
-        }
-        if(data.getTableList().size() * 20 > dimensions[1] - 46){
-            percentageVertical = ( Double.valueOf(dimensions[1] - 46)/ Double.valueOf((data.getTableList().size() * 20)));
-            System.out.println(percentageVertical);
-        }
 
-        paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], percentageHorizontal);
-        paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, percentageVertical);
+        recalculateScrollbar(data, dimensions);
+
+        paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], scrollbar.getPercentageHorizontal(), scrollbar);
+        paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, scrollbar.getPercentageVertical(), scrollbar);
 
 
 
 
         //print tables in tabular view
-        paintModule.paintTableView(g, data.getTableList(), coords[0] + paintModule.getMargin(), coords[1] +paintModule.getMargin(), setting, dimensions[0] - 45, dimensions[1] - 58);
+        paintModule.paintTableView(g, data.getTableList(), coords[0] + paintModule.getMargin(), coords[1] +paintModule.getMargin(), setting, dimensions[0] - 45, dimensions[1] - 58, scrollbar, dimensions[1]);
 
         //Check mode
         if (currMode == "edit" ) {
-            int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList);
+            int[] coords1 = paintModule.getCellCoords(activeCell[0] , activeCell[1] , widthList);
             paintModule.paintCursor(g, coords1[0] + coords[0],
                     coords1[1] + coords[1], widthList.get(activeCell[1]),
                     paintModule.getCellHeight(), tempText);
@@ -193,6 +191,34 @@ public class UITablesModule extends UISuperClass{
             return false;
         }
         return true;
+    }
+    public void recalculateScrollbar(dataController data, Integer[] dimensions){
+        settings setting = data.getSetting();
+        List<Integer> widthList = setting.getWidthList();
+
+        int sum = widthList.stream().mapToInt(Integer::intValue).sum();
+        scrollbarActive = false;
+        if(sum > dimensions[0] - 31 ){
+            percentageHorizontal =  (Double.valueOf(dimensions[0]-30)/ Double.valueOf(sum));
+            scrollbar.setPercentageHorizontal(percentageHorizontal);
+            scrollbar.setActiveHorizontal(true);
+            System.out.println(percentageHorizontal);
+        }else{
+            scrollbar.setActiveHorizontal(false);
+            scrollbar.setPercentageHorizontal(0);
+            scrollbar.setOffsetpercentageHorizontal(0);
+        }
+
+        if(data.getTableList().size() * 20 > dimensions[1] - 46){
+            percentageVertical = ( Double.valueOf(dimensions[1] - 46)/ Double.valueOf((data.getTableList().size() * 20)));
+            scrollbar.setPercentageVertical(percentageVertical);
+            scrollbar.setActiveVertical(true);
+            System.out.println(percentageVertical);
+        }else{
+            scrollbar.setPercentageVertical(0);
+            scrollbar.setActiveVertical(false);
+            scrollbar.setOffsetpercentageVertical(0);
+        }
     }
    
     /*
@@ -303,4 +329,32 @@ public class UITablesModule extends UISuperClass{
     @Override
     protected void handleNonModeDependantKeys (int id, int keyCode, char keyChar, dataController data){
     }
+
+    private Boolean scrollbarClicked(int xco, int yco, Integer[] dimensions){
+        if(scrollbar.getActiveVertical() && xco > (dimensions[0] - 15) && xco < dimensions[0]){
+
+            if(scrollbar.getPercentageVertical() * dimensions[1] -15< yco){
+                System.out.println("Under vertical Scrollbar clicked!!!!!!!!!!!!!!!!!!");
+                scrollbar.addOffsetPercentageVertical();
+            }else{
+                System.out.println("on Vertical Scrollbar clicked!!!!!!!!!!!!!!!!!!");
+                scrollbar.substractOffsetPercentageVertical();
+            }
+
+
+        }else if(scrollbar.getActiveHorizontal() && yco > (dimensions[1] - 15) && yco < dimensions[1]){
+            if(scrollbar.getOffsetpercentageHorizontal() * dimensions[0] < xco){
+                System.out.println("Under hor Scrollbar clicked!!!!!!!!!!!!!!!!!!");
+                scrollbar.setOffsetpercentageHorizontal(1);
+            }else{
+                System.out.println("on hor Scrollbar clicked!!!!!!!!!!!!!!!!!!");
+            }
+        }
+
+        else{
+            System.out.println("Scrollbar Inactive");
+        }
+        return false;
+    }
+
 }
