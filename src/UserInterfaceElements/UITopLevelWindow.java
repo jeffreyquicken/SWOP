@@ -181,7 +181,7 @@ public class UITopLevelWindow {
             savedCoords[1] = yCo;
         }
         else {
-            for (UISuperClass subWindow : subWindows) {
+            for (UISuperClass subWindow : activeSubWindow) {
                 List<Integer> info = subwindowInfo.get(subWindow);
                 int X = info.get(0);
                 int Y = info.get(1);
@@ -207,15 +207,14 @@ public class UITopLevelWindow {
 
 
                 if (ClickedWithinWindow(X,Y,xCo,yCo,width,height)) {
-                    if(!ClickedWithinWindow(activeX,activeY,xCo,yCo,activeWidth,activeHeight)) {
+                    if(!ClickedWithinWindow(activeX,activeY,xCo,yCo,activeWidth,activeHeight) && subWindow != getActiveSubWindow()) {
                         setActiveSubWindow(subWindow);
-
                     }
                     int relayX = xCo - X;
                     int relayY = yCo - Y;
                     result[0] = relayX;
                     result[1] = relayY;
-                    if (isClosingButtonClicked(relayX, relayY) && id == 502) {
+                    if (isClosingButtonClicked(relayX, relayY) && id == 501) {
                         closeSubWindow(subWindow);
                         getActiveSubWindowList().removeIf(subWindow :: equals);
 

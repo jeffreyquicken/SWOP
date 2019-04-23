@@ -132,7 +132,7 @@ public class paintModule {
 
 
         int tempHeight = -offset;
-         this.yCoStart =  startYco - offset;
+         //this.yCoStart =  startYco - offset;
         for(Table tableItem : tableList){
             if(tempHeight < (height-10  ) && tempHeight >= 0){
 
