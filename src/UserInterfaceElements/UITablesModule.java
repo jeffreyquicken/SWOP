@@ -62,7 +62,6 @@ public class UITablesModule extends UISuperClass{
                     int newWidth = previousWidth +delta;
                     int sum = widthList.stream().mapToInt(Integer::intValue).sum();
                     if(newWidth >= paintModule.getMinCellWidth() && sum + delta < 590 - paintModule.getxCoStart() ){
-
                         widthList.set(draggedColumn, newWidth);
                         draggedX = xCo;
                         recalculateScrollbar(data, dimensions);
@@ -192,34 +191,7 @@ public class UITablesModule extends UISuperClass{
         }
         return true;
     }
-    public void recalculateScrollbar(dataController data, Integer[] dimensions){
-        settings setting = data.getSetting();
-        List<Integer> widthList = setting.getWidthList();
 
-        int sum = widthList.stream().mapToInt(Integer::intValue).sum();
-        scrollbarActive = false;
-        if(sum > dimensions[0] - 31 ){
-            percentageHorizontal =  (Double.valueOf(dimensions[0]-30)/ Double.valueOf(sum));
-            scrollbar.setPercentageHorizontal(percentageHorizontal);
-            scrollbar.setActiveHorizontal(true);
-            System.out.println(percentageHorizontal);
-        }else{
-            scrollbar.setActiveHorizontal(false);
-            scrollbar.setPercentageHorizontal(0);
-            scrollbar.setOffsetpercentageHorizontal(0);
-        }
-
-        if(data.getTableList().size() * 20 > dimensions[1] - 46){
-            percentageVertical = ( Double.valueOf(dimensions[1] - 46)/ Double.valueOf((data.getTableList().size() * 20)));
-            scrollbar.setPercentageVertical(percentageVertical);
-            scrollbar.setActiveVertical(true);
-            System.out.println(percentageVertical);
-        }else{
-            scrollbar.setPercentageVertical(0);
-            scrollbar.setActiveVertical(false);
-            scrollbar.setOffsetpercentageVertical(0);
-        }
-    }
    
     /*
      * (non-Javadoc)
@@ -330,31 +302,7 @@ public class UITablesModule extends UISuperClass{
     protected void handleNonModeDependantKeys (int id, int keyCode, char keyChar, dataController data){
     }
 
-    private Boolean scrollbarClicked(int xco, int yco, Integer[] dimensions){
-        if(scrollbar.getActiveVertical() && xco > (dimensions[0] - 15) && xco < dimensions[0]){
 
-            if(scrollbar.getPercentageVertical() * dimensions[1] -15< yco){
-                System.out.println("Under vertical Scrollbar clicked!!!!!!!!!!!!!!!!!!");
-                scrollbar.addOffsetPercentageVertical();
-            }else{
-                System.out.println("on Vertical Scrollbar clicked!!!!!!!!!!!!!!!!!!");
-                scrollbar.substractOffsetPercentageVertical();
-            }
-
-
-        }else if(scrollbar.getActiveHorizontal() && yco > (dimensions[1] - 15) && yco < dimensions[1]){
-            if(scrollbar.getOffsetpercentageHorizontal() * dimensions[0] < xco){
-                System.out.println("Under hor Scrollbar clicked!!!!!!!!!!!!!!!!!!");
-                scrollbar.setOffsetpercentageHorizontal(1);
-            }else{
-                System.out.println("on hor Scrollbar clicked!!!!!!!!!!!!!!!!!!");
-            }
-        }
-
-        else{
-            System.out.println("Scrollbar Inactive");
-        }
-        return false;
     }
 
-}
+

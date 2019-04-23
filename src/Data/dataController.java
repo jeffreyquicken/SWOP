@@ -19,7 +19,8 @@ public class dataController {
 
     public dataController(){
         setting = new settings();
-        setting.getWidthList().add(setting.getDefaultWidth());
+        //setting.getWidthList().add(setting.getDefaultWidth());
+        setting.getWidthList().add(setting.getDefaultWidth() + 200);
         tableList = new ArrayList<>();
        // /**
         Table table1 = new Table("Table 1");

@@ -53,8 +53,9 @@ public class scrollbar {
     public void setActiveVertical(Boolean activeVertical) {
         isActiveVertical = activeVertical;
     }
+
     public void addOffsetPercentageVertical(){
-        offsetpercentageVertical += 0.05;
+        offsetpercentageVertical += 0.015;
 
         if(this.getOffsetpercentageVertical() + this.getPercentageVertical() >1){
             offsetpercentageVertical = (1 - percentageVertical) ;
@@ -62,17 +63,23 @@ public class scrollbar {
         offsetInt += 1;
     }
     public void substractOffsetPercentageHorizontal(){
-       offsetpercentageVertical -= 0.05;
+        offsetpercentageHorizontal -= 0.015;
+        if(this.getOffsetpercentageHorizontal() < 0){
+            offsetpercentageHorizontal = 0 ;
+        }
     }
     public void substractOffsetPercentageVertical(){
-        offsetpercentageVertical -= 0.05;
+        offsetpercentageVertical -= 0.015;
         if(this.getOffsetpercentageVertical() < 0){
             offsetpercentageVertical = 0;
            }
         offsetInt -=1;
     }
     public void addOffsetPercentageHorizontal(){
-        offsetpercentageVertical -= 0.05;
+        offsetpercentageHorizontal += 0.015;
+        if(this.getOffsetpercentageHorizontal() + this.getPercentageHorizontal() >1){
+            offsetpercentageHorizontal = (1 - percentageHorizontal) ;
+        }
     }
 
     double offsetpercentageHorizontal;

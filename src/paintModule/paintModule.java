@@ -117,17 +117,19 @@ public class paintModule {
      */
      public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startYco, settings setting, int width, int height, scrollbar scrollbar, int heigth){
 
+         int offsetHorizontal = (int) (width * scrollbar.getOffsetpercentageHorizontal());
          List<Integer> widthList = setting.getWidthList();
          int widthCells = widthList.get(0);
-         if(widthCells > width ){
+         if(widthCells - offsetHorizontal > width ){
              widthCells = width;
          }
 
          int offset = (int) ((heigth-titleHeight) * scrollbar.getOffsetpercentageVertical());
+
          if (offset <= 0 ){
-        this.paintRectText(g,startXco, startYco - cellHeight+10 - offset  , widthCells,10, "" );
+        this.paintRectText(g,startXco, startYco - cellHeight+10 - offset  , widthCells - offsetHorizontal,10, "" );
         g.setColor(Color.GRAY);
-        g.fillRect(startXco+1, startYco-cellHeight+11 - offset, widthCells-1, 9 );
+        g.fillRect(startXco+1, startYco-cellHeight+11 - offset, widthCells-1 - offsetHorizontal, 9 );
         g.setColor(Color.BLACK);}
 
 
@@ -136,7 +138,7 @@ public class paintModule {
         for(Table tableItem : tableList){
             if(tempHeight < (height-10  ) && tempHeight >= 0){
 
-                this.paintRectText(g,startXco, startYco - offset , widthCells,cellHeight, tableItem.getTableName() );
+                this.paintRectText(g,startXco, startYco - offset , widthCells - offsetHorizontal,cellHeight, tableItem.getTableName() );
                 startYco = startYco + cellHeight;
                 tempHeight += cellHeight;
             }
@@ -492,13 +494,15 @@ public class paintModule {
      */
     public void paintHScrollBar(Graphics g, int xCo, int yCo, int width, double percentage, scrollbar scrollbar){
         g.drawRect(xCo,yCo,width ,10);
-
         int newWidth = (int) (percentage * (width-15) ) ;
+
+        int offset = xCo +  (int) (scrollbar.getOffsetpercentageHorizontal() * (width));
+
         width = newWidth;
-        g.drawRect( xCo ,yCo,width,10);
+        g.drawRect( offset ,yCo,width,10);
         Color myColor = new Color(153, 153, 255);
         g.setColor(myColor);
-        g.fillRect(xCo+1, yCo+1, width -1,9);
+        g.fillRect(offset+1, yCo+1, width -1,9);
         g.setColor(Color.BLACK);
     }
 

@@ -59,8 +59,11 @@ public class UIRowModule extends UISuperClass {
             currMode = "delete";
             activeCell = clickedCell;
         }
+        else if(currMode!= "edit" && scrollbarClicked(xCo,yCo,dimensions)){
+
+        }
         //EVENT DOUBLE CLICKS UNDER TABLE
-        if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, table.getLengthTable() + paintModule.getyCoStart())) {
+        else if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, table.getLengthTable() + paintModule.getyCoStart())) {
             Row row = new Row(table.getColumnNames());
             table.addRow(row);
         }
@@ -246,10 +249,11 @@ public class UIRowModule extends UISuperClass {
      */
     @Override
     public void paint(Graphics g,  dataController data, Integer[] coords, Integer[] dimensions) {
+        recalculateScrollbar(data, dimensions);
         List<Integer> widthList = table.getRowSetting().getWidthList();
         paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
         paintModule.paintBorderSubwindow( g, coords, dimensions, "Row Mode (" + table.getTableName() + ")", this.getActive());
-
+        recalculateScrollbar(data, dimensions);
 
         int sum = widthList.stream().mapToInt(Integer::intValue).sum();
         double percentageHorizontal = 0;
@@ -263,8 +267,10 @@ public class UIRowModule extends UISuperClass {
             System.out.println(percentageVertical);
         }
 
-        paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], percentageHorizontal, scrollbar);
-        paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, percentageVertical, scrollbar);
+
+        paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], scrollbar.getPercentageHorizontal(), scrollbar);
+        paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, scrollbar.getPercentageVertical(), scrollbar);
+
 
 
         //print tables in tabular view

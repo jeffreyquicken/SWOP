@@ -378,6 +378,7 @@ public class UIDesignModule extends UISuperClass {
      */
     @Override
     public void paint(Graphics g,  dataController data, Integer[] coords, Integer[] dimensions) {
+        recalculateScrollbar(data, dimensions);
         settings setting;
         List<Integer> widthList = table.getRowSetting().getWidthList();
 
@@ -398,8 +399,8 @@ public class UIDesignModule extends UISuperClass {
             System.out.println(percentageVertical);
         }
 
-        paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], percentageHorizontal, this.scrollbar);
-        paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, percentageVertical, this.scrollbar);
+        paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], scrollbar.getPercentageHorizontal(), scrollbar);
+        paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, scrollbar.getPercentageVertical(), scrollbar);
 
         //print tables in tabular view
         paintModule.paintDesignView(g, table,coords[0] +paintModule.getMargin(), coords[1]+paintModule.getMargin(), table.getDesignSetting(), dimensions[0] - 48,dimensions[1]-58);
