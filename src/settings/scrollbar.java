@@ -95,7 +95,6 @@ public class scrollbar {
         offsetpercentageVertical = 0;
         isActiveHorizontal = false;
         isActiveVertical = false;
-        offsetInt = 0;
     }
 
 }
