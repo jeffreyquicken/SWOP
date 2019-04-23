@@ -274,7 +274,7 @@ public class UIRowModule extends UISuperClass {
 
 
         //print tables in tabular view
-        paintModule.paintTable(g, table,coords[0] + paintModule.getMargin() , coords[1] + paintModule.getMargin(), dimensions[0] -48, dimensions[1] -58 ); // removed the "+10" behind the getmargin so that marggins are the same as tables mode
+        paintModule.paintTable(g, table,coords[0] + paintModule.getMargin() , coords[1] + paintModule.getMargin(), dimensions[0] -48, dimensions[1] -58, scrollbar , dimensions[1]); // removed the "+10" behind the getmargin so that marggins are the same as tables mode
 
 
         //Check mode
@@ -348,6 +348,38 @@ public class UIRowModule extends UISuperClass {
         }
         return true;
     }
+    //TODO JEFFREY an WOUT locate to UISUPERCLASS
+    private void recalculateScrollbar(dataController data, Integer[] dimensions){
+        settings setting = table.getRowSetting();
+        //WIDTHLIST IS NOT SAME FOR EVERY MODULE !!!!!!!!!!!!!
+        List<Integer> widthList = setting.getWidthList();
+
+        int sum = widthList.stream().mapToInt(Integer::intValue).sum();
+        scrollbarActive = false;
+        if(sum > dimensions[0] - 31 ){
+            percentageHorizontal =  (Double.valueOf(dimensions[0]-30)/ Double.valueOf(sum));
+            scrollbar.setPercentageHorizontal(percentageHorizontal);
+            scrollbar.setActiveHorizontal(true);
+            System.out.println(percentageHorizontal);
+        }else{
+            scrollbar.setActiveHorizontal(false);
+            scrollbar.setPercentageHorizontal(0);
+            scrollbar.setOffsetpercentageHorizontal(0);
+
+
+
+        }
+        //TABLE LIST
+        if(table.getTableRows().size() * 20 > dimensions[1] - 46){
+            percentageVertical = ( Double.valueOf(dimensions[1] - 46)/ Double.valueOf((data.getTableList().size() * 20)));
+            scrollbar.setPercentageVertical(percentageVertical);
+            scrollbar.setActiveVertical(true);
+            System.out.println(percentageVertical);
+        }else{
+            scrollbar.setPercentageVertical(0);
+            scrollbar.setActiveVertical(false);
+            scrollbar.setOffsetpercentageVertical(0);
+        }}
 }
 
 

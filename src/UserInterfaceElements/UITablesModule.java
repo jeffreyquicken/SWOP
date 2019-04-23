@@ -298,6 +298,37 @@ public class UITablesModule extends UISuperClass{
         return result;
     }
 
+    private void recalculateScrollbar(dataController data, Integer[] dimensions){
+        settings setting = data.getSetting();
+        //WIDTHLIST IS NOT SAME FOR EVERY MODULE !!!!!!!!!!!!!
+        List<Integer> widthList = setting.getWidthList();
+
+        int sum = widthList.stream().mapToInt(Integer::intValue).sum();
+        scrollbarActive = false;
+        if(sum > dimensions[0] - 31 ){
+            percentageHorizontal =  (Double.valueOf(dimensions[0]-30)/ Double.valueOf(sum));
+            scrollbar.setPercentageHorizontal(percentageHorizontal);
+            scrollbar.setActiveHorizontal(true);
+            System.out.println(percentageHorizontal);
+        }else{
+            scrollbar.setActiveHorizontal(false);
+            scrollbar.setPercentageHorizontal(0);
+            scrollbar.setOffsetpercentageHorizontal(0);
+
+
+
+        }
+        //TABLE LIST
+        if(data.getTableList().size() * 20 > dimensions[1] - 46){
+            percentageVertical = ( Double.valueOf(dimensions[1] - 46)/ Double.valueOf((data.getTableList().size() * 20)));
+            scrollbar.setPercentageVertical(percentageVertical);
+            scrollbar.setActiveVertical(true);
+            System.out.println(percentageVertical);
+        }else{
+            scrollbar.setPercentageVertical(0);
+            scrollbar.setActiveVertical(false);
+            scrollbar.setOffsetpercentageVertical(0);
+        }}
     @Override
     protected void handleNonModeDependantKeys (int id, int keyCode, char keyChar, dataController data){
     }
