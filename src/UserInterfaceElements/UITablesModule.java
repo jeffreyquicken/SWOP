@@ -62,7 +62,6 @@ public class UITablesModule extends UISuperClass{
                     int newWidth = previousWidth +delta;
                     int sum = widthList.stream().mapToInt(Integer::intValue).sum();
                     if(newWidth >= paintModule.getMinCellWidth() && sum + delta < 590 - paintModule.getxCoStart() ){
-
                         widthList.set(draggedColumn, newWidth);
                         draggedX = xCo;
                         recalculateScrollbar(data, dimensions);
@@ -333,9 +332,10 @@ public class UITablesModule extends UISuperClass{
     private Boolean scrollbarClicked(int xco, int yco, Integer[] dimensions){
         if(scrollbar.getActiveVertical() && xco > (dimensions[0] - 15) && xco < dimensions[0]){
 
-            if(scrollbar.getPercentageVertical() * dimensions[1] -15< yco){
+            if(scrollbar.getPercentageVertical() * dimensions[1] -15 < yco){
                 System.out.println("Under vertical Scrollbar clicked!!!!!!!!!!!!!!!!!!");
                 scrollbar.addOffsetPercentageVertical();
+
             }else{
                 System.out.println("on Vertical Scrollbar clicked!!!!!!!!!!!!!!!!!!");
                 scrollbar.substractOffsetPercentageVertical();
@@ -345,9 +345,10 @@ public class UITablesModule extends UISuperClass{
         }else if(scrollbar.getActiveHorizontal() && yco > (dimensions[1] - 15) && yco < dimensions[1]){
             if(scrollbar.getOffsetpercentageHorizontal() * dimensions[0] < xco){
                 System.out.println("Under hor Scrollbar clicked!!!!!!!!!!!!!!!!!!");
-                scrollbar.setOffsetpercentageHorizontal(1);
+                scrollbar.addOffsetPercentageHorizontal();
             }else{
                 System.out.println("on hor Scrollbar clicked!!!!!!!!!!!!!!!!!!");
+                scrollbar.substractOffsetPercentageHorizontal();
             }
         }
 
