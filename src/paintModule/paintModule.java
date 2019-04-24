@@ -67,56 +67,96 @@ public class paintModule {
      * TO REFACTOR
      * too long
      */
-    public void paintTable(Graphics g, Table table, int startXco, int startYco, int width, int height, scrollbar scrollbar, int windowHeight){
+    public void paintTable(Graphics g, Table table, int startXco, int startYco, int width, int height, scrollbar scrollbar, int windowHeight, int sum){
+
+        //Vertical offset
         int offset = (int) ((windowHeight-titleHeight) * scrollbar.getOffsetpercentageVertical());
-        int offsetHorizontal = (int) (width * scrollbar.getOffsetpercentageHorizontal());
+        //Horizontal offset
+        int offsetHorizontal = (int) (sum * scrollbar.getOffsetpercentageHorizontal());
 
 
         int headerXco = startXco;
         int i =0;
+
         CellVisualisationSettings setting = table.getRowSetting();
         List<Integer> widthList = setting.getWidthList();
+
         Font currentFont = g.getFont();
         Font newFont = currentFont.deriveFont(currentFont.getSize() * 0.89F);
         g.setFont(newFont);
+
         int tempWidth = widthList.get(i);
         boolean cutCollumn = false;
+        //ALS Vertical OFFSET > 0 --> GEEN HEADERS
         if (offset <= 0 ){
+        //ITERATE over Collumns
         for(Column column: table.getColumnNames()){
-            if(tempWidth < width){
-                g.setColor(Color.GRAY);
-                g.fillRect(headerXco,startYco - cellHeight/2, widthList.get(i) - offsetHorizontal, cellHeight/2);
-                g.setColor(Color.BLACK);
-                this.paintRectText(g,headerXco, startYco - cellHeight/2, widthList.get(i) - offsetHorizontal,cellHeight/2,column.getName());
-                headerXco += widthList.get(i) - offsetHorizontal;
+            //ALS collum volledig verdwenen is
+            if(offsetHorizontal > 0 && offsetHorizontal  - widthList.get(i) >=0 ){
                 offsetHorizontal -= widthList.get(i);
-                if (widthList.size() >= i+2) {
-                    tempWidth += widthList.get(i +1) ;
-                }
-
-                //i++;
             }
+            //deel van collum is verdwenen
+            else if(offsetHorizontal > 0 && offsetHorizontal  - widthList.get(i) < 0 ){
+                //Nieuwe breedte is nu window tot nieuwe collumn
+                int newWidth = widthList.get(i) - offsetHorizontal;
+                String name = column.getName();
+                //Naam wordt weggelaten als er te weinig plaats is
+                if(newWidth < 50){
+                    name = "";
+                }
+                g.setColor(Color.GRAY);
+                g.fillRect(headerXco ,startYco - cellHeight/2, newWidth, cellHeight/2);
+                g.setColor(Color.BLACK);
+                this.paintRectText(g,headerXco , startYco - cellHeight/2, newWidth,cellHeight/2,name);
+                headerXco += newWidth;
+                offsetHorizontal -= widthList.get(i);
+
+                tempWidth =newWidth;
+                tempWidth += widthList.get(i+1);
+
+
+
+            }
+            //ALS opgetelde breedte nog niet breder als windowbreedte is
+            else if(tempWidth < width -50){
+                g.setColor(Color.GRAY);
+                g.fillRect(headerXco,startYco - cellHeight/2, widthList.get(i) , cellHeight/2);
+                g.setColor(Color.BLACK);
+                this.paintRectText(g,headerXco, startYco - cellHeight/2, widthList.get(i) ,cellHeight/2,column.getName());
+                headerXco += widthList.get(i);
+                if(i < widthList.size() -1){
+                tempWidth += widthList.get(i +1) ;}
+            }
+            //Breedte is wel groter als windowbreedte ( en eerste keer = cutcollumn)
             else if(!cutCollumn){
-            int newWidth = width   -  (headerXco - startXco);
+
+            //Nieuwe breedte is nu tot de breedte van de window
+           // int newWidth = width   -  (headerXco - startXco);
+                int newWidth = (width + startXco) - headerXco ;
 
             String name = column.getName();
-            if(newWidth < 100){
+            //Naam wordt weggelaten als er te weinig plaats is
+            if(newWidth < 50){
                 name = "";
             }
-
             g.setColor(Color.GRAY);
             g.fillRect(headerXco,startYco - cellHeight/2, newWidth, cellHeight/2);
             g.setColor(Color.BLACK);
             this.paintRectText(g,headerXco, startYco - cellHeight/2, newWidth,cellHeight/2,name);
-            headerXco += widthList.get(i);}
-            i++;
+            headerXco += widthList.get(i);
             cutCollumn = true;
+
+            }
+            //iterating
+            i++;
         }}
 
-       offsetHorizontal = (int) (width * scrollbar.getOffsetpercentageHorizontal());
+        offsetHorizontal = (int) (sum * scrollbar.getOffsetpercentageHorizontal());
         g.setFont(currentFont);
         int tempHeight = -offset;
         this.yCoStart =  startYco - offset;
+
+
         for(Row row: table.getTableRows()){
 
 
@@ -149,8 +189,11 @@ public class paintModule {
      */
      public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startYco, CellVisualisationSettings setting, int width, int height, scrollbar scrollbar, int heigth){
 
+
          int offsetHorizontal = (int) (width * scrollbar.getOffsetpercentageHorizontal());
+
          List<Integer> widthList = setting.getWidthList();
+
          int widthCells = widthList.get(0);
          if(widthCells - offsetHorizontal > width ){
              widthCells = width;
@@ -244,6 +287,29 @@ public class paintModule {
 
     }
 
+    public void paintCell(int newWidth, Graphics g, int startxCo, int startyCo, Cell rowItem){
+        if(newWidth < 20){
+            g.drawRect( startxCo,startyCo,newWidth, cellHeight);
+        }
+        else if (rowItem.getValue() == null){
+            checkBoxEmpty(g, startxCo, startyCo, newWidth);
+
+        } else if (rowItem.getValue().equals(false)) {
+            this.checkBoxFalse(g,startxCo,startyCo, newWidth);
+        }
+        else if (rowItem.getValue().equals(true)){
+            this.checkBoxTrue(g,startxCo,startyCo,newWidth);
+        }
+        else {
+            String name = rowItem.getValue().toString();
+            if(newWidth < name.length() * 7){
+                int delta = newWidth/9;
+                name = name.substring(0,delta);
+            }
+            this.paintRectText(g, startxCo, startyCo, newWidth, cellHeight, name );
+        }
+    }
+
     /**
      * Method that paints a single row given a List of strings
      * @param g graphics object
@@ -256,7 +322,7 @@ public class paintModule {
      * TO REFACTOR
      * too long
      */
-    public void paintRow(Graphics g, List<Cell> rowList, int startxCo, int startyCo, CellVisualisationSettings setting, int width, int offset){
+    public void paintRow(Graphics g, List<Cell> rowList, int startxCo, int startyCo, CellVisualisationSettings setting, int width, int offsetHorizontal){
 
         int i = 0;
         int ogStartxCo = startxCo;
@@ -265,61 +331,48 @@ public class paintModule {
 
 
         boolean cutCollumn = false;
-        if( widthList.get(i) - offset >= 0 ){
 
-
+        //Iterate over cells
         for(Cell rowItem : rowList){
-            if(tempWidth < width ){
-                if (rowItem.getValue() == null){
-                    checkBoxEmpty(g, startxCo, startyCo, widthList.get(i) - offset);
+            //ALS cellcollumn volledig verdwenen is
+            if(offsetHorizontal > 0 && offsetHorizontal  - widthList.get(i) >=0 ){
+                offsetHorizontal -= widthList.get(i);
+            }
+            //deel van collum is verdwenen
+            else if(offsetHorizontal > 0 && offsetHorizontal  - widthList.get(i) < 0 ){
+                //Nieuwe breedte is nu window tot nieuwe collumn
+                int newWidth = widthList.get(i) - offsetHorizontal;
 
-                } else if (rowItem.getValue().equals(false)) {
-                    this.checkBoxFalse(g,startxCo,startyCo, widthList.get(i) - offset);
-                }
-                else if (rowItem.getValue().equals(true)){
-                    this.checkBoxTrue(g,startxCo,startyCo, widthList.get(i) - offset);
-                }
-                else {
-                    this.paintRectText(g, startxCo, startyCo, widthList.get(i) - offset, cellHeight, rowItem.getValue().toString());
-                }
+               paintCell(newWidth,g,startxCo,startyCo,rowItem);
+                startxCo += newWidth;
+                offsetHorizontal -= widthList.get(i);
 
-                startxCo = startxCo + widthList.get(i) - offset;
-                offset = offset - widthList.get(i);
+                tempWidth =newWidth;
+                tempWidth += widthList.get(i+1);
+
+            }
+
+
+            //ALS opgetelde breedte nog niet breder als windowbreedte is
+            else if(tempWidth < width - 50 ){
+                paintCell(widthList.get(i),g,startxCo,startyCo,rowItem);
+
+                startxCo = startxCo + widthList.get(i) ;
                 if(i != rowList.size()-1){
                 tempWidth += widthList.get(i+1);}
-                i++;
 
             }else if(!cutCollumn){
-                int newWidth =  width - (startxCo - ogStartxCo) ;
-                if(newWidth < 20){
-                    int pass;
-                    g.drawRect( startxCo,startyCo,newWidth, cellHeight);
-                }
-                else if (rowItem.getValue() == null){
-                    checkBoxEmpty(g, startxCo, startyCo, newWidth);
-
-                } else if (rowItem.getValue().equals(false)) {
-                    this.checkBoxFalse(g,startxCo,startyCo, newWidth);
-                }
-                else if (rowItem.getValue().equals(true)){
-                    this.checkBoxTrue(g,startxCo,startyCo,newWidth);
-                }
-                else {
-                    String name = rowItem.getValue().toString();
-                    if(newWidth < name.length() * 7){
-                        int delta = newWidth/9;
-                        name = name.substring(0,delta);
-                    }
-                    this.paintRectText(g, startxCo, startyCo, newWidth, cellHeight, name );
-                }
+                int newWidth =  (width + ogStartxCo) - startxCo;
+                paintCell(newWidth,g,startxCo,startyCo,rowItem);
                 startxCo = startxCo + widthList.get(i);
                 cutCollumn = true;
-                i++;
-            } }
+            }
+            i++;
+        }
 
 
         }
-    }
+
 
     /**
      * Method that paints the border around the subwindow and the title bar.
