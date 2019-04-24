@@ -294,7 +294,7 @@ public class UITopLevelWindow {
         else if(relayXco == width && relayYco ==0){
             borderClicked = 2;
         }
-        else if((relayXco <= width && relayXco >= width-10) && (relayYco <=height && relayYco >= height-10)){ //bottom right corner made bigger for easier scrolling
+        else if((relayXco <= width && relayXco >= width-10) && (relayYco <=height && relayYco >= height-10)){ //bottom right corner made bigger for easier resizing
             borderClicked = 3;
         }
         else if(relayXco == 0 && relayYco ==height){

@@ -90,10 +90,15 @@ public class paintModule {
                 this.paintRectText(g,headerXco, startYco - cellHeight/2, widthList.get(i) - offsetHorizontal,cellHeight/2,column.getName());
                 headerXco += widthList.get(i) - offsetHorizontal;
                 offsetHorizontal -= widthList.get(i);
-                tempWidth += widthList.get(i +1) ;
-                i++;}
+                if (widthList.size() >= i+2) {
+                    tempWidth += widthList.get(i +1) ;
+                }
+
+                //i++;
+            }
             else if(!cutCollumn){
             int newWidth = width   -  (headerXco - startXco);
+
             String name = column.getName();
             if(newWidth < 100){
                 name = "";
@@ -252,6 +257,7 @@ public class paintModule {
      * too long
      */
     public void paintRow(Graphics g, List<Cell> rowList, int startxCo, int startyCo, CellVisualisationSettings setting, int width, int offset){
+
         int i = 0;
         int ogStartxCo = startxCo;
         List<Integer> widthList = setting.getWidthList();
@@ -337,6 +343,10 @@ public class paintModule {
      */
     //TODO: margin, width, length are now hardcoded should be stored in variables
     public void paintRectText(Graphics g, int xCo, int yCo,int width, int height, String text){
+        if (width> 200) {
+            System.out.println("sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
+
+        }
         //int rectWidth = (int)(text.length()*8.5);
         g.drawRect(xCo,yCo,width,height);
         int yCo2 = 0;
