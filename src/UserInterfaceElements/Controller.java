@@ -15,6 +15,7 @@ public class Controller {
     private UIDesignModule designModule;
     private Data.dataController tableDataController;
     private String currentMode;
+
     private UITopLevelWindow topLevelWindow;
     //ctrlPressed var to detect if new tables module needs to be added
     private boolean ctrlPressed;
@@ -204,5 +205,9 @@ public class Controller {
 
     public boolean getCtrlPressed() {
         return ctrlPressed;
+    }
+
+    public UITopLevelWindow getTopLevelWindow() {
+        return topLevelWindow;
     }
 }
