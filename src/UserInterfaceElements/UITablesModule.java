@@ -3,6 +3,8 @@ package UserInterfaceElements;
 import Data.Table;
 import Data.dataController;
 import events.*;
+import paintModule.RowModePaintModule;
+import paintModule.TableModePaintModule;
 import settings.CellVisualisationSettings;
 
 import java.awt.*;
@@ -10,12 +12,15 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class UITablesModule extends UISuperClass{
+	
+	private TableModePaintModule paintModule;
 
     //Constructor that init/creates paintModule and an empty list with tablenames
     //Each UImodule has own paintmodule to save settings.settings (e.g. size, bg, ...)
 	//constructor inherited from SuperClass
     public UITablesModule() {
         super();
+        paintModule = new TableModePaintModule();
     }
 
     /**
@@ -60,19 +65,7 @@ public class UITablesModule extends UISuperClass{
               //  paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1,widthList);
        //Checks if user is dragging border
             if(currMode == "drag"){
-                if(ID == 506 || ID == 502){
-                    int delta = xCo - draggedX;
-                    int previousWidth = widthList.get(draggedColumn);
-                    int newWidth = previousWidth +delta;
-                    int sum = widthList.stream().mapToInt(Integer::intValue).sum();
-                    if(newWidth >= paintModule.getMinCellWidth() && sum + delta < 590 - paintModule.getxCoStart() ){
-                        widthList.set(draggedColumn, newWidth);
-                        draggedX = xCo;
-                        recalculateScrollbar(data, dimensions);
-                    }
-                }else{
-                    currMode ="normal";
-                }
+                handleDragEvent(xCo, ID, data, dimensions, widthList);
         }
         //check if leftmargin is clicked
         else if(currMode != "edit" && mouseEventHandler.marginLeftClicked(xCo,yCo,paintModule.getxCoStart(),
@@ -121,6 +114,29 @@ public class UITablesModule extends UISuperClass{
         result.add(nextUImode);
         return result;
     }
+
+	/**
+	 * @param xCo
+	 * @param ID
+	 * @param data
+	 * @param dimensions
+	 * @param widthList
+	 */
+	private void handleDragEvent(int xCo, int ID, dataController data, Integer[] dimensions, List<Integer> widthList) {
+		if(ID == 506 || ID == 502){
+		    int delta = xCo - draggedX;
+		    int previousWidth = widthList.get(draggedColumn);
+		    int newWidth = previousWidth +delta;
+		    int sum = widthList.stream().mapToInt(Integer::intValue).sum();
+		    if(newWidth >= paintModule.getMinCellWidth() && sum + delta < 590 - paintModule.getxCoStart() ){
+		        widthList.set(draggedColumn, newWidth);
+		        draggedX = xCo;
+		        recalculateScrollbar(data, dimensions);
+		    }
+		}else{
+		    currMode ="normal";
+		}
+	}
 
     //Method that takes care of painting the canvas
     //It calls method from paintModule

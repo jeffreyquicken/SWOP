@@ -258,8 +258,8 @@ public class TABLR {
     @Test
     public void CheckStartCoords() {
         Integer[] result = topWindow.getStartCoords(topWindow.getActiveSubWindow());
-        assertEquals(result[0],20);
-        assertEquals(result[1],20);
+        assertEquals(result[0].intValue(),20);
+        assertEquals(result[1].intValue(),20);
     }
 
 }

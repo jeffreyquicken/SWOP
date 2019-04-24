@@ -3,7 +3,8 @@ package UserInterfaceElements;
 import Data.*;
 import events.MouseEvent;
 import events.KeyEvent;
-import paintModule.paintModule;
+import paintModule.PaintModule;
+import paintModule.RowModePaintModule;
 import settings.CellVisualisationSettings;
 
 import java.awt.*;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UIRowModule extends UISuperClass {
-    private paintModule paintModule;
+    private RowModePaintModule paintModule;
     private events.MouseEvent mouseEventHandler;
     private int xCoStart = 50;
     private int yCoStart = 50;
@@ -27,7 +28,7 @@ public class UIRowModule extends UISuperClass {
     //Constructor that init/creates paintModule and an empty list with tablenames
     //Each UImodule has own paintmodule to save settings.settings (e.g. size, bg, ...)
     public UIRowModule(Table tableInput) {
-        paintModule = new paintModule();
+        paintModule = new RowModePaintModule();
         mouseEventHandler = new MouseEvent();
         table = tableInput;
 
@@ -44,99 +45,121 @@ public class UIRowModule extends UISuperClass {
      * @param data datacontroller to make changes to the data
      * @return returns a list with the nextUIMode and the state of the UI
      */
-    /*
-     * TO REFACTOR
-     * too long
-     */
+   
     public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data, Integer[] dimensions) {
         List<Integer> widthList = table.getRowSetting().getWidthList();
-
-
         int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
                 paintModule.getCellHeight(), paintModule.getCellWidth(), table.getTableRows().size(), table.getColumnNames().size(), widthList);
+        
         int lowestY = (table.getColumnNames().size() * paintModule.getCellHeight()) + paintModule.getyCoStart();
-
         //check if leftmargin is clicked
-        if(clickedCell[1] == 0 && currMode != "edit" && mouseEventHandler.marginLeftClicked(xCo,yCo,paintModule.getxCoStart(),
-                paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(),
-                table.getTableRows().size(), 1, paintModule.getCellLeftMargin(), widthList) != null) {
+        if(isClickedLeftMargin(xCo, yCo, widthList, clickedCell)) {
             currMode = "delete";
             activeCell = clickedCell;
         }
         else if(currMode!= "edit" && scrollbarClicked(xCo,yCo,dimensions)){
-
         }
         //EVENT DOUBLE CLICKS UNDER TABLE
         else if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, table.getLengthTable() + paintModule.getyCoStart())) {
             Row row = new Row(table.getColumnNames());
             table.addRow(row);
         }
-
         //EVENT CELL CLICKED (VALID INPUT)
         else if (!invalidInput && ID == 500 && currMode!="edit" && currMode != "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
-            activeCell = clickedCell;
-            currMode = "edit";
-            if (table.getColumnNames().get(activeCell[1]).getType().equals("Boolean")) {
-
-                tempText = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]);
-
-                if (tempText.getValue()== null) {
-                    ((CellBoolean) tempText).setValue(true);
-
-                } else if (tempText.getValue().equals(false)) {
-                    if (table.getColumnNames().get(activeCell[1]).getBlanksAllowed()) {
-                        tempText.setValue(null);
-                    } else {
-
-                        ((CellBoolean) tempText).setValue(true);
-                    }
-
-                } else {
-                    ((CellBoolean) tempText).setValue(false);
-                }
-                saveText(data);
-
-            } else {
-                tempText = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]);
-            }
+            handleCellClickedValidInput(data, clickedCell);
         }
-
-
-        //Check if header is clicked
         if (mouseEventHandler.rightBorderClicked(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), widthList.size(), paintModule.getCellHeight(), widthList) != -1) {
-            System.out.println("RIGHT BORDER CLICKED");
-            currMode = "drag";
-            draggedColumn = mouseEventHandler.rightBorderClicked(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), widthList.size(), paintModule.getCellHeight(), widthList);
-            draggedX = xCo;
+            startDrag(xCo, yCo, widthList);
             //Checks if user is dragging border
         } else if (currMode == "drag") {
-            if (ID == 506) {
-                int delta = xCo - draggedX;
-                int previousWidth = widthList.get(draggedColumn);
-                int newWidth = previousWidth + delta;
-                int sum = widthList.stream().mapToInt(Integer::intValue).sum();
-                if (newWidth >= paintModule.getMinCellWidth() && sum + delta < 590 - paintModule.getxCoStart()) {
-                    widthList.set(draggedColumn, newWidth);
-                    draggedX = xCo;
-                    recalculateScrollbar(data, dimensions);
-                }
-            } else {
-                currMode = "normal";
-            }
+            handleBorderDragging(xCo, ID, data, dimensions, widthList);
         }
-
         //EVENT EXIT EDIT MODE
         else if(!invalidInput && currMode == "edit" && (clickedCell[0] == -1 || clickedCell[1] == -1)){
             saveText(data);
             currMode = "normal";
         }
-
         String nextUImode = "";
         List<String> result = new ArrayList<>();
         result.add(currMode);
         result.add("");
         return result;
     }
+
+	/**
+	 * @param xCo
+	 * @param yCo
+	 * @param widthList
+	 */
+	private void startDrag(int xCo, int yCo, List<Integer> widthList) {
+		System.out.println("RIGHT BORDER CLICKED");
+		currMode = "drag";
+		draggedColumn = mouseEventHandler.rightBorderClicked(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), widthList.size(), paintModule.getCellHeight(), widthList);
+		draggedX = xCo;
+	}
+
+	/**
+	 * @param xCo
+	 * @param yCo
+	 * @param widthList
+	 * @param clickedCell
+	 * @return
+	 */
+	private boolean isClickedLeftMargin(int xCo, int yCo, List<Integer> widthList, int[] clickedCell) {
+		return clickedCell[1] == 0 && currMode != "edit" && mouseEventHandler.marginLeftClicked(xCo,yCo,paintModule.getxCoStart(),
+                paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(),
+                table.getTableRows().size(), 1, paintModule.getCellLeftMargin(), widthList) != null;
+	}
+
+	/**
+	 * @param data
+	 * @param clickedCell
+	 */
+	private void handleCellClickedValidInput(dataController data, int[] clickedCell) {
+		activeCell = clickedCell;
+		currMode = "edit";
+		if (table.getColumnNames().get(activeCell[1]).getType().equals("Boolean")) {
+		    tempText = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]);
+		    if (tempText.getValue()== null) {
+		        ((CellBoolean) tempText).setValue(true);
+		    } else if (tempText.getValue().equals(false)) {
+		        if (table.getColumnNames().get(activeCell[1]).getBlanksAllowed()) {
+		            tempText.setValue(null);
+		        } else {
+		            ((CellBoolean) tempText).setValue(true);
+		        }
+		    } else {
+		        ((CellBoolean) tempText).setValue(false);
+		    }
+		    saveText(data);
+		} else {
+		    tempText = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]);
+		}
+	}
+
+	/**
+	 * @param xCo
+	 * @param ID
+	 * @param data
+	 * @param dimensions
+	 * @param widthList
+	 */
+	private void handleBorderDragging(int xCo, int ID, dataController data, Integer[] dimensions,
+			List<Integer> widthList) {
+		if (ID == 506) {
+		    int delta = xCo - draggedX;
+		    int previousWidth = widthList.get(draggedColumn);
+		    int newWidth = previousWidth + delta;
+		    int sum = widthList.stream().mapToInt(Integer::intValue).sum();
+		    if (newWidth >= paintModule.getMinCellWidth() && sum + delta < 590 - paintModule.getxCoStart()) {
+		        widthList.set(draggedColumn, newWidth);
+		        draggedX = xCo;
+		        recalculateScrollbar(data, dimensions);
+		    }
+		} else {
+		    currMode = "normal";
+		}
+	}
 
 
     /**
@@ -148,6 +171,10 @@ public class UIRowModule extends UISuperClass {
      * @param data datacontroller
      * @return returns a list with the nextUImode and the current mode of the UI
      */
+	/*
+	 * TO REFACTOR
+	 * too long
+	 */
     protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data) {
         KeyEvent eventHandler = new KeyEvent();
         String currName = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]).getValue().toString(); // NOOIT GEBRUIKT, snap het nut niet
@@ -252,33 +279,12 @@ public class UIRowModule extends UISuperClass {
      * @param g graphics object
      * @param data datacontroller
      */
-    /*
-     * TO REFACTOR
-     * too long
-     */
+ 
     @Override
     public void paint(Graphics g,  dataController data, Integer[] coords, Integer[] dimensions) {
-
-        recalculateScrollbar(data, dimensions);
-
         List<Integer> widthList = table.getRowSetting().getWidthList();
-
-        paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
-        paintModule.paintBorderSubwindow( g, coords, dimensions, "Row Mode (" + table.getTableName() + ")", this.getActive());
-
-        recalculateScrollbar(data, dimensions);
-
-
-
-        paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], scrollbar.getPercentageHorizontal(), scrollbar);
-        paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, scrollbar.getPercentageVertical(), scrollbar);
-
-
         int sum = widthList.stream().mapToInt(Integer::intValue).sum();
-        //print tables in tabular view
-        paintModule.paintTable(g, table,coords[0] + paintModule.getMargin() , coords[1] + paintModule.getMargin(), dimensions[0] -48, dimensions[1] -58, scrollbar , dimensions[1], sum); // removed the "+10" behind the getmargin so that marggins are the same as tables mode
-
-
+        paintWindowBasics(g, data, coords, dimensions, sum);
         //Check mode
         if (currMode == "edit" ) {
             int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList);
@@ -287,11 +293,7 @@ public class UIRowModule extends UISuperClass {
                         coords1[1] + coords[1], widthList.get(activeCell[1]),
                         paintModule.getCellHeight(), tempText.getValue().toString());
             }
-
-
-
         }
-
         //check if there are warnings
         if (invalidInput || currMode == "delete") {
             int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList);
@@ -303,6 +305,23 @@ public class UIRowModule extends UISuperClass {
         }
 
     }
+
+	/**
+	 * @param g
+	 * @param data
+	 * @param coords
+	 * @param dimensions
+	 * @param sum
+	 */
+	private void paintWindowBasics(Graphics g, dataController data, Integer[] coords, Integer[] dimensions, int sum) {
+		recalculateScrollbar(data, dimensions);
+        paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
+        paintModule.paintBorderSubwindow( g, coords, dimensions, "Row Mode (" + table.getTableName() + ")", this.getActive());
+        recalculateScrollbar(data, dimensions);
+        paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], scrollbar.getPercentageHorizontal(), scrollbar);
+        paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, scrollbar.getPercentageVertical(), scrollbar);
+        paintModule.paintRowModeView(g, table,coords[0] + paintModule.getMargin() , coords[1] + paintModule.getMargin(), dimensions[0] -48, dimensions[1] -58, scrollbar , dimensions[1], sum); // removed the "+10" behind the getmargin so that marggins are the same as tables mode
+	}
 
     /**
      * Saves the edited text to the datacontroller
@@ -383,7 +402,8 @@ public class UIRowModule extends UISuperClass {
             scrollbar.setPercentageVertical(0);
             scrollbar.setActiveVertical(false);
             scrollbar.setOffsetpercentageVertical(0);
-        }}
+        }
+        }
 }
 
 

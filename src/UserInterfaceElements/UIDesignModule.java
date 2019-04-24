@@ -2,8 +2,9 @@ package UserInterfaceElements;
 
 import Data.*;
 import events.MouseEvent;
+import paintModule.DesignModePaintModule;
+import paintModule.PaintModule;
 import events.KeyEvent;
-import paintModule.paintModule;
 import settings.CellVisualisationSettings;
 
 import java.awt.*;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UIDesignModule extends UISuperClass {
-    private paintModule paintModule;
+    private DesignModePaintModule paintModule;
     private events.MouseEvent mouseEventHandler;
     //private int xCoStart = 50;
     //private int yCoStart = 50;
@@ -29,7 +30,7 @@ public class UIDesignModule extends UISuperClass {
      * Creates/init a paintmodule and a mouseventhandler
      */
     public UIDesignModule(Table inputTable) {
-        paintModule = new paintModule();
+        paintModule = new DesignModePaintModule();
         mouseEventHandler = new MouseEvent();
         invalidInput = false;
         table = inputTable;
