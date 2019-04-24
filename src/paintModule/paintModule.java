@@ -112,11 +112,13 @@ public class paintModule {
                 offsetHorizontal -= widthList.get(i);
 
                 tempWidth =newWidth;
+                tempWidth += widthList.get(i+1);
+
 
 
             }
             //ALS opgetelde breedte nog niet breder als windowbreedte is
-            else if(tempWidth < width + 45){
+            else if(tempWidth < width -50){
                 g.setColor(Color.GRAY);
                 g.fillRect(headerXco,startYco - cellHeight/2, widthList.get(i) , cellHeight/2);
                 g.setColor(Color.BLACK);
