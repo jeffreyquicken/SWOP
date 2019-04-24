@@ -20,7 +20,9 @@ public class UITopLevelWindow {
     private int[] savedCoords = {-1,-1};
     	//List with activeSubwindow in chronological order. The last active subwindow is in the first position in the list.
     private List<UISuperClass> subWindows;
-		//Dictionary with subwindows as keys and a list with Xco,Yco,Width, Height as value
+
+
+    //Dictionary with subwindows as keys and a list with Xco,Yco,Width, Height as value
     private Map<UISuperClass,List<Integer>> subwindowInfo;
 
     /**
@@ -65,16 +67,6 @@ public class UITopLevelWindow {
     public List<UISuperClass> getSubWindows() {
         return subWindows;
     }
-
-    public void setSubWindows(List<UISuperClass> subWindows) {
-        this.subWindows = subWindows;
-    }
-
-
-
-
-
-
 
     /**
      * Removes a given subwindow from the list of subwindows
@@ -191,17 +183,18 @@ public class UITopLevelWindow {
                 int activeY;
                 int activeWidth;
                 int activeHeight;
-                if (getActiveSubWindow() != null) {
+                //if (getActiveSubWindow() != null) {
                     activeX = activeInfo.get(0);
                     activeY = activeInfo.get(1);
                     activeWidth = activeInfo.get(2);
                     activeHeight = activeInfo.get(3);
-                } else {
+                //}
+                    /**else {
                     activeX = 0;
                     activeY = 0;
                     activeWidth = 0;
                     activeHeight = 0;
-                }
+                } */
 
 
                 if (ClickedWithinWindow(X,Y,xCo,yCo,width,height)) {
@@ -325,6 +318,11 @@ public class UITopLevelWindow {
         }
 
     }
+
+    public Map<UISuperClass, List<Integer>> getSubwindowInfo() {
+        return subwindowInfo;
+    }
+    public int getBorderClicked() { return borderClicked;}
 
 
 }

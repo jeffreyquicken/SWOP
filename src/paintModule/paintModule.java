@@ -343,10 +343,10 @@ public class paintModule {
      */
     //TODO: margin, width, length are now hardcoded should be stored in variables
     public void paintRectText(Graphics g, int xCo, int yCo,int width, int height, String text){
-        if (width> 200) {
+        /**if (width> 200) {
             System.out.println("sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
 
-        }
+        }*/
         //int rectWidth = (int)(text.length()*8.5);
         g.drawRect(xCo,yCo,width,height);
         int yCo2 = 0;
