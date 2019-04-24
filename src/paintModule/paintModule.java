@@ -151,19 +151,25 @@ public class paintModule {
             i++;
         }}
 
+
         offsetHorizontal = (int) (sum * scrollbar.getOffsetpercentageHorizontal());
         g.setFont(currentFont);
-        int tempHeight = -offset;
-        this.yCoStart =  startYco - offset;
 
+        int tempHeight = -offset;
+        System.out.println("previous XCOSTART = " + (this.xCoStart));
+        System.out.println("previous YCOSTART = " + (this.yCoStart));
+        ////this.yCoStart -= offset;
+        //this.xCoStart =  startXco - offsetHorizontal;
+        System.out.println("new XCOSTART = " + (this.xCoStart));
+        System.out.println("new YCOSTART = " + (this.yCoStart));
 
         for(Row row: table.getTableRows()){
 
 
             if(tempHeight < (height-10  ) && tempHeight >= 0){
             this.paintRow(g,row.getColumnList(),startXco ,startYco - offset, setting, width, offsetHorizontal );
-            startYco = startYco + 20;
-            tempHeight+= 20;
+            startYco = startYco + cellHeight;
+            tempHeight+= cellHeight;
             }
 
             else{
@@ -172,6 +178,7 @@ public class paintModule {
         }
 
         }
+
 
     }
 
@@ -209,7 +216,10 @@ public class paintModule {
 
 
         int tempHeight = -offset;
-         //this.yCoStart =  startYco - offset;
+
+         System.out.println("previous YCOSTART = " + (this.yCoStart));
+       //  this.yCoStart -=  offset;
+         System.out.println("new YCOSTART = " + (this.yCoStart));
         for(Table tableItem : tableList){
             if(tempHeight < (height-10  ) && tempHeight >= 0){
 
@@ -236,19 +246,57 @@ public class paintModule {
       * TO REFACTOR
       * too long
       */
-    public void paintDesignView(Graphics g, Table table, int startXco, int startYco, CellVisualisationSettings setting, int width, int height){
+    public void paintDesignView(Graphics g, Table table, int startXco, int startYco, CellVisualisationSettings setting, int width, int height, scrollbar scrollbar, int windowHeight, int sum){
+        //Vertical offset
+        int offset = (int) ((windowHeight-titleHeight) * scrollbar.getOffsetpercentageVertical());
+        //Horizontal offset
+        int offsetHorizontal = (int) (sum * scrollbar.getOffsetpercentageHorizontal());
+
         int headerXco = startXco;
         int headerYco = startYco - cellHeight/2;;
+
         List<Integer> widthList = setting.getWidthList();
 
         Font currentFont = g.getFont();
         Font newFont = currentFont.deriveFont(currentFont.getSize() * 0.9F);
         g.setFont(newFont);
+
         String[] names = {"Name", "Default value", "Type", "Blank?"};
+
         int tempWidth = widthList.get(0);
         boolean cutCollumn = false;
+        //NO headers if there is an offset
+        if (offset <=0){
+        //ITERATE over collumns names
         for(int i = 0; i <4; i++){
-            if(tempWidth < width){
+            if(offsetHorizontal > 0 && offsetHorizontal  - widthList.get(i) >=0 ){
+                offsetHorizontal -= widthList.get(i);
+            }
+            //deel van collum is verdwenen
+            else if(offsetHorizontal > 0 && offsetHorizontal  - widthList.get(i) < 0 ){
+                //Nieuwe breedte is nu window tot nieuwe collumn
+                int newWidth = widthList.get(i) - offsetHorizontal;
+                String name = names[i];
+                //Naam wordt weggelaten als er te weinig plaats is
+                if(newWidth < 50){
+                    name = "";
+                }
+                g.setColor(Color.GRAY);
+                g.fillRect(headerXco ,startYco - cellHeight/2, newWidth, cellHeight/2);
+                g.setColor(Color.BLACK);
+                this.paintRectText(g,headerXco , startYco - cellHeight/2, newWidth,cellHeight/2,name);
+                headerXco += newWidth;
+                offsetHorizontal -= widthList.get(i);
+
+                tempWidth =newWidth;
+                if(widthList.size() != i-1){
+                tempWidth += widthList.get(i+1);}
+
+
+
+            }
+            //ALS opgetelde breedte nog niet breder als windowbreedte is
+            else if(tempWidth < width -50){
             g.setColor(Color.GRAY);
             g.fillRect(headerXco, headerYco, widthList.get(i),cellHeight/2);
             g.setColor(Color.BLACK);
@@ -257,31 +305,41 @@ public class paintModule {
             headerXco += widthList.get(i);
             if(i != 3){
             tempWidth += widthList.get(i +1);}
-            }else if(!cutCollumn){
-                int newWidth = width - (headerXco - startXco);
+            }else if(!cutCollumn) {
+
+                int newWidth = (width +startXco) - headerXco;
                 String name = names[i];
 
-                if(newWidth < name.length() * 7){
-                    int delta = newWidth/8;
-                    name = name.substring(0,delta);
+                if (newWidth < name.length() * 7) {
+                    int delta = newWidth / 8;
+                    name = name.substring(0, delta);
                 }
                 g.setColor(Color.GRAY);
-                g.fillRect(headerXco, headerYco,newWidth,cellHeight/2);
+                g.fillRect(headerXco, headerYco, newWidth, cellHeight / 2);
                 g.setColor(Color.BLACK);
-                this.paintRectText(g,headerXco, headerYco, newWidth,cellHeight/2, name);
+
+                this.paintRectText(g, headerXco, headerYco, newWidth, cellHeight / 2, name);
                 System.out.println(names[i]);
                 headerXco += widthList.get(i);
                 cutCollumn = true;
             }
-        }
+        }}
+
+        offsetHorizontal = (int) (sum * scrollbar.getOffsetpercentageHorizontal());
         g.setFont(currentFont);
+
+        int tempHeight = -offset;
+
         for(Column column: table.getColumnNames()){
-            int tempHeight = 0;
-            if(tempHeight < height){
+            if(tempHeight < (height - 10) && tempHeight >=0) {
             List<Cell> rowInfo = column.getInfo();
-            this.paintRow(g,rowInfo,startXco,startYco, setting, width, 1);
+            this.paintRow(g,rowInfo,startXco,startYco, setting, width, offsetHorizontal);
             startYco = startYco + cellHeight;
             tempHeight += cellHeight;
+            }
+            else{
+                startYco = startYco + cellHeight;
+                tempHeight += cellHeight;
             }
         }
 
