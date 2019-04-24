@@ -1,10 +1,10 @@
 package UserInterfaceElements;
 
 import Data.*;
-import EventHandlers.keyEventHandler;
-import EventHandlers.mouseEventHandler;
+import events.MouseEvent;
+import events.KeyEvent;
 import paintModule.paintModule;
-import settings.settings;
+import settings.CellVisualisationSettings;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class UIDesignModule extends UISuperClass {
     private paintModule paintModule;
-    private EventHandlers.mouseEventHandler mouseEventHandler;
+    private events.MouseEvent mouseEventHandler;
     //private int xCoStart = 50;
     //private int yCoStart = 50;
     private String currMode = "normal";
@@ -30,7 +30,7 @@ public class UIDesignModule extends UISuperClass {
      */
     public UIDesignModule(Table inputTable) {
         paintModule = new paintModule();
-        mouseEventHandler = new mouseEventHandler();
+        mouseEventHandler = new MouseEvent();
         invalidInput = false;
         table = inputTable;
 
@@ -52,7 +52,7 @@ public class UIDesignModule extends UISuperClass {
      */
     public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data, Integer[] dimensions) {
 
-        settings setting;
+        CellVisualisationSettings setting;
         if (table == null) {
             setting = table.getDesignSetting();
         } else {
@@ -379,7 +379,7 @@ public class UIDesignModule extends UISuperClass {
     @Override
     public void paint(Graphics g,  dataController data, Integer[] coords, Integer[] dimensions) {
         recalculateScrollbar(data, dimensions);
-        settings setting;
+        CellVisualisationSettings setting;
         List<Integer> widthList = table.getRowSetting().getWidthList();
 
         paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
@@ -462,7 +462,7 @@ public class UIDesignModule extends UISuperClass {
      */
     @Override
     protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data) {
-        keyEventHandler eventHandler = new keyEventHandler();
+        KeyEvent eventHandler = new KeyEvent();
         //EVENT: ASCSII char pressed
         if (eventHandler.isChar(keyCode)) {
             ((CellEditable)tempText).addChar(keyChar);
@@ -507,7 +507,7 @@ public class UIDesignModule extends UISuperClass {
      */
     protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data) {
         String nextUIMode = "";
-        keyEventHandler eventHandler = new keyEventHandler();
+        KeyEvent eventHandler = new KeyEvent();
         //ESCAPE
         if(keyCode == 27){
             nextUIMode = "table";
@@ -541,7 +541,7 @@ public class UIDesignModule extends UISuperClass {
      * @return returns a list with the nextUImode and the current mode of the UI
      */
     protected List<String> handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data) {
-       keyEventHandler eventHandler = new keyEventHandler();
+       KeyEvent eventHandler = new KeyEvent();
         //DEL key pressed
         if(eventHandler.isDelete(keyCode) || keyChar == 'd'){
             List<Row> rowList = table.getTableRows();
@@ -559,7 +559,7 @@ public class UIDesignModule extends UISuperClass {
         return result;
     }
     private void recalculateScrollbar(dataController data, Integer[] dimensions){
-        settings setting = data.getSetting();
+        CellVisualisationSettings setting = data.getSetting();
         //WIDTHLIST IS NOT SAME FOR EVERY MODULE !!!!!!!!!!!!!
         List<Integer> widthList = setting.getWidthList();
 

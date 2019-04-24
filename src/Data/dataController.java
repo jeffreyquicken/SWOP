@@ -2,12 +2,12 @@ package Data;
 
 import java.util.ArrayList;
 import java.util.List;
-import settings.settings;
+import settings.CellVisualisationSettings;
 
 public class dataController {
     private List<Table> tableList;
     private Table selectedTable;
-    private settings setting;
+    private CellVisualisationSettings setting;
 
     public Table getSelectedTable() {
         return selectedTable;
@@ -18,10 +18,11 @@ public class dataController {
     }
 
     public dataController(){
-        setting = new settings();
+        setting = new CellVisualisationSettings();
         //setting.getWidthList().add(setting.getDefaultWidth());
         setting.getWidthList().add(setting.getDefaultWidth() + 200);
         tableList = new ArrayList<>();
+       // Temporary tables for demonstration purposes
        // /**
         Table table1 = new Table("Table 1");
         Table table2 = new Table("Table 2");
@@ -45,8 +46,8 @@ public class dataController {
 
     /**
      * Method that returns the lowest Y coordinate based on how many tables there are
-     * and the set height of 20 for these tables
-     * @return the lowes Y coordinate
+     * and the set height for these tables
+     * @return the lowest Y coordinate
      */
     public int getLowestY(int i){
         int lowestY = i;
@@ -62,7 +63,7 @@ public class dataController {
 
     }
 
-    public settings getSetting(){
+    public CellVisualisationSettings getSetting(){
         return setting;
     }
 

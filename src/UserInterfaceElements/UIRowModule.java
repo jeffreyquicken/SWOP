@@ -1,10 +1,10 @@
 package UserInterfaceElements;
 
 import Data.*;
-import EventHandlers.keyEventHandler;
-import EventHandlers.mouseEventHandler;
+import events.MouseEvent;
+import events.KeyEvent;
 import paintModule.paintModule;
-import settings.settings;
+import settings.CellVisualisationSettings;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class UIRowModule extends UISuperClass {
     private paintModule paintModule;
-    private EventHandlers.mouseEventHandler mouseEventHandler;
+    private events.MouseEvent mouseEventHandler;
     private int xCoStart = 50;
     private int yCoStart = 50;
     private String currMode = "normal";
@@ -28,7 +28,7 @@ public class UIRowModule extends UISuperClass {
     //Each UImodule has own paintmodule to save settings.settings (e.g. size, bg, ...)
     public UIRowModule(Table tableInput) {
         paintModule = new paintModule();
-        mouseEventHandler = new mouseEventHandler();
+        mouseEventHandler = new MouseEvent();
         table = tableInput;
 
     }
@@ -144,7 +144,7 @@ public class UIRowModule extends UISuperClass {
      * @return returns a list with the nextUImode and the current mode of the UI
      */
     protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data) {
-        keyEventHandler eventHandler = new keyEventHandler();
+        KeyEvent eventHandler = new KeyEvent();
         String currName = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]).getValue().toString(); // NOOIT GEBRUIKT, snap het nut niet
         //EVENT: ASCSII char pressed
         if (eventHandler.isChar(keyCode)) {
@@ -190,7 +190,7 @@ public class UIRowModule extends UISuperClass {
     protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data) {
         //EVENT: t pressed
         String nextUIMode = "";
-        keyEventHandler eventHandler = new keyEventHandler();
+        KeyEvent eventHandler = new KeyEvent();
         if (keyCode == 27) {
             nextUIMode = "table";
         } else if(keyChar=='d'){
@@ -223,7 +223,7 @@ public class UIRowModule extends UISuperClass {
      */
     protected List<String> handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data) {
 
-        keyEventHandler eventHandler = new keyEventHandler();
+        KeyEvent eventHandler = new KeyEvent();
         //DEL key pressed
         if(eventHandler.isDelete(keyCode) || keyChar == 'd'){
 
@@ -350,7 +350,7 @@ public class UIRowModule extends UISuperClass {
     }
     //TODO JEFFREY an WOUT locate to UISUPERCLASS
     private void recalculateScrollbar(dataController data, Integer[] dimensions){
-        settings setting = table.getRowSetting();
+        CellVisualisationSettings setting = table.getRowSetting();
         //WIDTHLIST IS NOT SAME FOR EVERY MODULE !!!!!!!!!!!!!
         List<Integer> widthList = setting.getWidthList();
 

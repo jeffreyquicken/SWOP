@@ -2,8 +2,8 @@ package UserInterfaceElements;
 
 import Data.Table;
 import Data.dataController;
-import EventHandlers.*;
-import settings.settings;
+import events.*;
+import settings.CellVisualisationSettings;
 
 import java.awt.*;
 import java.util.List;
@@ -46,7 +46,7 @@ public class UITablesModule extends UISuperClass{
 
         //EVENT CLICK CELL
         //TODO: check if margin clicked
-        settings setting = data.getSetting();
+        CellVisualisationSettings setting = data.getSetting();
 
         List<Integer> widthList = setting.getWidthList();
        int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
@@ -130,7 +130,7 @@ public class UITablesModule extends UISuperClass{
     @Override
     public void paint(Graphics g, dataController data, Integer[] coords, Integer[] dimensions) {
         recalculateScrollbar(data, dimensions);
-        settings setting;
+        CellVisualisationSettings setting;
         setting = data.getSetting();
         paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
         paintModule.paintBorderSubwindow( g, coords, dimensions, "Table Mode",this.getActive());
@@ -212,7 +212,7 @@ public class UITablesModule extends UISuperClass{
      */
     @Override
     protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){
-    	keyEventHandler eventHandler = new keyEventHandler();
+    	KeyEvent eventHandler = new KeyEvent();
         //EVENT: ASCSII char pressed
         if (eventHandler.isChar(keyCode)) {
             tempText = tempText + keyChar;
@@ -284,7 +284,7 @@ public class UITablesModule extends UISuperClass{
      */
     @Override
     protected List<String> handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data){
-    	keyEventHandler eventHandler = new keyEventHandler();
+    	KeyEvent eventHandler = new KeyEvent();
     	//DEL key pressed
         if(eventHandler.isDelete(keyCode) || keyChar == 'd'){
         List<Table> list = data.getTableList();
@@ -299,7 +299,7 @@ public class UITablesModule extends UISuperClass{
     }
 
     private void recalculateScrollbar(dataController data, Integer[] dimensions){
-        settings setting = data.getSetting();
+        CellVisualisationSettings setting = data.getSetting();
         //WIDTHLIST IS NOT SAME FOR EVERY MODULE !!!!!!!!!!!!!
         List<Integer> widthList = setting.getWidthList();
 

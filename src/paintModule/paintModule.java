@@ -4,7 +4,7 @@ import Data.Cell;
 import Data.Column;
 import Data.Row;
 import Data.Table;
-import settings.settings;
+import settings.CellVisualisationSettings;
 import settings.scrollbar;
 
 
@@ -66,7 +66,7 @@ public class paintModule {
 
         int headerXco = startXco;
         int i =0;
-        settings setting = table.getRowSetting();
+        CellVisualisationSettings setting = table.getRowSetting();
         List<Integer> widthList = setting.getWidthList();
         Font currentFont = g.getFont();
         Font newFont = currentFont.deriveFont(currentFont.getSize() * 0.89F);
@@ -130,7 +130,7 @@ public class paintModule {
      * @param startYco  start Y coordinate where tableview should be painted
      * @param setting   settings object for this view
      */
-     public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startYco, settings setting, int width, int height, scrollbar scrollbar, int heigth){
+     public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startYco, CellVisualisationSettings setting, int width, int height, scrollbar scrollbar, int heigth){
 
          int offsetHorizontal = (int) (width * scrollbar.getOffsetpercentageHorizontal());
          List<Integer> widthList = setting.getWidthList();
@@ -172,7 +172,7 @@ public class paintModule {
      * @param g graphics object
      * @param table table for which design view has to be painted
      */
-    public void paintDesignView(Graphics g, Table table, int startXco, int startYco, settings setting, int width, int height){
+    public void paintDesignView(Graphics g, Table table, int startXco, int startYco, CellVisualisationSettings setting, int width, int height){
         int headerXco = startXco;
         int headerYco = startYco - cellHeight/2;;
         List<Integer> widthList = setting.getWidthList();
@@ -231,7 +231,7 @@ public class paintModule {
      * @param startyCo  start Y coordinate where row should be painted
      * @param setting settings object for this row view
      */
-    public void paintRow(Graphics g, List<Cell> rowList, int startxCo, int startyCo, settings setting, int width, int offset){
+    public void paintRow(Graphics g, List<Cell> rowList, int startxCo, int startyCo, CellVisualisationSettings setting, int width, int offset){
         int i = 0;
         int ogStartxCo = startxCo;
         List<Integer> widthList = setting.getWidthList();

@@ -3,14 +3,14 @@ package Data;
 import java.util.ArrayList;
 import java.util.List;
 
-import settings.settings;
+import settings.CellVisualisationSettings;
 
 public class Table {
     private String tableName;
     private List<Row> tableRows;
     private List<Column> columnNames;
-    private settings rowSetting;
-    private settings designSetting;
+    private CellVisualisationSettings rowSetting;
+    private CellVisualisationSettings designSetting;
 
 
     public void setTableName(String tableName) {
@@ -35,8 +35,8 @@ public class Table {
         tableRows = new ArrayList<Row>();
         columnNames = new ArrayList<Column>();
         tableName = name;
-        rowSetting = new settings();
-        designSetting = new settings();
+        rowSetting = new CellVisualisationSettings();
+        designSetting = new CellVisualisationSettings();
         for(int i = 0; i< 4;i++ ){
             designSetting.getWidthList().add(designSetting.getDefaultWidth());
         }
@@ -63,7 +63,7 @@ public class Table {
      *
      * @return
      */
-    public settings getRowSetting() {
+    public CellVisualisationSettings getRowSetting() {
         return rowSetting;
     }
 
@@ -103,7 +103,7 @@ public class Table {
 
     }
 
-    public settings getDesignSetting() {
+    public CellVisualisationSettings getDesignSetting() {
         return designSetting;
     }
 

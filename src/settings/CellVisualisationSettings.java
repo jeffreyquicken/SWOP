@@ -3,12 +3,22 @@ package settings;
 import java.util.ArrayList;
 import java.util.List;
 
-public class settings {
+public class CellVisualisationSettings {
 
     private List<Integer> widthList;
     private int cellHeight= 20;
-    private int startX;
+   /* private int startX;
+    private  int startY;*/
+    private int width;
+    private int height;
+    private int defaultWidth = 100;
 
+
+    public CellVisualisationSettings(){
+        widthList = new ArrayList<>();
+    }
+    
+    /* Unused?
     public int getStartX() {
         return startX;
     }
@@ -24,6 +34,7 @@ public class settings {
     public void setStartY(int startY) {
         this.startY = startY;
     }
+    */
 
     public int getWidth() {
         return width;
@@ -45,19 +56,10 @@ public class settings {
         this.defaultWidth = defaultWidth;
     }
 
-    private  int startY;
-    private int width;
-    private int height;
-
     public int getDefaultWidth() {
         return defaultWidth;
     }
 
-    private int defaultWidth = 100;
-
-    public settings(){
-        widthList = new ArrayList<>();
-    }
 
     public List<Integer> getWidthList() {
         return widthList;

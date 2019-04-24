@@ -2,10 +2,10 @@ package UserInterfaceElements;
 
 
 import Data.dataController;
-import EventHandlers.keyEventHandler;
-import EventHandlers.mouseEventHandler;
+import events.MouseEvent;
+import events.KeyEvent;
 import paintModule.paintModule;
-import settings.settings;
+import settings.CellVisualisationSettings;
 import settings.scrollbar;
 
 import java.awt.*;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public abstract class UISuperClass {
     protected paintModule paintModule;
-    protected mouseEventHandler mouseEventHandler;
+    protected MouseEvent mouseEventHandler;
     protected String currMode = "normal";
     protected int[] activeCell;
     protected String tempText;
@@ -35,7 +35,7 @@ public abstract class UISuperClass {
     public UISuperClass() {
         scrollbarActive = false;
         paintModule = new paintModule();
-        mouseEventHandler = new mouseEventHandler();
+        mouseEventHandler = new MouseEvent();
         invalidInput = false;
         tempText = "Default_Text";
         draggedColumn = 1;
@@ -47,7 +47,7 @@ public abstract class UISuperClass {
 
     //Handles keyevent and returns if UImode need to change
     public String handleKeyEvent(int id, int keyCode, char keyChar, dataController data) {
-        keyEventHandler eventHandler = new keyEventHandler();
+        KeyEvent eventHandler = new KeyEvent();
         String nextUIMode = "";
 
 

@@ -1,9 +1,9 @@
-package EventHandlers;
+package events;
 
 
 import java.util.List;
 
-public class mouseEventHandler {
+public class MouseEvent {
 
     /**
      * Check if a click given by a Y coordinate and the number of clicks is a double click under table
@@ -47,7 +47,7 @@ public class mouseEventHandler {
                 }
             }
 
-            coordinates[1] = calculateRowID(yCo, firstY, height, numberOfRows);
+            coordinates[1] = getRowByClickCoordinates(yCo, firstY, height, numberOfRows);
             return coordinates;
         }else{
           return null;
@@ -71,9 +71,9 @@ public class mouseEventHandler {
     	int[] cellID = {-1,-1};
     	if(this.isInTableWidth(xCo, firstX, widthList) && this.isInTableHeight(yCo, firstY, height, numberOfRows)){
     		//calculates the in which column the user clicked
-            cellID[1] = calculateColumnID(xCo, firstX, widthList);
+            cellID[1] = getColumnByClickCoordinates(xCo, firstX, widthList);
             //calculates in which row the user clicked
-            cellID[0] = calculateRowID(yCo, firstY, height, numberOfRows);
+            cellID[0] = getRowByClickCoordinates(yCo, firstY, height, numberOfRows);
         }
     	System.out.println("CellID: " + cellID[0] + ", " + cellID[1]);
     	return cellID;
@@ -85,7 +85,7 @@ public class mouseEventHandler {
      * @param firstX    First X coordinate of table
      * @return colID    returns the number of the column that corresponds to the X coordinate
      */
-    private int calculateColumnID(int xCo, int firstX, List<Integer> widthList) {
+    private int getColumnByClickCoordinates(int xCo, int firstX, List<Integer> widthList) {
         int colID = -1;
         int tempWidth = firstX;
         for(int i = 0; i< widthList.size(); i++) {
@@ -105,7 +105,7 @@ public class mouseEventHandler {
      * @param numberOfRows  Number of rows
      * @return rowID    returns the number of the row that corresponds to the Y coordinate
      */
-    private int calculateRowID(int yCo, int firstY, int height, int numberOfRows) {
+    private int getRowByClickCoordinates(int yCo, int firstY, int height, int numberOfRows) {
         int rowID = -1;
         for (int i = 0; i < numberOfRows; i++) {
             if ((yCo > (firstY + i * height)) && (yCo < (firstY + (i + 1) * height))) {

@@ -1,15 +1,16 @@
 
 
 
-import EventHandlers.mouseEventHandler;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import events.MouseEvent;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MouseTests {
 
-    mouseEventHandler clicker = new mouseEventHandler();
+    MouseEvent clicker = new MouseEvent();
 
     //this test wil check that if lowest point in the table is clicked that it does not count as under the table
     @Test

@@ -1,6 +1,6 @@
 package UserInterfaceElements;
 
-import settings.settings;
+import settings.CellVisualisationSettings;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +11,7 @@ import java.util.Map;
 public class UITopLevelWindow {
 
     private List<UISuperClass> activeSubWindow;
-    private settings setting;
+    private CellVisualisationSettings setting;
     private int minWidth = 150;
     private int minHeight = 150;
 
@@ -32,7 +32,7 @@ public class UITopLevelWindow {
      * Constructor
      */
     public UITopLevelWindow(){
-        setting = new settings();
+        setting = new CellVisualisationSettings();
         subWindows = new ArrayList<>();
         subwindowInfo = new HashMap<UISuperClass, List<Integer>>();
         activeSubWindow = new ArrayList<>();

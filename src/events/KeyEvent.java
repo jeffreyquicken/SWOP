@@ -1,11 +1,11 @@
-package EventHandlers;
+package events;
 
 import Data.Table;
 import Data.dataController;
 
 import java.util.List;
 
-public class keyEventHandler {
+public class KeyEvent {
 
     /**
      * Check if keycode is a normal character
