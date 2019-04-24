@@ -28,6 +28,10 @@ public class UITablesModule extends UISuperClass{
      * @param data datacontroller to make changes to the data
      * @return returns a list with the nextUIMode and the state of the UI
      */
+    /*
+     * TO REFACTOR
+     * too long
+     */
     public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data, Integer[] dimensions) {
         String nextUImode = "";
 
@@ -127,6 +131,10 @@ public class UITablesModule extends UISuperClass{
      * @param g graphics object
      * @param data datacontroller
      */
+    /*
+     * TO REFACTOR
+     * too long
+     */
     @Override
     public void paint(Graphics g, dataController data, Integer[] coords, Integer[] dimensions) {
         recalculateScrollbar(data, dimensions);
@@ -210,6 +218,10 @@ public class UITablesModule extends UISuperClass{
      * @param data datacontroller
      * @return returns a list with the nextUImode and the current mode of the UI
      */
+    /*
+     * TO REFACTOR
+     * too long
+     */
     @Override
     protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){
     	KeyEvent eventHandler = new KeyEvent();
@@ -269,8 +281,6 @@ public class UITablesModule extends UISuperClass{
         result.add("normal");
         result.add("");
         return result;
-
-
     }
 
     /**
@@ -297,7 +307,13 @@ public class UITablesModule extends UISuperClass{
         result.add("");
         return result;
     }
-
+    
+    
+    /*
+     * TO REFACTOR
+     * too long
+     * large similarities with the other UI modules. maybe put in superclass or in another class altogether
+     */
     private void recalculateScrollbar(dataController data, Integer[] dimensions){
         CellVisualisationSettings setting = data.getSetting();
         //WIDTHLIST IS NOT SAME FOR EVERY MODULE !!!!!!!!!!!!!

@@ -50,6 +50,10 @@ public class UIDesignModule extends UISuperClass {
      * @param data datacontroller to make changes to the data
      * @return returns a list with the nextUIMode and the state of the UI
      */
+    /*
+     * TO REFACTOR
+     * too long
+     */
     public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data, Integer[] dimensions) {
 
         CellVisualisationSettings setting;
@@ -83,12 +87,7 @@ public class UIDesignModule extends UISuperClass {
 
             Column newCol = new Column(((CellText) newName).getValue(), new CellText(""), "String", true);
             table.addColumn(newCol);
-
         }
-
-
-
-
         //EVENT CELL CLICKED (VALID INPUT)
         else if (!invalidInput && ID == 500 && currMode!="edit" && currMode != "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
 
@@ -98,10 +97,8 @@ public class UIDesignModule extends UISuperClass {
                 currMode = "edit";
 
                 tempText = new CellText(table.getColumnNames().get(activeCell[0]).getName());
-
             }
-
-
+            
             //DEFAULTVALUE CLICKED
             else if(clickedCell[1] == 1){
                 activeCell = clickedCell;
@@ -117,7 +114,6 @@ public class UIDesignModule extends UISuperClass {
                     tempText = table.getColumnNames().get(activeCell[0]).getDefaultV();
                     if (tempText.getValue().equals(true)){
                         tempText.setValue(false);
-
                     }
                     else if (tempText.getValue().equals(false)){
                         if (table.getColumnNames().get(activeCell[0]).getBlanksAllowed()){
@@ -126,13 +122,11 @@ public class UIDesignModule extends UISuperClass {
                         else{
                             tempText.setValue(true);
                         }
-
                     }
                     else{
                         tempText.setValue(true);
                     }
                     saveText(data);
-
                 }
                 else {
                     tempText = table.getColumnNames().get(activeCell[0]).getDefaultV();
@@ -216,8 +210,6 @@ public class UIDesignModule extends UISuperClass {
             }
         }
 
-
-
         //EVENT TYPE CLICKED (INVALID INPUT)
         else if (invalidInput && ID == 500 && clickedCell[1] == 2){
             if (currMode == "edit"){
@@ -257,8 +249,6 @@ public class UIDesignModule extends UISuperClass {
             saveText(data);
             currMode = "normal";
         }
-
-
         List<String> result = new ArrayList<>();
         result.add(currMode);
         result.add("");
@@ -272,6 +262,10 @@ public class UIDesignModule extends UISuperClass {
      * @param data datacontroller
      * @param currName old name
      * @return Wheter the text is in the correct fromat according to the type of it's cell
+     */
+    /*
+     * TO REFACTOR
+     * too long
      */
     private boolean textIsValid(Cell text, dataController data, String currName) {
 
@@ -375,6 +369,10 @@ public class UIDesignModule extends UISuperClass {
      *
      * @param g graphics object
      * @param data datacontroller
+     */
+    /*
+     * TO REFACTOR
+     * too long
      */
     @Override
     public void paint(Graphics g,  dataController data, Integer[] coords, Integer[] dimensions) {
@@ -558,6 +556,11 @@ public class UIDesignModule extends UISuperClass {
         result.add("");
         return result;
     }
+    
+    /*
+     * TO REFACTOR
+     * too long
+     */
     private void recalculateScrollbar(dataController data, Integer[] dimensions){
         CellVisualisationSettings setting = data.getSetting();
         //WIDTHLIST IS NOT SAME FOR EVERY MODULE !!!!!!!!!!!!!

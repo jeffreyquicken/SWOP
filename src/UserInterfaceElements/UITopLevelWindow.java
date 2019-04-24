@@ -14,19 +14,13 @@ public class UITopLevelWindow {
     private CellVisualisationSettings setting;
     private int minWidth = 150;
     private int minHeight = 150;
-
-    //EVENTS VARIABLES
+    	//EVENTS VARIABLES
     private String state = "normal";
     private int[] savedCoords = {-1,-1};
-
-    /**
-     * List with activeSubwindow in chronological order. The last active subwindow is in the first position in the list.
-     */
-    List<UISuperClass> subWindows;
-    /**
-     * Dictionary with subwindows as keys and a list with Xco,Yco,Width, Height as value
-     */
-    Map<UISuperClass, List<Integer>> subwindowInfo;
+    	//List with activeSubwindow in chronological order. The last active subwindow is in the first position in the list.
+    private List<UISuperClass> subWindows;
+		//Dictionary with subwindows as keys and a list with Xco,Yco,Width, Height as value
+    private Map<UISuperClass,List<Integer>> subwindowInfo;
 
     /**
      * Constructor

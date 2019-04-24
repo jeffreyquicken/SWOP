@@ -46,8 +46,12 @@ public class paintModule {
     private  int margin = 30;
 
 
-
-
+/*
+ * 
+ * TO REFACTOR
+ * too many methods
+ * assign more responsibilities to another class
+ */
 
 
 
@@ -58,6 +62,10 @@ public class paintModule {
      * @param table table to be painted
      * @param startXco  start X coordinate where table should be painted
      * @param startYco  start Y coordinate wher table should be painted
+     */
+    /*
+     * TO REFACTOR
+     * too long
      */
     public void paintTable(Graphics g, Table table, int startXco, int startYco, int width, int height, scrollbar scrollbar, int windowHeight){
         int offset = (int) ((windowHeight-titleHeight) * scrollbar.getOffsetpercentageVertical());
@@ -130,6 +138,10 @@ public class paintModule {
      * @param startYco  start Y coordinate where tableview should be painted
      * @param setting   settings object for this view
      */
+    /*
+     * TO REFACTOR
+     * borderline too long
+     */
      public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startYco, CellVisualisationSettings setting, int width, int height, scrollbar scrollbar, int heigth){
 
          int offsetHorizontal = (int) (width * scrollbar.getOffsetpercentageHorizontal());
@@ -172,6 +184,10 @@ public class paintModule {
      * @param g graphics object
      * @param table table for which design view has to be painted
      */
+     /*
+      * TO REFACTOR
+      * too long
+      */
     public void paintDesignView(Graphics g, Table table, int startXco, int startYco, CellVisualisationSettings setting, int width, int height){
         int headerXco = startXco;
         int headerYco = startYco - cellHeight/2;;
@@ -230,6 +246,10 @@ public class paintModule {
      * @param startxCo  start X coordinate where row should be painted
      * @param startyCo  start Y coordinate where row should be painted
      * @param setting settings object for this row view
+     */
+    /*
+     * TO REFACTOR
+     * too long
      */
     public void paintRow(Graphics g, List<Cell> rowList, int startxCo, int startyCo, CellVisualisationSettings setting, int width, int offset){
         int i = 0;

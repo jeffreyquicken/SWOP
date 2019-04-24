@@ -26,7 +26,11 @@ public abstract class UISuperClass {
     protected double percentageHorizontal;
     protected double percentageVertical;
     protected scrollbar scrollbar;
-
+    /*
+     * TO REFACTOR
+     * too many responsibilities (/as shown by the amount of variables)?
+     * split up in more classes to to lighten workload and increase readablity
+     */
 
 
     /**
@@ -113,7 +117,7 @@ public abstract class UISuperClass {
 
 
 
-        protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){return null;}
+    protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){return null;}
     protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){return null;}
     protected List<String> handleKeyDeleteMode(int id, int keyCode, char keyChar, dataController data){return null;}
     protected String handleMouseEvent(int xCo, int yCo, int count, int ID, dataController data, Integer[] dimensions){

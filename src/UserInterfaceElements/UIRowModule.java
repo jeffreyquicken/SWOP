@@ -44,6 +44,10 @@ public class UIRowModule extends UISuperClass {
      * @param data datacontroller to make changes to the data
      * @return returns a list with the nextUIMode and the state of the UI
      */
+    /*
+     * TO REFACTOR
+     * too long
+     */
     public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data, Integer[] dimensions) {
         List<Integer> widthList = table.getRowSetting().getWidthList();
 
@@ -247,6 +251,10 @@ public class UIRowModule extends UISuperClass {
      * @param g graphics object
      * @param data datacontroller
      */
+    /*
+     * TO REFACTOR
+     * too long
+     */
     @Override
     public void paint(Graphics g,  dataController data, Integer[] coords, Integer[] dimensions) {
         recalculateScrollbar(data, dimensions);
@@ -321,9 +329,6 @@ public class UIRowModule extends UISuperClass {
      * @return Wheter the text is in the correct fromat according to the type of it's cell
      */
     private boolean textIsValid(Cell text, dataController data, String currName) {
-
-
-
         String type = table.getColumnNames().get(activeCell[0]).getType();
         if (type.equals("String")) {
             if (!table.getColumnNames().get(activeCell[0]).getBlanksAllowed()) {
@@ -348,7 +353,13 @@ public class UIRowModule extends UISuperClass {
         }
         return true;
     }
+    
+   
     //TODO JEFFREY an WOUT locate to UISUPERCLASS
+    /*
+     * TO REFACTOR
+     * too long
+     */
     private void recalculateScrollbar(dataController data, Integer[] dimensions){
         CellVisualisationSettings setting = table.getRowSetting();
         //WIDTHLIST IS NOT SAME FOR EVERY MODULE !!!!!!!!!!!!!

@@ -5,6 +5,20 @@ public class scrollbar {
     double percentageHorizontal;
     double percentageVertical;
     int offsetInt;
+    double offsetpercentageHorizontal;
+    double offsetpercentageVertical;
+    Boolean isActiveHorizontal;
+    Boolean isActiveVertical;
+    
+    public scrollbar(){
+        percentageHorizontal = 0;
+        percentageVertical = 0;
+        offsetpercentageHorizontal = 0;
+        offsetpercentageVertical = 0;
+        isActiveHorizontal = false;
+        isActiveVertical = false;
+    }
+    
 
     public double getPercentageHorizontal() {
         return percentageHorizontal;
@@ -82,19 +96,5 @@ public class scrollbar {
         }
     }
 
-    double offsetpercentageHorizontal;
-    double offsetpercentageVertical;
-    Boolean isActiveHorizontal;
-    Boolean isActiveVertical;
-
-
-    public scrollbar(){
-        percentageHorizontal = 0;
-        percentageVertical = 0;
-        offsetpercentageHorizontal = 0;
-        offsetpercentageVertical = 0;
-        isActiveHorizontal = false;
-        isActiveVertical = false;
-    }
 
 }

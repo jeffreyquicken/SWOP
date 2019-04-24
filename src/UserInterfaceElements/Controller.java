@@ -16,11 +16,8 @@ public class Controller {
     private Data.dataController tableDataController;
     private String currentMode;
     private UITopLevelWindow topLevelWindow;
-
     //ctrlPressed var to detect if new tables module needs to be added
     private boolean ctrlPressed;
-
-
     //Display key/mousevent
     private String mouseEvent = "";
     private String keyEvent = "";
@@ -48,9 +45,6 @@ public class Controller {
 
         //Sets defaultmode to table-mode
         currentMode = "table";
-
-
-
     }
 
     /**
@@ -87,6 +81,7 @@ public class Controller {
      * @param keyCode keycode of the pressed key
      * @param keyChar keychar of the pressed key
      */
+    //TO REFACTOR
     public void relayKeyEvent(int id, int keyCode, char keyChar) {
         String nextUIMode;
 
