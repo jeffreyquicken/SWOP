@@ -14,6 +14,7 @@ public class UITopLevelWindow {
     private CellVisualisationSettings setting;
     private int minWidth = 150;
     private int minHeight = 150;
+    private int borderClicked;
     	//EVENTS VARIABLES
     private String state = "normal";
     private int[] savedCoords = {-1,-1};
@@ -106,7 +107,7 @@ public class UITopLevelWindow {
         //Default width
         //WARNING HARDCODED
         values.add(30+100+30);
-        values.add(200);
+        values.add(160);
         subwindowInfo.put(addingSubWindow,values);
 
     }
@@ -160,14 +161,17 @@ public class UITopLevelWindow {
             int deltaY = yCo- savedCoords[1];
             int newWidth = info.get(2)+deltaX;
             int newHeight = info.get(3)+deltaY;
-            if (newWidth >= minWidth){
+
+            if (newWidth >= minWidth && (borderClicked == 3 || borderClicked == 6)){
                 info.set(2,newWidth);
             }
-            if (newHeight >= minHeight){
+            else if (borderClicked == 3 || borderClicked == 6){
+                info.set(2, minWidth);
+            }
+            if (newHeight >= minHeight && (borderClicked == 3 || borderClicked == 7)){
                 info.set(3, newHeight);
             }
-            else{
-                info.set(2, minWidth);
+            else if (borderClicked == 3 || borderClicked == 7){
                 info.set(3, minHeight);
             }
 
@@ -214,12 +218,13 @@ public class UITopLevelWindow {
 
                         return result;
                     }
+                    whichBorderClicked(relayX, relayY, width, height);
 
                     if (isTitleBarClicked(relayX, relayY, width)) {
                         state = "drag";
                         savedCoords[0] = xCo;
                         savedCoords[1] = yCo;
-                    } else if (whichBorderClicked(relayX, relayX, width, height) != -1) {
+                    } else if (borderClicked == 3 || borderClicked == 6 || borderClicked == 7) {
                         state = "resize";
                         savedCoords[0] = xCo;
                         savedCoords[1] = yCo;
@@ -280,32 +285,36 @@ public class UITopLevelWindow {
      * @param height
      * @return the number corresponding to the clicked edge or corner
      */
-    public int whichBorderClicked(int relayXco, int relayYco, int width, int height){
+    public void whichBorderClicked(int relayXco, int relayYco, int width, int height){
+        //width += 20;
+        //height += 20;
         if (relayXco == 0 && relayYco ==0){
-            return 1;
+            borderClicked = 1;
         }
         else if(relayXco == width && relayYco ==0){
-            return 2;
+            borderClicked = 2;
         }
-        else if(relayXco == width && relayYco ==height){
-            return 3;
+        else if((relayXco <= width && relayXco >= width-10) && (relayYco <=height && relayYco >= height-10)){ //bottom right corner made bigger for easier resizing
+            borderClicked = 3;
         }
         else if(relayXco == 0 && relayYco ==height){
-            return 4;
+            borderClicked = 4;
         }
         else if (relayYco == 0 && (relayXco > 0 && relayXco < width)){
-            return 5;
+            borderClicked = 5;
         }
         else if (relayXco == width && (relayYco > 0 && relayYco < height)){
-            return 6;
+            borderClicked = 6;
         }
         else if (relayYco == height && (relayXco > 0 && relayXco < width)){
-            return 7;
+            borderClicked = 7;
         }
         else if (relayXco == 0 && (relayYco > 0 && relayYco < height)){
-            return 8;
+            borderClicked = 8;
+        } else {
+            borderClicked = -1;
         }
-        return -1;
+
     }
 
     public boolean ClickedWithinWindow(int X, int Y, int xCo, int yCo, int width, int height) {

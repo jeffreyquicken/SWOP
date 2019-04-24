@@ -20,7 +20,7 @@ public class dataController {
     public dataController(){
         setting = new CellVisualisationSettings();
         //setting.getWidthList().add(setting.getDefaultWidth());
-        setting.getWidthList().add(setting.getDefaultWidth() + 200);
+        setting.getWidthList().add(setting.getDefaultWidth());
         tableList = new ArrayList<>();
        // Temporary tables for demonstration purposes
        // /**
@@ -53,7 +53,7 @@ public class dataController {
         int lowestY = i;
         try{
         for (Table table : this.getTableList()){
-            lowestY += setting.getHeight();
+            lowestY += 20;
         }
             return lowestY;
         }catch (Exception e){
