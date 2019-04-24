@@ -257,32 +257,25 @@ public class UIRowModule extends UISuperClass {
      */
     @Override
     public void paint(Graphics g,  dataController data, Integer[] coords, Integer[] dimensions) {
-        recalculateScrollbar(data, dimensions);
-        List<Integer> widthList = table.getRowSetting().getWidthList();
-        paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
-        paintModule.paintBorderSubwindow( g, coords, dimensions, "Row Mode (" + table.getTableName() + ")", this.getActive());
+
         recalculateScrollbar(data, dimensions);
 
-        int sum = widthList.stream().mapToInt(Integer::intValue).sum();
-        double percentageHorizontal = 0;
-        double percentageVertical =0;
-        if(sum > dimensions[0] - 31 ){
-            percentageHorizontal =  (Double.valueOf(dimensions[0]-30)/ Double.valueOf(sum));
-            System.out.println(percentageHorizontal);
-        }
-        if(table.getTableRows().size() * 20 > dimensions[1] - 46){
-            percentageVertical = ( Double.valueOf(dimensions[1] - 46)/ Double.valueOf((table.getTableRows().size() * 20)));
-            System.out.println(percentageVertical);
-        }
+        List<Integer> widthList = table.getRowSetting().getWidthList();
+
+        paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
+        paintModule.paintBorderSubwindow( g, coords, dimensions, "Row Mode (" + table.getTableName() + ")", this.getActive());
+
+        recalculateScrollbar(data, dimensions);
+
 
 
         paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], scrollbar.getPercentageHorizontal(), scrollbar);
         paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, scrollbar.getPercentageVertical(), scrollbar);
 
 
-
+        int sum = widthList.stream().mapToInt(Integer::intValue).sum();
         //print tables in tabular view
-        paintModule.paintTable(g, table,coords[0] + paintModule.getMargin() , coords[1] + paintModule.getMargin(), dimensions[0] -48, dimensions[1] -58, scrollbar , dimensions[1]); // removed the "+10" behind the getmargin so that marggins are the same as tables mode
+        paintModule.paintTable(g, table,coords[0] + paintModule.getMargin() , coords[1] + paintModule.getMargin(), dimensions[0] -48, dimensions[1] -58, scrollbar , dimensions[1], sum); // removed the "+10" behind the getmargin so that marggins are the same as tables mode
 
 
         //Check mode

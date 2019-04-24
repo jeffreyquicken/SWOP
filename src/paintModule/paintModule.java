@@ -67,48 +67,87 @@ public class paintModule {
      * TO REFACTOR
      * too long
      */
-    public void paintTable(Graphics g, Table table, int startXco, int startYco, int width, int height, scrollbar scrollbar, int windowHeight){
+    public void paintTable(Graphics g, Table table, int startXco, int startYco, int width, int height, scrollbar scrollbar, int windowHeight, int sum){
+
+        //Vertical offset
         int offset = (int) ((windowHeight-titleHeight) * scrollbar.getOffsetpercentageVertical());
-        int offsetHorizontal = (int) (width * scrollbar.getOffsetpercentageHorizontal());
+        //Horizontal offset
+        int offsetHorizontal = (int) (sum * scrollbar.getOffsetpercentageHorizontal());
 
 
         int headerXco = startXco;
         int i =0;
+
         CellVisualisationSettings setting = table.getRowSetting();
         List<Integer> widthList = setting.getWidthList();
+
         Font currentFont = g.getFont();
         Font newFont = currentFont.deriveFont(currentFont.getSize() * 0.89F);
         g.setFont(newFont);
+
         int tempWidth = widthList.get(i);
         boolean cutCollumn = false;
+        //ALS Vertical OFFSET > 0 --> GEEN HEADERS
         if (offset <= 0 ){
+        //ITERATE over Collumns
         for(Column column: table.getColumnNames()){
-            if(tempWidth < width){
-                g.setColor(Color.GRAY);
-                g.fillRect(headerXco,startYco - cellHeight/2, widthList.get(i) - offsetHorizontal, cellHeight/2);
-                g.setColor(Color.BLACK);
-                this.paintRectText(g,headerXco, startYco - cellHeight/2, widthList.get(i) - offsetHorizontal,cellHeight/2,column.getName());
-                headerXco += widthList.get(i) - offsetHorizontal;
+            //ALS collum volledig verdwenen is
+            if(offsetHorizontal > 0 && offsetHorizontal  - widthList.get(i) >=0 ){
                 offsetHorizontal -= widthList.get(i);
-                tempWidth += widthList.get(i +1) ;
-                i++;}
+            }
+            //deel van collum is verdwenen
+            else if(offsetHorizontal > 0 && offsetHorizontal  - widthList.get(i) < 0 ){
+                //Nieuwe breedte is nu window tot nieuwe collumn
+                int newWidth = widthList.get(i) - offsetHorizontal;
+                String name = column.getName();
+                //Naam wordt weggelaten als er te weinig plaats is
+                if(newWidth < 100){
+                    name = "";
+                }
+                g.setColor(Color.GRAY);
+                g.fillRect(headerXco ,startYco - cellHeight/2, newWidth, cellHeight/2);
+                g.setColor(Color.BLACK);
+                this.paintRectText(g,headerXco , startYco - cellHeight/2, newWidth,cellHeight/2,name);
+                headerXco += newWidth;
+                offsetHorizontal -= widthList.get(i);
+                tempWidth =newWidth;
+
+
+            }
+            //ALS opgetelde breedte nog niet breder als windowbreedte is
+            else if(tempWidth < width + 45){
+                g.setColor(Color.GRAY);
+                g.fillRect(headerXco,startYco - cellHeight/2, widthList.get(i) , cellHeight/2);
+                g.setColor(Color.BLACK);
+                this.paintRectText(g,headerXco, startYco - cellHeight/2, widthList.get(i) ,cellHeight/2,column.getName());
+                headerXco += widthList.get(i);
+                if(i < widthList.size() -1){
+                tempWidth += widthList.get(i +1) ;}
+            }
+            //Breedte is wel groter als windowbreedte ( en eerste keer = cutcollumn)
             else if(!cutCollumn){
-            int newWidth = width   -  (headerXco - startXco);
+
+            //Nieuwe breedte is nu tot de breedte van de window
+           // int newWidth = width   -  (headerXco - startXco);
+                int newWidth = (width + startXco) - headerXco ;
             String name = column.getName();
+            //Naam wordt weggelaten als er te weinig plaats is
             if(newWidth < 100){
                 name = "";
             }
-
             g.setColor(Color.GRAY);
             g.fillRect(headerXco,startYco - cellHeight/2, newWidth, cellHeight/2);
             g.setColor(Color.BLACK);
             this.paintRectText(g,headerXco, startYco - cellHeight/2, newWidth,cellHeight/2,name);
-            headerXco += widthList.get(i);}
-            i++;
+            headerXco += widthList.get(i);
             cutCollumn = true;
+
+            }
+            //iterating
+            i++;
         }}
 
-       offsetHorizontal = (int) (width * scrollbar.getOffsetpercentageHorizontal());
+       offsetHorizontal = (int) (sum * scrollbar.getOffsetpercentageHorizontal());
         g.setFont(currentFont);
         int tempHeight = -offset;
         this.yCoStart =  startYco - offset;
@@ -144,8 +183,11 @@ public class paintModule {
      */
      public void paintTableView(Graphics g, List<Table> tableList, int startXco, int startYco, CellVisualisationSettings setting, int width, int height, scrollbar scrollbar, int heigth){
 
+
          int offsetHorizontal = (int) (width * scrollbar.getOffsetpercentageHorizontal());
+
          List<Integer> widthList = setting.getWidthList();
+
          int widthCells = widthList.get(0);
          if(widthCells - offsetHorizontal > width ){
              widthCells = width;
