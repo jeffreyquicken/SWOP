@@ -118,6 +118,7 @@ public class UIRowModule extends UISuperClass {
                 if (newWidth >= paintModule.getMinCellWidth() && sum + delta < 590 - paintModule.getxCoStart()) {
                     widthList.set(draggedColumn, newWidth);
                     draggedX = xCo;
+                    recalculateScrollbar(data, dimensions);
                 }
             } else {
                 currMode = "normal";
@@ -354,9 +355,8 @@ public class UIRowModule extends UISuperClass {
      * too long
      */
     private void recalculateScrollbar(dataController data, Integer[] dimensions){
-        CellVisualisationSettings setting = table.getRowSetting();
         //WIDTHLIST IS NOT SAME FOR EVERY MODULE !!!!!!!!!!!!!
-        List<Integer> widthList = setting.getWidthList();
+        List<Integer> widthList = table.getRowSetting().getWidthList();
 
         int sum = widthList.stream().mapToInt(Integer::intValue).sum();
         scrollbarActive = false;
@@ -374,8 +374,8 @@ public class UIRowModule extends UISuperClass {
 
         }
         //TABLE LIST
-        if(table.getTableRows().size() * 20 > dimensions[1] - 46){
-            percentageVertical = ( Double.valueOf(dimensions[1] - 46)/ Double.valueOf((data.getTableList().size() * 20)));
+        if(table.getTableRows().size() * paintModule.getCellHeight() > dimensions[1] - 46){
+            percentageVertical = ( Double.valueOf(dimensions[1] - 46)/ Double.valueOf((table.getTableRows().size() * paintModule.getCellHeight())));
             scrollbar.setPercentageVertical(percentageVertical);
             scrollbar.setActiveVertical(true);
             System.out.println(percentageVertical);

@@ -75,7 +75,9 @@ public class UIDesignModule extends UISuperClass {
             activeCell = clickedCell;
         }
         //EVENT DOUBLE CLICKS UNDER TABLE
+        else if(currMode!= "edit" && scrollbarClicked(xCo,yCo,dimensions)){
 
+        }
         else if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, lowestY)) {
             int numberOfCols = table.getColumnNames().size() + 1;
             Cell newName = new CellText("Column" + numberOfCols);
@@ -204,6 +206,8 @@ public class UIDesignModule extends UISuperClass {
                 if ((newWidth >= paintModule.getMinCellWidth()) && (sum + delta < 590 - paintModule.getxCoStart())) {
                     widthList.set(draggedColumn, newWidth);
                     draggedX = xCo;
+                    recalculateScrollbar(data, dimensions);
+
                 }
             } else {
                 currMode = "normal";
@@ -377,31 +381,21 @@ public class UIDesignModule extends UISuperClass {
     @Override
     public void paint(Graphics g,  dataController data, Integer[] coords, Integer[] dimensions) {
         recalculateScrollbar(data, dimensions);
+
         CellVisualisationSettings setting;
         List<Integer> widthList = table.getRowSetting().getWidthList();
 
         paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
         paintModule.paintBorderSubwindow( g, coords, dimensions, "Design Mode (" + table.getTableName() + ")", this.getActive());
 
-
-
-        int sum = widthList.stream().mapToInt(Integer::intValue).sum();
-        double percentageHorizontal = 0;
-        double percentageVertical =0;
-        if(sum > dimensions[0] - 31 ){
-            percentageHorizontal =  (Double.valueOf(dimensions[0]-30)/ Double.valueOf(sum));
-            System.out.println(percentageHorizontal);
-        }
-        if(table.getColumnNames().size() * 20 > dimensions[1] - 46){
-            percentageVertical = ( Double.valueOf(dimensions[1] - 46)/ Double.valueOf((table.getColumnNames().size() * 20)));
-            System.out.println(percentageVertical);
-        }
+        recalculateScrollbar(data, dimensions);
 
         paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], scrollbar.getPercentageHorizontal(), scrollbar);
         paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, scrollbar.getPercentageVertical(), scrollbar);
 
         //print tables in tabular view
-        paintModule.paintDesignView(g, table,coords[0] +paintModule.getMargin(), coords[1]+paintModule.getMargin(), table.getDesignSetting(), dimensions[0] - 48,dimensions[1]-58);
+        int sum = widthList.stream().mapToInt(Integer::intValue).sum();
+        paintModule.paintDesignView(g, table,coords[0] +paintModule.getMargin(), coords[1]+paintModule.getMargin(), table.getDesignSetting(), dimensions[0] - 48,dimensions[1]-58,scrollbar,dimensions[0],sum);
 
         //Check mode
         if (currMode == "edit") {
@@ -562,9 +556,8 @@ public class UIDesignModule extends UISuperClass {
      * too long
      */
     private void recalculateScrollbar(dataController data, Integer[] dimensions){
-        CellVisualisationSettings setting = data.getSetting();
         //WIDTHLIST IS NOT SAME FOR EVERY MODULE !!!!!!!!!!!!!
-        List<Integer> widthList = setting.getWidthList();
+        List<Integer> widthList = table.getDesignSetting().getWidthList();
 
         int sum = widthList.stream().mapToInt(Integer::intValue).sum();
         scrollbarActive = false;
@@ -582,8 +575,8 @@ public class UIDesignModule extends UISuperClass {
 
         }
         //TABLE LIST
-        if(data.getTableList().size() * 20 > dimensions[1] - 46){
-            percentageVertical = ( Double.valueOf(dimensions[1] - 46)/ Double.valueOf((data.getTableList().size() * 20)));
+        if(table.getColumnNames().size() * paintModule.getCellHeight() > dimensions[1] - 46){
+            percentageVertical = ( Double.valueOf(dimensions[1] - 46)/ Double.valueOf((table.getColumnNames().size() * paintModule.getCellHeight())));
             scrollbar.setPercentageVertical(percentageVertical);
             scrollbar.setActiveVertical(true);
             System.out.println(percentageVertical);
