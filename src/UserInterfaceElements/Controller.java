@@ -48,6 +48,23 @@ public class Controller {
         currentMode = "table";
     }
 
+    public Controller(int i) {
+        //topLevelWindow
+        topLevelWindow = new UITopLevelWindow();
+
+        //three UI modules
+        tablemodule = new UITablesModule();
+        UITablesModule tablemodule2 = new UITablesModule();
+
+        topLevelWindow.addSubWindow(tablemodule);
+        topLevelWindow.getActiveSubWindowList().remove(null);
+        //dataController
+        tableDataController = new dataController(i);
+
+        //Sets defaultmode to table-mode
+        currentMode = "table";
+    }
+
     /**
      * Method that relays a mouseEvent to the right UIModule to be handled
      *
