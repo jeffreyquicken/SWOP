@@ -64,10 +64,13 @@ public class Scenario2 {
     //Old tests
     @Test
     public void StandardEditTableNameByClickingNextToTable() {
-        bestuurder.relayMouseEvent(500,115,60,1);
+        MoveWindowToUpperLeftCorner();
+        bestuurder.relayMouseEvent(500,75,40,1);
         //we should be in table name editing mode right now
+        assertEquals("edit",window.getCurrMode());
         bestuurder.relayKeyEvent(400,101,'a');
-        bestuurder.relayMouseEvent(500,350,60,1);
+        bestuurder.relayMouseEvent(500,110,100,1);
+        assertEquals("normal",window.getCurrMode());
         List<Table> table = dc.getTableList();
         String tbleName = table.get(0).getTableName();
         assertEquals("Table 1a",tbleName);
@@ -76,10 +79,13 @@ public class Scenario2 {
 
     @Test
     public void StandardEditTableNameByPressingEnter() {
-        bestuurder.relayMouseEvent(500,115,60,1);
+        MoveWindowToUpperLeftCorner();
+        bestuurder.relayMouseEvent(500,75,40,1);
         //we should be in table name editing mode right now
+        assertEquals("edit",window.getCurrMode());
         bestuurder.relayKeyEvent(400,101,'a');
         bestuurder.relayKeyEvent(400,10,'o');
+        assertEquals("normal",window.getCurrMode());
         List<Table> table = dc.getTableList();
         String tbleName = table.get(0).getTableName();
         assertEquals("Table 1a",tbleName);
@@ -87,7 +93,8 @@ public class Scenario2 {
 
     @Test
     public void StandardEditTableNameUsingBackspaceByClickingNextToTable() {
-        bestuurder.relayMouseEvent(500,115,60,1);
+        MoveWindowToUpperLeftCorner();
+        bestuurder.relayMouseEvent(500,75,40,1);
         //we should be in table name editing mode right now
         for(int i=0; i<7;i++) {
             bestuurder.relayKeyEvent(400,8,'o');
@@ -97,11 +104,18 @@ public class Scenario2 {
         bestuurder.relayKeyEvent(400,101,'a');
         bestuurder.relayKeyEvent(400,101,'b');
         bestuurder.relayKeyEvent(400,101,'c');
-        bestuurder.relayMouseEvent(500,350,60,1);
+        bestuurder.relayMouseEvent(500,110,100,1);
         List<Table> table = dc.getTableList();
         String tbleName = table.get(0).getTableName();
         assertEquals("abc",tbleName);
 
+    }
+
+    //moving the window so that old tests do work
+    public void MoveWindowToUpperLeftCorner() {
+        List<Integer> info = topWindow.getSubwindowInfo().get(window);
+        info.set(0,0);
+        info.set(1,0);
     }
 
 }

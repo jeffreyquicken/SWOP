@@ -5,6 +5,9 @@ import UserInterfaceElements.UISuperClass;
 import UserInterfaceElements.UITablesModule;
 import UserInterfaceElements.UITopLevelWindow;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -60,9 +63,11 @@ public class Scenario3 {
     //Old tests
     @Test
     public void UserDeletesFirstTable() {
+        MoveWindowToUpperLeftCorner();
         int lenOriginal = dc.getTableList().size();
-        bestuurder.relayMouseEvent(500,55,60,1);
+        bestuurder.relayMouseEvent(500,35,40,1);
         //we have now clicked the left margin
+        assertEquals("delete", window.getCurrMode());
         bestuurder.relayKeyEvent(400,127,'o');
         int lenNew = dc.getTableList().size();
         assertEquals((lenOriginal - 1),lenNew);
@@ -70,14 +75,21 @@ public class Scenario3 {
 
     @Test
     public void ClicksLeftMarginThenPressesEscapeThenDelete() {
+        MoveWindowToUpperLeftCorner();
         int lenOriginal = dc.getTableList().size();
-        bestuurder.relayMouseEvent(500,55,60,1);
+        bestuurder.relayMouseEvent(500,35,40,1);
         //we have now clicked the left margin
+        assertEquals("delete", window.getCurrMode());
         bestuurder.relayKeyEvent(400,27,'o');
         bestuurder.relayKeyEvent(400,127,'o');
         int lenNew = dc.getTableList().size();
         assertEquals(lenOriginal,lenNew);
     }
 
-
+    //moving the window so that old tests do work
+    public void MoveWindowToUpperLeftCorner() {
+        List<Integer> info = topWindow.getSubwindowInfo().get(window);
+        info.set(0,0);
+        info.set(1,0);
+    }
 }

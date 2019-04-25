@@ -1,10 +1,10 @@
 
 import Data.*;
-import UserInterfaceElements.UIDesignModule;
-import UserInterfaceElements.UISuperClass;
-import UserInterfaceElements.UITopLevelWindow;
+import UserInterfaceElements.*;
 import org.junit.jupiter.api.Test;
-import UserInterfaceElements.Controller;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -54,9 +54,17 @@ public class Scenario4 {
     //Old tests
     @Test
     public void DoubleClickingTableNameGoesToTableRowsMode() {
-        bestuurder.relayMouseEvent(500,115,60,2);
-        String str = bestuurder.getCurrentMode();
-        assertEquals("row",str);
+        MoveWindowToUpperLeftCorner();
+        bestuurder.relayMouseEvent(502,75,40,2);
+        bestuurder.relayMouseEvent(501,220,100,1);
+        assertEquals(UIRowModule.class,topWindow.getActiveSubWindow().getClass());
+    }
+
+    //moving the window so that old tests do work
+    public void MoveWindowToUpperLeftCorner() {
+        List<Integer> info = topWindow.getSubwindowInfo().get(window);
+        info.set(0,0);
+        info.set(1,0);
     }
 
 }
