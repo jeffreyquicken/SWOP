@@ -212,14 +212,14 @@ public class UITablesModule extends UISuperClass{
  
         //Check mode
         if (currMode == "edit" ) {
-            int[] coords1 = paintModule.getCellCoords(activeCell[0] , activeCell[1] , widthList);
+            int[] coords1 = paintModule.getCellCoords(activeCell[0] , activeCell[1] , widthList, scrollbar, dimensions[1] );
             paintModule.paintCursor(g, coords1[0] + coords[0],
                     coords1[1] + coords[1], widthList.get(activeCell[1]),
                     paintModule.getCellHeight(), tempText);
         }
         //check if there are warnings
         if (invalidInput || currMode == "delete") {
-            int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList);
+            int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList, scrollbar, dimensions[1]);
             paintModule.paintBorder(g, coords[0] + coords1[0],
                     coords[1] + coords1[1],  widthList.get(activeCell[1]),
                     paintModule.getCellHeight(), Color.RED);

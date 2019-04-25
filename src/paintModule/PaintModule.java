@@ -234,11 +234,31 @@ public class PaintModule {
      * @param y
      * @return
      */
-    public int[] getCellCoords(int x,int y, List<Integer> widthList){
+    public int[] getCellCoords(int x,int y, List<Integer> widthList, scrollbar scrollbar, int windowHeight){
         int xCoord = this.getxCoStart();
+        int sum = widthList.stream().mapToInt(Integer::intValue).sum();
+        //Vertical offset
+        int offset = (int) ((windowHeight-titleHeight) * scrollbar.getOffsetpercentageVertical());
+        //Horizontal offset
+        int offsetHorizontal = (int) (sum * scrollbar.getOffsetpercentageHorizontal());
+
+
         for(int i= 0; i < y; i++){
-            xCoord += widthList.get(i);
+            if(offsetHorizontal == 0){
+                xCoord += widthList.get(i);
+            }
+            else if(offsetHorizontal >= widthList.get(i)){
+                offsetHorizontal -= widthList.get(i);
+            }
+            else if(offsetHorizontal < widthList.get(i) ){
+                xCoord += (widthList.get(i) - offsetHorizontal);
+                offsetHorizontal =0;
+
+            }
+
+
         }
+
         int yCoord = this.getyCoStart() + x*this.getCellHeight();
         int[] result = {xCoord,yCoord};
         return result;
@@ -426,7 +446,7 @@ public class PaintModule {
 	 * @param g
 	 * @param headerYco
 	 * @param headerXco
-	 * @param newWidth
+	 * @param Width
 	 * @param name
 	 */
 	protected void paintHeader(Graphics g, int headerYco, int headerXco, int Width, String name) {

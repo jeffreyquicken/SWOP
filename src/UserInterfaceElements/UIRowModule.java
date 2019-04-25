@@ -287,7 +287,7 @@ public class UIRowModule extends UISuperClass {
         paintWindowBasics(g, data, coords, dimensions, sum);
         //Check mode
         if (currMode == "edit" ) {
-            int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList);
+            int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList, scrollbar, dimensions[1]);
             if (tempText.getValue() != null) {
                 paintModule.paintCursor(g, coords1[0] + coords[0],
                         coords1[1] + coords[1], widthList.get(activeCell[1]),
@@ -296,7 +296,7 @@ public class UIRowModule extends UISuperClass {
         }
         //check if there are warnings
         if (invalidInput || currMode == "delete") {
-            int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList);
+            int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList, scrollbar, dimensions[1]);
             paintModule.paintBorder(g, coords[0] + coords1[0],
                     coords[1] + coords1[1],  widthList.get(activeCell[1]),
                     paintModule.getCellHeight(), Color.RED);

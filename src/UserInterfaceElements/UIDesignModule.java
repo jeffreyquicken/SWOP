@@ -509,14 +509,14 @@ public class UIDesignModule extends UISuperClass {
         //Check mode
         if (currMode == "edit") {
             if (activeCell[1] == 0){
-                int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList);
+                int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList,scrollbar, dimensions[1]);
                 paintModule.paintCursor(g, coords1[0] + coords[0],
                         coords1[1] + coords[1], widthList.get(activeCell[1]),
                         paintModule.getCellHeight(), tempText.getValue().toString());
             }
             else if(activeCell[1] == 1){
                 if (!table.getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
-                    int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList);
+                    int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList, scrollbar, dimensions[1]);
                     paintModule.paintCursor(g, coords1[0] + coords[0],
                             coords1[1] + coords[1], widthList.get(activeCell[1]),
                             paintModule.getCellHeight(), tempText.getValue().toString());
@@ -529,7 +529,7 @@ public class UIDesignModule extends UISuperClass {
         }
         //check if there are warnings
         if (invalidInput || currMode == "delete") {
-            int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList);
+            int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList, scrollbar, dimensions[1]);
             paintModule.paintBorder(g, coords[0] + coords1[0],
                     coords[1] + coords1[1],  widthList.get(activeCell[1]),
                     paintModule.getCellHeight(), Color.RED);
