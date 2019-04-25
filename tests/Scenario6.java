@@ -3,6 +3,7 @@ import Data.*;
 import UserInterfaceElements.*;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
 import java.rmi.server.UID;
 import java.util.List;
 
@@ -66,7 +67,16 @@ bestuurder = relay.getController();;
 
     //Test to see if double Clicks add new row(=collumn)
 
+    @Test
+    public void paintDesignView(){
+        switchToDesignMode();
+        UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
+        Graphics g = null;
+        Image i = f.createImage(100, 100);
+        Graphics g = i.getGraphics();
+        bestuurder.paint(g);
 
+    }
     //STEP 1 and 2
     @Test
     public void TestEditCollumnName(){
@@ -147,7 +157,7 @@ bestuurder = relay.getController();;
     public void TestDraggingWindow(){
         switchToDesignMode();
         UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
-
+        int prevWidth =UIDesignModule.getTable().getDesignSetting().getWidthList().get(0);
         for (int i = 355; i <= 563; i++) {
             bestuurder.relayMouseEvent(506,i,185,1);
         }
@@ -156,6 +166,25 @@ bestuurder = relay.getController();;
 
         bestuurder.relayMouseEvent(500,330,53,1);
         bestuurder.relayMouseEvent(506,335,53, 1);
+        int nextWidth = UIDesignModule.getTable().getDesignSetting().getWidthList().get(0);
+        assertTrue(prevWidth <= nextWidth);
+
+    }
+    @Test
+    public void TestEditDefault(){
+        switchToDesignMode();
+        UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
+
+        for (int i = 355; i <= 563; i++) {
+            bestuurder.relayMouseEvent(506,i,185,1);
+        }
+        bestuurder.relayMouseEvent(500,437,111,1);
+        System.out.println(UIDesignModule.getTable().getColumnNames().get(0).getType());
+        bestuurder.relayMouseEvent(500,379,69,1);
+        bestuurder.relayKeyEvent(401, 65, 'a');
+        bestuurder.relayKeyEvent(401, 10, 'e');
+
+        assertEquals("a", UIDesignModule.getTable().getColumnNames().get(0).getDefaultV().getString());
 
     }
     //STEP 1a
@@ -416,6 +445,7 @@ bestuurder = relay.getController();;
     }
 
 
+
     //moving the window so that old tests do work
     public void MoveWindowToUpperLeftCorner() {
         List<Integer> info = topWindow.getSubwindowInfo().get(window);
@@ -429,6 +459,7 @@ bestuurder = relay.getController();;
         info.set(2,500);
         info.set(3,150);
     }
+
 
 
 }
