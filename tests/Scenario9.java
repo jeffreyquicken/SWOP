@@ -60,7 +60,31 @@ public class Scenario9 {
         assertEquals(UIRowModule.class,window.getClass());
     }
 
+    //Step 1
+    @Test
+    public void ClickValueFirstRowFirstColumnShouldEnterEditMode() {
+        MoveWindowToUpperLeftCorner();
+        ResizeWindow();
+        assertEquals("normal",window.getCurrMode());
+        String originalValue = dc.getTableList().get(0).getTableRows().get(0).getColumnList().get(2).getString();
+        bestuurder.relayMouseEvent(500,275,40,1); //Click cell(1,1)
+        assertEquals("edit",window.getCurrMode()); //Should be in edit mode
+    }
 
+    //Step 2
+    @Test
+    public void EditRowValue() {
+        MoveWindowToUpperLeftCorner();
+        ResizeWindow();
+        String originalValue = dc.getTableList().get(0).getTableRows().get(0).getColumnList().get(2).getString();
+        assertEquals("normal", window.getCurrMode());
+        bestuurder.relayMouseEvent(500,275,40,1);
+        bestuurder.relayKeyEvent(400,101,'a');
+        bestuurder.relayKeyEvent(400,10,'o'); //ENTER
+        String newValue = dc.getTableList().get(0).getTableRows().get(0).getColumnList().get(2).getString();
+        assertEquals((originalValue + "a"), newValue);
+    }
+    
 
 
     //Old tests
