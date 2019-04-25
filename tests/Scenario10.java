@@ -21,9 +21,7 @@ public class Scenario10 {
         bestuurder = new Controller(1);
         dc = bestuurder.getTableDataController();
         bestuurder.setCurrentMode("table");
-        bestuurder.relayMouseEvent(500,115,60,2);
         topWindow = bestuurder.getTopLevelWindow();
-        window = topWindow.getActiveSubWindow();
         //initialise tables
         Table table1 = new Table("Table 1");
         Table table2 = new Table("Table 2");
@@ -51,6 +49,9 @@ public class Scenario10 {
             dc.getTableList().get(i).addRow(row2);
             dc.getTableList().get(i).addRow(row3);
         }
+        bestuurder.relayMouseEvent(502,115,60,2);
+        bestuurder.relayMouseEvent(501,220,100,1); //Now in row mode
+        window = topWindow.getActiveSubWindow();
     }
 
     //Precondition

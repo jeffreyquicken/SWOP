@@ -20,10 +20,7 @@ public class Scenario8 {
         bestuurder = new Controller(1);
         dc = bestuurder.getTableDataController();
         bestuurder.setCurrentMode("table");
-        bestuurder.relayMouseEvent(500,115,60,2); //Now in row mode
-
         topWindow = bestuurder.getTopLevelWindow();
-        window = topWindow.getActiveSubWindow();
 
         //initialise tables
         Table table1 = new Table("Table 1");
@@ -53,6 +50,10 @@ public class Scenario8 {
             dc.getTableList().get(i).addRow(row3);
         }
 
+        bestuurder.relayMouseEvent(502,115,60,2);
+        bestuurder.relayMouseEvent(501,220,100,1); //Now in row mode
+        window = topWindow.getActiveSubWindow();
+
     }
 
     //Precondition
@@ -67,25 +68,41 @@ public class Scenario8 {
     //Old tests
     @Test
     public void UserDoubleClicksUnderTableAndAddsNewRow() {
+        MoveWindowToUpperLeftCorner();
+        ResizeWindow();
         int l1 = dc.getTableList().get(0).getTableRows().size();
-        bestuurder.relayMouseEvent(501,120,120,2);
+        bestuurder.relayMouseEvent(501,110,100,2);
         int l2 = dc.getTableList().get(0).getTableRows().size();
         assertEquals((l1+1),l2);
     }
 
-    /**
+
     @Test
     public void UserAddsNewRowWithCorrectDefaultValues() {
         bestuurder.relayMouseEvent(501,120,120,2);
         int size = dc.getTableList().get(0).getTableRows().size();
-        List<String> newRow = dc.getTableList().get(0).getTableRows().get(size-1).getColumnList();
+        List<Cell> newRow = dc.getTableList().get(0).getTableRows().get(size-1).getColumnList();
         List<Column> kols = dc.getTableList().get(0).getColumnNames();
 
         for(int i=0;i<(newRow.size()-1);i++) {
-            assertEquals(kols.get(0).getDefaultV(),newRow.get(i));
+            assertEquals(kols.get(0).getDefaultV().getString(),newRow.get(i).getString());
         }
 
 
 
-    } */
+    }
+
+    //moving the window so that old tests do work
+    public void MoveWindowToUpperLeftCorner() {
+        List<Integer> info = topWindow.getSubwindowInfo().get(window);
+        info.set(0,0);
+        info.set(1,0);
+    }
+
+    //Resizing the window so that everything is visible
+    public void ResizeWindow() {
+        List<Integer> info = topWindow.getSubwindowInfo().get(window);
+        info.set(2,500);
+        info.set(3,150);
+    }
 }

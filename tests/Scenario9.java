@@ -5,6 +5,9 @@ import UserInterfaceElements.UISuperClass;
 import UserInterfaceElements.UITopLevelWindow;
 import org.junit.jupiter.api.Test;
 import UserInterfaceElements.Controller;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 //Use case = Edit Row Value
@@ -20,9 +23,7 @@ public class Scenario9 {
         bestuurder = new Controller(1);
         dc = bestuurder.getTableDataController();
         bestuurder.setCurrentMode("table");
-        bestuurder.relayMouseEvent(500,115,60,2);
         topWindow = bestuurder.getTopLevelWindow();
-        window = topWindow.getActiveSubWindow();
 
         //initialise tables
         Table table1 = new Table("Table 1");
@@ -51,6 +52,9 @@ public class Scenario9 {
             dc.getTableList().get(i).addRow(row2);
             dc.getTableList().get(i).addRow(row3);
         }
+        bestuurder.relayMouseEvent(502,115,60,2);
+        bestuurder.relayMouseEvent(501,220,100,1); //Now in row mode
+        window = topWindow.getActiveSubWindow();
     }
 
     //Precondition
@@ -63,17 +67,18 @@ public class Scenario9 {
 
 
     //Old tests
-    /**
     @Test
     public void EditRowValueFirstRowFirstColumn() {
-        String originalValue = dc.getTableList().get(0).getTableRows().get(0).getColumnList().get(0);
-        bestuurder.relayMouseEvent(500,100,60,1);
+        MoveWindowToUpperLeftCorner();
+        ResizeWindow();
+        String originalValue = dc.getTableList().get(0).getTableRows().get(0).getColumnList().get(2).getString();
+        bestuurder.relayMouseEvent(500,275,40,1);
         bestuurder.relayKeyEvent(400,101,'a');
         bestuurder.relayKeyEvent(400,10,'o'); //ENTER
-        String newValue = dc.getTableList().get(0).getTableRows().get(0).getColumnList().get(0);
+        String newValue = dc.getTableList().get(0).getTableRows().get(0).getColumnList().get(2).getString();
         assertEquals((originalValue + "a"), newValue);
     }
-
+    /**
     @Test
     public void EditRowBooleanValue() {
         String originalValue = dc.getTableList().get(0).getTableRows().get(0).getColumnList().get(1);
@@ -81,4 +86,18 @@ public class Scenario9 {
         String newValue = dc.getTableList().get(0).getTableRows().get(0).getColumnList().get(1);
         assertFalse(originalValue == newValue);
     } */
+
+    //moving the window so that old tests do work
+    public void MoveWindowToUpperLeftCorner() {
+        List<Integer> info = topWindow.getSubwindowInfo().get(window);
+        info.set(0,0);
+        info.set(1,0);
+    }
+
+    //Resizing the window so that everything is visible
+    public void ResizeWindow() {
+        List<Integer> info = topWindow.getSubwindowInfo().get(window);
+        info.set(2,500);
+        info.set(3,150);
+    }
 }
