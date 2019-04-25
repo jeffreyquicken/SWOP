@@ -21,6 +21,15 @@ public class UIDesignModule extends UISuperClass {
     private Boolean invalidInput;
     private int draggedColumn;
     private int draggedX;
+
+    public Table getTable() {
+        return table;
+    }
+
+    public void setTable(Table table) {
+        this.table = table;
+    }
+
     private Table table;
 
 
