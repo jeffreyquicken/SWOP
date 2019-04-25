@@ -51,10 +51,37 @@ public class Scenario7 {
         }
     }
 
+    public void switchToDesignMode(){
+        bestuurder.relayMouseEvent(502,122,64,2);
+        bestuurder.relayMouseEvent(502,212,105,1);
+        bestuurder.relayKeyEvent(401, 17,'\uFFFF');
+        bestuurder.relayKeyEvent(401, 10,'\n');
+        bestuurder.relayMouseEvent(502,213,131,1);
+    }
     //Precondition
     @Test
     public void IsInRightMode() {
         assertEquals(UIDesignModule.class,window.getClass());
+    }
+
+
+    //Test to see if margin clicked + delete add removes row(=collumn)
+    @Test
+    public void TestDeleteColumn() {
+        switchToDesignMode();
+
+        UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
+
+        int previousColl = UIDesignModule.getTable().getColumnNames().size();
+
+        bestuurder.relayMouseEvent(501,236,70,1);
+        bestuurder.relayKeyEvent(401, 127,'\u007F');
+        int newColl = UIDesignModule.getTable().getColumnNames().size();
+
+        assertEquals((previousColl -1), newColl);
+
+        //  assertEquals(window.getTable().getTableRows(), 4);
+
     }
 
     //Step 1 & 2
@@ -65,6 +92,7 @@ public class Scenario7 {
         assertEquals("delete",window.getCurrMode());
     }
 
+
     //Step 3
     @Test
     public void LeftMarginClickedAndDeletePressed() {
@@ -72,6 +100,10 @@ public class Scenario7 {
         bestuurder.relayKeyEvent(500,127,'d'); //delete pressed
         assertEquals("normal",window.getCurrMode());
     }
+
+
+
+
 
     //Step 4
     @Test
@@ -82,6 +114,7 @@ public class Scenario7 {
         int newSize = dc.getTableList().get(0).getColumnNames().size();
         assertEquals(originalSize-1,newSize);
     }
+
 
 
     //Old tests

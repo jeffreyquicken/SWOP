@@ -57,6 +57,30 @@ public class Scenario5 {
         assertEquals(UIDesignModule.class,window.getClass());
     }
 
+    public void switchToDesignMode(){
+        bestuurder.relayMouseEvent(502,122,64,2);
+        bestuurder.relayMouseEvent(502,212,105,1);
+        bestuurder.relayKeyEvent(401, 17,'\uFFFF');
+        bestuurder.relayKeyEvent(401, 10,'\n');
+        bestuurder.relayMouseEvent(502,213,131,1);
+    }
+    @Test
+    public void TestAddCollumn() {
+
+        switchToDesignMode();
+
+        UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
+        int previousColl = UIDesignModule.getTable().getColumnNames().size();
+
+        bestuurder.relayMouseEvent(501,217,148,2);
+
+        int newColl = UIDesignModule.getTable().getColumnNames().size();
+
+        assertEquals((previousColl +1), newColl);
+
+        //  assertEquals(window.getTable().getTableRows(), 4);
+
+    }
 
 
 

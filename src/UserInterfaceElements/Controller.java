@@ -145,7 +145,8 @@ public class Controller {
 //        } else if (this.getCurrentMode() == "design") {
 //            this.setCurrentMode(this.getDesignModule().handleKeyEvent(id, keyCode, keyChar, tableDataController));
 //        }
-       // keyEvent = "Key eventID= " + id + " | Key pressed: " + keyChar + " | KeyCode: " + Integer.toString(keyCode);
+        keyEvent = "Key eventID= " + id + " | Key pressed: " + keyChar + " | KeyCode: " + Integer.toString(keyCode);
+        System.out.println(keyEvent);
     }
 
 
