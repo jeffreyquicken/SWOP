@@ -20,6 +20,11 @@ public class MyCanvasWindow extends CanvasWindow {
 		controller = new Controller();
 	}
 
+	public MyCanvasWindow(String title, int i) {
+		super(title);
+		controller = new Controller(i);
+	}
+
 
 
 	/**
@@ -59,6 +64,10 @@ public class MyCanvasWindow extends CanvasWindow {
 		controller.relayKeyEvent(id, keyCode, keyChar);
 		this.repaint();
 
+	}
+
+	public Controller getController() {
+		return this.controller;
 	}
 
 }

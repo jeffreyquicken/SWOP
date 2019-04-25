@@ -14,10 +14,12 @@ public class Scenario4 {
     private dataController dc;
     private UITopLevelWindow topWindow;
     private UISuperClass window;
+    private MyCanvasWindow relay;
 
     //get values for class variables
     public Scenario4() {
-        bestuurder = new Controller(1);
+        relay = new MyCanvasWindow("testing", 1);
+bestuurder = relay.getController();;
         dc = bestuurder.getTableDataController();
         bestuurder.setCurrentMode("table");
         topWindow = bestuurder.getTopLevelWindow();
@@ -55,8 +57,8 @@ public class Scenario4 {
     @Test
     public void DoubleClickingTableNameGoesToTableRowsMode() {
         MoveWindowToUpperLeftCorner();
-        bestuurder.relayMouseEvent(502,75,40,2);
-        bestuurder.relayMouseEvent(501,220,100,1);
+        relay.handleMouseEvent(502,75,40,2);
+        relay.handleMouseEvent(501,220,100,1);
         assertEquals(UIRowModule.class,topWindow.getActiveSubWindow().getClass());
     }
 

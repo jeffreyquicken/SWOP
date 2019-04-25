@@ -14,9 +14,11 @@ public class UIDESIGNTEST {
         private dataController dc;
         private UITopLevelWindow topWindow;
         private UISuperClass window;
+        private MyCanvasWindow relay;
 
         public UIDESIGNTEST() {
-            bestuurder = new Controller(1);
+            relay = new MyCanvasWindow("testing", 1);
+            bestuurder = relay.getController();;
             dc = bestuurder.getTableDataController();
             bestuurder.setCurrentMode("table");
             topWindow = bestuurder.getTopLevelWindow();

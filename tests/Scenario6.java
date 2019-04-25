@@ -1,10 +1,7 @@
 
 import Data.*;
-import UserInterfaceElements.UIDesignModule;
-import UserInterfaceElements.UISuperClass;
-import UserInterfaceElements.UITopLevelWindow;
+import UserInterfaceElements.*;
 import org.junit.jupiter.api.Test;
-import UserInterfaceElements.Controller;
 
 import java.rmi.server.UID;
 import java.util.List;
@@ -18,15 +15,17 @@ public class Scenario6 {
     private dataController dc;
     private UITopLevelWindow topWindow;
     private UISuperClass window;
+    private MyCanvasWindow relay;
 
     //get values for class variables
     public Scenario6() {
-        bestuurder = new Controller(1);
+        relay = new MyCanvasWindow("testing", 1);
+bestuurder = relay.getController();;
         dc = bestuurder.getTableDataController();
         bestuurder.setCurrentMode("table");
-        bestuurder.relayMouseEvent(500,115,60,2); // now in rowmode
-        bestuurder.relayKeyEvent(400,17,'o'); // CTRL
-        bestuurder.relayKeyEvent(400,10,'o'); //ENTER
+        relay.handleMouseEvent(500,115,60,2); // now in rowmode
+        relay.handleKeyEvent(400,17,'o'); // CTRL
+        relay.handleKeyEvent(400,10,'o'); //ENTER
         topWindow = bestuurder.getTopLevelWindow();
 
 
@@ -35,7 +34,7 @@ public class Scenario6 {
         dc.addTable();
         //initialise rows + collumns
 
-        bestuurder.relayMouseEvent(502,130,60,2); // now in design mode
+        relay.handleMouseEvent(502,130,60,2); // now in design mode
         window = topWindow.getActiveSubWindow();
         for (int i = 0;i<3;i++) {
 
@@ -51,11 +50,11 @@ public class Scenario6 {
     }
 
     public void switchToDesignMode(){
-        bestuurder.relayMouseEvent(502,122,64,2);
-        bestuurder.relayMouseEvent(502,212,105,1);
-        bestuurder.relayKeyEvent(401, 17,'\uFFFF');
-        bestuurder.relayKeyEvent(401, 10,'\n');
-        bestuurder.relayMouseEvent(502,213,131,1);
+        relay.handleMouseEvent(502,122,64,2);
+        relay.handleMouseEvent(502,212,105,1);
+        relay.handleKeyEvent(401, 17,'\uFFFF');
+        relay.handleKeyEvent(401, 10,'\n');
+        relay.handleMouseEvent(502,213,131,1);
     }
 
 
@@ -74,9 +73,9 @@ public class Scenario6 {
         switchToDesignMode();
         UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
         String previousName = UIDesignModule.getTable().getColumnNames().get(0).getName();
-        bestuurder.relayMouseEvent(500,300,75,1);
-        bestuurder.relayKeyEvent(401, 65,'a');
-        bestuurder.relayKeyEvent(401, 10,'e');
+        relay.handleMouseEvent(500,300,75,1);
+        relay.handleKeyEvent(401, 65,'a');
+        relay.handleKeyEvent(401, 10,'e');
         String newName = UIDesignModule.getTable().getColumnNames().get(0).getName();;
         assertEquals(previousName + "a", newName );
     }
@@ -88,10 +87,10 @@ public class Scenario6 {
         UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
         String previousName = UIDesignModule.getTable().getColumnNames().get(0).getName();
 
-        bestuurder.relayMouseEvent(500,300,75,1);
-        bestuurder.relayKeyEvent(401, 8,'d');
-        bestuurder.relayKeyEvent(401, 98,'2');
-        bestuurder.relayKeyEvent(401, 10,'e');
+        relay.handleMouseEvent(500,300,75,1);
+        relay.handleKeyEvent(401, 8,'d');
+        relay.handleKeyEvent(401, 98,'2');
+        relay.handleKeyEvent(401, 10,'e');
 
         String newName = UIDesignModule.getTable().getColumnNames().get(0).getName();;
         assertNotEquals(previousName + "2", newName );
@@ -102,15 +101,15 @@ public class Scenario6 {
         switchToDesignMode();
         UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
 
-        bestuurder.relayMouseEvent(500,300,75,1);
-        bestuurder.relayKeyEvent(401, 8,'d');
-        bestuurder.relayKeyEvent(401, 8,'d');
-        bestuurder.relayKeyEvent(401, 8,'d');
-        bestuurder.relayKeyEvent(401, 8,'d');
-        bestuurder.relayKeyEvent(401, 8,'d');
-        bestuurder.relayKeyEvent(401, 8,'d');
-        bestuurder.relayKeyEvent(401, 8,'d');
-        bestuurder.relayKeyEvent(401, 10,'e');
+        relay.handleMouseEvent(500,300,75,1);
+        relay.handleKeyEvent(401, 8,'d');
+        relay.handleKeyEvent(401, 8,'d');
+        relay.handleKeyEvent(401, 8,'d');
+        relay.handleKeyEvent(401, 8,'d');
+        relay.handleKeyEvent(401, 8,'d');
+        relay.handleKeyEvent(401, 8,'d');
+        relay.handleKeyEvent(401, 8,'d');
+        relay.handleKeyEvent(401, 10,'e');
 
         String newName = UIDesignModule.getTable().getColumnNames().get(0).getName();;
         assertNotEquals("", newName );
@@ -166,10 +165,10 @@ public class Scenario6 {
         UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
 
         for (int i = 355; i <= 563; i++) {
-            bestuurder.relayMouseEvent(506,i,185,1);
+            relay.handleMouseEvent(506,i,185,1);
         }
 
-        bestuurder.relayMouseEvent(500,437,111,1);
+        relay.handleMouseEvent(500,437,111,1);
         String newType = UIDesignModule.getTable().getColumnNames().get(2).getType();
 
 
@@ -183,11 +182,11 @@ public class Scenario6 {
         UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
 
         for (int i = 355; i <= 563; i++) {
-            bestuurder.relayMouseEvent(506,i,185,1);
+            relay.handleMouseEvent(506,i,185,1);
         }
 
-        bestuurder.relayMouseEvent(500,437,111,1);
-        bestuurder.relayMouseEvent(500,437,111,1);
+        relay.handleMouseEvent(500,437,111,1);
+        relay.handleMouseEvent(500,437,111,1);
         String newType = UIDesignModule.getTable().getColumnNames().get(2).getType();
 
 
@@ -200,7 +199,7 @@ public class Scenario6 {
         UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
 
         for (int i = 355; i <= 563; i++) {
-            bestuurder.relayMouseEvent(506,i,185,1);
+            relay.handleMouseEvent(506,i,185,1);
         }
 
         bestuurder.relayMouseEvent(500,437,111,1);

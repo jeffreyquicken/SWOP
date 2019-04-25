@@ -1,9 +1,6 @@
 
 import Data.*;
-import UserInterfaceElements.Controller;
-import UserInterfaceElements.UISuperClass;
-import UserInterfaceElements.UITablesModule;
-import UserInterfaceElements.UITopLevelWindow;
+import UserInterfaceElements.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -17,10 +14,12 @@ public class Scenario3 {
     private dataController dc;
     private UITopLevelWindow topWindow;
     private UISuperClass window;
+    private MyCanvasWindow relay;
 
     //get values for class variables
     public Scenario3() {
-        bestuurder = new Controller(1);
+        relay = new MyCanvasWindow("testing", 1);
+bestuurder = relay.getController();;
         dc = bestuurder.getTableDataController();
         bestuurder.setCurrentMode("table");
         topWindow = bestuurder.getTopLevelWindow();
@@ -65,10 +64,10 @@ public class Scenario3 {
     public void UserDeletesFirstTable() {
         MoveWindowToUpperLeftCorner();
         int lenOriginal = dc.getTableList().size();
-        bestuurder.relayMouseEvent(500,35,40,1);
+        relay.handleMouseEvent(500,35,40,1);
         //we have now clicked the left margin
         assertEquals("delete", window.getCurrMode());
-        bestuurder.relayKeyEvent(400,127,'o');
+        relay.handleKeyEvent(400,127,'o');
         int lenNew = dc.getTableList().size();
         assertEquals((lenOriginal - 1),lenNew);
     }
@@ -77,11 +76,11 @@ public class Scenario3 {
     public void ClicksLeftMarginThenPressesEscapeThenDelete() {
         MoveWindowToUpperLeftCorner();
         int lenOriginal = dc.getTableList().size();
-        bestuurder.relayMouseEvent(500,35,40,1);
+        relay.handleMouseEvent(500,35,40,1);
         //we have now clicked the left margin
         assertEquals("delete", window.getCurrMode());
-        bestuurder.relayKeyEvent(400,27,'o');
-        bestuurder.relayKeyEvent(400,127,'o');
+        relay.handleKeyEvent(400,27,'o');
+        relay.handleKeyEvent(400,127,'o');
         int lenNew = dc.getTableList().size();
         assertEquals(lenOriginal,lenNew);
     }

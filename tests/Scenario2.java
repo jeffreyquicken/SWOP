@@ -1,10 +1,7 @@
 
 import Data.*;
-import UserInterfaceElements.UISuperClass;
-import UserInterfaceElements.UITablesModule;
-import UserInterfaceElements.UITopLevelWindow;
+import UserInterfaceElements.*;
 import org.junit.jupiter.api.Test;
-import UserInterfaceElements.Controller;
 
 import java.util.List;
 
@@ -17,10 +14,12 @@ public class Scenario2 {
     private dataController dc;
     private UITopLevelWindow topWindow;
     private UISuperClass window;
+    private MyCanvasWindow relay;
 
     //get values for class variables
     public Scenario2() {
-        bestuurder = new Controller(1);
+        relay = new MyCanvasWindow("testing", 1);
+bestuurder = relay.getController();;
         dc = bestuurder.getTableDataController();
         bestuurder.setCurrentMode("table");
         topWindow = bestuurder.getTopLevelWindow();
@@ -65,11 +64,11 @@ public class Scenario2 {
     @Test
     public void StandardEditTableNameByClickingNextToTable() {
         MoveWindowToUpperLeftCorner();
-        bestuurder.relayMouseEvent(500,75,40,1);
+        relay.handleMouseEvent(500,75,40,1);
         //we should be in table name editing mode right now
         assertEquals("edit",window.getCurrMode());
-        bestuurder.relayKeyEvent(400,101,'a');
-        bestuurder.relayMouseEvent(500,110,100,1);
+        relay.handleKeyEvent(400,101,'a');
+        relay.handleMouseEvent(500,110,100,1);
         assertEquals("normal",window.getCurrMode());
         List<Table> table = dc.getTableList();
         String tbleName = table.get(0).getTableName();
@@ -80,11 +79,11 @@ public class Scenario2 {
     @Test
     public void StandardEditTableNameByPressingEnter() {
         MoveWindowToUpperLeftCorner();
-        bestuurder.relayMouseEvent(500,75,40,1);
+        relay.handleMouseEvent(500,75,40,1);
         //we should be in table name editing mode right now
         assertEquals("edit",window.getCurrMode());
-        bestuurder.relayKeyEvent(400,101,'a');
-        bestuurder.relayKeyEvent(400,10,'o');
+        relay.handleKeyEvent(400,101,'a');
+        relay.handleKeyEvent(400,10,'o');
         assertEquals("normal",window.getCurrMode());
         List<Table> table = dc.getTableList();
         String tbleName = table.get(0).getTableName();
@@ -94,17 +93,17 @@ public class Scenario2 {
     @Test
     public void StandardEditTableNameUsingBackspaceByClickingNextToTable() {
         MoveWindowToUpperLeftCorner();
-        bestuurder.relayMouseEvent(500,75,40,1);
+        relay.handleMouseEvent(500,75,40,1);
         //we should be in table name editing mode right now
         for(int i=0; i<7;i++) {
-            bestuurder.relayKeyEvent(400,8,'o');
+            relay.handleKeyEvent(400,8,'o');
         }
 
 
-        bestuurder.relayKeyEvent(400,101,'a');
-        bestuurder.relayKeyEvent(400,101,'b');
-        bestuurder.relayKeyEvent(400,101,'c');
-        bestuurder.relayMouseEvent(500,110,100,1);
+        relay.handleKeyEvent(400,101,'a');
+        relay.handleKeyEvent(400,101,'b');
+        relay.handleKeyEvent(400,101,'c');
+        relay.handleMouseEvent(500,110,100,1);
         List<Table> table = dc.getTableList();
         String tbleName = table.get(0).getTableName();
         assertEquals("abc",tbleName);
