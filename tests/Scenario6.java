@@ -279,6 +279,8 @@ public class Scenario6 {
 
     @Test
     public void ChangeColumnDefaultValueBooleanBlanksAllowed() {
+        MoveWindowToUpperLeftCorner();
+        ResizeWindow();
         String value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV().getString();
         assertEquals("True",value);
 
@@ -294,41 +296,46 @@ public class Scenario6 {
         value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV().getString();
         assertEquals("True",value);
     }
-    /**
+
     @Test
     public void ChangeColumnDefaultValueBooleanBlanksNotAllowed() {
-        bestuurder.relayMouseEvent(500,400,60,1); //Blanks clicked, now not allowed for col1
-        String value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV();
-        assertEquals("true",value);
+        MoveWindowToUpperLeftCorner();
+        ResizeWindow();
+        bestuurder.relayMouseEvent(500,375,40,1); //Blanks clicked, now not allowed for col1
+        String value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV().getString();
+        assertEquals("True",value);
 
-        bestuurder.relayMouseEvent(500,200,60,1);
-        value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV();
-        assertEquals("false",value);
+        bestuurder.relayMouseEvent(500,175,40,1);
+        value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV().getString();
+        assertEquals("False",value);
 
-        bestuurder.relayMouseEvent(500,200,60,1);
-        value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV();
-        assertEquals("true",value);
+        bestuurder.relayMouseEvent(500,175,40,1);
+        value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV().getString();
+        assertEquals("True",value);
     }
 
     @Test
     public void ChangeColumnDefaultValueStringBlanksNotAllowed() {
-        bestuurder.relayMouseEvent(500,200,100,1);//now editing DV
+        MoveWindowToUpperLeftCorner();
+        ResizeWindow();
+        bestuurder.relayMouseEvent(500,175,80,1);//now editing DV
         bestuurder.relayKeyEvent(400,97,'a');//press 'a'
         bestuurder.relayKeyEvent(400,10,'o'); //ENTER
 
-        bestuurder.relayMouseEvent(500,400,100,1); //Blanks clicked, now not allowed for col3
-        bestuurder.relayMouseEvent(500,200,100,1);//now editing DV
+        bestuurder.relayMouseEvent(500,375,80,1); //Blanks clicked, now not allowed for col3
+        bestuurder.relayMouseEvent(500,175,80,1);//now editing DV
         bestuurder.relayKeyEvent(400,8,'o'); //Backspace
         bestuurder.relayKeyEvent(400,10,'o'); //ENTER
         //We should still be in edit mode because blanks are not allowed
+        assertEquals("edit",window.getCurrMode());
 
         int originalLen = dc.getTableList().get(0).getColumnNames().size();
-        bestuurder.relayMouseEvent(501,100,150,2); //double click under column
+        bestuurder.relayMouseEvent(501,110,100,2); //double click under column
         int newLen = dc.getTableList().get(0).getColumnNames().size();
         assertEquals(originalLen,newLen);
     }
 
-*/
+
     //moving the window so that old tests do work
     public void MoveWindowToUpperLeftCorner() {
         List<Integer> info = topWindow.getSubwindowInfo().get(window);

@@ -68,22 +68,28 @@ public class Scenario1 {
     //Old tests
     @Test
     public void doubleClickUnderTableAddsNewTable() {
-
+       MoveWindowToUpperLeftCorner();
        int origineleLengte = dc.getTableList().size();
-       bestuurder.relayMouseEvent(501,100,200,2);
+       bestuurder.relayMouseEvent(501,110,100,2);
        int eL = dc.getTableList().size() -1;
-
        assertEquals(origineleLengte, eL);
     }
 
     @Test
     public void doubleClickUnderTableAddsNewTableWithCorrectName() {
+        MoveWindowToUpperLeftCorner();
         int origineleLengte = dc.getTableList().size();
-        bestuurder.relayMouseEvent(501,100,200,2);
+        bestuurder.relayMouseEvent(501,110,100,2);
         List<Table> tble = dc.getTableList();
         origineleLengte++;
         assertEquals("Table" +origineleLengte,tble.get(origineleLengte-1).getTableName());
     }
 
+    //moving the window so that old tests do work
+    public void MoveWindowToUpperLeftCorner() {
+        List<Integer> info = topWindow.getSubwindowInfo().get(window);
+        info.set(0,0);
+        info.set(1,0);
+    }
 
 }
