@@ -67,7 +67,7 @@ public class Scenario10 {
         MoveWindowToUpperLeftCorner();
         ResizeWindow();
         assertEquals("normal", window.getCurrMode());
-        bestuurder.relayMouseEvent(500,52,56,1); //Click left margin
+        bestuurder.relayMouseEvent(500,35,40,1); //Click left margin
         assertEquals("delete", window.getCurrMode());
     }
 
@@ -87,7 +87,7 @@ public class Scenario10 {
         MoveWindowToUpperLeftCorner();
         ResizeWindow();
         int originalSize = dc.getTableList().get(0).getTableRows().size();
-        bestuurder.relayMouseEvent(500,52,56,1); //Click left margin
+        bestuurder.relayMouseEvent(500,35,40,1); //Click left margin
         bestuurder.relayKeyEvent(500,127,'d'); //delete pressed
         int newSize = dc.getTableList().get(0).getTableRows().size();
         assertEquals((originalSize-1), newSize);
@@ -99,7 +99,7 @@ public class Scenario10 {
         MoveWindowToUpperLeftCorner();
         ResizeWindow();
         int originalSize = dc.getTableList().get(0).getTableRows().size();
-        bestuurder.relayMouseEvent(500,52,56,1); //Click left margin
+        bestuurder.relayMouseEvent(500,35,40,1); //Click left margin
         bestuurder.relayKeyEvent(400,127,'o'); //DELETE
         int newSize = dc.getTableList().get(0).getTableRows().size();
         assertEquals((originalSize-1), newSize);
