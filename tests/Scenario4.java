@@ -1,10 +1,12 @@
 
 import Data.*;
+import UserInterfaceElements.UIDesignModule;
 import UserInterfaceElements.UISuperClass;
 import UserInterfaceElements.UITopLevelWindow;
 import org.junit.jupiter.api.Test;
 import UserInterfaceElements.Controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class Scenario4 {
     //initialise class variables
@@ -49,13 +51,6 @@ public class Scenario4 {
         }
     }
 
-    //Precondition
-    @Test
-    public void IsInRightMode() {
-        assertEquals("table",bestuurder.getCurrentMode());
-    }
-
-
 
 
     //Old tests
@@ -65,4 +60,5 @@ public class Scenario4 {
         String str = bestuurder.getCurrentMode();
         assertEquals("row",str);
     }
+
 }

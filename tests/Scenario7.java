@@ -53,13 +53,39 @@ public class Scenario7 {
         }
     }
 
+    public void switchToDesignMode(){
+        bestuurder.relayMouseEvent(502,122,64,2);
+        bestuurder.relayMouseEvent(502,212,105,1);
+        bestuurder.relayKeyEvent(401, 17,'\uFFFF');
+        bestuurder.relayKeyEvent(401, 10,'\n');
+        bestuurder.relayMouseEvent(502,213,131,1);
+    }
     //Precondition
     @Test
     public void IsInRightMode() {
         assertEquals(UIDesignModule.class,window.getClass());
     }
 
+    //Test to see if margin clicked + delete add removes row(=collumn)
+    @Test
+    public void TestDeleteColumn() {
+        switchToDesignMode();
 
+        UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
+
+        int previousColl = UIDesignModule.getTable().getColumnNames().size();
+
+        bestuurder.relayMouseEvent(501,236,70,1);
+        bestuurder.relayKeyEvent(401, 127,'\u007F');
+
+
+        int newColl = UIDesignModule.getTable().getColumnNames().size();
+
+        assertEquals((previousColl -1), newColl);
+
+        //  assertEquals(window.getTable().getTableRows(), 4);
+
+    }
 
 
 

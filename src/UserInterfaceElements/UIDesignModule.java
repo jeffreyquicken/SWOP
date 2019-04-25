@@ -383,8 +383,19 @@ public class UIDesignModule extends UISuperClass {
      */
     private boolean textIsValid(Cell text, dataController data, String currName) {
 
+        if (activeCell[1] == 0) {
+            String currentText = text.getString();
+            if(currentText.length() == 0){
+                return false;
+            }
+            for(Column col :table.getColumnNames()){
+                if (currentText.equals(col.getName())){
+                    return false;
+                }
+            }
 
-        if (activeCell[1] == 1) {
+        }
+        else if (activeCell[1] == 1) {
             String type = table.getColumnNames().get(activeCell[0]).getType();
             if (table.getColumnNames().get(activeCell[0]).getBlanksAllowed()) {
                 if (((CellText)text).getValue().length() == 0) {

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import UserInterfaceElements.Controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 //Use case: Edit Column Characteristic
 public class Scenario6 {
@@ -55,10 +56,145 @@ public class Scenario6 {
         }
     }
 
+    public void switchToDesignMode(){
+        bestuurder.relayMouseEvent(502,122,64,2);
+        bestuurder.relayMouseEvent(502,212,105,1);
+        bestuurder.relayKeyEvent(401, 17,'\uFFFF');
+        bestuurder.relayKeyEvent(401, 10,'\n');
+        bestuurder.relayMouseEvent(502,213,131,1);
+    }
+
+
     //Precondition
     @Test
     public void IsInRightMode() {
-        assertEquals(UIDesignModule.class,window.getClass());
+        assertEquals("table",bestuurder.getCurrentMode());
+    }
+
+    //Test to see if double Clicks add new row(=collumn)
+
+
+    @Test
+    public void TestEditCollumnName(){
+        switchToDesignMode();
+        UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
+        String previousName = UIDesignModule.getTable().getColumnNames().get(0).getName();
+        bestuurder.relayMouseEvent(500,300,75,1);
+        bestuurder.relayKeyEvent(401, 65,'a');
+        bestuurder.relayKeyEvent(401, 10,'e');
+        String newName = UIDesignModule.getTable().getColumnNames().get(0).getName();;
+        assertEquals(previousName + "a", newName );
+    }
+    @Test
+    public void TestEditCollumnNameExistingName(){
+        switchToDesignMode();
+        UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
+        String previousName = UIDesignModule.getTable().getColumnNames().get(0).getName();
+
+        bestuurder.relayMouseEvent(500,300,75,1);
+        bestuurder.relayKeyEvent(401, 8,'d');
+        bestuurder.relayKeyEvent(401, 98,'2');
+        bestuurder.relayKeyEvent(401, 10,'e');
+
+        String newName = UIDesignModule.getTable().getColumnNames().get(0).getName();;
+        assertNotEquals(previousName + "2", newName );
+    }
+    @Test
+    public void TestEditCollumnNameEmpty(){
+        switchToDesignMode();
+        UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
+
+        bestuurder.relayMouseEvent(500,300,75,1);
+        bestuurder.relayKeyEvent(401, 8,'d');
+        bestuurder.relayKeyEvent(401, 8,'d');
+        bestuurder.relayKeyEvent(401, 8,'d');
+        bestuurder.relayKeyEvent(401, 8,'d');
+        bestuurder.relayKeyEvent(401, 8,'d');
+        bestuurder.relayKeyEvent(401, 8,'d');
+        bestuurder.relayKeyEvent(401, 8,'d');
+        bestuurder.relayKeyEvent(401, 10,'e');
+
+        String newName = UIDesignModule.getTable().getColumnNames().get(0).getName();;
+        assertNotEquals("", newName );
+    }
+    @Test
+    public void TestEditCollumnTypeStringToEmail(){
+        switchToDesignMode();
+        UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
+
+        for (int i = 355; i <= 563; i++) {
+            bestuurder.relayMouseEvent(506,i,185,1);
+        }
+
+        bestuurder.relayMouseEvent(500,437,111,1);
+        String newType = UIDesignModule.getTable().getColumnNames().get(2).getType();
+
+
+        assertEquals("Email", newType );
+    }
+
+    @Test
+    public void TestEditCollumnTypeEmailToBoolean(){
+        switchToDesignMode();
+        UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
+
+        for (int i = 355; i <= 563; i++) {
+            bestuurder.relayMouseEvent(506,i,185,1);
+        }
+
+        bestuurder.relayMouseEvent(500,437,111,1);
+        bestuurder.relayMouseEvent(500,437,111,1);
+        String newType = UIDesignModule.getTable().getColumnNames().get(2).getType();
+
+
+        assertEquals("Boolean", newType );
+    }
+    @Test
+    public void TestEditCollumnTypeBooleanToInteger(){
+        switchToDesignMode();
+        UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
+
+        for (int i = 355; i <= 563; i++) {
+            bestuurder.relayMouseEvent(506,i,185,1);
+        }
+
+        bestuurder.relayMouseEvent(500,437,111,1);
+        bestuurder.relayMouseEvent(500,437,111,1);
+        bestuurder.relayMouseEvent(500,437,111,1);
+        String newType = UIDesignModule.getTable().getColumnNames().get(2).getType();
+
+
+        assertEquals("Integer", newType );
+    }
+    @Test
+    public void TestEditCollumnTypeIntegerToString(){
+        switchToDesignMode();
+        UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
+
+        for (int i = 355; i <= 563; i++) {
+            bestuurder.relayMouseEvent(506,i,185,1);
+        }
+
+        bestuurder.relayMouseEvent(500,437,111,1);
+        bestuurder.relayMouseEvent(500,437,111,1);
+        bestuurder.relayMouseEvent(500,437,111,1);
+        bestuurder.relayMouseEvent(500,437,111,1);
+        String newType = UIDesignModule.getTable().getColumnNames().get(2).getType();
+
+
+        assertEquals("String", newType );
+    }
+
+    @Test
+    public void TestEditCheckboxBooleanCheckedToUnchecked(){
+        switchToDesignMode();
+        UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
+
+        for (int i = 355; i <= 563; i++) {
+            bestuurder.relayMouseEvent(506,i,185,1);
+        }
+
+
     }
 
 

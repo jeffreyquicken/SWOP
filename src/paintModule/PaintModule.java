@@ -50,7 +50,7 @@ public class PaintModule {
         if(newWidth < 20){
             g.drawRect( startxCo,startyCo,newWidth, cellHeight);
         }
-        else if (rowItem.getValue() == null){
+        else if (rowItem == null || rowItem.getValue() == null){
             checkBoxEmpty(g, startxCo, startyCo, newWidth);
 
         } else if (rowItem.getValue().equals(false)) {
