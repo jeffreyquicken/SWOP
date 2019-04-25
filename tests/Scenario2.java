@@ -26,12 +26,10 @@ public class Scenario2 {
         topWindow = bestuurder.getTopLevelWindow();
         window = topWindow.getActiveSubWindow();
         //initialise tables
-        Table table1 = new Table("Table 1");
-        Table table2 = new Table("Table 2");
-        Table table3 = new Table("Table 3");
-        dc.addTable(table1);
-        dc.addTable(table2);
-        dc.addTable(table3);
+
+        dc.addTable();
+        dc.addTable();
+        dc.addTable();
         //initialise rows + collumns
         for (int i = 0;i<3;i++) {
 

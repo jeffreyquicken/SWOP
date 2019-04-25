@@ -22,15 +22,13 @@ public class dataController {
         //setting.getWidthList().add(setting.getDefaultWidth());
         setting.getWidthList().add(setting.getDefaultWidth());
         tableList = new ArrayList<>();
-       // Temporary tables for demonstration purposes
 
-        Table table1 = new Table("Table 1", 1);
-        Table table2 = new Table("Table 2", 1);
-        Table table3 = new Table("Table 3", 1);
+
+
         tableList = new ArrayList<Table>();
-        tableList.add(table1);
-        tableList.add(table2);
-        tableList.add(table3);//
+        this.addTable();
+        this.addTable();
+        this.addTable();
     }
 
     public dataController(int i) {
@@ -47,8 +45,37 @@ public class dataController {
         return tableList;
     }
 
-    public void addTable(Table table){
-        tableList.add(table);
+    public void addTable(){
+        int numberOfTable = this.getTableList().size() + 1;
+        String newName = "Table" + numberOfTable;
+        int i = numberOfTable;
+        while (!isValidName(newName, null)){
+            i++;
+            newName = "Table" + i;
+        }
+        //Table newTable = new Table(newName);
+        Table newTable = new Table(newName);
+        tableList.add(newTable);
+    }
+    /**
+     * Checks if updated text is valid
+     *
+     * @param text text to be validated
+     * @param currName old name
+     * @return Wheter the name of the table is valid (hence unique and non-empty)
+     */
+    public boolean isValidName(String text, String currName) {
+        for (Table table : this.getTableList()) {
+            if (table.getTableName().equals(text)) {
+                if (!table.getTableName().equals(currName)) {
+                    return false;
+                }
+            }
+        }
+        if (text.length() == 0) {
+            return false;
+        }
+        return true;
     }
     public void deleteTable(Table table){
         tableList.remove(table);

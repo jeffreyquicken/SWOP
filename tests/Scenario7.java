@@ -27,13 +27,10 @@ public class Scenario7 {
         bestuurder.relayKeyEvent(400,10,'o'); //ENTER
         topWindow = bestuurder.getTopLevelWindow();
 
-        //initialise tables
-        Table table1 = new Table("Table 1");
-        Table table2 = new Table("Table 2");
-        Table table3 = new Table("Table 3");
-        dc.addTable(table1);
-        dc.addTable(table2);
-        dc.addTable(table3);
+
+        dc.addTable();
+        dc.addTable();
+        dc.addTable();
         //initialise rows + collumns
 
         bestuurder.relayMouseEvent(502,130,60,2); // now in design mode

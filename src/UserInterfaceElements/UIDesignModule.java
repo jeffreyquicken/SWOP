@@ -308,7 +308,7 @@ public class UIDesignModule extends UISuperClass {
 		currMode = "edit";
 
 		if (table.getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
-		    tempText = (CellEditable) table.getColumnNames().get(activeCell[0]).getDefaultV();
+		    tempText = table.getColumnNames().get(activeCell[0]).getDefaultV();
 		    if (tempText.getValue().equals(true)){
 		        tempText.setValue(false);
 		    }
