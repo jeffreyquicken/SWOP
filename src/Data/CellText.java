@@ -38,5 +38,8 @@ public class CellText implements CellEditable<String>{
 	public void delChar() {
     	this.setValue(this.getValue().substring(0,this.getValue().length()-1));
 	}
-
+	@Override
+	public String getString(){
+		return value;
+	}
 }

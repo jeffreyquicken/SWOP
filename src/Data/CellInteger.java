@@ -37,5 +37,9 @@ public class CellInteger implements CellEditable<Integer>{
     	String stringValue = this.getValue().toString();
 		this.setValue(Integer.parseInt( stringValue.substring(0,stringValue.length()-1)));
 	}
+	@Override
+	public String getString(){
+		return value.toString();
+	}
 
 }

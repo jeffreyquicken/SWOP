@@ -53,4 +53,8 @@ public class CellEmail implements CellEditable<String>{
 	        java.util.regex.Matcher m = p.matcher(text);
 	        return m.matches();
 	    }
+	@Override
+	public String getString(){
+		return value;
+	}
 }

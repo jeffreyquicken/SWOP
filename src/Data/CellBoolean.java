@@ -27,4 +27,9 @@ public class CellBoolean implements Cell<Boolean>{
         return this.type;
     }
 
+    @Override
+    public String getString(){
+        if (value){return "True";}else{return "False";}
+    }
+
 }

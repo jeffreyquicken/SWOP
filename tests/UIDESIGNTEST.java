@@ -19,7 +19,7 @@ public class UIDESIGNTEST {
             bestuurder = new Controller();
             dc = bestuurder.getTableDataController();
             bestuurder.setCurrentMode("design");
-            
+
             topWindow = bestuurder.getTopLevelWindow();
             window = (UIDesignModule) topWindow.getActiveSubWindow();
         }

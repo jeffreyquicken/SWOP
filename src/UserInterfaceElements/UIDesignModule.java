@@ -145,7 +145,7 @@ public class UIDesignModule extends UISuperClass {
 		        activeCell = clickedCell;
 		        invalidInput = !textIsValid(newType, data, null);
 		        if (invalidInput){
-		            currMode = "edit";
+		            currMode = "invalid";
 		        }
 		        else{
 		            currMode = "normal";
@@ -292,8 +292,9 @@ public class UIDesignModule extends UISuperClass {
 		    currMode = "edit";
 		} else {
 		    currMode = "normal";
+            table.getColumnNames().get(clickedCell[0]).setType(((CellText) newType).getValue());
 		}
-   table.getColumnNames().get(clickedCell[0]).setType(((CellText) newType).getValue());
+
 	}
 
 
@@ -385,6 +386,11 @@ public class UIDesignModule extends UISuperClass {
 
         if (activeCell[1] == 1) {
             String type = table.getColumnNames().get(activeCell[0]).getType();
+            if (table.getColumnNames().get(activeCell[0]).getBlanksAllowed()) {
+                if (((CellText)text).getValue().length() == 0) {
+                    return true;
+                }
+            }
             if (type.equals("String")) {
 
                 if (!table.getColumnNames().get(activeCell[0]).getBlanksAllowed()) {
@@ -396,7 +402,8 @@ public class UIDesignModule extends UISuperClass {
                 return true;
             } else if (type.equals("Boolean")) {
             } else if (type.equals("Email")) {
-                if (((CellEmail) text).getValue().contains("@")) {
+               // if (((CellEmail) text).getValue().contains("@")) {
+                    if (text.getString().contains("@")) {
                     return true;
                 } else return false;
             } else if (type.equals("Integer")) {
@@ -411,32 +418,40 @@ public class UIDesignModule extends UISuperClass {
 
         }
         else if (activeCell[1] == 2){
-            String value = table.getColumnNames().get(activeCell[0]).getDefaultV().toString();
-            for (Row row : table.getTableRows()){
-                String colValue = row.getColumnList().get(activeCell[0]).toString();
+            String value = table.getColumnNames().get(activeCell[0]).getDefaultV().getString();
 
-                if (text.equals("String")){
+            for (Row row : table.getTableRows()){
+                String colValue = row.getColumnList().get(activeCell[0]).getString();
+
+                if (text.getValue().equals("String")){
                     return true;
                 }
-                else if (text.equals("Boolean")){
-                    if ((colValue.equals("true") || colValue.equals("false")) && (value.equals("true") || value.equals("false"))){
-                        return true;
+                else if(table.getColumnNames().get(activeCell[0]).getBlanksAllowed()){
+
+                    if ((text).getString().length() == 0) {
+
+
                     }
-                    return false;
                 }
-                else if (text.equals("Integer")){
+                else if (text.getValue().equals("Boolean")){
+                    if ((colValue.equals("true") || colValue.equals("false")) && (value.equals("true") || value.equals("false"))){
+                        //return true;
+                    }else{
+                    return false;}
+                }
+                else if (text.getValue().equals("Integer")){
                     try{
                         Integer.parseInt(colValue);
                         Integer.parseInt(value);
-                        return true;
+                        //return true;
                     }
                     catch (Exception e){
                         return false;
                     }
                 }
-                else if (text.equals("Email")){
+                else if (text.getValue().equals("Email")){
                     if (colValue.contains("@") && value.contains("@")){
-                        return true;
+                       // return true;
                     }
                     return false;
                 }

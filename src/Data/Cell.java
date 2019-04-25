@@ -7,4 +7,5 @@ public interface Cell<T> {
 	public void setValue(T arg);
 	
 	public String getType();
+	public String getString();
 }
