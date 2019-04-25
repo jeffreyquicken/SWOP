@@ -5,6 +5,9 @@ import UserInterfaceElements.UISuperClass;
 import UserInterfaceElements.UITopLevelWindow;
 import org.junit.jupiter.api.Test;
 import UserInterfaceElements.Controller;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Scenario7 {
@@ -84,8 +87,9 @@ public class Scenario7 {
     //Old tests
     @Test
     public void UserDeletesColumn() {
+        MoveWindowToUpperLeftCorner();
         int originalLen = dc.getTableList().get(0).getColumnNames().size();
-        bestuurder.relayMouseEvent(500,55,120,1); //Select left margin
+        bestuurder.relayMouseEvent(500,35,40,1); //Select left margin
         bestuurder.relayKeyEvent(400,127,'o'); //Delete
         int newLen = dc.getTableList().get(0).getColumnNames().size();
         assertEquals((originalLen-1),newLen);
@@ -93,11 +97,20 @@ public class Scenario7 {
 
     @Test
     public void UserClicksLeftMarginAndPressesEscapeBeforeDelete() {
+        MoveWindowToUpperLeftCorner();
         int originalLen = dc.getTableList().get(0).getColumnNames().size();
-        bestuurder.relayMouseEvent(500,55,120,1); //Select left margin
+        bestuurder.relayMouseEvent(500,35,40,1); //Select left margin
+        assertEquals("delete",window.getCurrMode());
         bestuurder.relayKeyEvent(400,27,'o');//Escape
         bestuurder.relayKeyEvent(400,127,'o'); //Delete
         int newLen = dc.getTableList().get(0).getColumnNames().size();
         assertEquals(originalLen,newLen);
+    }
+
+    //moving the window so that old tests do work
+    public void MoveWindowToUpperLeftCorner() {
+        List<Integer> info = topWindow.getSubwindowInfo().get(window);
+        info.set(0,0);
+        info.set(1,0);
     }
 }

@@ -6,6 +6,8 @@ import UserInterfaceElements.UITopLevelWindow;
 import org.junit.jupiter.api.Test;
 import UserInterfaceElements.Controller;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //Use case: Edit Column Characteristic
@@ -25,7 +27,7 @@ public class Scenario6 {
         bestuurder.relayKeyEvent(400,17,'o'); // CTRL
         bestuurder.relayKeyEvent(400,10,'o'); //ENTER
         topWindow = bestuurder.getTopLevelWindow();
-        window = topWindow.getActiveSubWindow();
+
         //initialise tables
         Table table1 = new Table("Table 1");
         Table table2 = new Table("Table 2");
@@ -34,6 +36,9 @@ public class Scenario6 {
         dc.addTable(table2);
         dc.addTable(table3);
         //initialise rows + collumns
+
+        bestuurder.relayMouseEvent(502,130,60,2); // now in design mode
+        window = topWindow.getActiveSubWindow();
         for (int i = 0;i<3;i++) {
 
             Column col1 = new Column("Column1",new CellBoolean(true), "Boolean", true);
@@ -44,14 +49,6 @@ public class Scenario6 {
             dc.getTableList().get(i).addColumn(col2);
             dc.getTableList().get(i).addColumn(col3);
             dc.getTableList().get(i).addColumn(col4);
-
-            Row row1 = new Row(dc.getTableList().get(i).getColumnNames());
-            Row row2 = new Row(dc.getTableList().get(i).getColumnNames());
-            Row row3 = new Row(dc.getTableList().get(i).getColumnNames());
-
-            dc.getTableList().get(i).addRow(row1);
-            dc.getTableList().get(i).addRow(row2);
-            dc.getTableList().get(i).addRow(row3);
         }
     }
 
@@ -67,7 +64,8 @@ public class Scenario6 {
     //Old tests
     @Test
     public void EditColumnNameNormal() {
-        bestuurder.relayMouseEvent(500,120,120,1); //click on name column4
+        MoveWindowToUpperLeftCorner();
+        bestuurder.relayMouseEvent(500,110,100,1); //click on name column4
         for(int i=0;i<7;i++){
             bestuurder.relayKeyEvent(400,8,'o'); //Backspace
         }
@@ -82,76 +80,85 @@ public class Scenario6 {
 
     @Test
     public void EditColumnNameToOtherColumnName() {
-        bestuurder.relayMouseEvent(500,120,120,1); //click on name column4
+        MoveWindowToUpperLeftCorner();
+        bestuurder.relayMouseEvent(500,110,100,1); //click on name column4
         bestuurder.relayKeyEvent(400,8,'o'); //Backspace
         bestuurder.relayKeyEvent(400,50,'2');//press '2'
         bestuurder.relayKeyEvent(400,10,'o'); //ENTER
         //Because the name is already taken the user should still be in edit mode
+        assertEquals("edit",window.getCurrMode());
         bestuurder.relayKeyEvent(400,8,'o'); //Backspace
         bestuurder.relayKeyEvent(400,10,'o'); //ENTER
         String colName = dc.getSelectedTable().getColumnNames().get(dc.getSelectedTable().getColumnNames().size()-1).getName();
         assertEquals("Column",colName);
     }
 
-    //EXTENTIONS
+    //EXTENSIONS
     @Test
     public void UserChangesTypeOfColumn() {
+        MoveWindowToUpperLeftCorner();
+        ResizeWindow();
         //type of column4 is standard string
         String type = dc.getSelectedTable().getColumnNames().get(dc.getSelectedTable().getColumnNames().size()-1).getType();
         assertEquals("String",type);
 
-        bestuurder.relayMouseEvent(500,300,120,1); //Click ont type of column4
+        bestuurder.relayMouseEvent(500,250,100,1); //Click ont type of column4
         type = dc.getSelectedTable().getColumnNames().get(dc.getSelectedTable().getColumnNames().size()-1).getType();
         assertEquals("Email",type);
 
-        bestuurder.relayMouseEvent(500,300,120,1); //Click ont type of column4
+        bestuurder.relayMouseEvent(500,250,100,1); //Click ont type of column4
         type = dc.getSelectedTable().getColumnNames().get(dc.getSelectedTable().getColumnNames().size()-1).getType();
         assertEquals("Boolean",type);
 
-        bestuurder.relayMouseEvent(500,300,120,1); //Click ont type of column4
+        bestuurder.relayMouseEvent(500,250,100,1); //Click ont type of column4
         type = dc.getSelectedTable().getColumnNames().get(dc.getSelectedTable().getColumnNames().size()-1).getType();
         assertEquals("Integer",type);
 
-        bestuurder.relayMouseEvent(500,300,120,1); //Click ont type of column4
+        bestuurder.relayMouseEvent(500,250,100,1); //Click ont type of column4
         type = dc.getSelectedTable().getColumnNames().get(dc.getSelectedTable().getColumnNames().size()-1).getType();
         assertEquals("String",type);
     }
 
     @Test
     public void UserChangesCheckboxBlanksAllowed() {
+        MoveWindowToUpperLeftCorner();
+        ResizeWindow();
         boolean blanksAllowed = dc.getSelectedTable().getColumnNames().get(1).getBlanksAllowed();
-        bestuurder.relayMouseEvent(500,400,80,1); //Blank checkbox of col2 clicked
+        bestuurder.relayMouseEvent(500,375,60,1); //Blank checkbox of col2 clicked
         boolean blanksAllowed2 = dc.getSelectedTable().getColumnNames().get(1).getBlanksAllowed();
         assertEquals(!blanksAllowed,blanksAllowed2);
     }
 
     @Test
     public void UserChangesCheckboxBlanksAllowedToInvalidStateAndTriesToAddColumn() {
+        MoveWindowToUpperLeftCorner();
+        ResizeWindow();
         int originalLen = dc.getTableList().get(0).getColumnNames().size();
-        bestuurder.relayMouseEvent(500,400,100,1); //Blank checkbox of col3 clicked
+        bestuurder.relayMouseEvent(500,375,80,1); //Blank checkbox of col3 clicked
+        bestuurder.relayMouseEvent(501,80,130,2); //doubleclick under table
         int newLen = dc.getTableList().get(0).getColumnNames().size();
         assertEquals(originalLen,newLen);
     }
-    /**
+
 
     @Test
     public void ChangeColumnDefaultValueBooleanBlanksAllowed() {
-        String value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV();
-        assertEquals("true",value);
+        String value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV().getString();
+        assertEquals("True",value);
 
-        bestuurder.relayMouseEvent(500,200,60,1);
-        value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV();
-        assertEquals("false",value);
+        bestuurder.relayMouseEvent(500,175,40,1);
+        value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV().getString();
+        assertEquals("False",value);
 
-        bestuurder.relayMouseEvent(500,200,60,1);
-        value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV();
+        bestuurder.relayMouseEvent(500,175,40,1);
+        value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV().getString();
         assertEquals("empty",value);
 
-        bestuurder.relayMouseEvent(500,200,60,1);
-        value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV();
-        assertEquals("true",value);
+        bestuurder.relayMouseEvent(500,175,40,1);
+        value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV().getString();
+        assertEquals("True",value);
     }
-
+    /**
     @Test
     public void ChangeColumnDefaultValueBooleanBlanksNotAllowed() {
         bestuurder.relayMouseEvent(500,400,60,1); //Blanks clicked, now not allowed for col1
@@ -186,5 +193,19 @@ public class Scenario6 {
     }
 
 */
+    //moving the window so that old tests do work
+    public void MoveWindowToUpperLeftCorner() {
+        List<Integer> info = topWindow.getSubwindowInfo().get(window);
+        info.set(0,0);
+        info.set(1,0);
+    }
+
+    //Resizing the window so that everything is visible
+    public void ResizeWindow() {
+        List<Integer> info = topWindow.getSubwindowInfo().get(window);
+        info.set(2,500);
+        info.set(3,150);
+    }
+
 
 }
