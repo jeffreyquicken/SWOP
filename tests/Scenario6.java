@@ -3,6 +3,7 @@ import Data.*;
 import UserInterfaceElements.*;
 import org.junit.jupiter.api.Test;
 
+import java.rmi.server.UID;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -112,6 +113,50 @@ bestuurder = relay.getController();;
 
         String newName = UIDesignModule.getTable().getColumnNames().get(0).getName();;
         assertNotEquals("", newName );
+    }
+    @Test
+    public void InvalidInputTypeClicked(){
+        switchToDesignMode();
+        UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
+
+        for (int i = 355; i <= 563; i++) {
+            bestuurder.relayMouseEvent(506,i,185,1);
+        }
+
+        UIDesignModule.setInvalidInput(true);
+        UIDesignModule.setCurrMode("edit");
+        int[] clickedcell = {2,2};
+        UIDesignModule.setActiveCell(clickedcell);
+        UIDesignModule.handleTypeClickedInvalidInput(bestuurder.getTableDataController(), clickedcell );
+        UIDesignModule.setInvalidInput(true);
+        UIDesignModule.setCurrMode("edit");
+        UIDesignModule.handleTypeClickedInvalidInput(bestuurder.getTableDataController(), clickedcell );
+        UIDesignModule.setInvalidInput(true);
+        UIDesignModule.setCurrMode("edit");
+        UIDesignModule.handleTypeClickedInvalidInput(bestuurder.getTableDataController(), clickedcell );
+        UIDesignModule.setInvalidInput(true);
+        UIDesignModule.setCurrMode("edit");
+        UIDesignModule.handleTypeClickedInvalidInput(bestuurder.getTableDataController(), clickedcell );
+        String newType = UIDesignModule.getTable().getColumnNames().get(2).getType();
+
+
+        assertEquals("String", newType );
+    }
+
+    @Test
+    public void TestDraggingWindow(){
+        switchToDesignMode();
+        UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
+
+        for (int i = 355; i <= 563; i++) {
+            bestuurder.relayMouseEvent(506,i,185,1);
+        }
+        bestuurder.relayMouseEvent(501,209,53,1);
+
+
+        bestuurder.relayMouseEvent(500,330,53,1);
+        bestuurder.relayMouseEvent(506,335,53, 1);
+
     }
     //STEP 1a
     @Test
@@ -228,6 +273,7 @@ bestuurder = relay.getController();;
         bestuurder.relayMouseEvent(500,547,57,1);
 
     }
+
 
 
 
