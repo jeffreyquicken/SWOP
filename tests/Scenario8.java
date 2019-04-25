@@ -65,6 +65,28 @@ public class Scenario8 {
 
 
 
+
+    //Step 1 (double click under table)
+    @Test
+    public void DoubleClickUnderTable() {
+        MoveWindowToUpperLeftCorner();
+        ResizeWindow();
+        assertEquals("normal",window.getCurrMode());
+        bestuurder.relayMouseEvent(501,110,100,2);//Double click under table
+        assertEquals("normal",window.getCurrMode()); //Adding row should not change mode
+    }
+
+    //Step 2 (new row should be added)
+    @Test
+    public void DoubleClickUnderTableShouldAddRow() {
+        int l = dc.getTableList().get(0).getTableRows().size();
+        assertEquals(3, l); //Nb of rows should be +1
+    }
+
+
+
+
+
     //Old tests
     @Test
     public void UserDoubleClicksUnderTableAndAddsNewRow() {
@@ -79,13 +101,15 @@ public class Scenario8 {
 
     @Test
     public void UserAddsNewRowWithCorrectDefaultValues() {
+        MoveWindowToUpperLeftCorner();
+        ResizeWindow();
         bestuurder.relayMouseEvent(501,120,120,2);
         int size = dc.getTableList().get(0).getTableRows().size();
         List<Cell> newRow = dc.getTableList().get(0).getTableRows().get(size-1).getColumnList();
         List<Column> kols = dc.getTableList().get(0).getColumnNames();
 
         for(int i=0;i<(newRow.size()-1);i++) {
-            assertEquals(kols.get(0).getDefaultV().getString(),newRow.get(i).getString());
+            assertEquals(kols.get(i).getDefaultV().getString(),newRow.get(i).getString());
         }
 
 
