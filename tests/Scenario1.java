@@ -1,8 +1,12 @@
 
 import Data.*;
 import UserInterfaceElements.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,7 +20,18 @@ public class Scenario1 {
     private UITopLevelWindow topWindow;
     private UISuperClass window;
     private MyCanvasWindow relay;
+    private Graphics imageGraphics;
 
+    @BeforeEach
+    public void paint() {
+        BufferedImage image = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_RGB);
+        imageGraphics = image.getGraphics();
+    }
+
+    @AfterEach
+    public void paint2() {
+        bestuurder.paint(imageGraphics);
+    }
 
     //get values for class variables
     public Scenario1() {
@@ -83,11 +98,38 @@ public class Scenario1 {
         assertEquals("Table" +origineleLengte,tble.get(origineleLengte-1).getTableName());
     }
 
+    //Test resizingheader
+    @Test
+    public void ResizeHeader() {
+        MoveWindowToUpperLeftCorner();
+        int originalWidth = dc.getSetting().getWidthList().get(0);
+        for (int i = 130;i <= 140;i++) {
+            relay.handleMouseEvent(506,i,25,1);
+        }
+        int newWidth = dc.getSetting().getWidthList().get(0);
+        assertEquals(originalWidth+10,newWidth);
+    }
+
     //moving the window so that old tests do work
     public void MoveWindowToUpperLeftCorner() {
         List<Integer> info = topWindow.getSubwindowInfo().get(window);
         info.set(0,0);
         info.set(1,0);
     }
+
+    //ScrollbarTests
+    @Test
+    public void VerticalScrollbar() {
+        MoveWindowToUpperLeftCorner();
+        //we will first add a lot of tables so that there will be vertical scrollbar
+        for (int i = 0; i < 10; i++) {
+            dc.addTable();
+        }
+        for (int i = 0; i < 10; i++) {
+            relay.handleMouseEvent(501, 155, 140, 1);
+        }
+    }
+
+
 
 }

@@ -3,8 +3,14 @@
 
 import Data.*;
 import UserInterfaceElements.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.text.AttributedCharacterIterator;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,6 +24,7 @@ public class TABLR {
     private MyCanvasWindow relay;
 
     public TABLR() {
+
         relay = new MyCanvasWindow("Testing", 1);
         bestuurder =  relay.getController();
         dc = bestuurder.getTableDataController();
@@ -50,6 +57,19 @@ public class TABLR {
             dc.getTableList().get(i).addRow(row3);
         }
 
+    }
+
+    private Graphics imageGraphics;
+
+    @BeforeEach
+    public void paint() {
+        BufferedImage image = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_RGB);
+        imageGraphics = image.getGraphics();
+    }
+
+    @AfterEach
+    public void paint2() {
+        bestuurder.paint(imageGraphics);
     }
 
     //bottom right corner of table subwindow is 180,180
@@ -261,5 +281,6 @@ public class TABLR {
         assertEquals(result[0].intValue(),20);
         assertEquals(result[1].intValue(),20);
     }
+
 
 }

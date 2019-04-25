@@ -2,7 +2,13 @@ import Data.Column;
 import Data.*;
 import Data.dataController;
 import UserInterfaceElements.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UIDESIGNTEST {
@@ -15,6 +21,18 @@ public class UIDESIGNTEST {
         private UITopLevelWindow topWindow;
         private UISuperClass window;
         private MyCanvasWindow relay;
+    private Graphics imageGraphics;
+
+    @BeforeEach
+    public void paint() {
+        BufferedImage image = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_RGB);
+        imageGraphics = image.getGraphics();
+    }
+
+    @AfterEach
+    public void paint2() {
+        bestuurder.paint(imageGraphics);
+    }
 
         public UIDESIGNTEST() {
             relay = new MyCanvasWindow("testing", 1);

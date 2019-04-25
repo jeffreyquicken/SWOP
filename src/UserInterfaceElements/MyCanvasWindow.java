@@ -33,7 +33,6 @@ public class MyCanvasWindow extends CanvasWindow {
 	 * @param g graphics object
 	 */
 	public void paint(Graphics g) {
-
 		controller.paint(g);
 	}
 
@@ -51,6 +50,7 @@ public class MyCanvasWindow extends CanvasWindow {
 		controller.relayMouseEvent(id,  x,  y,  clickCount);
 		//After the changes canvas will be repainted
 		this.repaint();
+
 	}
 
 	/**
@@ -65,6 +65,7 @@ public class MyCanvasWindow extends CanvasWindow {
 		this.repaint();
 
 	}
+
 
 	public Controller getController() {
 		return this.controller;

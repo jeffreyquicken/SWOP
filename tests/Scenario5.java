@@ -1,8 +1,12 @@
 
 import Data.*;
 import UserInterfaceElements.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,6 +18,18 @@ public class Scenario5 {
     private UITopLevelWindow topWindow;
     private UISuperClass window;
     private MyCanvasWindow relay;
+    private Graphics imageGraphics;
+
+    @BeforeEach
+    public void paint() {
+        BufferedImage image = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_RGB);
+        imageGraphics = image.getGraphics();
+    }
+
+    @AfterEach
+    public void paint2() {
+        bestuurder.paint(imageGraphics);
+    }
 
     //get values for class variables
     public Scenario5() {
@@ -130,5 +146,29 @@ public class Scenario5 {
         List<Integer> info = topWindow.getSubwindowInfo().get(window);
         info.set(0,0);
         info.set(1,0);
+    }
+
+
+
+    @Test
+    public void HorizontalScrollbar() {
+        MoveWindowToUpperLeftCorner();
+        for (int i =0;i<10;i++) {
+            relay.handleMouseEvent(501,135,155,1);
+        }
+
+    }
+
+    //ScrollbarTests
+    @Test
+    public void VerticalScrollbar() {
+        MoveWindowToUpperLeftCorner();
+        for (int i = 0; i < 10; i++) {
+            Column col1 = new Column("Col"+i,new CellBoolean(true), "Boolean", true);
+            dc.getTableList().get(0).addColumn(col1);
+        }
+        for (int i = 0; i < 10; i++) {
+            relay.handleMouseEvent(501, 155, 140, 1);
+        }
     }
 }

@@ -1,8 +1,12 @@
 
 import UserInterfaceElements.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import Data.*;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,7 +19,18 @@ public class Scenario8 {
     private UITopLevelWindow topWindow;
     private UISuperClass window;
     private MyCanvasWindow relay;
+    private Graphics imageGraphics;
 
+    @BeforeEach
+    public void paint() {
+        BufferedImage image = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_RGB);
+        imageGraphics = image.getGraphics();
+    }
+
+    @AfterEach
+    public void paint2() {
+        bestuurder.paint(imageGraphics);
+    }
     //get values for class variables
     public Scenario8() {
         relay = new MyCanvasWindow("testing", 1);
@@ -115,6 +130,19 @@ bestuurder = relay.getController();;
 
     }
 
+    //Test resizingheader
+    @Test
+    public void ResizeHeader() {
+        MoveWindowToUpperLeftCorner();
+        ResizeWindow();
+        int originalWidth = dc.getTableList().get(0).getRowSetting().getWidthList().get(0);
+        for (int i = 130;i <= 150;i++) {
+            relay.handleMouseEvent(506,i,25,1);
+        }
+        int newWidth = dc.getTableList().get(0).getRowSetting().getWidthList().get(0);
+        assertEquals(originalWidth+20,newWidth);
+    }
+
     //moving the window so that old tests do work
     public void MoveWindowToUpperLeftCorner() {
         List<Integer> info = topWindow.getSubwindowInfo().get(window);
@@ -127,5 +155,29 @@ bestuurder = relay.getController();;
         List<Integer> info = topWindow.getSubwindowInfo().get(window);
         info.set(2,500);
         info.set(3,150);
+    }
+
+
+
+    @Test
+    public void HorizontalScrollbar() {
+        MoveWindowToUpperLeftCorner();
+        for (int i =0;i<10;i++) {
+            relay.handleMouseEvent(501,135,155,1);
+        }
+
+    }
+
+    //ScrollbarTests
+    @Test
+    public void VerticalScrollbar() {
+        MoveWindowToUpperLeftCorner();
+        for (int i = 0; i < 10; i++) {
+            Row row1 = new Row(dc.getTableList().get(0).getColumnNames());
+            dc.getTableList().get(i).addRow(row1);
+        }
+        for (int i = 0; i < 10; i++) {
+            relay.handleMouseEvent(501, 155, 140, 1);
+        }
     }
 }
