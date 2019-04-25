@@ -18,7 +18,7 @@ public class CellText implements CellEditable<String>{
 
 	 
 	 public String getValue() {
-    	return value;
+    	return getText();
 	 }
 	 
 	 public void setValue(String Value) {

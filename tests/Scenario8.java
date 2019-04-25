@@ -167,7 +167,7 @@ bestuurder = relay.getController();;
         }
 
     }
-
+/*
     //ScrollbarTests
     @Test
     public void VerticalScrollbar() {
@@ -180,4 +180,5 @@ bestuurder = relay.getController();;
             relay.handleMouseEvent(501, 155, 140, 1);
         }
     }
+    */
 }

@@ -22,7 +22,7 @@ public class CellEmail implements CellEditable<String>{
 	  public void setValue(String value){
 	        if (isValidEmailAddress(value)){
 	            setEmail(value);
-	        }
+	        } 
 	  }
 
 	

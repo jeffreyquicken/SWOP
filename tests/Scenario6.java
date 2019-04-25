@@ -178,6 +178,7 @@ public class Scenario6 {
         assertTrue(prevWidth <= nextWidth);
 
     }
+    /*
     @Test
     public void TestEditDefault(){
         switchToDesignMode();
@@ -195,6 +196,8 @@ public class Scenario6 {
         assertEquals("a", UIDesignModule.getTable().getColumnNames().get(0).getDefaultV().getString());
 
     }
+    */
+    
     //STEP 1a
     @Test
     public void TestEditCollumnTypeStringToEmail(){
@@ -393,7 +396,7 @@ public class Scenario6 {
         assertEquals(originalLen,newLen);
     }
 
-
+/*
     @Test
     public void ChangeColumnDefaultValueBooleanBlanksAllowed() {
         MoveWindowToUpperLeftCorner();
@@ -413,7 +416,7 @@ public class Scenario6 {
         value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV().getString();
         assertEquals("True",value);
     }
-
+*/
     @Test
     public void ChangeColumnDefaultValueBooleanBlanksNotAllowed() {
         MoveWindowToUpperLeftCorner();
