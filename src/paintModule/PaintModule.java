@@ -238,7 +238,7 @@ public class PaintModule {
         int xCoord = this.getxCoStart();
         int sum = widthList.stream().mapToInt(Integer::intValue).sum();
         //Vertical offset
-        int offset = (int) ((windowHeight-titleHeight) * scrollbar.getOffsetpercentageVertical());
+        int offsetVertical = (int) ((windowHeight-titleHeight) * scrollbar.getOffsetpercentageVertical());
         //Horizontal offset
         int offsetHorizontal = (int) (sum * scrollbar.getOffsetpercentageHorizontal());
 
@@ -258,8 +258,21 @@ public class PaintModule {
 
 
         }
+        int yCoord = -1;
+        if(offsetVertical <=0 ){
+             yCoord = this.getyCoStart() + x*this.getCellHeight();
+        }
+        else if(offsetVertical > 0){
+            int i = 0;
+            while(offsetVertical >0){
+                i++;
+                offsetVertical -= cellHeight;
+            }
+             yCoord = this.getyCoStart() + (x - i)*this.getCellHeight();
+        }
 
-        int yCoord = this.getyCoStart() + x*this.getCellHeight();
+
+
         int[] result = {xCoord,yCoord};
         return result;
     }
