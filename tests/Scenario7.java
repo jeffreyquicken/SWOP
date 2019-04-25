@@ -23,7 +23,7 @@ public class Scenario7 {
         bestuurder.relayKeyEvent(400,17,'o'); // CTRL
         bestuurder.relayKeyEvent(400,10,'o'); //ENTER
         topWindow = bestuurder.getTopLevelWindow();
-        window = topWindow.getActiveSubWindow();
+
         //initialise tables
         Table table1 = new Table("Table 1");
         Table table2 = new Table("Table 2");
@@ -32,6 +32,9 @@ public class Scenario7 {
         dc.addTable(table2);
         dc.addTable(table3);
         //initialise rows + collumns
+
+        bestuurder.relayMouseEvent(502,130,60,2); // now in design mode
+        window = topWindow.getActiveSubWindow();
         for (int i = 0;i<3;i++) {
 
             Column col1 = new Column("Column1",new CellBoolean(true), "Boolean", true);
@@ -42,14 +45,6 @@ public class Scenario7 {
             dc.getTableList().get(i).addColumn(col2);
             dc.getTableList().get(i).addColumn(col3);
             dc.getTableList().get(i).addColumn(col4);
-
-            Row row1 = new Row(dc.getTableList().get(i).getColumnNames());
-            Row row2 = new Row(dc.getTableList().get(i).getColumnNames());
-            Row row3 = new Row(dc.getTableList().get(i).getColumnNames());
-
-            dc.getTableList().get(i).addRow(row1);
-            dc.getTableList().get(i).addRow(row2);
-            dc.getTableList().get(i).addRow(row3);
         }
     }
 
@@ -66,6 +61,7 @@ public class Scenario7 {
         assertEquals(UIDesignModule.class,window.getClass());
     }
 
+
     //Test to see if margin clicked + delete add removes row(=collumn)
     @Test
     public void TestDeleteColumn() {
@@ -77,14 +73,43 @@ public class Scenario7 {
 
         bestuurder.relayMouseEvent(501,236,70,1);
         bestuurder.relayKeyEvent(401, 127,'\u007F');
-
-
         int newColl = UIDesignModule.getTable().getColumnNames().size();
 
         assertEquals((previousColl -1), newColl);
 
         //  assertEquals(window.getTable().getTableRows(), 4);
 
+    }
+
+    //Step 1 & 2
+    @Test
+    public void LeftMarginClickedAndSelected() {
+        assertEquals("normal",window.getCurrMode());
+        bestuurder.relayMouseEvent(502,235,70,1); // Left margin clicked
+        assertEquals("delete",window.getCurrMode());
+    }
+
+
+    //Step 3
+    @Test
+    public void LeftMarginClickedAndDeletePressed() {
+        bestuurder.relayMouseEvent(502,235,70,1); // Left margin clicked
+        bestuurder.relayKeyEvent(500,127,'d'); //delete pressed
+        assertEquals("normal",window.getCurrMode());
+    }
+
+
+
+
+
+    //Step 4
+    @Test
+    public void LeftMarginClickedAndDeletePressedAndColumnDeleted() {
+        int originalSize = dc.getTableList().get(0).getColumnNames().size();
+        bestuurder.relayMouseEvent(502,235,70,1); // Left margin clicked
+        bestuurder.relayKeyEvent(500,127,'d'); //delete pressed
+        int newSize = dc.getTableList().get(0).getColumnNames().size();
+        assertEquals(originalSize-1,newSize);
     }
 
 

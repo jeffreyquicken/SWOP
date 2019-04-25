@@ -134,4 +134,7 @@ public abstract class UISuperClass {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    //methods for testing
+    public String getCurrMode() { return this.currMode;}
 }
