@@ -17,6 +17,9 @@ public class UIRowModule extends UISuperClass {
     private int xCoStart = 50;
     private int yCoStart = 50;
     private String currMode = "normal";
+
+
+
     private int[] activeCell;
     private Cell<?> tempText;
     private Boolean invalidInput = false;
@@ -24,6 +27,9 @@ public class UIRowModule extends UISuperClass {
     private int draggedX;
     private Table table;
 
+    public int[] getActiveCell() {
+        return activeCell;
+    }
 
     //Constructor that init/creates paintModule and an empty list with tablenames
     //Each UImodule has own paintmodule to save settings.settings (e.g. size, bg, ...)
