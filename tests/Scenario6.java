@@ -8,8 +8,7 @@ import UserInterfaceElements.Controller;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 //Use case: Edit Column Characteristic
 public class Scenario6 {
@@ -29,13 +28,10 @@ public class Scenario6 {
         bestuurder.relayKeyEvent(400,10,'o'); //ENTER
         topWindow = bestuurder.getTopLevelWindow();
 
-        //initialise tables
-        Table table1 = new Table("Table 1");
-        Table table2 = new Table("Table 2");
-        Table table3 = new Table("Table 3");
-        dc.addTable(table1);
-        dc.addTable(table2);
-        dc.addTable(table3);
+
+        dc.addTable();
+        dc.addTable();
+        dc.addTable();
         //initialise rows + collumns
 
         bestuurder.relayMouseEvent(502,130,60,2); // now in design mode
@@ -71,6 +67,7 @@ public class Scenario6 {
     //Test to see if double Clicks add new row(=collumn)
 
 
+    //STEP 1 and 2
     @Test
     public void TestEditCollumnName(){
         switchToDesignMode();
@@ -82,6 +79,8 @@ public class Scenario6 {
         String newName = UIDesignModule.getTable().getColumnNames().get(0).getName();;
         assertEquals(previousName + "a", newName );
     }
+    //STEP 1 and 2
+
     @Test
     public void TestEditCollumnNameExistingName(){
         switchToDesignMode();
@@ -96,6 +95,7 @@ public class Scenario6 {
         String newName = UIDesignModule.getTable().getColumnNames().get(0).getName();;
         assertNotEquals(previousName + "2", newName );
     }
+    //STEP 1 and 2
     @Test
     public void TestEditCollumnNameEmpty(){
         switchToDesignMode();
@@ -114,6 +114,7 @@ public class Scenario6 {
         String newName = UIDesignModule.getTable().getColumnNames().get(0).getName();;
         assertNotEquals("", newName );
     }
+    //STEP 1a
     @Test
     public void TestEditCollumnTypeStringToEmail(){
         switchToDesignMode();
@@ -130,6 +131,7 @@ public class Scenario6 {
         assertEquals("Email", newType );
     }
 
+    //STEP 1a
     @Test
     public void TestEditCollumnTypeEmailToBoolean(){
         switchToDesignMode();
@@ -146,6 +148,7 @@ public class Scenario6 {
 
         assertEquals("Boolean", newType );
     }
+    //STEP 1a
     @Test
     public void TestEditCollumnTypeBooleanToInteger(){
         switchToDesignMode();
@@ -163,6 +166,7 @@ public class Scenario6 {
 
         assertEquals("Integer", newType );
     }
+    //STEP 1a
     @Test
     public void TestEditCollumnTypeIntegerToString(){
         switchToDesignMode();
@@ -181,19 +185,50 @@ public class Scenario6 {
 
         assertEquals("String", newType );
     }
-
+    //STEP 1b
     @Test
-    public void TestEditCheckboxBooleanCheckedToUnchecked(){
+    public void TestEditBlanksAllowedTrueToFalse(){
         switchToDesignMode();
         UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
 
-        for (int i = 355; i <= 563; i++) {
+        for (int i = 355; i <= 596; i++) {
             bestuurder.relayMouseEvent(506,i,185,1);
         }
+        System.out.println(UIDesignModule.getTable().getColumnNames().get(0).getBlanksAllowed());
+        bestuurder.relayMouseEvent(502,547,57,1);
+        bestuurder.relayMouseEvent(500,547,57,1);
+        System.out.println(UIDesignModule.getTable().getColumnNames().get(0).getBlanksAllowed());
+       // assertFalse(UIDesignModule.getTable().getColumnNames().get(0).getBlanksAllowed());
+    }
+    //STEP 1b
+    @Test
+    public void TestEditBlanksAllowedFalseToTrue(){
+        switchToDesignMode();
+        UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
 
-
+        for (int i = 355; i <= 596; i++) {
+            bestuurder.relayMouseEvent(506,i,185,1);
+        }
+        System.out.println(UIDesignModule.getTable().getColumnNames().get(0).getBlanksAllowed());
+        bestuurder.relayMouseEvent(502,547,57,1);
+        bestuurder.relayMouseEvent(500,547,57,1);
+        bestuurder.relayMouseEvent(500,547,57,1);
+        System.out.println(UIDesignModule.getTable().getColumnNames().get(0).getBlanksAllowed());
+        // assertFalse(UIDesignModule.getTable().getColumnNames().get(0).getBlanksAllowed());
     }
 
+    //Step 1c
+    @Test
+    public void TestEditDefaultValue(){
+        switchToDesignMode();
+        UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
+
+
+        bestuurder.relayMouseEvent(502,547,57,1);
+        bestuurder.relayMouseEvent(500,547,57,1);
+        bestuurder.relayMouseEvent(500,547,57,1);
+
+    }
 
 
 

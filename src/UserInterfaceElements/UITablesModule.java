@@ -105,15 +105,8 @@ public class UITablesModule extends UISuperClass{
 	 * @param data
 	 */
 	private void handleDoubleClickUnderTable(dataController data) {
-		int numberOfTable = data.getTableList().size() + 1;
-		String newName = "Table" + numberOfTable;
-		int i = numberOfTable;
-		while (!textIsValid(newName, data, null)){
-		    i++;
-		    newName = "Table" + i;
-		}
-		Table newTable = new Table(newName);
-		data.addTable(newTable);
+
+		data.addTable();
 	}
 
 	/**
