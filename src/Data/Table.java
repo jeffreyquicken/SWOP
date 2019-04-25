@@ -40,6 +40,17 @@ public class Table {
         for(int i = 0; i< 4;i++ ){
             designSetting.getWidthList().add(designSetting.getDefaultWidth());
         }
+    }
+
+    public Table(String name, int b){
+        tableRows = new ArrayList<Row>();
+        columnNames = new ArrayList<Column>();
+        tableName = name;
+        rowSetting = new CellVisualisationSettings();
+        designSetting = new CellVisualisationSettings();
+        for(int i = 0; i< 4;i++ ){
+            designSetting.getWidthList().add(designSetting.getDefaultWidth());
+        }
 
         Column col1 = new Column("Column1",new CellBoolean(true), "Boolean", true);
         Column col2 = new Column("Column2",new CellBoolean(true), "Boolean", true);
@@ -57,6 +68,7 @@ public class Table {
         this.addRow(row1);
         this.addRow(row2);
         this.addRow(row3);
+
     }
 
     /**

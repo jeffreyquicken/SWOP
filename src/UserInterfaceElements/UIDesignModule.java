@@ -2,8 +2,9 @@ package UserInterfaceElements;
 
 import Data.*;
 import events.MouseEvent;
+import paintModule.DesignModePaintModule;
+import paintModule.PaintModule;
 import events.KeyEvent;
-import paintModule.paintModule;
 import settings.CellVisualisationSettings;
 
 import java.awt.*;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UIDesignModule extends UISuperClass {
-    private paintModule paintModule;
+    private DesignModePaintModule paintModule;
     private events.MouseEvent mouseEventHandler;
     //private int xCoStart = 50;
     //private int yCoStart = 50;
@@ -38,7 +39,7 @@ public class UIDesignModule extends UISuperClass {
      * Creates/init a paintmodule and a mouseventhandler
      */
     public UIDesignModule(Table inputTable) {
-        paintModule = new paintModule();
+        paintModule = new DesignModePaintModule();
         mouseEventHandler = new MouseEvent();
         invalidInput = false;
         table = inputTable;
@@ -59,10 +60,7 @@ public class UIDesignModule extends UISuperClass {
      * @param data datacontroller to make changes to the data
      * @return returns a list with the nextUIMode and the state of the UI
      */
-    /*
-     * TO REFACTOR
-     * too long
-     */
+    
     public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data, Integer[] dimensions) {
 
         CellVisualisationSettings setting;
@@ -77,178 +75,34 @@ public class UIDesignModule extends UISuperClass {
         int lowestY = (table.getColumnNames().size() * paintModule.getCellHeight()) + paintModule.getyCoStart();
 
         //check if leftmargin is clicked
-        if(clickedCell[1] == 0 && currMode != "edit" && mouseEventHandler.marginLeftClicked(xCo,yCo,paintModule.getxCoStart(),
-                paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(),
-                table.getColumnNames().size(), 1, paintModule.getCellLeftMargin(), widthList) != null) {
+        if(isClickedLeftMargin(xCo, yCo, widthList, clickedCell)) {
             currMode = "delete";
             activeCell = clickedCell;
         }
         //EVENT DOUBLE CLICKS UNDER TABLE
         else if(currMode!= "edit" && scrollbarClicked(xCo,yCo,dimensions)){
-
         }
         else if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, lowestY)) {
-            int numberOfCols = table.getColumnNames().size() + 1;
-            Cell newName = new CellText("Column" + numberOfCols);
-            int i = numberOfCols;
-            while (!textIsValid(newName, data, null)) {
-                i++;
-                newName.setValue("Column" + i);
-            }
-
-            Column newCol = new Column(((CellText) newName).getValue(), new CellText(""), "String", true);
-            table.addColumn(newCol);
+            handleDoubleClickUnderTable(data);
         }
         //EVENT CELL CLICKED (VALID INPUT)
         else if (!invalidInput && ID == 500 && currMode!="edit" && currMode != "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
 
-            //check which collumn
-            if (count != 2 && clickedCell[1] == 0) {
-                activeCell = clickedCell;
-                currMode = "edit";
-
-                tempText = new CellText(table.getColumnNames().get(activeCell[0]).getName());
-            }
-            
-            //DEFAULTVALUE CLICKED
-            else if(clickedCell[1] == 1){
-                activeCell = clickedCell;
-                currMode = "edit";
-
-                if (table.getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
-                    tempText = (CellEditable) table.getColumnNames().get(activeCell[0]).getDefaultV();
-                    if (tempText.getValue().equals(true)){
-                        tempText.setValue(false);
-                    }
-                }
-                if (table.getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
-                    tempText = table.getColumnNames().get(activeCell[0]).getDefaultV();
-                    if (tempText.getValue().equals(true)){
-                        tempText.setValue(false);
-                    }
-                    else if (tempText.getValue().equals(false)){
-                        if (table.getColumnNames().get(activeCell[0]).getBlanksAllowed()){
-                            tempText.setValue(null);
-                        }
-                        else{
-                            tempText.setValue(true);
-                        }
-                    }
-                    else{
-                        tempText.setValue(true);
-                    }
-                    saveText(data);
-                }
-                else {
-                    tempText = table.getColumnNames().get(activeCell[0]).getDefaultV();
-                }
-            }
-
-            //TYPE CLICKED
-            else if(clickedCell[1] == 2){
-
-                    String prevType = table.getColumnNames().get(clickedCell[0]).getType();
-                    Cell newType;
-                    if (prevType.equals("String")) {
-                        newType = new CellText("Email");
-                    } else if (prevType.equals("Email")) {
-                        newType = new CellText("Boolean");
-                    } else if (prevType.equals("Boolean")) {
-                        newType = new CellText("Integer");
-                    } else {
-                        newType = new CellText("String");
-                    }
-                    activeCell = clickedCell;
-                    invalidInput = !textIsValid(newType, data, null);
-                    if (invalidInput) {
-                        currMode = "edit";
-                    } else {
-                        currMode = "normal";
-                    }
-                table.getColumnNames().get(clickedCell[0]).setType(((CellText) newType).getValue());
-
-            }
-
-            //CHECKBOX BLANKS CLICKED
-            else if (clickedCell[1] == 3) {
-                Cell prevBool = new CellBoolean(table.getColumnNames().get(clickedCell[0]).getBlanksAllowed());
-                table.getColumnNames().get(clickedCell[0]).setBlanksAllowed(!(((CellBoolean) prevBool).getValue()));
-                Boolean val = ((CellBoolean) prevBool).getValue();
-                prevBool.setValue(!val);
-                tempText = prevBool;
-                //if default is false
-                if (((CellBoolean) prevBool).getValue()) {
-
-                    if (table.getColumnNames().get(clickedCell[0]).getDefaultV().equals("")) {
-                        invalidInput = true;
-                        activeCell = clickedCell;
-                    }
-                    else {
-
-                        List<Row> rowList = table.getTableRows();
-                        int index = clickedCell[0];
-                        for (Row row : rowList) {
-                            if (row.getColumnList().get(index).equals("")) {
-                                invalidInput = true;
-                                activeCell = clickedCell;
-                            }
-                        }
-                    }
-                }
-            }
+            handleCellClickedValidInput(count, data, clickedCell);
 
         }
         //Check if header is clicked
         //ADDED ELSE : 15 Mar 2019
-       else  if (mouseEventHandler.rightBorderClicked(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), widthList.size(), paintModule.getCellHeight(), widthList) != -1) {
-            System.out.println("RIGHT BORDER CLICKED");
-            currMode = "drag";
-            draggedColumn = mouseEventHandler.rightBorderClicked(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), widthList.size(), paintModule.getCellHeight(), widthList);
-            draggedX = xCo;
+       else  if (isClickedRightMargin(xCo, yCo, widthList)) {
+            startDrag(xCo, yCo, widthList);
             //Checks if user is dragging border
         } else if (currMode == "drag") {
-            if (ID == 506 ||  ID == 502) {
-                int delta = xCo - draggedX;
-                int previousWidth = widthList.get(draggedColumn);
-                int newWidth = previousWidth + delta;
-                int sum = widthList.stream().mapToInt(Integer::intValue).sum();
-                if ((newWidth >= paintModule.getMinCellWidth()) && (sum + delta < 590 - paintModule.getxCoStart())) {
-                    widthList.set(draggedColumn, newWidth);
-                    draggedX = xCo;
-                    recalculateScrollbar(data, dimensions);
-
-                }
-            } else {
-                currMode = "normal";
-            }
+            handleDrag(xCo, ID, data, dimensions, widthList);
         }
 
         //EVENT TYPE CLICKED (INVALID INPUT)
         else if (invalidInput && ID == 500 && clickedCell[1] == 2){
-            if (currMode == "edit"){
-                if (activeCell[1] == 2 && clickedCell[0] == activeCell[0]){
-                    Cell prevType = new CellText(table.getColumnNames().get(clickedCell[0]).getType());
-                    Cell newType;
-                    if (prevType.getValue().equals("String")){
-                        newType = new CellText("Email");
-                    }else if(prevType.getValue().equals("Email")){
-                        newType = new CellText("Boolean");
-                    }else if(prevType.getValue().equals("Boolean")){
-                        newType = new CellText("Integer");
-                    }else{
-                        newType = new CellText("String");
-                    }
-                    activeCell = clickedCell;
-                    invalidInput = !textIsValid(newType, data, null);
-                    if (invalidInput){
-                        currMode = "edit";
-                    }
-                    else{
-                        currMode = "normal";
-                    }
-                    table.getColumnNames().get(clickedCell[0]).setType(((CellText) newType).getValue());
-                }
-            }
+            handleTypeClickedInvalidInput(data, clickedCell);
         }
 
         //EVENT CHECKBOX CLICKED (INVALID INPUT)
@@ -267,6 +121,252 @@ public class UIDesignModule extends UISuperClass {
         result.add("");
         return result;
     }
+
+
+
+	/**
+	 * @param data
+	 * @param clickedCell
+	 */
+	private void handleTypeClickedInvalidInput(dataController data, int[] clickedCell) {
+		if (currMode == "edit"){
+		    if (activeCell[1] == 2 && clickedCell[0] == activeCell[0]){
+		        Cell prevType = new CellText(table.getColumnNames().get(clickedCell[0]).getType());
+		        Cell newType;
+		        if (prevType.getValue().equals("String")){
+		            newType = new CellText("Email");
+		        }else if(prevType.getValue().equals("Email")){
+		            newType = new CellText("Boolean");
+		        }else if(prevType.getValue().equals("Boolean")){
+		            newType = new CellText("Integer");
+		        }else{
+		            newType = new CellText("String");
+		        }
+		        activeCell = clickedCell;
+		        invalidInput = !textIsValid(newType, data, null);
+		        if (invalidInput){
+		            currMode = "edit";
+		        }
+		        else{
+		            currMode = "normal";
+		        }
+		        table.getColumnNames().get(clickedCell[0]).setType(((CellText) newType).getValue());
+		    }
+		}
+	}
+
+
+
+	/**
+	 * @param xCo
+	 * @param ID
+	 * @param data
+	 * @param dimensions
+	 * @param widthList
+	 */
+	private void handleDrag(int xCo, int ID, dataController data, Integer[] dimensions, List<Integer> widthList) {
+		if (ID == 506 ||  ID == 502) {
+		    int delta = xCo - draggedX;
+		    int previousWidth = widthList.get(draggedColumn);
+		    int newWidth = previousWidth + delta;
+		    int sum = widthList.stream().mapToInt(Integer::intValue).sum();
+		    if ((newWidth >= paintModule.getMinCellWidth()) && (sum + delta < 590 - paintModule.getxCoStart())) {
+		        widthList.set(draggedColumn, newWidth);
+		        draggedX = xCo;
+		        recalculateScrollbar(data, dimensions);
+
+		    }
+		} else {
+		    currMode = "normal";
+		}
+	}
+
+
+
+	/**
+	 * @param xCo
+	 * @param yCo
+	 * @param widthList
+	 */
+	private void startDrag(int xCo, int yCo, List<Integer> widthList) {
+		System.out.println("RIGHT BORDER CLICKED");
+		currMode = "drag";
+		draggedColumn = mouseEventHandler.rightBorderClicked(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), widthList.size(), paintModule.getCellHeight(), widthList);
+		draggedX = xCo;
+	}
+
+
+
+	/**
+	 * @param xCo
+	 * @param yCo
+	 * @param widthList
+	 * @return
+	 */
+	private boolean isClickedRightMargin(int xCo, int yCo, List<Integer> widthList) {
+		return mouseEventHandler.rightBorderClicked(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(), widthList.size(), paintModule.getCellHeight(), widthList) != -1;
+	}
+
+
+
+	/**
+	 * @param count
+	 * @param data
+	 * @param clickedCell
+	 */
+	
+	private void handleCellClickedValidInput(int count, dataController data, int[] clickedCell) {
+		//check which collumn
+		if (count != 2 && clickedCell[1] == 0) {
+		    activeCell = clickedCell;
+		    currMode = "edit";
+		    tempText = new CellText(table.getColumnNames().get(activeCell[0]).getName());
+		}
+		//DEFAULTVALUE CLICKED
+		else if(clickedCell[1] == 1){
+		    handleDefaultValueClickedValidInput(data, clickedCell);
+		}
+		//TYPE CLICKED
+		else if(clickedCell[1] == 2){
+		        handleTypeClickedValidInput(data, clickedCell);
+		}
+		//CHECKBOX BLANKS CLICKED
+		else if (clickedCell[1] == 3) {
+		    handleBlankCheckboxClicked(clickedCell);
+		}
+	}
+
+
+
+	/**
+	 * @param clickedCell
+	 */
+	private void handleBlankCheckboxClicked(int[] clickedCell) {
+		Cell prevBool = new CellBoolean(table.getColumnNames().get(clickedCell[0]).getBlanksAllowed());
+		table.getColumnNames().get(clickedCell[0]).setBlanksAllowed(!(((CellBoolean) prevBool).getValue()));
+		Boolean val = ((CellBoolean) prevBool).getValue();
+		prevBool.setValue(!val);
+		tempText = prevBool;
+		//if default is false
+		if (((CellBoolean) prevBool).getValue()) {
+
+		    if (table.getColumnNames().get(clickedCell[0]).getDefaultV().equals("")) {
+		        invalidInput = true;
+		        activeCell = clickedCell;
+		    }
+		    else {
+
+		        List<Row> rowList = table.getTableRows();
+		        int index = clickedCell[0];
+		        for (Row row : rowList) {
+		            if (row.getColumnList().get(index).equals("")) {
+		                invalidInput = true;
+		                activeCell = clickedCell;
+		            }
+		        }
+		    }
+		}
+	}
+
+
+
+	/**
+	 * @param data
+	 * @param clickedCell
+	 */
+	private void handleTypeClickedValidInput(dataController data, int[] clickedCell) {
+		String prevType = table.getColumnNames().get(clickedCell[0]).getType();
+		Cell newType;
+		if (prevType.equals("String")) {
+		    newType = new CellText("Email");
+		} else if (prevType.equals("Email")) {
+		    newType = new CellText("Boolean");
+		} else if (prevType.equals("Boolean")) {
+		    newType = new CellText("Integer");
+		} else {
+		    newType = new CellText("String");
+		}
+		activeCell = clickedCell;
+		invalidInput = !textIsValid(newType, data, null);
+		if (invalidInput) {
+		    currMode = "edit";
+		} else {
+		    currMode = "normal";
+		}
+   table.getColumnNames().get(clickedCell[0]).setType(((CellText) newType).getValue());
+	}
+
+
+
+	/**
+	 * @param data
+	 * @param clickedCell
+	 */
+	private void handleDefaultValueClickedValidInput(dataController data, int[] clickedCell) {
+		activeCell = clickedCell;
+		currMode = "edit";
+
+		if (table.getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
+		    tempText = (CellEditable) table.getColumnNames().get(activeCell[0]).getDefaultV();
+		    if (tempText.getValue().equals(true)){
+		        tempText.setValue(false);
+		    }
+		}
+		if (table.getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
+		    tempText = table.getColumnNames().get(activeCell[0]).getDefaultV();
+		    if (tempText.getValue().equals(true)){
+		        tempText.setValue(false);
+		    }
+		    else if (tempText.getValue().equals(false)){
+		        if (table.getColumnNames().get(activeCell[0]).getBlanksAllowed()){
+		            tempText.setValue(null);
+		        }
+		        else{
+		            tempText.setValue(true);
+		        }
+		    }
+		    else{
+		        tempText.setValue(true);
+		    }
+		    saveText(data);
+		}
+		else {
+		    tempText = table.getColumnNames().get(activeCell[0]).getDefaultV();
+		}
+	}
+
+
+
+	/**
+	 * @param data
+	 */
+	private void handleDoubleClickUnderTable(dataController data) {
+		int numberOfCols = table.getColumnNames().size() + 1;
+		Cell newName = new CellText("Column" + numberOfCols);
+		int i = numberOfCols;
+		while (!textIsValid(newName, data, null)) {
+		    i++;
+		    newName.setValue("Column" + i);
+		}
+
+		Column newCol = new Column(((CellText) newName).getValue(), new CellText(""), "String", true);
+		table.addColumn(newCol);
+	}
+
+
+
+	/**
+	 * @param xCo
+	 * @param yCo
+	 * @param widthList
+	 * @param clickedCell
+	 * @return
+	 */
+	private boolean isClickedLeftMargin(int xCo, int yCo, List<Integer> widthList, int[] clickedCell) {
+		return clickedCell[1] == 0 && currMode != "edit" && mouseEventHandler.marginLeftClicked(xCo,yCo,paintModule.getxCoStart(),
+                paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(),
+                table.getColumnNames().size(), 1, paintModule.getCellLeftMargin(), widthList) != null;
+	}
 
     /**
      * Checks if updated text is valid according to the type of it's cell
@@ -383,29 +483,14 @@ public class UIDesignModule extends UISuperClass {
      * @param g graphics object
      * @param data datacontroller
      */
-    /*
-     * TO REFACTOR
-     * too long
-     */
     @Override
     public void paint(Graphics g,  dataController data, Integer[] coords, Integer[] dimensions) {
-        recalculateScrollbar(data, dimensions);
-
         CellVisualisationSettings setting;
         List<Integer> widthList = table.getRowSetting().getWidthList();
-
-        paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
-        paintModule.paintBorderSubwindow( g, coords, dimensions, "Design Mode (" + table.getTableName() + ")", this.getActive());
-
-        recalculateScrollbar(data, dimensions);
-
-        paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], scrollbar.getPercentageHorizontal(), scrollbar);
-        paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, scrollbar.getPercentageVertical(), scrollbar);
-
-        //print tables in tabular view
         int sum = widthList.stream().mapToInt(Integer::intValue).sum();
-        paintModule.paintDesignView(g, table,coords[0] +paintModule.getMargin(), coords[1]+paintModule.getMargin(), table.getDesignSetting(), dimensions[0] - 48,dimensions[1]-58,scrollbar,dimensions[0],sum);
 
+        paintWindowBasics(g, data, coords, dimensions, sum);
+        
         //Check mode
         if (currMode == "edit") {
             if (activeCell[1] == 0){
@@ -420,15 +505,12 @@ public class UIDesignModule extends UISuperClass {
                     paintModule.paintCursor(g, coords1[0] + coords[0],
                             coords1[1] + coords[1], widthList.get(activeCell[1]),
                             paintModule.getCellHeight(), tempText.getValue().toString());
-
                 }
             }
             else if(activeCell[1] == 2){
             }
             else if (activeCell[1] == 3){
             }
-
-
         }
         //check if there are warnings
         if (invalidInput || currMode == "delete") {
@@ -442,6 +524,25 @@ public class UIDesignModule extends UISuperClass {
 
 
     }
+
+
+
+	/**
+	 * @param g
+	 * @param data
+	 * @param coords
+	 * @param dimensions
+	 * @param sum
+	 */
+	private void paintWindowBasics(Graphics g, dataController data, Integer[] coords, Integer[] dimensions, int sum) {
+		recalculateScrollbar(data, dimensions);
+        paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
+        paintModule.paintBorderSubwindow( g, coords, dimensions, "Design Mode (" + table.getTableName() + ")", this.getActive());
+        recalculateScrollbar(data, dimensions);
+        paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], scrollbar.getPercentageHorizontal(), scrollbar);
+        paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, scrollbar.getPercentageVertical(), scrollbar);
+        paintModule.paintDesignView(g, table,coords[0] +paintModule.getMargin(), coords[1]+paintModule.getMargin(), table.getDesignSetting(), dimensions[0] - 48,dimensions[1]-58,scrollbar,dimensions[0],sum);
+	}
 
     /*
      * (non-Javadoc)

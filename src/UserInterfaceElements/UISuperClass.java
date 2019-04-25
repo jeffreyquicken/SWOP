@@ -4,7 +4,7 @@ package UserInterfaceElements;
 import Data.dataController;
 import events.MouseEvent;
 import events.KeyEvent;
-import paintModule.paintModule;
+import paintModule.PaintModule;
 import settings.CellVisualisationSettings;
 import settings.scrollbar;
 
@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.List;
 
 public abstract class UISuperClass {
-    protected paintModule paintModule;
+    protected PaintModule paintModule;
     protected MouseEvent mouseEventHandler;
     protected String currMode = "normal";
     protected int[] activeCell;
@@ -26,19 +26,13 @@ public abstract class UISuperClass {
     protected double percentageHorizontal;
     protected double percentageVertical;
     protected scrollbar scrollbar;
-    /*
-     * TO REFACTOR
-     * too many responsibilities (/as shown by the amount of variables)?
-     * split up in more classes to to lighten workload and increase readablity
-     */
-
 
     /**
      * constructor for UISuperclass
      */
     public UISuperClass() {
         scrollbarActive = false;
-        paintModule = new paintModule();
+        paintModule = new PaintModule();
         mouseEventHandler = new MouseEvent();
         invalidInput = false;
         tempText = "Default_Text";

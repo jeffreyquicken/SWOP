@@ -23,14 +23,24 @@ public class dataController {
         setting.getWidthList().add(setting.getDefaultWidth());
         tableList = new ArrayList<>();
        // Temporary tables for demonstration purposes
-       // /**
-        Table table1 = new Table("Table 1");
-        Table table2 = new Table("Table 2");
-        Table table3 = new Table("Table 3");
+
+        Table table1 = new Table("Table 1", 1);
+        Table table2 = new Table("Table 2", 1);
+        Table table3 = new Table("Table 3", 1);
         tableList = new ArrayList<Table>();
         tableList.add(table1);
         tableList.add(table2);
-        tableList.add(table3);// */
+        tableList.add(table3);//
+    }
+
+    public dataController(int i) {
+        setting = new CellVisualisationSettings();
+        //setting.getWidthList().add(setting.getDefaultWidth());
+        setting.getWidthList().add(setting.getDefaultWidth());
+        tableList = new ArrayList<>();
+
+        tableList = new ArrayList<Table>();
+
     }
 
     public List<Table> getTableList(){
