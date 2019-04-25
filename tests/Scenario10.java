@@ -1,10 +1,7 @@
 
 import Data.*;
-import UserInterfaceElements.UIRowModule;
-import UserInterfaceElements.UISuperClass;
-import UserInterfaceElements.UITopLevelWindow;
+import UserInterfaceElements.*;
 import org.junit.jupiter.api.Test;
-import UserInterfaceElements.Controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -15,10 +12,12 @@ public class Scenario10 {
     private dataController dc;
     private UITopLevelWindow topWindow;
     private UISuperClass window;
+    private MyCanvasWindow relay;
 
     //get values for class variables
     public Scenario10() {
-        bestuurder = new Controller(1);
+        relay = new MyCanvasWindow("testing", 1);
+        bestuurder = relay.getController();;
         dc = bestuurder.getTableDataController();
         bestuurder.setCurrentMode("table");
         topWindow = bestuurder.getTopLevelWindow();

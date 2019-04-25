@@ -15,9 +15,11 @@ public class TABLR {
     private dataController dc;
     private UITopLevelWindow topWindow;
     private UISuperClass window;
+    private MyCanvasWindow relay;
 
     public TABLR() {
-        bestuurder = new Controller(1);
+        relay = new MyCanvasWindow("Testing", 1);
+        bestuurder =  relay.getController();
         dc = bestuurder.getTableDataController();
         bestuurder.setCurrentMode("table");
         topWindow = bestuurder.getTopLevelWindow();
@@ -55,7 +57,7 @@ public class TABLR {
     public void VerticalResize() {
         int originalHeight = topWindow.getSubwindowInfo().get(window).get(3);
         for (int i = 180; i <= 280; i++) {
-            bestuurder.relayMouseEvent(506,100,i,1);
+            relay.handleMouseEvent(506,100,i,1);
         }
         int newHeight = topWindow.getSubwindowInfo().get(window).get(3);
         assertEquals(originalHeight+100,newHeight);
@@ -66,7 +68,7 @@ public class TABLR {
     public void HorizontalResize() {
         int originalWidth = topWindow.getSubwindowInfo().get(window).get(2);
         for (int i = 180; i <= 280; i++) {
-            bestuurder.relayMouseEvent(506,i,100,1);
+            relay.handleMouseEvent(506,i,100,1);
         }
         int newWidth = topWindow.getSubwindowInfo().get(window).get(2);
         assertEquals(originalWidth+100,newWidth);
@@ -78,7 +80,7 @@ public class TABLR {
         int originalWidth = topWindow.getSubwindowInfo().get(window).get(2);
         int originalHeight = topWindow.getSubwindowInfo().get(window).get(3);
         for (int i = 180; i <= 280; i++) {
-            bestuurder.relayMouseEvent(506,i,i,1);
+            relay.handleMouseEvent(506,i,i,1);
         }
         int newWidth = topWindow.getSubwindowInfo().get(window).get(2);
         assertEquals(originalWidth+100,newWidth);
@@ -89,7 +91,7 @@ public class TABLR {
     @Test
     public void HorizontalAndVerticalResizeInward() {
         for (int i = 180; i >= 80; i--) {
-            bestuurder.relayMouseEvent(506,i,i,1);
+            relay.handleMouseEvent(506,i,i,1);
             Integer[] dim = topWindow.getDimensions(topWindow.getActiveSubWindow());
             System.out.println(dim[0]+", "+dim[1]);
         }
@@ -105,7 +107,7 @@ public class TABLR {
         int originalX = topWindow.getSubwindowInfo().get(window).get(0);
         int originalY = topWindow.getSubwindowInfo().get(window).get(1);
         for (int i = 20; i <= 121; i++) {
-            bestuurder.relayMouseEvent(506,i,i,1);
+            relay.handleMouseEvent(506,i,i,1);
         }
         int newX = topWindow.getSubwindowInfo().get(window).get(0);
         int newY = topWindow.getSubwindowInfo().get(window).get(1);
@@ -146,7 +148,7 @@ public class TABLR {
         UISuperClass originalWindow = topWindow.getActiveSubWindow();
         AddNewTablesWindow();
         //after adding a new window we will click on the inactive window (the original).
-        bestuurder.relayMouseEvent(501,100,100,1);
+        relay.handleMouseEvent(501,100,100,1);
         UISuperClass newWindow = topWindow.getActiveSubWindow();
         assertEquals(originalWindow,newWindow);
     }
@@ -157,7 +159,7 @@ public class TABLR {
         UISuperClass originalWindow = topWindow.getActiveSubWindow();
         AddNewTablesWindow();
         //after adding a new window we will click on the inactive window (the original).
-        bestuurder.relayMouseEvent(501,215,40,1);
+        relay.handleMouseEvent(501,215,40,1);
         UISuperClass newWindow = topWindow.getActiveSubWindow();
         assertEquals(originalWindow,newWindow);
     }
@@ -174,7 +176,7 @@ public class TABLR {
     @Test
     public void AddNewDesignWindowByDoubleClickingOnTableName() {
         EmptyTable1();
-        bestuurder.relayMouseEvent(502,130,60,2);
+        relay.handleMouseEvent(502,130,60,2);
         CloseFirstTable();
         UISuperClass window = topWindow.getSubWindows().get(0);
         assertEquals(UIDesignModule.class,window.getClass());
@@ -182,7 +184,7 @@ public class TABLR {
 
     @Test
     public void AddNewRowWindowByDoubleClickingOnTableName() {
-        bestuurder.relayMouseEvent(502,130,60,2);
+        relay.handleMouseEvent(502,130,60,2);
         CloseFirstTable();
         UISuperClass window = topWindow.getSubWindows().get(0);
         assertEquals(UIRowModule.class,window.getClass());
@@ -191,10 +193,10 @@ public class TABLR {
     @Test
     public void AddNewRowsWindowByPressingCtrlEnterWhileDesignWindowIsActive() {
         EmptyTable1();
-        bestuurder.relayMouseEvent(502,130,60,2);
+        relay.handleMouseEvent(502,130,60,2);
         CloseFirstTable();
-        bestuurder.relayKeyEvent(500,17,'c');//ctrl
-        bestuurder.relayKeyEvent(500,10,'c');//enter
+        relay.handleKeyEvent(500,17,'c');//ctrl
+        relay.handleKeyEvent(500,10,'c');//enter
         UISuperClass window = topWindow.getActiveSubWindow();
         assertEquals(UIRowModule.class,window.getClass());
 
@@ -202,21 +204,21 @@ public class TABLR {
 
     @Test
     public void AddNewDesignWindowByPressingCtrlEnterWhileRowsWindowIsActive() {
-        bestuurder.relayMouseEvent(502,130,60,2); // opens rows window
+        relay.handleMouseEvent(502,130,60,2); // opens rows window
         CloseFirstTable();//closes first window
-        bestuurder.relayKeyEvent(500,17,'c');//ctrl
-        bestuurder.relayKeyEvent(500,10,'c');//enter
+        relay.handleKeyEvent(500,17,'c');//ctrl
+        relay.handleKeyEvent(500,10,'c');//enter
         UISuperClass window = topWindow.getActiveSubWindow();
         assertEquals(UIDesignModule.class,window.getClass());
     }
 
     public void AddNewTablesWindow(){
-        bestuurder.relayKeyEvent(500,17,'c');
-        bestuurder.relayKeyEvent(500,84,'t');
+        relay.handleKeyEvent(500,17,'c');
+        relay.handleKeyEvent(500,84,'t');
     }
 
     public void CloseFirstTable() {
-        bestuurder.relayMouseEvent(501,35,30,1);
+        relay.handleMouseEvent(501,35,30,1);
     }
 
     public void EmptyTable1() {
@@ -250,7 +252,7 @@ public class TABLR {
     @Test
     public void ClickEventWithNoSubwindows() {
         CloseFirstTable();
-        bestuurder.relayMouseEvent(501,100,100,1);
+        relay.handleMouseEvent(501,100,100,1);
         assertEquals(null,topWindow.getActiveSubWindow());
     }
     @Test

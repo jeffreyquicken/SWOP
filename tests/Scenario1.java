@@ -1,10 +1,7 @@
 
 import Data.*;
-import UserInterfaceElements.UISuperClass;
-import UserInterfaceElements.UITablesModule;
-import UserInterfaceElements.UITopLevelWindow;
+import UserInterfaceElements.*;
 import org.junit.jupiter.api.Test;
-import UserInterfaceElements.Controller;
 
 import java.util.List;
 
@@ -18,10 +15,13 @@ public class Scenario1 {
     private dataController dc;
     private UITopLevelWindow topWindow;
     private UISuperClass window;
+    private MyCanvasWindow relay;
+
 
     //get values for class variables
     public Scenario1() {
-        bestuurder = new Controller(1);
+        relay = new MyCanvasWindow("testing", 1);
+        bestuurder = relay.getController();
         dc = bestuurder.getTableDataController();
         bestuurder.setCurrentMode("table");
         topWindow = bestuurder.getTopLevelWindow();
@@ -68,7 +68,7 @@ public class Scenario1 {
     public void doubleClickUnderTableAddsNewTable() {
        MoveWindowToUpperLeftCorner();
        int origineleLengte = dc.getTableList().size();
-       bestuurder.relayMouseEvent(501,110,100,2);
+       relay.handleMouseEvent(501,110,100,2);
        int eL = dc.getTableList().size() -1;
        assertEquals(origineleLengte, eL);
     }
@@ -77,7 +77,7 @@ public class Scenario1 {
     public void doubleClickUnderTableAddsNewTableWithCorrectName() {
         MoveWindowToUpperLeftCorner();
         int origineleLengte = dc.getTableList().size();
-        bestuurder.relayMouseEvent(501,110,100,2);
+        relay.handleMouseEvent(501,110,100,2);
         List<Table> tble = dc.getTableList();
         origineleLengte++;
         assertEquals("Table" +origineleLengte,tble.get(origineleLengte-1).getTableName());

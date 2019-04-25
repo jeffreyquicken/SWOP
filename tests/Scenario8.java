@@ -14,10 +14,12 @@ public class Scenario8 {
     private dataController dc;
     private UITopLevelWindow topWindow;
     private UISuperClass window;
+    private MyCanvasWindow relay;
 
     //get values for class variables
     public Scenario8() {
-        bestuurder = new Controller(1);
+        relay = new MyCanvasWindow("testing", 1);
+bestuurder = relay.getController();;
         dc = bestuurder.getTableDataController();
         bestuurder.setCurrentMode("table");
         topWindow = bestuurder.getTopLevelWindow();

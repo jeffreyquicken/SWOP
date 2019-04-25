@@ -1,10 +1,7 @@
 
 import Data.*;
-import UserInterfaceElements.UIDesignModule;
-import UserInterfaceElements.UISuperClass;
-import UserInterfaceElements.UITopLevelWindow;
+import UserInterfaceElements.*;
 import org.junit.jupiter.api.Test;
-import UserInterfaceElements.Controller;
 
 import java.util.List;
 
@@ -16,15 +13,17 @@ public class Scenario5 {
     private dataController dc;
     private UITopLevelWindow topWindow;
     private UISuperClass window;
+    private MyCanvasWindow relay;
 
     //get values for class variables
     public Scenario5() {
-        bestuurder = new Controller(1);
+        relay = new MyCanvasWindow("testing", 1);
+        bestuurder = relay.getController();
         dc = bestuurder.getTableDataController();
         bestuurder.setCurrentMode("table");
-        bestuurder.relayMouseEvent(500,115,60,2); // now in rowmode
-        bestuurder.relayKeyEvent(400,17,'o'); // CTRL
-        bestuurder.relayKeyEvent(400,10,'o'); //ENTER
+        relay.handleMouseEvent(500,115,60,2); // now in rowmode
+        relay.handleKeyEvent(400,17,'o'); // CTRL
+        relay.handleKeyEvent(400,10,'o'); //ENTER
         topWindow = bestuurder.getTopLevelWindow();
 
 
@@ -33,7 +32,7 @@ public class Scenario5 {
         dc.addTable();
         //initialise rows + collumns
 
-        bestuurder.relayMouseEvent(502,130,60,2); // now in design mode
+        relay.handleMouseEvent(502,130,60,2); // now in design mode
         window = topWindow.getActiveSubWindow();
         for (int i = 0;i<3;i++) {
 
@@ -55,11 +54,11 @@ public class Scenario5 {
     }
 
     public void switchToDesignMode(){
-        bestuurder.relayMouseEvent(502,122,64,2);
-        bestuurder.relayMouseEvent(502,212,105,1);
-        bestuurder.relayKeyEvent(401, 17,'\uFFFF');
-        bestuurder.relayKeyEvent(401, 10,'\n');
-        bestuurder.relayMouseEvent(502,213,131,1);
+        relay.handleMouseEvent(502,122,64,2);
+        relay.handleMouseEvent(502,212,105,1);
+        relay.handleKeyEvent(401, 17,'\uFFFF');
+        relay.handleKeyEvent(401, 10,'\n');
+        relay.handleMouseEvent(502,213,131,1);
     }
     @Test
     public void TestAddCollumn() {
@@ -69,7 +68,7 @@ public class Scenario5 {
         UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
         int previousColl = UIDesignModule.getTable().getColumnNames().size();
 
-        bestuurder.relayMouseEvent(501,217,148,2);
+        relay.handleMouseEvent(501,217,148,2);
 
         int newColl = UIDesignModule.getTable().getColumnNames().size();
 
@@ -95,7 +94,7 @@ public class Scenario5 {
     public void UserAddsNewColumn() {
         MoveWindowToUpperLeftCorner();
         int originalLen = dc.getTableList().get(0).getColumnNames().size();
-        bestuurder.relayMouseEvent(501,80,130,2); //doubleclick under table
+        relay.handleMouseEvent(501,80,130,2); //doubleclick under table
         int newLen = dc.getTableList().get(0).getColumnNames().size();
         assertEquals((originalLen+1),newLen);
     }
@@ -103,12 +102,12 @@ public class Scenario5 {
     @Test
     public void UserAddsNewColumnWithAlreadyTakenName() {
         MoveWindowToUpperLeftCorner();
-        bestuurder.relayMouseEvent(500,110,100,1); //click on name column4
-        bestuurder.relayKeyEvent(400,8,'o'); //Backspace
-        bestuurder.relayKeyEvent(400,53,'5');//press '5'
-        bestuurder.relayKeyEvent(400,10,'o');//Enter
+        relay.handleMouseEvent(500,110,100,1); //click on name column4
+        relay.handleKeyEvent(400,8,'o'); //Backspace
+        relay.handleKeyEvent(400,53,'5');//press '5'
+        relay.handleKeyEvent(400,10,'o');//Enter
         //new column should be namen column6 instead of column5 because that is now taken
-        bestuurder.relayMouseEvent(501,80,130,2); //doubleclick under table
+        relay.handleMouseEvent(501,80,130,2); //doubleclick under table
         String colName = dc.getSelectedTable().getColumnNames().get(dc.getSelectedTable().getColumnNames().size()-1).getName();
         assertEquals("Column6", colName);
     }
@@ -117,10 +116,10 @@ public class Scenario5 {
     public void UserAddsAColumnDeletesItAndAddsAnotherOne() {
         MoveWindowToUpperLeftCorner();
         int originalLen = dc.getTableList().get(0).getColumnNames().size();
-        bestuurder.relayMouseEvent(501,80,130,2); //doubleclick under table
-        bestuurder.relayMouseEvent(500,35,40,1); //Select left margin
-        bestuurder.relayKeyEvent(400,127,'o'); //Delete
-        bestuurder.relayMouseEvent(501,80,130,2); //doubleclick under table
+        relay.handleMouseEvent(501,80,130,2); //doubleclick under table
+        relay.handleMouseEvent(500,35,40,1); //Select left margin
+        relay.handleKeyEvent(400,127,'o'); //Delete
+        relay.handleMouseEvent(501,80,130,2); //doubleclick under table
         int newLen = dc.getTableList().get(0).getColumnNames().size();
         assertEquals((originalLen+1),newLen);
 

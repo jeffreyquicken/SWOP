@@ -1,5 +1,6 @@
 import Data.dataController;
 import UserInterfaceElements.Controller;
+import UserInterfaceElements.MyCanvasWindow;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,12 +9,14 @@ public class ModeChanges {
     //initialise class variables
     private Controller bestuurder;
     private dataController dc;
+    private MyCanvasWindow relay;
 
     public ModeChanges() {
-        bestuurder = new Controller();
+        relay = new MyCanvasWindow("testing", 1);
+        bestuurder = relay.getController();
         dc = bestuurder.getTableDataController();
         bestuurder.setCurrentMode("table");
-        bestuurder.relayMouseEvent(500,115,60,2); //Now in row mode
+        relay.handleMouseEvent(500,115,60,2); //Now in row mode
     }
 
     //Precondition
@@ -25,28 +28,28 @@ public class ModeChanges {
     @Test
     public void SwitchingBetweenRowsAndDesign() {
         String currMode = bestuurder.getCurrentMode();
-        bestuurder.relayKeyEvent(400,17,'o'); // CTRL
-        bestuurder.relayKeyEvent(400,10,'o'); //ENTER
+        relay.handleKeyEvent(400,17,'o'); // CTRL
+        relay.handleKeyEvent(400,10,'o'); //ENTER
         String newMode = bestuurder.getCurrentMode();
         assertEquals("design",newMode);
-        bestuurder.relayKeyEvent(400,17,'o'); // CTRL
-        bestuurder.relayKeyEvent(400,10,'o'); //ENTER
+        relay.handleKeyEvent(400,17,'o'); // CTRL
+        relay.handleKeyEvent(400,10,'o'); //ENTER
         assertEquals(currMode,bestuurder.getCurrentMode());
     }
 
     @Test
     public void SwitchingFromRowsToTableMode() {
-        bestuurder.relayKeyEvent(400,27,'o');//Escape
+        relay.handleKeyEvent(400,27,'o');//Escape
         assertEquals("table",bestuurder.getCurrentMode());
     }
     @Test
     public void SwitchingFromDesignToTableMode() {
-        bestuurder.relayKeyEvent(400,17,'o'); // CTRL
-        bestuurder.relayKeyEvent(400,10,'o'); //ENTER
+        relay.handleKeyEvent(400,17,'o'); // CTRL
+        relay.handleKeyEvent(400,10,'o'); //ENTER
         //We are now in designmode
         assertEquals("design",bestuurder.getCurrentMode());
 
-        bestuurder.relayKeyEvent(400,27,'o');//Escape
+        relay.handleKeyEvent(400,27,'o');//Escape
         assertEquals("table",bestuurder.getCurrentMode());
     }
 }

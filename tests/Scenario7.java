@@ -1,10 +1,7 @@
 
 import Data.*;
-import UserInterfaceElements.UIDesignModule;
-import UserInterfaceElements.UISuperClass;
-import UserInterfaceElements.UITopLevelWindow;
+import UserInterfaceElements.*;
 import org.junit.jupiter.api.Test;
-import UserInterfaceElements.Controller;
 
 import java.util.List;
 
@@ -16,10 +13,12 @@ public class Scenario7 {
     private dataController dc;
     private UITopLevelWindow topWindow;
     private UISuperClass window;
+    private MyCanvasWindow relay;
 
     //get values for class variables
     public Scenario7() {
-        bestuurder = new Controller(1);
+        relay = new MyCanvasWindow("testing", 1);
+bestuurder = relay.getController();;
         dc = bestuurder.getTableDataController();
         bestuurder.setCurrentMode("table");
         bestuurder.relayMouseEvent(500,115,60,2); // now in rowmode
