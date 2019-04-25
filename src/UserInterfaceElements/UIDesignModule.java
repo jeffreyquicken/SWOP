@@ -71,7 +71,7 @@ public class UIDesignModule extends UISuperClass {
         }
         List<Integer> widthList = setting.getWidthList();
         int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
-                paintModule.getCellHeight(), paintModule.getCellWidth(), table.getColumnNames().size(), 1, widthList);
+                paintModule.getCellHeight(), paintModule.getCellWidth(), table.getColumnNames().size(), 1, widthList, scrollbar);
         int lowestY = (table.getColumnNames().size() * paintModule.getCellHeight()) + paintModule.getyCoStart();
 
         //check if leftmargin is clicked

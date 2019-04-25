@@ -49,7 +49,7 @@ public class UITablesModule extends UISuperClass{
         CellVisualisationSettings setting = data.getSetting();
         List<Integer> widthList = setting.getWidthList();
        int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
-                paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1,widthList);
+                paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1,widthList, scrollbar);
 
         //int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, 10, 10,
               //  paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1,widthList);

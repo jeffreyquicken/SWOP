@@ -1,6 +1,8 @@
 package events;
 
 
+import settings.scrollbar;
+
 import java.util.List;
 
 public class MouseEvent {
@@ -46,8 +48,8 @@ public class MouseEvent {
                     return null;
                 }
             }
-
-            coordinates[1] = getRowByClickCoordinates(yCo, firstY, height, numberOfRows);
+            //TODO: vertical offset
+            coordinates[1] = getRowByClickCoordinates(yCo, firstY, height, numberOfRows, 1);
             return coordinates;
         }else{
           return null;
@@ -67,16 +69,27 @@ public class MouseEvent {
      * @param numberOfColumns   the number of columns. this determines the overall width of a table
      * @return CellID   CellID is an array containing which row and which column the user clicked in, determining the unique ID of a cell as followed: [Row, Column]
      */
-    public int[] getCellID(int xCo, int yCo, int firstX, int firstY, int height, int width, int numberOfRows, int numberOfColumns, List<Integer> widthList){
-    	int[] cellID = {-1,-1};
-    	if(this.isInTableWidth(xCo, firstX, widthList) && this.isInTableHeight(yCo, firstY, height, numberOfRows)){
+    public int[] getCellID(int xCo, int yCo, int firstX, int firstY, int height, int width, int numberOfRows, int numberOfColumns, List<Integer> widthList, scrollbar scrollbar){
+        int contentWidth = widthList.stream().mapToInt(Integer::intValue).sum();
+        int contentHeight = numberOfRows * height + 15;
+        //Vertical offset
+        int offsetVertical = (int) ((contentHeight) * scrollbar.getOffsetpercentageVertical());
+        //Horizontal offset
+        int offsetHorizontal = (int) (contentWidth * scrollbar.getOffsetpercentageHorizontal());
+
+        int[] cellID = {-1,-1};
+
+        if(this.isInTableWidth(xCo, firstX, widthList) && this.isInTableHeight(yCo, firstY, height, numberOfRows)){
+
     		//calculates the in which column the user clicked
-            cellID[1] = getColumnByClickCoordinates(xCo, firstX, widthList);
+            cellID[1] = getColumnByClickCoordinates(xCo, firstX, widthList, offsetHorizontal);
             //calculates in which row the user clicked
-            cellID[0] = getRowByClickCoordinates(yCo, firstY, height, numberOfRows);
+            cellID[0] = getRowByClickCoordinates(yCo, firstY, height, numberOfRows, offsetVertical);
         }
-    	System.out.println("CellID: " + cellID[0] + ", " + cellID[1]);
-    	return cellID;
+
+        System.out.println("CellID: " + cellID[0] + ", " + cellID[1]);
+
+        return cellID;
     }
 
     /**
@@ -85,14 +98,29 @@ public class MouseEvent {
      * @param firstX    First X coordinate of table
      * @return colID    returns the number of the column that corresponds to the X coordinate
      */
-    private int getColumnByClickCoordinates(int xCo, int firstX, List<Integer> widthList) {
+    private int getColumnByClickCoordinates(int xCo, int firstX, List<Integer> widthList, int offsetHorizontal) {
         int colID = -1;
+
         int tempWidth = firstX;
+
         for(int i = 0; i< widthList.size(); i++) {
-            if((xCo > (tempWidth) ) && (xCo < tempWidth + widthList.get(i))) {
-                colID = i;
+            if(offsetHorizontal == 0){
+                if((xCo > (tempWidth) ) && (xCo < tempWidth + widthList.get(i))) {
+                    colID = i;
+                }
+                tempWidth += widthList.get(i);
             }
-            tempWidth += widthList.get(i);
+            else if(offsetHorizontal >= widthList.get(i)){
+                offsetHorizontal -= widthList.get(i);
+            }else if(offsetHorizontal < widthList.get(i)){
+                if((xCo > (tempWidth) ) && (xCo < tempWidth + (widthList.get(i) - offsetHorizontal))) {
+                    colID = i;
+                }
+                tempWidth += widthList.get(i) - offsetHorizontal;
+                offsetHorizontal =0;
+            }
+
+
         }
         return colID;
     }
@@ -105,12 +133,23 @@ public class MouseEvent {
      * @param numberOfRows  Number of rows
      * @return rowID    returns the number of the row that corresponds to the Y coordinate
      */
-    private int getRowByClickCoordinates(int yCo, int firstY, int height, int numberOfRows) {
+    private int getRowByClickCoordinates(int yCo, int firstY, int height, int numberOfRows, int offsetVertical) {
         int rowID = -1;
+
         for (int i = 0; i < numberOfRows; i++) {
+            if(offsetVertical <=0 ){
             if ((yCo > (firstY + i * height)) && (yCo < (firstY + (i + 1) * height))) {
                 rowID = i;
             }
+            }
+            else if(offsetVertical >= height){
+                offsetVertical -= height;
+            }else if(offsetVertical < height){
+                offsetVertical -= height;
+               // offsetVertical =0;
+            }
+
+
         }
         return rowID;
     }
