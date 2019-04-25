@@ -1,8 +1,10 @@
 
 import Data.*;
 import UserInterfaceElements.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,7 +21,7 @@ public class Scenario9 {
     //get values for class variables
     public Scenario9() {
         relay = new MyCanvasWindow("testing", 1);
-bestuurder = relay.getController();;
+        bestuurder = relay.getController();;
         dc = bestuurder.getTableDataController();
         bestuurder.setCurrentMode("table");
         topWindow = bestuurder.getTopLevelWindow();
@@ -52,6 +54,7 @@ bestuurder = relay.getController();;
         bestuurder.relayMouseEvent(501,220,100,1); //Now in row mode
         window = topWindow.getActiveSubWindow();
     }
+
 
     //Precondition
     @Test
