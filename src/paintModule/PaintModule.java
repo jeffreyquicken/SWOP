@@ -46,14 +46,6 @@ public class PaintModule {
     private  int margin = 30;
 
 
-/*
- * 
- * TO REFACTOR
- * too many methods
- * assign more responsibilities to another class
- */
-
-
     public void paintCell(int newWidth, Graphics g, int startxCo, int startyCo, Cell rowItem){
         if(newWidth < 20){
             g.drawRect( startxCo,startyCo,newWidth, cellHeight);
@@ -84,10 +76,6 @@ public class PaintModule {
      * @param startxCo  start X coordinate where row should be painted
      * @param startyCo  start Y coordinate where row should be painted
      * @param setting settings object for this row view
-     */
-    /*
-     * TO REFACTOR
-     * too long
      */
     public void paintRow(Graphics g, List<Cell> rowList, int startxCo, int startyCo, CellVisualisationSettings setting, int width, int offsetHorizontal){
 

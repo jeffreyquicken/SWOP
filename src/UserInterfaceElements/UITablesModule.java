@@ -42,21 +42,11 @@ public class UITablesModule extends UISuperClass{
 
         //EVENT DOUBLE CLICKS UNDER TABLE
         if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getLowestY(30)) ) {
-            int numberOfTable = data.getTableList().size() + 1;
-            String newName = "Table" + numberOfTable;
-            int i = numberOfTable;
-            while (!textIsValid(newName, data, null)){
-                i++;
-                newName = "Table" + i;
-            }
-            Table newTable = new Table(newName);
-            data.addTable(newTable);
+            handleDoubleClickUnderTable(data);
         }
-
         //EVENT CLICK CELL
         //TODO: check if margin clicked
         CellVisualisationSettings setting = data.getSetting();
-
         List<Integer> widthList = setting.getWidthList();
        int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
                 paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1,widthList);
@@ -68,36 +58,19 @@ public class UITablesModule extends UISuperClass{
                 handleDragEvent(xCo, ID, data, dimensions, widthList);
         }
         //check if leftmargin is clicked
-        else if(currMode != "edit" && mouseEventHandler.marginLeftClicked(xCo,yCo,paintModule.getxCoStart(),
-                    paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(),
-                    data.getTableList().size(), 1, paintModule.getCellLeftMargin(), widthList) != null) {
+        else if(isClickedLeftMargin(xCo, yCo, data, widthList)) {
             currMode = "delete";
             activeCell = clickedCell;
         }
         else if(currMode!= "edit" && scrollbarClicked(xCo,yCo,dimensions)){
-
             }
         else if (!invalidInput  && currMode!= "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
-            if (count != 2){
-            activeCell = clickedCell;
-            currMode = "edit";
-            tempText = data.getTableList().get(activeCell[0]).getTableName();}
-            else{
-                data.setSelectedTable(data.getTableList().get(clickedCell[0]));
-                if((data.getSelectedTable().getColumnNames().size() == 0) && (ID == 502)){
-                    nextUImode = "design";
-                }else if (ID == 502) {
-                nextUImode = "row";}
-            }
+            if (count != 2){handleClickOnCell(data, clickedCell);}
+            else{nextUImode = handleDoubleClickOnCell(ID, data, nextUImode, clickedCell);}
             }
         //Check if header is clicked
-        else if(mouseEventHandler.rightBorderClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(),
-                    widthList.size(), paintModule.getCellHeight(), widthList) != -1){
-            System.out.println("RIGHT BORDER CLICKED");
-            currMode ="drag";
-            draggedColumn= mouseEventHandler.rightBorderClicked(xCo,yCo,paintModule.getxCoStart(),
-                    paintModule.getyCoStart(), widthList.size(), paintModule.getCellHeight(), widthList);
-            draggedX = xCo;
+        else if(isCellRightBorderClicked(xCo, yCo, widthList)){
+            handleCellRightBorderClicked(xCo, yCo, widthList);
         }
             //EVENT edit mode and clicked outside table
         else if (currMode == "edit"  && !invalidInput) {
@@ -114,6 +87,84 @@ public class UITablesModule extends UISuperClass{
         result.add(nextUImode);
         return result;
     }
+
+	/**
+	 * @param xCo
+	 * @param yCo
+	 * @param data
+	 * @param widthList
+	 * @return
+	 */
+	private boolean isClickedLeftMargin(int xCo, int yCo, dataController data, List<Integer> widthList) {
+		return currMode != "edit" && mouseEventHandler.marginLeftClicked(xCo,yCo,paintModule.getxCoStart(),
+                    paintModule.getyCoStart(), paintModule.getCellHeight(), paintModule.getCellWidth(),
+                    data.getTableList().size(), 1, paintModule.getCellLeftMargin(), widthList) != null;
+	}
+
+	/**
+	 * @param data
+	 */
+	private void handleDoubleClickUnderTable(dataController data) {
+		int numberOfTable = data.getTableList().size() + 1;
+		String newName = "Table" + numberOfTable;
+		int i = numberOfTable;
+		while (!textIsValid(newName, data, null)){
+		    i++;
+		    newName = "Table" + i;
+		}
+		Table newTable = new Table(newName);
+		data.addTable(newTable);
+	}
+
+	/**
+	 * @param xCo
+	 * @param yCo
+	 * @param widthList
+	 */
+	private void handleCellRightBorderClicked(int xCo, int yCo, List<Integer> widthList) {
+		System.out.println("RIGHT BORDER CLICKED");
+		currMode ="drag";
+		draggedColumn= mouseEventHandler.rightBorderClicked(xCo,yCo,paintModule.getxCoStart(),
+		        paintModule.getyCoStart(), widthList.size(), paintModule.getCellHeight(), widthList);
+		draggedX = xCo;
+	}
+
+	/**
+	 * @param ID
+	 * @param data
+	 * @param nextUImode
+	 * @param clickedCell
+	 * @return
+	 */
+	private String handleDoubleClickOnCell(int ID, dataController data, String nextUImode, int[] clickedCell) {
+		data.setSelectedTable(data.getTableList().get(clickedCell[0]));
+		if((data.getSelectedTable().getColumnNames().size() == 0) && (ID == 502)){
+		    nextUImode = "design";
+		}else if (ID == 502) {
+		nextUImode = "row";}
+		return nextUImode;
+	}
+
+	/**
+	 * @param data
+	 * @param clickedCell
+	 */
+	private void handleClickOnCell(dataController data, int[] clickedCell) {
+		activeCell = clickedCell;
+		currMode = "edit";
+		tempText = data.getTableList().get(activeCell[0]).getTableName();
+	}
+
+	/**
+	 * @param xCo
+	 * @param yCo
+	 * @param widthList
+	 * @return
+	 */
+	private boolean isCellRightBorderClicked(int xCo, int yCo, List<Integer> widthList) {
+		return mouseEventHandler.rightBorderClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(),
+                    widthList.size(), paintModule.getCellHeight(), widthList) != -1;
+	}
 
 	/**
 	 * @param xCo
@@ -153,26 +204,12 @@ public class UITablesModule extends UISuperClass{
      */
     @Override
     public void paint(Graphics g, dataController data, Integer[] coords, Integer[] dimensions) {
-        recalculateScrollbar(data, dimensions);
         CellVisualisationSettings setting;
         setting = data.getSetting();
-        paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
-        paintModule.paintBorderSubwindow( g, coords, dimensions, "Table Mode",this.getActive());
-
         List<Integer> widthList = setting.getWidthList();
 
-
-        recalculateScrollbar(data, dimensions);
-
-        paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], scrollbar.getPercentageHorizontal(), scrollbar);
-        paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, scrollbar.getPercentageVertical(), scrollbar);
-
-
-
-
-        //print tables in tabular view
-        paintModule.paintTableView(g, data.getTableList(), coords[0] + paintModule.getMargin(), coords[1] +paintModule.getMargin(), setting, dimensions[0] - 45, dimensions[1] - 58, scrollbar, dimensions[1]);
-
+        paintWindowBasics(g, data, coords, dimensions, setting);
+ 
         //Check mode
         if (currMode == "edit" ) {
             int[] coords1 = paintModule.getCellCoords(activeCell[0] , activeCell[1] , widthList);
@@ -180,7 +217,6 @@ public class UITablesModule extends UISuperClass{
                     coords1[1] + coords[1], widthList.get(activeCell[1]),
                     paintModule.getCellHeight(), tempText);
         }
-
         //check if there are warnings
         if (invalidInput || currMode == "delete") {
             int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList);
@@ -192,6 +228,29 @@ public class UITablesModule extends UISuperClass{
         }
         //paintModule.paintBorder(g,paintModule.getxCoStart(), paintModule.getyCoStart(), 80, 20, "red");
     }
+
+	/**
+	 * @param g
+	 * @param data
+	 * @param coords
+	 * @param dimensions
+	 * @param setting
+	 */
+    /*
+     * TO REFACTOR
+     * put in superclass and maybe use for all UImodules? - change specifics
+     */
+	private void paintWindowBasics(Graphics g, dataController data, Integer[] coords, Integer[] dimensions,
+			CellVisualisationSettings setting) {
+		recalculateScrollbar(data, dimensions);
+        paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
+        paintModule.paintBorderSubwindow( g, coords, dimensions, "Table Mode",this.getActive());
+        recalculateScrollbar(data, dimensions);
+        paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], scrollbar.getPercentageHorizontal(), scrollbar);
+        paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, scrollbar.getPercentageVertical(), scrollbar);
+        //print tables in tabular view
+        paintModule.paintTableView(g, data.getTableList(), coords[0] + paintModule.getMargin(), coords[1] +paintModule.getMargin(), setting, dimensions[0] - 45, dimensions[1] - 58, scrollbar, dimensions[1]);
+	}
 
 
     /**

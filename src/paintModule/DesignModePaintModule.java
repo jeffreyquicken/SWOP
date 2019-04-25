@@ -29,20 +29,17 @@ public class DesignModePaintModule extends PaintModule {
         int offset = (int) ((windowHeight-titleHeight) * scrollbar.getOffsetpercentageVertical());
         //Horizontal offset
         int offsetHorizontal = (int) (sum * scrollbar.getOffsetpercentageHorizontal());
-
         int headerXco = startXco;
         int headerYco = startYco - cellHeight/2;;
-
         List<Integer> widthList = setting.getWidthList();
-
         Font currentFont = g.getFont();
         Font newFont = currentFont.deriveFont(currentFont.getSize() * 0.9F);
-        g.setFont(newFont);
-
         String[] names = {"Name", "Default value", "Type", "Blank?"};
-
         int tempWidth = widthList.get(0);
         boolean cutCollumn = false;
+        
+        g.setFont(newFont);
+
         //NO headers if there is an offset
         if (offset <=0){
         //ITERATE over collumns names
