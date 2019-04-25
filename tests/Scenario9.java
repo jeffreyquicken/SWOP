@@ -84,7 +84,7 @@ public class Scenario9 {
         String newValue = dc.getTableList().get(0).getTableRows().get(0).getColumnList().get(2).getString();
         assertEquals((originalValue + "a"), newValue);
     }
-    
+
 
 
     //Old tests
