@@ -1,8 +1,12 @@
 
 import Data.*;
 import UserInterfaceElements.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,6 +19,18 @@ public class Scenario4 {
     private UITopLevelWindow topWindow;
     private UISuperClass window;
     private MyCanvasWindow relay;
+    private Graphics imageGraphics;
+
+    @BeforeEach
+    public void paint() {
+        BufferedImage image = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_RGB);
+        imageGraphics = image.getGraphics();
+    }
+
+    @AfterEach
+    public void paint2() {
+        bestuurder.paint(imageGraphics);
+    }
 
     //get values for class variables
     public Scenario4() {

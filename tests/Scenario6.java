@@ -1,8 +1,12 @@
 
 import Data.*;
 import UserInterfaceElements.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.rmi.server.UID;
 import java.util.List;
 
@@ -16,11 +20,23 @@ public class Scenario6 {
     private UITopLevelWindow topWindow;
     private UISuperClass window;
     private MyCanvasWindow relay;
+    private Graphics imageGraphics;
+
+    @BeforeEach
+    public void paint() {
+        BufferedImage image = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_RGB);
+        imageGraphics = image.getGraphics();
+    }
+
+    @AfterEach
+    public void paint2() {
+        bestuurder.paint(imageGraphics);
+    }
 
     //get values for class variables
     public Scenario6() {
         relay = new MyCanvasWindow("testing", 1);
-bestuurder = relay.getController();;
+        bestuurder = relay.getController();;
         dc = bestuurder.getTableDataController();
         bestuurder.setCurrentMode("table");
         relay.handleMouseEvent(500,115,60,2); // now in rowmode
@@ -428,6 +444,19 @@ bestuurder = relay.getController();;
         List<Integer> info = topWindow.getSubwindowInfo().get(window);
         info.set(2,500);
         info.set(3,150);
+    }
+
+    //Test resizingheader
+    @Test
+    public void ResizeHeader() {
+        MoveWindowToUpperLeftCorner();
+        ResizeWindow();
+        int originalWidth = dc.getTableList().get(0).getDesignSetting().getWidthList().get(0);
+        for (int i = 130;i <= 150;i++) {
+            relay.handleMouseEvent(506,i,25,1);
+        }
+        int newWidth = dc.getTableList().get(0).getDesignSetting().getWidthList().get(0);
+        assertEquals(originalWidth+20,newWidth);
     }
 
 
