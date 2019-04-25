@@ -14,11 +14,39 @@ import java.util.List;
 public class UIDesignModule extends UISuperClass {
     private DesignModePaintModule paintModule;
     private events.MouseEvent mouseEventHandler;
+
+    @Override
+    public String getCurrMode() {
+        return currMode;
+    }
+
+    public void setCurrMode(String currMode) {
+        this.currMode = currMode;
+    }
+
     //private int xCoStart = 50;
     //private int yCoStart = 50;
     private String currMode = "normal";
+
+    public int[] getActiveCell() {
+        return activeCell;
+    }
+
+    public void setActiveCell(int[] activeCell) {
+        this.activeCell = activeCell;
+    }
+
     private int[] activeCell = {-1,-1};
     private Cell tempText;
+
+    public Boolean getInvalidInput() {
+        return invalidInput;
+    }
+
+    public void setInvalidInput(Boolean invalidInput) {
+        this.invalidInput = invalidInput;
+    }
+
     private Boolean invalidInput;
     private int draggedColumn;
     private int draggedX;
@@ -128,7 +156,7 @@ public class UIDesignModule extends UISuperClass {
 	 * @param data
 	 * @param clickedCell
 	 */
-	private void handleTypeClickedInvalidInput(dataController data, int[] clickedCell) {
+	public void handleTypeClickedInvalidInput(dataController data, int[] clickedCell) {
 		if (currMode == "edit"){
 		    if (activeCell[1] == 2 && clickedCell[0] == activeCell[0]){
 		        Cell prevType = new CellText(table.getColumnNames().get(clickedCell[0]).getType());
