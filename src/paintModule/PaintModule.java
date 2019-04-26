@@ -53,11 +53,14 @@ public class PaintModule {
         else if (rowItem == null || rowItem.getValue() == null){
             checkBoxEmpty(g, startxCo, startyCo, newWidth);
 
-        } else if (rowItem.getValue().equals(false)) {
+        } else if (rowItem.getString().equals("false")|| rowItem.getValue().equals(false)) {
             this.checkBoxFalse(g,startxCo,startyCo, newWidth);
         }
-        else if (rowItem.getValue().equals(true)){
+        else if (rowItem.getString().equals("true") || rowItem.getValue().equals(true)){
             this.checkBoxTrue(g,startxCo,startyCo,newWidth);
+        }
+        else if(rowItem.getString().equals("greyed")){
+            this.checkBoxEmpty(g, startxCo,startyCo,newWidth);
         }
         else {
             String name = rowItem.getValue().toString();
