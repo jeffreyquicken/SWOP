@@ -158,7 +158,7 @@ public class UIDesignModule extends UISuperClass {
 	 * @param clickedCell
 	 */
 	public void handleTypeClickedInvalidInput(dataController data, int[] clickedCell) {
-		if (currMode == "edit"){
+		if (currMode == "edit" || currMode=="invalid"){
 		    if (activeCell[1] == 2 && clickedCell[0] == activeCell[0]){
 		        Cell prevType = new CellText(table.getColumnNames().get(clickedCell[0]).getType());
 		        Cell newType;
@@ -418,6 +418,45 @@ public class UIDesignModule extends UISuperClass {
 	}
 
 
+	private boolean defaultValueIsConsistent(String value , Boolean blanks, Cell text){
+                //every string is accepted
+                if (text.getString().equals("String")){
+                    return true;
+                }
+                //only allow false or true
+                else if (text.getString().equals("Boolean")){
+                    if (value.equals("true") || value.equals("false")){
+                        //return true;
+                    }else{
+                        if(blanks && value.length() == 0){
+
+                        }else{
+                            return false;}}
+                }
+                //only allow integer
+                else if (text.getString().equals("Integer")){
+
+                    try{
+                        Integer.parseInt(value);
+                        //return true;
+                    }
+                    catch (Exception e){
+                        if(blanks && value.length() ==0){
+
+                        }else{
+                            return false;}
+                    }
+                }
+                //only allow @ in name
+                else if (text.getString().equals("Email")){
+                    if (!value.contains("@")){
+                        if(blanks && value.length() ==0){
+                        }else{ return false;}
+                        // return true;
+                    }
+                }
+            return true;
+    }
 
     /**
      * Checks if updated text is valid according to the type of it's cell
@@ -483,41 +522,49 @@ public class UIDesignModule extends UISuperClass {
         }
         else if (activeCell[1] == 2){
             String value = table.getColumnNames().get(activeCell[0]).getDefaultV().getString();
+            Boolean blanks = table.getColumnNames().get(activeCell[0]).getBlanksAllowed();
+
+            if (!defaultValueIsConsistent(value, blanks, text)){
+                return false;
+            }
 
             for (Row row : table.getTableRows()){
                 String colValue = row.getColumnList().get(activeCell[0]).getString();
-
-                if (text.getValue().equals("String")){
+                 //every string is accepted
+                if (text.getString().equals("String")){
                     return true;
                 }
-                else if(table.getColumnNames().get(activeCell[0]).getBlanksAllowed()){
-
-                    if ((text).getString().length() == 0) {
-
-
-                    }
-                }
-                else if (text.getValue().equals("Boolean")){
-                    if ((colValue.equals("true") || colValue.equals("false")) && (value.equals("true") || value.equals("false"))){
+                //only allow false or true
+                else if (text.getString().equals("Boolean")){
+                    if ((colValue.equals("true") || colValue.equals("false"))){
                         //return true;
                     }else{
-                    return false;}
+                        if(blanks && colValue.length() == 0){
+
+                        }else{
+                    return false;}}
                 }
-                else if (text.getValue().equals("Integer")){
+                //only allow integer
+                else if (text.getString().equals("Integer")){
+
                     try{
                         Integer.parseInt(colValue);
-                        Integer.parseInt(value);
                         //return true;
                     }
                     catch (Exception e){
-                        return false;
+                        if(blanks && colValue.length() ==0){
+
+                        }else{
+                        return false;}
                     }
                 }
-                else if (text.getValue().equals("Email")){
-                    if (colValue.contains("@") && value.contains("@")){
+                //only allow @ in name
+                else if (text.getString().equals("Email")){
+                    if (!colValue.contains("@")){
+                        if(blanks && colValue.length() ==0){
+                        }else{ return false;}
                        // return true;
                     }
-                    return false;
                 }
             }
 
@@ -565,7 +612,8 @@ public class UIDesignModule extends UISuperClass {
     @Override
     public void paint(Graphics g,  dataController data, Integer[] coords, Integer[] dimensions) {
         CellVisualisationSettings setting;
-        List<Integer> widthList = table.getRowSetting().getWidthList();
+        List<Integer> widthList = table.getDesignSetting().getWidthList();
+
         int sum = widthList.stream().mapToInt(Integer::intValue).sum();
 
         paintWindowBasics(g, data, coords, dimensions, sum);
