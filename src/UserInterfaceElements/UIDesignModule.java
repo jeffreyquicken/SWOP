@@ -300,6 +300,7 @@ public class UIDesignModule extends UISuperClass {
 		    }
 		}
 	}
+	/**
 
     private void fhandleBlankCheckboxClicked(int[] clickedCell) {
         Cell prevBool = new CellBoolean(table.getColumnNames().get(clickedCell[0]).getBlanksAllowed());
@@ -331,6 +332,7 @@ public class UIDesignModule extends UISuperClass {
             }
         }
     }
+     */
 
 
 	/**
