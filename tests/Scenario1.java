@@ -4,6 +4,7 @@ import UserInterfaceElements.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import settings.CellVisualisationSettings;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -122,14 +123,55 @@ public class Scenario1 {
     public void VerticalScrollbar() {
         MoveWindowToUpperLeftCorner();
         //we will first add a lot of tables so that there will be vertical scrollbar
+        ResizeVerticalLong();
         for (int i = 0; i < 10; i++) {
-            dc.addTable();
+            addTable();
         }
+        assertEquals(13,dc.getTableList().size());
+        ResizeVerticalShort();
         for (int i = 0; i < 10; i++) {
             relay.handleMouseEvent(501, 155, 140, 1);
         }
     }
 
+    @Test
+    public void TestScrollBarFunctions(){
+        for (int i = 0;i<10;i++) {
+            window.getScrollbar().addOffsetPercentageHorizontal();
+            window.getScrollbar().addOffsetPercentageVertical();
+        }
+        for (int i = 0;i<11;i++) {
+            window.getScrollbar().substractOffsetPercentageHorizontal();
+            window.getScrollbar().substractOffsetPercentageVertical();
+        }
+        assertEquals(0,window.getScrollbar().getOffsetpercentageHorizontal());
+        assertEquals(0,window.getScrollbar().getOffsetpercentageVertical());
+    }
 
+    @Test
+    public void TestSettingsGettersAndSetters() {
+        CellVisualisationSettings set = dc.getSetting();
+        set.setHeight(10);
+        assertEquals(10,set.getHeight());
+        set.setWidth(20);
+        assertEquals(20,set.getWidth());
+
+    }
+
+    public void addTable() {
+        relay.handleMouseEvent(501,110,450,2);
+    }
+
+    public void ResizeVerticalLong() {
+        for(int i = 150;i<=500;i++) {
+            relay.handleMouseEvent(506,80,i,1);
+        }
+    }
+
+    public void ResizeVerticalShort() {
+        for(int i = 501;i>=150;i--) {
+            relay.handleMouseEvent(506,80,i,1);
+        }
+    }
 
 }

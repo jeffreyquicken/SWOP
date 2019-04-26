@@ -81,6 +81,9 @@ public abstract class UISuperClass {
     protected void paint(Graphics g, dataController data, Integer[] coords, Integer[] dimensions){ }
 
     protected Boolean scrollbarClicked(int xco, int yco, Integer[] dimensions){
+        if(scrollbar.getActiveVertical()){
+            System.out.println("yes");
+        }
         if(scrollbar.getActiveVertical() && xco > (dimensions[0] - 15) && xco < dimensions[0]){
 
             if(scrollbar.getPercentageVertical() * dimensions[1] -15 < yco){
@@ -137,4 +140,8 @@ public abstract class UISuperClass {
 
     //methods for testing
     public String getCurrMode() { return this.currMode;}
+
+    public scrollbar getScrollbar() {
+        return this.scrollbar;
+    }
 }
