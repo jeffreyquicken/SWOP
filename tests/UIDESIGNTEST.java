@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -94,7 +95,6 @@ public class UIDESIGNTEST {
         @Test
         public void TestDoubleClicks() {
             switchToDesignMode();
-
             UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
             int previousColl = UIDesignModule.getTable().getColumnNames().size();
 
@@ -111,25 +111,24 @@ public class UIDESIGNTEST {
     @Test
     public void TestDeleteRow() {
         switchToDesignMode();
-
+        window = topWindow.getActiveSubWindow();
+        assertEquals(UIDesignModule.class,window.getClass());
         UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
-
         int previousColl = UIDesignModule.getTable().getColumnNames().size();
-
         for (int i = 355; i <= 563; i++) {
             bestuurder.relayMouseEvent(506,i,185,1);
         }
-
-        bestuurder.relayMouseEvent(501,437,111,1);
+        MoveWindowToUpperLeftCorner();
+        bestuurder.relayMouseEvent(501,35,40,1);
         bestuurder.relayKeyEvent(401, 127,'\u007F');
-
-
         int newColl = UIDesignModule.getTable().getColumnNames().size();
-
         assertEquals((previousColl -1), newColl);
+    }
 
-        //  assertEquals(window.getTable().getTableRows(), 4);
-
+    public void MoveWindowToUpperLeftCorner() {
+        List<Integer> info = topWindow.getSubwindowInfo().get(window);
+        info.set(0,0);
+        info.set(1,0);
     }
 
 

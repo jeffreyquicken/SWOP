@@ -781,6 +781,8 @@ public class UIDesignModule extends UISuperClass {
             Column col = table.getColumnNames().get(activeCell[0]);
             table.deleteColumn(col);
             currMode = "normal";
+        } else if(eventHandler.isEscape(keyCode)) {
+            currMode = "normal";
         }
         List<String> result = new ArrayList<>();
         result.add(currMode);
