@@ -390,7 +390,10 @@ public class Scenario6 {
         MoveWindowToUpperLeftCorner();
         ResizeWindow();
         int originalLen = dc.getTableList().get(0).getColumnNames().size();
+        //assertEquals("false",dc.getTableList().get(0).getColumnNames().get(3).getBlanksAllowed().toString());
+        //bestuurder.relayMouseEvent(500,375,40,1); //Blanks clicked, now not allowed for col1
         bestuurder.relayMouseEvent(500,375,80,1); //Blank checkbox of col3 clicked
+        assertEquals("false",dc.getTableList().get(0).getColumnNames().get(2).getBlanksAllowed().toString());
         bestuurder.relayMouseEvent(501,80,130,2); //doubleclick under table
         int newLen = dc.getTableList().get(0).getColumnNames().size();
         assertEquals(originalLen,newLen);
@@ -422,6 +425,7 @@ public class Scenario6 {
         MoveWindowToUpperLeftCorner();
         ResizeWindow();
         bestuurder.relayMouseEvent(500,375,40,1); //Blanks clicked, now not allowed for col1
+        assertEquals("false",dc.getTableList().get(0).getColumnNames().get(0).getBlanksAllowed().toString());
         String value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV().getString();
         assertEquals("True",value);
 

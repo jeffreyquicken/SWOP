@@ -276,13 +276,12 @@ public class UIDesignModule extends UISuperClass {
 
 		table.getColumnNames().get(clickedCell[0]).setBlanksAllowed(!(((CellBoolean) prevBool).getValue()));
 
-		Boolean val = ((CellBoolean) prevBool).getValue();
-
-		prevBool.setValue(val);
+		prevBool.setValue(table.getColumnNames().get(clickedCell[0]).getBlanksAllowed());
 		tempText = prevBool;
 
+
 		//if default is false
-		if (((CellBoolean) prevBool).getValue()) {
+		if (!((CellBoolean) prevBool).getValue()) {
 
 		    if (table.getColumnNames().get(clickedCell[0]).getDefaultV().getString().equals("")) {
 		        invalidInput = true;
@@ -302,6 +301,36 @@ public class UIDesignModule extends UISuperClass {
 		}
 	}
 
+    private void fhandleBlankCheckboxClicked(int[] clickedCell) {
+        Cell prevBool = new CellBoolean(table.getColumnNames().get(clickedCell[0]).getBlanksAllowed());
+
+        table.getColumnNames().get(clickedCell[0]).setBlanksAllowed(!(((CellBoolean) prevBool).getValue()));
+
+        Boolean val = ((CellBoolean) prevBool).getValue();
+
+        prevBool.setValue(val);
+        tempText = prevBool;
+
+        //if default is false
+        if (((CellBoolean) prevBool).getValue()) {
+
+            if (table.getColumnNames().get(clickedCell[0]).getDefaultV().getString().equals("")) {
+                invalidInput = true;
+                activeCell = clickedCell;
+            }
+            else {
+
+                List<Row> rowList = table.getTableRows();
+                int index = clickedCell[0];
+                for (Row row : rowList) {
+                    if (row.getColumnList().get(index).getString().equals("")) {
+                        invalidInput = true;
+                        activeCell = clickedCell;
+                    }
+                }
+            }
+        }
+    }
 
 
 	/**
@@ -340,14 +369,18 @@ public class UIDesignModule extends UISuperClass {
 	private void handleDefaultValueClickedValidInput(dataController data, int[] clickedCell) {
 		activeCell = clickedCell;
 		currMode = "edit";
-
-		if (table.getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
+        /**
+		if (table.getColumnNames().get(activeCell[0]).getType().equals("Boolean") && !table.getColumnNames().get(activeCell[0]).getBlanksAllowed()){
+		    currMode = "normal";
 		    tempText = table.getColumnNames().get(activeCell[0]).getDefaultV();
 		    if (tempText.getValue().equals(true)){
 		        tempText.setValue(false);
-		    }
-		}
-		if (table.getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
+		    } else {
+		        tempText.setValue(true);
+            }
+		} else */
+        if (table.getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
+            currMode = "normal";
 		    tempText = table.getColumnNames().get(activeCell[0]).getDefaultV();
 		    if (tempText.getValue().equals(true)){
 		        tempText.setValue(false);
