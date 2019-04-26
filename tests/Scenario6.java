@@ -399,7 +399,7 @@ public class Scenario6 {
         assertEquals(originalLen,newLen);
     }
 
-/*
+
     @Test
     public void ChangeColumnDefaultValueBooleanBlanksAllowed() {
         MoveWindowToUpperLeftCorner();
@@ -419,7 +419,7 @@ public class Scenario6 {
         value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV().getString();
         assertEquals("True",value);
     }
-*/
+
     @Test
     public void ChangeColumnDefaultValueBooleanBlanksNotAllowed() {
         MoveWindowToUpperLeftCorner();
@@ -434,8 +434,7 @@ public class Scenario6 {
         assertEquals("False",value);
 
         bestuurder.relayMouseEvent(500,175,40,1);
-        value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV().getString();
-        assertEquals("True",value);
+        assertEquals(true,dc.getSelectedTable().getColumnNames().get(0).getDefaultV().getValue());
     }
 
     @Test
@@ -457,6 +456,59 @@ public class Scenario6 {
         bestuurder.relayMouseEvent(501,110,100,2); //double click under column
         int newLen = dc.getTableList().get(0).getColumnNames().size();
         assertEquals(originalLen,newLen);
+    }
+
+    @Test
+    public  void EmptyDefaultValueBlanksAllowed() {
+        MoveWindowToUpperLeftCorner();
+        ResizeWindow();
+        bestuurder.relayMouseEvent(500,175,80,1);
+        bestuurder.relayKeyEvent(500,66,'b');
+        bestuurder.relayKeyEvent(500,10,'o');
+        assertEquals("b",dc.getTableList().get(0).getColumnNames().get(2).getDefaultV().getString());
+        bestuurder.relayMouseEvent(500,175,80,1);
+        bestuurder.relayKeyEvent(500,8,'b');
+        bestuurder.relayKeyEvent(500,10,'o');
+        assertEquals("",dc.getTableList().get(0).getColumnNames().get(2).getDefaultV().getString());
+    }
+
+    @Test
+    public void ChangeTypeToBoolean() {
+        Row rij = new Row(dc.getTableList().get(0).getColumnNames());
+        dc.getTableList().get(0).addRow(rij);
+        dc.getTableList().get(0).addRow(rij);
+        CellText txt = new CellText("true");
+        dc.getTableList().get(0).getTableRows().get(0).getColumnList().get(2).setValue("true");
+        MoveWindowToUpperLeftCorner();
+        ResizeWindow();
+        bestuurder.relayMouseEvent(500,275,80,1);
+        bestuurder.relayMouseEvent(500,275,80,1);
+        assertEquals("Email",dc.getTableList().get(0).getColumnNames().get(2).getType());
+        SetBlanksAllowedCol3();
+        bestuurder.relayMouseEvent(500,275,80,1);
+        assertEquals("Boolean",dc.getTableList().get(0).getColumnNames().get(2).getType());
+        bestuurder.relayMouseEvent(500,275,80,1);
+        assertEquals("Integer",dc.getTableList().get(0).getColumnNames().get(2).getType());
+        bestuurder.relayMouseEvent(500,275,80,1);
+        assertEquals("String",dc.getTableList().get(0).getColumnNames().get(2).getType());
+        dc.getTableList().get(0).getTableRows().get(1).getColumnList().get(2).setValue("true");
+        bestuurder.relayMouseEvent(500,275,80,1);
+        bestuurder.relayMouseEvent(500,275,80,1);
+        assertEquals("Email",dc.getTableList().get(0).getColumnNames().get(2).getType());
+        SetBlanksAllowedCol3();
+        bestuurder.relayMouseEvent(500,275,80,1);
+        assertEquals("Boolean",dc.getTableList().get(0).getColumnNames().get(2).getType());
+    }
+    
+
+
+
+
+
+
+
+    public void SetBlanksAllowedCol3() {
+        dc.getTableList().get(0).getColumnNames().get(2).setBlanksAllowed(false);
     }
 
 

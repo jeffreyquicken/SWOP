@@ -111,7 +111,7 @@ public class UIDesignModule extends UISuperClass {
         //EVENT DOUBLE CLICKS UNDER TABLE
         else if(currMode!= "edit" && scrollbarClicked(xCo,yCo,dimensions)){
         }
-        else if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, lowestY)) {
+        else if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, lowestY) && !invalidInput) {
             handleDoubleClickUnderTable(data);
         }
         //EVENT CELL CLICKED (VALID INPUT)
