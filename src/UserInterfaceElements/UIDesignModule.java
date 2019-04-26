@@ -14,6 +14,7 @@ import java.util.List;
 public class UIDesignModule extends UISuperClass {
     private DesignModePaintModule paintModule;
     private events.MouseEvent mouseEventHandler;
+    private String prevColName = "";
 
     @Override
     public String getCurrMode() {
@@ -249,6 +250,7 @@ public class UIDesignModule extends UISuperClass {
 		    activeCell = clickedCell;
 		    currMode = "edit";
 		    tempText = new CellText(table.getColumnNames().get(activeCell[0]).getName());
+		    prevColName = table.getColumnNames().get(activeCell[0]).getName();
 		}
 		//DEFAULTVALUE CLICKED
 		else if(clickedCell[1] == 1){
@@ -373,7 +375,7 @@ public class UIDesignModule extends UISuperClass {
 		int numberOfCols = table.getColumnNames().size() + 1;
 		Cell newName = new CellText("Column" + numberOfCols);
 		int i = numberOfCols;
-		while (!textIsValid(newName, data, null)) {
+		while (!nameIsValid(newName, data, null)) {
 		    i++;
 		    newName.setValue("Column" + i);
 		}
@@ -397,6 +399,26 @@ public class UIDesignModule extends UISuperClass {
                 table.getColumnNames().size(), 1, paintModule.getCellLeftMargin(), widthList) != null;
 	}
 
+    private boolean nameIsValid(Cell text, dataController data, String currName) {
+        //Checks if name is valid
+
+            String currentText = text.getString();
+            if(currentText.length() == 0){
+                return false;
+            }
+            for(Column col :table.getColumnNames()){
+                if (currentText.equals(col.getName())){
+                    if(col.getName().equals(prevColName)){
+
+                    }else{
+                    return false;}
+                }
+
+            }return true;
+	}
+
+
+
     /**
      * Checks if updated text is valid according to the type of it's cell
      *
@@ -411,35 +433,37 @@ public class UIDesignModule extends UISuperClass {
      */
     private boolean textIsValid(Cell text, dataController data, String currName) {
 
+        //Checks if name is valid
         if (activeCell[1] == 0) {
-            String currentText = text.getString();
-            if(currentText.length() == 0){
-                return false;
-            }
-            for(Column col :table.getColumnNames()){
-                if (currentText.equals(col.getName())){
-                    return false;
-                }
-            }
+         return nameIsValid(text,data,currName);
 
         }
+        //Cheks if default value is consistent with type and balnks
+
         else if (activeCell[1] == 1) {
             String type = table.getColumnNames().get(activeCell[0]).getType();
             if (table.getColumnNames().get(activeCell[0]).getBlanksAllowed()) {
-                if (((CellText)text).getValue().length() == 0) {
+                if (((CellText)text).getString().length() == 0) {
                     return true;
                 }
             }
             if (type.equals("String")) {
 
                 if (!table.getColumnNames().get(activeCell[0]).getBlanksAllowed()) {
-                    if (((CellText)text).getValue().length() == 0) {
+                    if (((CellText)text).getString().length() == 0) {
 
                         return false;
                     }
                 }
                 return true;
+                //TODO: check blanks
             } else if (type.equals("Boolean")) {
+                    if(text.getString().equals("true") || text.getString().equals("false")){
+                        return true;
+                    }else {
+                        return false;
+                    }
+
             } else if (type.equals("Email")) {
                // if (((CellEmail) text).getValue().contains("@")) {
                     if (text.getString().contains("@")) {
@@ -448,9 +472,10 @@ public class UIDesignModule extends UISuperClass {
             } else if (type.equals("Integer")) {
 
                 try {
-                    Integer.parseInt( ((CellInteger) text).getValue().toString() );
+                    Integer.parseInt( text.getString() );
                     return true;
                 } catch (Exception e) {
+                    System.out.println(e);
                     return false;
                 }
             }
