@@ -282,5 +282,13 @@ public class TABLR {
         assertEquals(result[1].intValue(),20);
     }
 
+    @Test
+    public void CheckIfStandardConstructorWorks() {
+        MyCanvasWindow relay2 = new MyCanvasWindow("TABLR");
+        Controller bestuurder2 = relay2.getController();
+        dataController bestuurder3 = bestuurder2.getTableDataController();
+        assertEquals(3,bestuurder3.getTableList().size());
+    }
+
 
 }

@@ -399,7 +399,7 @@ public class Scenario6 {
         assertEquals(originalLen,newLen);
     }
 
-
+/**
     @Test
     public void ChangeColumnDefaultValueBooleanBlanksAllowed() {
         MoveWindowToUpperLeftCorner();
@@ -412,14 +412,13 @@ public class Scenario6 {
         assertEquals("False",value);
 
         bestuurder.relayMouseEvent(500,175,40,1);
-        value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV().getString();
-        assertEquals("empty",value);
+        assertEquals(null,dc.getSelectedTable().getColumnNames().get(0).getDefaultV().getValue());
 
         bestuurder.relayMouseEvent(500,175,40,1);
         value = dc.getSelectedTable().getColumnNames().get(0).getDefaultV().getString();
         assertEquals("True",value);
     }
-
+*/
     @Test
     public void ChangeColumnDefaultValueBooleanBlanksNotAllowed() {
         MoveWindowToUpperLeftCorner();
@@ -499,7 +498,7 @@ public class Scenario6 {
         bestuurder.relayMouseEvent(500,275,80,1);
         assertEquals("Boolean",dc.getTableList().get(0).getColumnNames().get(2).getType());
     }
-    
+
 
 
 
