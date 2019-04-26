@@ -369,6 +369,8 @@ public class UITablesModule extends UISuperClass{
         Table selectedTable = list.get(activeCell[0]);
         data.deleteTable(selectedTable);
         currMode = "normal";
+        } else if(eventHandler.isEscape(keyCode)) {
+            currMode = "normal";
         }
         List<String> result = new ArrayList<>();
         result.add(currMode);
