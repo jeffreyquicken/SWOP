@@ -273,14 +273,18 @@ public class UIDesignModule extends UISuperClass {
 	 */
 	private void handleBlankCheckboxClicked(int[] clickedCell) {
 		Cell prevBool = new CellBoolean(table.getColumnNames().get(clickedCell[0]).getBlanksAllowed());
+
 		table.getColumnNames().get(clickedCell[0]).setBlanksAllowed(!(((CellBoolean) prevBool).getValue()));
+
 		Boolean val = ((CellBoolean) prevBool).getValue();
-		prevBool.setValue(!val);
+
+		prevBool.setValue(val);
 		tempText = prevBool;
+
 		//if default is false
 		if (((CellBoolean) prevBool).getValue()) {
 
-		    if (table.getColumnNames().get(clickedCell[0]).getDefaultV().equals("")) {
+		    if (table.getColumnNames().get(clickedCell[0]).getDefaultV().getString().equals("")) {
 		        invalidInput = true;
 		        activeCell = clickedCell;
 		    }
@@ -289,7 +293,7 @@ public class UIDesignModule extends UISuperClass {
 		        List<Row> rowList = table.getTableRows();
 		        int index = clickedCell[0];
 		        for (Row row : rowList) {
-		            if (row.getColumnList().get(index).equals("")) {
+		            if (row.getColumnList().get(index).getString().equals("")) {
 		                invalidInput = true;
 		                activeCell = clickedCell;
 		            }
