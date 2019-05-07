@@ -5,12 +5,35 @@ import java.util.List;
 
 import settings.CellVisualisationSettings;
 
+/**
+ * Class for tables
+ */
 public class Table {
+    /**
+     * Name of the table
+     */
     private String tableName;
+
+    /**
+     * Rows of the table
+     */
     private List<Row> tableRows;
+
+    /**
+     * List with names of the column
+     */
     private List<Column> columnNames;
+
+    /**
+     * settings for row module
+     */
     private CellVisualisationSettings rowSetting;
+
+    /**
+     * settings for design module
+     */
     private CellVisualisationSettings designSetting;
+
     /**
      * Query string that affects the table.
      */
@@ -21,6 +44,7 @@ public class Table {
         this.tableName = tableName;
     }
     public List<Column> getColumnNames(){return columnNames;}
+
     public List<Row> getTableRows() {
         return tableRows;
     }
@@ -59,8 +83,8 @@ public class Table {
     }
 
     /**
-     *
-     * @return
+     * Method that gets the row setting
+     * @return the row setting
      */
     public CellVisualisationSettings getRowSetting() {
         return rowSetting;

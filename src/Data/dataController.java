@@ -4,9 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 import settings.CellVisualisationSettings;
 
+/**
+ * Class that controls the data (add & delete tables, get selected tables, ...)
+ */
 public class dataController {
+
+    /**
+     * List with all tables
+     */
     private List<Table> tableList;
+
+    /**
+     * The selected table
+     */
     private Table selectedTable;
+
+    /**
+     * Settings file for the visualisation of settings
+     */
     private CellVisualisationSettings setting;
 
     public Table getSelectedTable() {
@@ -47,6 +62,9 @@ public class dataController {
         return tableList;
     }
 
+    /**
+     * Method that adds a new table to the table list and gives it a valid name
+     */
     public void addTable(){
         int numberOfTable = this.getTableList().size() + 1;
         String newName = "Table" + numberOfTable;
@@ -79,6 +97,11 @@ public class dataController {
         }
         return true;
     }
+
+    /**
+     * Method that deletes a table from the table list
+     * @param table the table to be deleted
+     */
     public void deleteTable(Table table){
         tableList.remove(table);
     }
@@ -111,6 +134,7 @@ public class dataController {
        Table table = new Table("computed table: " + selectedTable.getTableName());
        return table;
     }
+
     public CellVisualisationSettings getSetting(){
         return setting;
     }

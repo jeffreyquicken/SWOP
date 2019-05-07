@@ -5,10 +5,19 @@ import java.util.ArrayList;
 
 import java.util.List;
 
-
+/**
+ * Class for table rows
+ */
 public class Row {
 
+    /**
+     * List with all columns
+     */
     private List<Cell> columnList;
+
+    /**
+     * name of the row
+     */
     private String rowName;
 
     /**
@@ -45,9 +54,18 @@ public class Row {
         columnList.add(value4);**/
     }
 
+    /**
+     * Method that gets the column list
+     * @return the columnlist
+     */
     public List<Cell> getColumnList() {
         return columnList;
     }
+
+    /**
+     * method that adds a column to the column list
+     * @param value to be added
+     */
     public void addColumn(Cell value){
         columnList.add(value);
     }

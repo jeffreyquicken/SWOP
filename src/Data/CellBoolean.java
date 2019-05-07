@@ -1,5 +1,8 @@
 package Data;
 
+/**
+ * Cell Class for boolean values. Inherits from Cell Superclass
+ */
 public class CellBoolean implements Cell<Boolean>{
     protected Boolean value;
     private final String type = "Boolean";

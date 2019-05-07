@@ -1,5 +1,8 @@
 package Data;
 
+/**
+ * Cell Class for string values. Inherits from Cell Superclass
+ */
 public class CellText implements CellEditable<String>{
     protected String value;
     private final String type = "Text";

@@ -1,8 +1,12 @@
 package Data;
 
+/**
+ * Cell Class for email adresses. Inherits from Cell Superclass
+ */
 public class CellEmail implements CellEditable<String>{
     protected String value;
     private String type = "Email";
+
 
     public CellEmail(String arg){
     	this.setValue(arg);
@@ -31,12 +35,17 @@ public class CellEmail implements CellEditable<String>{
 	}
 
 
-
-	
+	/**
+	 * Method that adds a character to the value
+	 * @param keyChar the character to be added
+	 */
 	public void addChar(char keyChar) {
 		this.setValue(this.getValue() + keyChar);
 	}
 
+	/**
+	 * Method that deletes the last character from the value
+	 */
 	public void delChar() {
 		this.setValue(this.getValue().substring(0,this.getValue().length()-1));
 	}

@@ -3,11 +3,39 @@ package Data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for table columns
+ */
 public class Column {
+    /**
+     * Column name
+     */
     private String name;
+
+    /**
+     * Default value for column data
+     */
     private Cell defaultV;
+
+    /**
+     * Cell type (Bool, email, int, text)
+     */
     private String type;
+
+    /**
+     * Whether blanks are allowed in the column
+     */
     private Boolean blanksAllowed;
+
+    /**
+     * Column width
+     */
+    public int width;
+
+    /**
+     * List with column info
+     */
+    List<String> colInfo = new ArrayList<>();
 
     public String getType() {
         return type;
@@ -47,18 +75,14 @@ public class Column {
 
 
     /**
-     *
-     * @return
+     * Getter for column name
+     * @return column name
      */
     public String getName() {
         return name;
     }
 
-    /**
-     *
-     */
-    public int width;
-    List<String> colInfo = new ArrayList<>();
+
 
     /**
      * @param name
