@@ -11,6 +11,10 @@ public class Table {
     private List<Column> columnNames;
     private CellVisualisationSettings rowSetting;
     private CellVisualisationSettings designSetting;
+    /**
+     * Query string that affects the table.
+     */
+    private String query;
 
 
     public void setTableName(String tableName) {
@@ -27,6 +31,17 @@ public class Table {
         tableRows.remove(row);
     }
 
+
+
+    public String getQuery() {
+        return query;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
+    }
+
+
     /**
      * Initiates a table object with a given name and creates th right settings objects for that table
      * @param name  the name of the table
@@ -40,6 +55,7 @@ public class Table {
         for(int i = 0; i< 4;i++ ){
             designSetting.getWidthList().add(designSetting.getDefaultWidth());
         }
+        query = "";
     }
 
     /**

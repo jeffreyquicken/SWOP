@@ -21,6 +21,7 @@ public class dataController {
         setting = new CellVisualisationSettings();
         //setting.getWidthList().add(setting.getDefaultWidth());
         setting.getWidthList().add(setting.getDefaultWidth());
+        setting.getWidthList().add(setting.getDefaultWidth());
         tableList = new ArrayList<>();
 
 
@@ -34,6 +35,7 @@ public class dataController {
     public dataController(int i) {
         setting = new CellVisualisationSettings();
         //setting.getWidthList().add(setting.getDefaultWidth());
+        setting.getWidthList().add(setting.getDefaultWidth());
         setting.getWidthList().add(setting.getDefaultWidth());
         tableList = new ArrayList<>();
 

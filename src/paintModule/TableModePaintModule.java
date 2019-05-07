@@ -1,7 +1,6 @@
 package paintModule;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.util.List;
 
 import Data.Table;
@@ -9,7 +8,10 @@ import settings.CellVisualisationSettings;
 import settings.scrollbar;
 
 public class TableModePaintModule extends PaintModule {
-
+    /**
+     * margin between name column and query column
+     */
+    private int colMargin = 5;
 	
 	 /**
      * Method that paints a tabular view from a list of Tables
@@ -32,12 +34,12 @@ public class TableModePaintModule extends PaintModule {
 
          if (offset <= 0 ){
         
-        //paint the header
-        this.paintRectText(g,startXco, startYco - cellHeight+10 - offset  , widthCells - offsetHorizontal,10, "" );
-        g.setColor(Color.GRAY);
-        g.fillRect(startXco+1, startYco-cellHeight+11 - offset, widthCells-1 - offsetHorizontal, 9 );
-        g.setColor(Color.BLACK);
-        } 
+            //paint the header
+            paintHeader(g, startXco, startYco, offset, widthCells, offsetHorizontal, "Name");
+             int xCo = startXco;
+             xCo += widthCells + colMargin;
+             paintHeader(g, xCo, startYco, offset, widthCells, offsetHorizontal, "Query");
+        }
         int tempHeight = -offset;
 
          System.out.println("previous YCOSTART = " + (this.yCoStart));
@@ -47,6 +49,9 @@ public class TableModePaintModule extends PaintModule {
             if(tempHeight < (height-10  ) && tempHeight >= 0){
 
                 this.paintRectTextOff(g,startXco, startYco - offset , widthCells - offsetHorizontal,cellHeight, tableItem.getTableName(), offsetHorizontal/4 );
+                int xCo = startXco;
+                xCo += widthCells + colMargin;
+                this.paintRectTextOff(g, xCo, startYco - offset, widthList.get(1) - offsetHorizontal, cellHeight, tableItem.getQuery(), offsetHorizontal/4);
                 startYco = startYco + cellHeight;
                 tempHeight += cellHeight;
             }
@@ -56,6 +61,18 @@ public class TableModePaintModule extends PaintModule {
             }
 
         }
+
+    }
+
+    public void paintHeader(Graphics g, int startXco, int startYco, int offset, int widthCells, int offsetHorizontal, String title){
+        g.setColor(Color.GRAY);
+        g.fillRect(startXco+1, startYco-cellHeight+11 - offset, widthCells-1 - offsetHorizontal, 9 );
+        g.setColor(Color.BLACK);
+        Font oldFont = g.getFont();
+        Font newFont = oldFont.deriveFont(oldFont.getSize() * 0.9F);
+        g.setFont(newFont);
+        this.paintRectText(g,startXco, startYco - cellHeight+10 - offset  , widthCells - offsetHorizontal,10, title );
+        g.setFont(oldFont);
 
     }
 }

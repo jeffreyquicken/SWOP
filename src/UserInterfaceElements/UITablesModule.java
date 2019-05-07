@@ -75,7 +75,7 @@ public class UITablesModule extends UISuperClass{
             //EVENT edit mode and clicked outside table
         else if (currMode == "edit"  && !invalidInput) {
             currMode = "normal";
-            data.getTableList().get(activeCell[0]).setTableName(tempText);
+            setTempText(tempText, data);
         }
         else if (currMode == "delete"){
             currMode = "normal";
@@ -145,7 +145,12 @@ public class UITablesModule extends UISuperClass{
 	private void handleClickOnCell(dataController data, int[] clickedCell) {
 		activeCell = clickedCell;
 		currMode = "edit";
-		tempText = data.getTableList().get(activeCell[0]).getTableName();
+		if (activeCell[1] == 0) {
+            tempText = data.getTableList().get(activeCell[0]).getTableName();
+        }
+        else if (activeCell[1] == 1){
+		    tempText = data.getTableList().get(activeCell[0]).getQuery();
+        }
 	}
 
 	/**
@@ -206,9 +211,10 @@ public class UITablesModule extends UISuperClass{
         //Check mode
         if (currMode == "edit" ) {
             int[] coords1 = paintModule.getCellCoords(activeCell[0] , activeCell[1] , widthList, scrollbar, dimensions[1] );
-            paintModule.paintCursor(g, coords1[0] + coords[0],
-                    coords1[1] + coords[1], widthList.get(activeCell[1]),
-                    paintModule.getCellHeight(), tempText);
+                paintModule.paintCursor(g, coords1[0] + coords[0],
+                        coords1[1] + coords[1], widthList.get(activeCell[1]),
+                        paintModule.getCellHeight(), tempText);
+
         }
         //check if there are warnings
         if (invalidInput || currMode == "delete") {
@@ -255,6 +261,24 @@ public class UITablesModule extends UISuperClass{
      * @return Wheter the name of the table is valid (hence unique and non-empty)
      */
     public boolean textIsValid(String text, dataController data, String currName) {
+        if (activeCell[1] == 0) {
+            return nameIsValid(text, data, currName);
+        }
+        else if (activeCell[1] == 1){
+            return queryIsValid(text, data);
+        }
+        return false;
+
+    }
+
+    /**
+     * Method that checks the validity of a table name
+     * @param text the text to be checked
+     * @param data the datacontroller
+     * @param currName the old table name
+     * @return whether the name is valid
+     */
+    public boolean nameIsValid(String text, dataController data, String currName){
         for (Table table : data.getTableList()) {
             if (table.getTableName().equals(text)) {
                 if (!table.getTableName().equals(currName)) {
@@ -266,6 +290,16 @@ public class UITablesModule extends UISuperClass{
             return false;
         }
         return true;
+    }
+
+    /**
+     * Method that checks the validity of a table query
+     * @param query the query to be checked
+     * @param data the datacontroller
+     * @return whether the query is valid
+     */
+    public boolean queryIsValid(String query, dataController data){
+        return true; //TODO validator
     }
 
    
@@ -315,7 +349,7 @@ public class UITablesModule extends UISuperClass{
         //EVENT ENTER pressed
         else if (eventHandler.isEnter(keyCode) && !invalidInput) {
             currMode = "normal";
-            data.getTableList().get(activeCell[0]).setTableName(tempText);
+            setTempText(tempText, data);
 
         }
         //ESCAPE
@@ -334,6 +368,19 @@ public class UITablesModule extends UISuperClass{
 
     }
 
+    /**
+     * Method that saves the temporary text to the database depending on whether it is a table name or a query
+     * @param tempText the text to be saved
+     * @param data the datacontroller
+     */
+    public void setTempText(String tempText, dataController data){
+        if (activeCell[1] == 0){
+            data.getTableList().get(activeCell[0]).setTableName(tempText);
+        }
+        else if (activeCell[1] == 1){
+            data.getTableList().get(activeCell[0]).setQuery(tempText);
+        }
+    }
     /**
      * Method that handles key event when the UI is in normal-mode and returns state of program
      *
