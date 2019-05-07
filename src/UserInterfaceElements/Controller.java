@@ -80,8 +80,14 @@ public class Controller {
 
             String nextUIMode = topLevelWindow.getActiveSubWindow().handleMouseEvent(result[0], result[1], count, id, tableDataController, topLevelWindow.getDimensions(topLevelWindow.getActiveSubWindow()));
             if (nextUIMode.equals("row")){
-                UIRowModule rowModule = new UIRowModule(tableDataController.getSelectedTable());
-                topLevelWindow.addSubWindow(rowModule);
+                if(tableDataController.getSelectedTable().getQuery().equals("")){
+                    UIRowModule rowModule = new UIRowModule(tableDataController.getSelectedTable());
+                    topLevelWindow.addSubWindow(rowModule);
+                }
+                else if (tableDataController.getSelectedTable().getQuery().length() > 0){
+                    UIRowModule rowModule = new UIRowModule(tableDataController.computeTable("shfhsgf"));
+                    topLevelWindow.addSubWindow(rowModule);
+                }
             }
             else if(nextUIMode.equals("design")){
                 UIDesignModule designModule = new UIDesignModule(tableDataController.getSelectedTable());
