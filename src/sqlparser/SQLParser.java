@@ -1,14 +1,21 @@
 package sqlparser;
 
+import Data.Column;
+import Data.Table;
+import Data.dataController;
+
 import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 public class SQLParser extends StreamTokenizer {
-	
+
+	private String qRowID;
+	private String qColID;
+	private String qColName;
+	private String qTable;
+
 	private static HashMap<String, Integer> keywords = new HashMap<>();
 	public static final int
 		TT_IDENT = -9,
@@ -186,6 +193,7 @@ public class SQLParser extends StreamTokenizer {
 			String e = parseExpr();
 			expect(TT_AS);
 			String colName = expectIdent();
+			qColID = e;
 			result.append(e + " AS " + colName);
 			if (ttype == ',') {
 				nextToken();
@@ -197,6 +205,7 @@ public class SQLParser extends StreamTokenizer {
 		result.append(" FROM ");
 		{
 			String tableName = expectIdent();
+			qTable = tableName;
 			expect(TT_AS);
 			String rowId = expectIdent();
 			result.append(tableName + " AS " + rowId);
@@ -220,6 +229,30 @@ public class SQLParser extends StreamTokenizer {
 		System.out.println(result);
 		return result.toString();
 	}
+
+	public Table computeTable(String tableName, String columnName, String condition, dataController data){
+		Table table = getTableFromName(tableName, data);
+		Integer colIndex = getColumnIndexFromName(table, columnName);
+		return table;
+	}
 	
+	public Table getTableFromName(String tableName, dataController data){
+		for (Table table:data.getTableList()){
+			if(table.getTableName().equals(tableName)){
+				return table;
+			}
+		}
+		return null;
+	}
+
+	public Integer getColumnIndexFromName(Table table, String columnName){
+		for (Column col:table.getColumnNames()){
+			if (col.getName().equals(columnName)){
+				return table.getColumnNames().indexOf(col);
+			}
+
+		}
+		return null;
+	}
 }
 
