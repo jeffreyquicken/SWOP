@@ -1,6 +1,7 @@
 package UserInterfaceElements;
 
 import Data.Cell;
+import Data.Row;
 import Data.Table;
 import Data.dataController;
 import events.MouseEvent;
@@ -9,6 +10,7 @@ import paintModule.FormModePaintModule;
 import settings.CellVisualisationSettings;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UIFormModule extends UISuperClass{
@@ -17,14 +19,80 @@ public class UIFormModule extends UISuperClass{
     private FormModePaintModule paintModule;
     private events.MouseEvent mouseEventHandler;
 
+    /**
+     * whether the row index is in range of the number of rows
+     */
+    private boolean rowNotOutOfRange;
+
+    /**
+     * Index of row to be painted as a form
+     */
+    private int rowIndex;
+
     public UIFormModule(Table inputTable){
         paintModule = new FormModePaintModule();
         mouseEventHandler = new MouseEvent();
         invalidInput = false;
         table = inputTable;
+        rowIndex = 0;
+        rowNotOutOfRange = true;
     }
 
+    /**
+     * Method that handles key event when the UI is in normal-mode and returns state of program
+     *
+     * @param id id of key pressed
+     * @param keyCode keycde of key pressed
+     * @param keyChar keychar of key pressed
+     * @param data datacontroller
+     * @return returns a list with the nextUImode and the current mode of the UI
+     */
+    @Override
+    protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){
+        String nextUIMode = "";
+        if (keyCode == 33){
+            setRowIndex(rowIndex + 1);
+        }
+        else if (keyCode == 34) {
+            setRowIndex(rowIndex - 1);
+        }
+        if (keyCode == 17){
+            ctrlPressed = true;
+        }
+        else if (ctrlPressed) {
+            if (keyCode == 78) {
+                addNewRow();
+                ctrlPressed = false;
+            }
+            else if (keyCode == 68){
+                deleteRow();
+            }
+        }
+        else{
+            ctrlPressed = false;
+        }
 
+        List<String> result = new ArrayList<>();
+        result.add("normal");
+        result.add("");
+        return result;
+    }
+
+    /**
+     * Method that adds a new row to the table
+     */
+    public void addNewRow(){
+        Row row = new Row(table.getColumnNames());
+        table.addRow(row);
+    }
+
+    public void deleteRow(){
+        Row row = table.getTableRows().get(rowIndex);
+        table.deleteRow(row);
+        if (rowIndex == table.getTableRows().size()){
+            rowNotOutOfRange = false;
+        }
+    }
 
     /**
      * Method that paints the correct view on the canvas
@@ -91,9 +159,35 @@ public class UIFormModule extends UISuperClass{
         recalculateScrollbar(data, dimensions);
         paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], scrollbar.getPercentageHorizontal(), scrollbar);
         paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, scrollbar.getPercentageVertical(), scrollbar);
-        paintModule.paintFormView(g, table, 1, coords[0] +paintModule.getMargin(), coords[1]+paintModule.getMargin(), table.getFormSetting(), dimensions[0] - 48,dimensions[1]-58,scrollbar,dimensions[0],sum);
+        if(rowNotOutOfRange){
+            paintModule.paintFormView(g, table, rowIndex, coords[0] +paintModule.getMargin(),
+                    coords[1]+paintModule.getMargin(), table.getFormSetting(), dimensions[0] - 48,dimensions[1]-58,scrollbar,dimensions[0],sum);
+        }
+
 
     }
+
+    /**
+     * Method that checks whether or not the row index is in range of the number of rows and sets the index
+     */
+    private void setRowIndex(int index){
+        if (index < 0 ){
+            rowIndex = -1;
+            rowNotOutOfRange = false;
+        }
+        else if(index > table.getTableRows().size()-1){
+            rowIndex = table.getTableRows().size();
+            rowNotOutOfRange = false;
+        }
+        else {
+            rowIndex = index;
+            rowNotOutOfRange = true;
+        }
+    }
+
+
+
+
 
 
     /*
