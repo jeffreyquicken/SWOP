@@ -392,9 +392,22 @@ public class UITablesModule extends UISuperClass{
      */
     @Override
     protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){
+        String nextUIMode = "";
+        if (keyCode == 17){
+            ctrlPressed = true;
+        }
+        else if (ctrlPressed) {
+            if (keyCode == 70) {
+                nextUIMode = "form";
+                ctrlPressed = false;
+            }
+        }
+        else{
+            ctrlPressed = false;
+        }
         List<String> result = new ArrayList<>();
         result.add("normal");
-        result.add("");
+        result.add(nextUIMode);
         return result;
     }
 

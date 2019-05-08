@@ -140,6 +140,9 @@ public class Controller {
         }else if(nextUIMode.equals("table")){
             UITablesModule tablesModule = new UITablesModule();
             topLevelWindow.addSubWindow(tablesModule);
+        }else if(nextUIMode.equals("form")){
+            UIFormModule formModule = new UIFormModule(tableDataController.getSelectedTable());
+            topLevelWindow.addSubWindow(formModule);
         }
 
 //        if (this.getCurrentMode() == "table") {
