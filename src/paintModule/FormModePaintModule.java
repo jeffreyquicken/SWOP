@@ -94,9 +94,8 @@ public class FormModePaintModule extends PaintModule{
         for(Column column: table.getColumnNames()){
             if(tempHeight < (height - 10) && tempHeight >=0) {
                 int colIndex = table.getColumnNames().indexOf(column);
-                this.paintRectText(g, startXco, startYco, widthList.get(0), titleHeight, column.getName());
-                startXco += widthList.get(0) + 5;
-                this.paintRectText(g, startXco, startYco, widthList.get(0), titleHeight,
+                this.paintRectText(g, startXco, startYco, widthList.get(0), cellHeight, column.getName());
+                this.paintRectText(g, startXco + widthList.get(0) + 5, startYco, widthList.get(0), cellHeight,
                         table.getTableRows().get(rowIndex).getColumnList().get(colIndex).getString());
                 startYco = startYco + cellHeight;
                 tempHeight += cellHeight;

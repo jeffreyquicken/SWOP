@@ -91,7 +91,7 @@ public class UIFormModule extends UISuperClass{
         recalculateScrollbar(data, dimensions);
         paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], scrollbar.getPercentageHorizontal(), scrollbar);
         paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, scrollbar.getPercentageVertical(), scrollbar);
-        paintModule.paintFormView(g, table, 1, coords[0] +paintModule.getMargin(), coords[1]+paintModule.getMargin(), table.getDesignSetting(), dimensions[0] - 48,dimensions[1]-58,scrollbar,dimensions[0],sum);
+        paintModule.paintFormView(g, table, 1, coords[0] +paintModule.getMargin(), coords[1]+paintModule.getMargin(), table.getFormSetting(), dimensions[0] - 48,dimensions[1]-58,scrollbar,dimensions[0],sum);
 
     }
 

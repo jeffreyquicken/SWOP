@@ -34,11 +34,26 @@ public class Table {
      */
     private CellVisualisationSettings designSetting;
 
+
+
+    /**
+     * settings for form module
+     */
+    private CellVisualisationSettings formSetting;
+
     /**
      * Query string that affects the table.
      */
     private String query;
 
+
+    public CellVisualisationSettings getFormSetting() {
+        return formSetting;
+    }
+
+    public void setFormSetting(CellVisualisationSettings formSetting) {
+        this.formSetting = formSetting;
+    }
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
@@ -76,6 +91,10 @@ public class Table {
         tableName = name;
         rowSetting = new CellVisualisationSettings();
         designSetting = new CellVisualisationSettings();
+        formSetting = new CellVisualisationSettings();
+        for (int i = 0; i<2;i++){
+            formSetting.getWidthList().add(formSetting.getDefaultWidth());
+        }
         for(int i = 0; i< 4;i++ ){
             designSetting.getWidthList().add(designSetting.getDefaultWidth());
         }
