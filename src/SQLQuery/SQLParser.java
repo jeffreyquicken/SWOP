@@ -1,4 +1,4 @@
-package sqlparser;
+package SQLQuery;
 
 import Data.Column;
 import Data.Table;
