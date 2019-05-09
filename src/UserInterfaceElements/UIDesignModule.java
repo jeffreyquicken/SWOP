@@ -1,6 +1,7 @@
 package UserInterfaceElements;
 
 import Data.*;
+import UndoRedo.*;
 import events.MouseEvent;
 import paintModule.DesignModePaintModule;
 import paintModule.PaintModule;
@@ -62,6 +63,7 @@ public class UIDesignModule extends UISuperClass {
 
     private Table table;
 
+    private Cell oldValue;
 
 
     /**
@@ -116,7 +118,6 @@ public class UIDesignModule extends UISuperClass {
         }
         //EVENT CELL CLICKED (VALID INPUT)
         else if (!invalidInput && ID == 500 && currMode!="edit" && currMode != "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
-
             handleCellClickedValidInput(count, data, clickedCell);
 
         }
@@ -143,6 +144,16 @@ public class UIDesignModule extends UISuperClass {
         //EVENT EXIT EDIT MODE
         else if(!invalidInput && currMode == "edit" && (clickedCell[0] == -1 || clickedCell[1] == -1)){
             saveText(data);
+            int[] cid = new int[2];
+            cid[0] = data.getTableList().indexOf(table);
+            cid[1] = activeCell[0];
+            if(activeCell[1] == 0) {
+                Command c = new ColumnName(cid,tempText.getString(),prevColName,data);
+                data.addCommand(c);
+            } else if (activeCell[1] == 1) {
+                Command c = new DefaultValue(cid,tempText,oldValue,data);
+                data.addCommand(c);
+            }
             currMode = "normal";
         }
         List<String> result = new ArrayList<>();
@@ -180,6 +191,11 @@ public class UIDesignModule extends UISuperClass {
 		            currMode = "normal";
 		        }
 		        table.getColumnNames().get(clickedCell[0]).setType(((CellText) newType).getValue());
+                int[] cid = new int[2];
+                cid[0] = data.getTableList().indexOf(table);
+                cid[1] = clickedCell[0];
+                Command c = new ColumnType(cid,((CellText) newType).getValue(),((CellText) prevType).getValue(),data);
+                data.addCommand(c);
 		    }
 		}
 	}
@@ -262,7 +278,7 @@ public class UIDesignModule extends UISuperClass {
 		}
 		//CHECKBOX BLANKS CLICKED
 		else if (clickedCell[1] == 3) {
-		    handleBlankCheckboxClicked(clickedCell);
+		    handleBlankCheckboxClicked(clickedCell, data);
 		}
 	}
 
@@ -271,7 +287,7 @@ public class UIDesignModule extends UISuperClass {
 	/**
 	 * @param clickedCell
 	 */
-	private void handleBlankCheckboxClicked(int[] clickedCell) {
+	private void handleBlankCheckboxClicked(int[] clickedCell, dataController data) {
 		Cell prevBool = new CellBoolean(table.getColumnNames().get(clickedCell[0]).getBlanksAllowed());
 
 		table.getColumnNames().get(clickedCell[0]).setBlanksAllowed(!(((CellBoolean) prevBool).getValue()));
@@ -279,6 +295,11 @@ public class UIDesignModule extends UISuperClass {
 		prevBool.setValue(table.getColumnNames().get(clickedCell[0]).getBlanksAllowed());
 		tempText = prevBool;
 
+        int[] cid = new int[2];
+        cid[0] = data.getTableList().indexOf(table);
+        cid[1] = clickedCell[0];
+        Command c = new BlanksAllowed(cid,data);
+        data.addCommand(c);
 
 		//if default is false
 		if (!((CellBoolean) prevBool).getValue()) {
@@ -340,7 +361,9 @@ public class UIDesignModule extends UISuperClass {
 	 * @param clickedCell
 	 */
 	private void handleTypeClickedValidInput(dataController data, int[] clickedCell) {
+
 		String prevType = table.getColumnNames().get(clickedCell[0]).getType();
+
 		Cell newType;
 		if (prevType.equals("String")) {
 		    newType = new CellText("Email");
@@ -358,6 +381,11 @@ public class UIDesignModule extends UISuperClass {
 		} else {
 		    currMode = "normal";
             table.getColumnNames().get(clickedCell[0]).setType(((CellText) newType).getValue());
+            int[] cid = new int[2];
+            cid[0] = data.getTableList().indexOf(table);
+            cid[1] = clickedCell[0];
+            Command c = new ColumnType(cid,((CellText) newType).getValue(),prevType,data);
+            data.addCommand(c);
 		}
 
 	}
@@ -371,6 +399,8 @@ public class UIDesignModule extends UISuperClass {
 	private void handleDefaultValueClickedValidInput(dataController data, int[] clickedCell) {
 		activeCell = clickedCell;
 		currMode = "edit";
+
+
         /**
 		if (table.getColumnNames().get(activeCell[0]).getType().equals("Boolean") && !table.getColumnNames().get(activeCell[0]).getBlanksAllowed()){
 		    currMode = "normal";
@@ -382,8 +412,10 @@ public class UIDesignModule extends UISuperClass {
             }
 		} else */
         if (table.getColumnNames().get(activeCell[0]).getType().equals("Boolean")){
+
             currMode = "normal";
 		    tempText = table.getColumnNames().get(activeCell[0]).getDefaultV();
+            oldValue = new CellBoolean(((CellBoolean) tempText).getValue());
 		    if (tempText.getValue().equals(true)){
 		        tempText.setValue(false);
 		    }
@@ -399,9 +431,21 @@ public class UIDesignModule extends UISuperClass {
 		        tempText.setValue(true);
 		    }
 		    saveText(data);
+		    int[] cid = new int[2];
+		    cid[0] = data.getTableList().indexOf(table);
+		    cid[1] = activeCell[0];
+		    Command c = new DefaultValue(cid,tempText,oldValue,data);
+		    data.addCommand(c);
 		}
 		else {
 		    tempText = table.getColumnNames().get(activeCell[0]).getDefaultV();
+            if (tempText.getClass() == CellText.class) {
+                oldValue = new CellText(((CellText) tempText).getValue());
+            } else if (tempText.getClass() == CellEmail.class) {
+                oldValue = new CellEmail(((CellEmail) tempText).getValue());
+            } else if (tempText.getClass() == CellInteger.class) {
+                oldValue = new CellInteger(((CellInteger) tempText).getValue());
+            }
 		}
 	}
 
@@ -421,9 +465,10 @@ public class UIDesignModule extends UISuperClass {
 
 		Column newCol = new Column(((CellText) newName).getValue(), new CellText(""), "String", true);
 		table.addColumn(newCol);
+        Command c = new NewColumn(data.getTableList().indexOf(table),newCol, data);
+        data.addCommand(c);
+
 	}
-
-
 
 	/**
 	 * @param xCo
@@ -735,7 +780,6 @@ public class UIDesignModule extends UISuperClass {
         if (eventHandler.isChar(keyCode)) {
             ((CellEditable)tempText).addChar(keyChar);
             String currName = table.getColumnNames().get(activeCell[0]).getName();
-
             invalidInput = !textIsValid(tempText, data, currName);
         }
 
@@ -755,6 +799,16 @@ public class UIDesignModule extends UISuperClass {
         //EVENT ENTER pressed
         else if (eventHandler.isEnter(keyCode) && !invalidInput) {
             saveText(data);
+            int[] cid = new int[2];
+            cid[0] = data.getTableList().indexOf(table);
+            cid[1] = activeCell[0];
+            if(activeCell[1] == 0) {
+                Command c = new ColumnName(cid,tempText.getString(),prevColName,data);
+                data.addCommand(c);
+            } else if (activeCell[1] == 1) {
+                Command c = new DefaultValue(cid,tempText,oldValue,data);
+                data.addCommand(c);
+            }
             currMode ="normal";
         }
         List<String> result = new ArrayList<>();

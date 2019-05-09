@@ -4,6 +4,8 @@ import java.awt.*;
 
 import Data.Table;
 import Data.dataController;
+import UndoRedo.Command;
+import UndoRedo.Operations;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +21,11 @@ public class Controller {
     private UITopLevelWindow topLevelWindow;
     //ctrlPressed var to detect if new tables module needs to be added
     private boolean ctrlPressed;
+    //shiftPressed var to detect if shift is pressedf, for redo functionaity
+    private boolean shiftPressed;
     //Display key/mousevent
     private String mouseEvent = "";
     private String keyEvent = "";
-
 
     /**
      * Creates/init the three different UI modules/controller, creates the topLevelWindow, creates empty table list and sets current view to table-view
@@ -46,6 +49,9 @@ public class Controller {
 
         //Sets defaultmode to table-mode
         currentMode = "table";
+
+
+
     }
 
     public Controller(int i) {
@@ -118,15 +124,29 @@ public class Controller {
 
 
         //if else statement to check if ctrl+t is clicked
-        if (keyCode == 17) {
-            setCtrlPressed(true);
-        } else if (getCtrlPressed()) {
+        if (keyCode == 17 || keyCode == 16) {
+            if(keyCode == 17) {
+                setCtrlPressed(true);
+            } else {
+                setShiftPressed(true);
+            }
+        } else if (getCtrlPressed() && !getShiftPressed()) {
             if (keyCode == 84) {
                 nextUIMode = "table";
                 ctrlPressed = false;
+            } else if (keyCode == 90) { //CTRL+Z pressed
+                this.tableDataController.undo();
+                setCtrlPressed(false);
+            }
+        } else if (getCtrlPressed() && getShiftPressed()) {
+            if (keyCode == 90) { //CTRL+Shift+Z pressed
+                this.tableDataController.redo();
+                setCtrlPressed(false);
+                setShiftPressed(false);
             }
         } else {
             setCtrlPressed(false);
+            setShiftPressed(false);
         }
 
 
@@ -188,6 +208,7 @@ public class Controller {
 
 
 
+
         /**
         if (this.getCurrentMode() == "table") {
             //Let UImodule paint canvas
@@ -232,6 +253,13 @@ public class Controller {
 
     public boolean getCtrlPressed() {
         return ctrlPressed;
+    }
+    public void setShiftPressed(boolean sp) {
+        this.shiftPressed = sp;
+    }
+
+    public boolean getShiftPressed() {
+        return shiftPressed;
     }
 
     public UITopLevelWindow getTopLevelWindow() {

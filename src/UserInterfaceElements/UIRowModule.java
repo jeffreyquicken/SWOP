@@ -1,6 +1,9 @@
 package UserInterfaceElements;
 
 import Data.*;
+import UndoRedo.Command;
+import UndoRedo.NewRow;
+import UndoRedo.RowValue;
 import events.MouseEvent;
 import events.KeyEvent;
 import paintModule.PaintModule;
@@ -17,7 +20,7 @@ public class UIRowModule extends UISuperClass {
     private int xCoStart = 50;
     private int yCoStart = 50;
     private String currMode = "normal";
-
+    private Cell oldValue;
 
 
     private int[] activeCell;
@@ -69,6 +72,9 @@ public class UIRowModule extends UISuperClass {
         else if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, table.getLengthTable() + paintModule.getyCoStart())) {
             Row row = new Row(table.getColumnNames());
             table.addRow(row);
+            //action needs to be added to operations list
+            Command c = new NewRow(data.getTableList().indexOf(table),row, data);
+            data.addCommand(c);
         }
         //EVENT CELL CLICKED (VALID INPUT)
         else if (!invalidInput && ID == 500 && currMode!="edit" && currMode != "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
@@ -83,6 +89,13 @@ public class UIRowModule extends UISuperClass {
         //EVENT EXIT EDIT MODE
         else if(!invalidInput && currMode == "edit" && (clickedCell[0] == -1 || clickedCell[1] == -1)){
             saveText(data);
+            //action needs to be added to operations list
+            int[] cid = new int[3];
+            cid[0] = data.getTableList().indexOf(table);
+            cid[1] = activeCell[0];
+            cid[2] = activeCell[1];
+            Command c = new RowValue(cid,tempText,oldValue, data);
+            data.addCommand(c);
             currMode = "normal";
         }
         String nextUImode = "";
@@ -126,6 +139,7 @@ public class UIRowModule extends UISuperClass {
 		currMode = "edit";
 		if (table.getColumnNames().get(activeCell[1]).getType().equals("Boolean")) {
 		    tempText = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]);
+            oldValue = new CellBoolean(((CellBoolean) tempText).getValue());
 		    if (tempText.getValue()== null) {
 		        ((CellBoolean) tempText).setValue(true);
 		    } else if (tempText.getValue().equals(false)) {
@@ -140,6 +154,13 @@ public class UIRowModule extends UISuperClass {
 		    saveText(data);
 		} else {
 		    tempText = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]);
+		    if (tempText.getClass() == CellText.class) {
+                oldValue = new CellText(((CellText) tempText).getValue());
+            } else if (tempText.getClass() == CellEmail.class) {
+                oldValue = new CellEmail(((CellEmail) tempText).getValue());
+            } else if (tempText.getClass() == CellInteger.class) {
+                oldValue = new CellInteger(((CellInteger) tempText).getValue());
+            }
 		}
 	}
 
@@ -183,12 +204,12 @@ public class UIRowModule extends UISuperClass {
 	 */
     protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data) {
         KeyEvent eventHandler = new KeyEvent();
-        String currName = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]).getValue().toString(); // NOOIT GEBRUIKT, snap het nut niet
+        //String currName = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]).getValue().toString(); // NOOIT GEBRUIKT, snap het nut niet
         //EVENT: ASCSII char pressed
         if (eventHandler.isChar(keyCode)) {
             ((CellEditable)tempText).addChar(keyChar);
 
-            invalidInput = !textIsValid(tempText, data, currName);
+            invalidInput = !textIsValid(tempText, data);
         }
 
         //EVENT BS pressed and in edit mode
@@ -198,7 +219,7 @@ public class UIRowModule extends UISuperClass {
             if (tempText.getValue().toString().length() != 0) {
                 ((CellEditable)tempText).delChar();
 
-                invalidInput = !textIsValid(tempText, data, currName);
+                invalidInput = !textIsValid(tempText, data);
 
             }
             //empty string, display red border
@@ -206,6 +227,13 @@ public class UIRowModule extends UISuperClass {
         //EVENT ENTER pressed
         else if (eventHandler.isEnter(keyCode) && !invalidInput) {
             saveText(data);
+            //action needs to be added to operations list
+            int[] cid = new int[3];
+            cid[0] = data.getTableList().indexOf(table);
+            cid[1] = activeCell[0];
+            cid[2] = activeCell[1];
+            Command c = new RowValue(cid,tempText,oldValue, data);
+            data.addCommand(c);
             currMode = "normal";
         }
 
@@ -344,10 +372,9 @@ public class UIRowModule extends UISuperClass {
      *
      * @param text text to be validated
      * @param data datacontroller
-     * @param currName old name
      * @return Wheter the text is in the correct fromat according to the type of it's cell
      */
-    private boolean textIsValid(Cell text, dataController data, String currName) {
+    private boolean textIsValid(Cell text, dataController data) {
         String type = table.getColumnNames().get(activeCell[0]).getType();
         if (type.equals("String")) {
             if (!table.getColumnNames().get(activeCell[0]).getBlanksAllowed()) {

@@ -2,6 +2,9 @@ package UserInterfaceElements;
 
 import Data.Table;
 import Data.dataController;
+import UndoRedo.Command;
+import UndoRedo.NewTable;
+import UndoRedo.TableName;
 import events.*;
 import paintModule.RowModePaintModule;
 import paintModule.TableModePaintModule;
@@ -75,7 +78,11 @@ public class UITablesModule extends UISuperClass{
             //EVENT edit mode and clicked outside table
         else if (currMode == "edit"  && !invalidInput) {
             currMode = "normal";
-            setTempText(tempText, data);
+            //action needs to be added to operations list
+             String ov = data.getTableList().get(activeCell[0]).getTableName();
+             Command c = new TableName(activeCell[0],tempText,ov, data);
+             data.addCommand(c);
+             setTempText(tempText, data);
         }
         else if (currMode == "delete"){
             currMode = "normal";
@@ -105,8 +112,12 @@ public class UITablesModule extends UISuperClass{
 	 * @param data
 	 */
 	private void handleDoubleClickUnderTable(dataController data) {
+        data.addTable();
+        Table t = data.getTableList().get(data.getTableList().size()-1);
+        //action needs to be added to operations list
+        Command c = new NewTable(data.getTableList().size()-1,t, data);
+        data.addCommand(c);
 
-		data.addTable();
 	}
 
 	/**
@@ -350,6 +361,10 @@ public class UITablesModule extends UISuperClass{
         //EVENT ENTER pressed
         else if (eventHandler.isEnter(keyCode) && !invalidInput) {
             currMode = "normal";
+            //action needs to be added to operations list
+            String ov = data.getTableList().get(activeCell[0]).getTableName();
+            Command c = new TableName(activeCell[0],tempText,ov, data);
+            data.addCommand(c);
             setTempText(tempText, data);
 
         }

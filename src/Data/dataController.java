@@ -2,6 +2,9 @@ package Data;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import UndoRedo.Command;
+import UndoRedo.Operations;
 import settings.CellVisualisationSettings;
 
 /**
@@ -24,6 +27,9 @@ public class dataController {
      */
     private CellVisualisationSettings setting;
 
+    // List of operations for undo/redo functionality
+    Operations operations;
+
     public Table getSelectedTable() {
         return selectedTable;
     }
@@ -45,6 +51,8 @@ public class dataController {
         this.addTable();
         this.addTable();
         this.addTable();
+
+        operations = new Operations();
     }
 
     public dataController(int i) {
@@ -56,6 +64,7 @@ public class dataController {
 
         tableList = new ArrayList<Table>();
 
+        operations = new Operations();
     }
 
     public List<Table> getTableList(){
@@ -139,7 +148,18 @@ public class dataController {
         return setting;
     }
 
+    // adds command to operations class
+    public void addCommand(Command c) {
+        operations.add(c);
+    }
 
+    public void undo() {
+        operations.undo();
+    }
+
+    public void redo() {
+        operations.redo();
+    }
 
 
 
