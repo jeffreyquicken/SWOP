@@ -311,6 +311,7 @@ public class UITablesModule extends UISuperClass{
      * the method in the superclass works as a flow controller but doesn't have the functionality needed for the specific UI modules
      * this is implemented in the next few methods
      */
+
     /**
      * Method that handles key event when the UI is in edit-mode and returns state of program
      *
