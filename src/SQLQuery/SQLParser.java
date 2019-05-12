@@ -16,6 +16,7 @@ public class SQLParser extends StreamTokenizer {
 	private String qColName;
 	private String qTable;
 
+
 	private static HashMap<String, Integer> keywords = new HashMap<>();
 	public static final int
 		TT_IDENT = -9,
@@ -47,7 +48,7 @@ public class SQLParser extends StreamTokenizer {
 	
 	public static class ParseException extends RuntimeException {}
 	
-	public static String parseQuery(String text) { return new SQLParser(text).parseQuery(); }
+	public static Query parseQuery(String text) { return new SQLParser(text).parseQuery(); }
 	
 	@Override
 	public int nextToken() {
@@ -185,7 +186,12 @@ public class SQLParser extends StreamTokenizer {
 		return parseDisjunction();
 	}
 	
-	public String parseQuery() {
+	public Query parseQuery() {
+
+		//OUR QUERY
+		Query query = new Query();
+
+
 		StringBuilder result = new StringBuilder();
 		expect(TT_SELECT);
 		result.append("SELECT ");
@@ -195,6 +201,12 @@ public class SQLParser extends StreamTokenizer {
 			String colName = expectIdent();
 			qColID = e;
 			result.append(e + " AS " + colName);
+			//ADD SELECT
+			query.getSelectClause().addSelectClause(e);
+
+			//ADD AS CLAUSES
+			query.getAsClause().addAsClause(e, colName);
+
 			if (ttype == ',') {
 				nextToken();
 				result.append(", ");
@@ -209,6 +221,10 @@ public class SQLParser extends StreamTokenizer {
 			expect(TT_AS);
 			String rowId = expectIdent();
 			result.append(tableName + " AS " + rowId);
+			//ADD FROM
+			query.getFromClause().addFromClause(tableName);
+			//ADD AS CLAUSE
+			query.getAsClause().addAsClause(tableName, rowId);
 			
 		}
 		while (ttype == TT_INNER) {
@@ -226,8 +242,13 @@ public class SQLParser extends StreamTokenizer {
 		expect(TT_WHERE);
 		String cond = parseExpr();
 		result.append(" WHERE " + cond);
+		//ADD WHERE CLAUSE
+		query.getWhereClause().addWhereClause(cond);
+
+
 		System.out.println(result);
-		return result.toString();
+		//return result.toString();
+		return query;
 	}
 
 	public Table computeTable(String tableName, String columnName, String condition, dataController data){
