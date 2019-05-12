@@ -131,6 +131,65 @@ public class PaintModule {
 
         }
 
+    /**
+     * Method that paints a single row given a List of strings
+     * @param g graphics object
+     * @param rowList list of items in row
+     * @param startxCo  start X coordinate where row should be painted
+     * @param startyCo  start Y coordinate where row should be painted
+     * @param setting settings object for this row view
+     * @param margin margin
+     */
+    public void paintRowMargin(Graphics g, List<Cell> rowList, int startxCo, int startyCo, CellVisualisationSettings setting, int width, int offsetHorizontal, int margin){
+
+        int i = 0;
+        int ogStartxCo = startxCo;
+        List<Integer> widthList = setting.getWidthList();
+        int tempWidth = widthList.get(i);
+
+
+        boolean cutCollumn = false;
+
+        //Iterate over cells
+        for(Cell rowItem : rowList){
+            //ALS cellcollumn volledig verdwenen is
+            if(offsetHorizontal > 0 && offsetHorizontal  - widthList.get(i) >=0 ){
+                offsetHorizontal -= widthList.get(i);
+            }
+            //deel van collum is verdwenen
+            else if(offsetHorizontal > 0 && offsetHorizontal  - widthList.get(i) < 0 ){
+                //Nieuwe breedte is nu window tot nieuwe collumn
+                int newWidth = widthList.get(i) - offsetHorizontal;
+
+                paintCell(newWidth - margin,g,startxCo,startyCo,rowItem);
+                startxCo += newWidth;
+                offsetHorizontal -= widthList.get(i);
+
+                tempWidth =newWidth;
+                tempWidth += widthList.get(i+1);
+
+            }
+
+
+            //ALS opgetelde breedte nog niet breder als windowbreedte is
+            else if(tempWidth < width - 50 ){
+                paintCell(widthList.get(i)-margin,g,startxCo,startyCo,rowItem);
+
+                startxCo = startxCo + widthList.get(i) ;
+                if(i != rowList.size()-1){
+                    tempWidth += widthList.get(i+1);}
+
+            }else if(!cutCollumn){
+                int newWidth =  (width + ogStartxCo) - startxCo;
+                paintCell(newWidth-margin,g,startxCo,startyCo,rowItem);
+                startxCo = startxCo + widthList.get(i);
+                cutCollumn = true;
+            }
+            i++;
+        }
+
+
+    }
 
     /**
      * Method that paints the border around the subwindow and the title bar.

@@ -1,9 +1,10 @@
 package paintModule;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
-import Data.Table;
+import Data.*;
 import settings.CellVisualisationSettings;
 import settings.scrollbar;
 
@@ -33,7 +34,6 @@ public class TableModePaintModule extends PaintModule {
          int offset = (int) ((heigth-titleHeight) * scrollbar.getOffsetpercentageVertical());
 
          if (offset <= 0 ){
-        
             //paint the header
             paintHeader(g, startXco, startYco, offset, widthCells, offsetHorizontal, "Name");
              int xCo = startXco;
@@ -48,10 +48,21 @@ public class TableModePaintModule extends PaintModule {
         for(Table tableItem : tableList){
             if(tempHeight < (height-10  ) && tempHeight >= 0){
 
-                this.paintRectTextOff(g,startXco, startYco - offset , widthCells - offsetHorizontal,cellHeight, tableItem.getTableName(), offsetHorizontal/4 );
-                int xCo = startXco;
-                xCo += widthCells + colMargin;
-                this.paintRectTextOff(g, xCo, startYco - offset, widthList.get(1) - offsetHorizontal, cellHeight, tableItem.getQuery(), offsetHorizontal/4);
+               // this.paintRectTextOff(g,startXco, startYco - offset , widthCells - offsetHorizontal,cellHeight, tableItem.getTableName(), offsetHorizontal/4 );
+                //int xCo = startXco;
+                //xCo += widthCells + colMargin;
+                //this.paintRectTextOff(g, xCo, startYco - offset, widthList.get(1) - offsetHorizontal, cellHeight, tableItem.getQuery(), offsetHorizontal/4);
+               CellText cellName = new CellText( tableItem.getTableName());
+               CellText cellQuery = new CellText(tableItem.getQuery());
+
+               List<Cell> listCell = new ArrayList<>();
+               listCell.add(cellName);
+               listCell.add(cellQuery);
+               this.paintRowMargin(g,listCell,startXco,startYco,setting,width,offsetHorizontal,5);
+
+
+
+
                 startYco = startYco + cellHeight;
                 tempHeight += cellHeight;
             }
