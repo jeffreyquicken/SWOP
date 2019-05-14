@@ -16,7 +16,7 @@ class SQLParserTest {
 	@Test
 	void test() {
 		//assertRoundTrip("SELECT movie.title AS title FROM movies AS movie WHERE movie.imdb_score > 7");
-		Query query = parseQuery("SELECT movie.title AS title FROM movies AS movie WHERE movie.imdb_score > 7");
+		Query query = parseQuery("SELECT movie.title AS title FROM movies AS movie WHERE TRUE");
 		System.out.println(query);
 
 	//	assertRoundTrip("SELECT student.name AS name, student.program AS program" +

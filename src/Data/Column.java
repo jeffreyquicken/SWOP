@@ -63,6 +63,7 @@ public class Column {
     /**
      * Method to get basic column info
      * @return list with name,default value, type and if blanks are allowed
+     *
      */
     public List<Cell>  getInfo(){
         List<Cell> info = new ArrayList<>();

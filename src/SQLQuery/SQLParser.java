@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
 import java.util.HashMap;
+import java.util.List;
 
 public class SQLParser extends StreamTokenizer {
 
@@ -200,12 +201,15 @@ public class SQLParser extends StreamTokenizer {
 			expect(TT_AS);
 			String colName = expectIdent();
 			qColID = e;
+			String tableName;
+			String id;
+			tableName = e.split("\\.")[0];
+			id = e.split("\\.")[1];
 			result.append(e + " AS " + colName);
 			//ADD SELECT
-			query.getSelectClause().addSelectClause(e);
+			query.getSelectClause().addSelectItem(tableName, id, colName);
 
-			//ADD AS CLAUSES
-			query.getAsClause().addAsClause(e, colName);
+
 
 			if (ttype == ',') {
 				nextToken();
@@ -222,10 +226,8 @@ public class SQLParser extends StreamTokenizer {
 			String rowId = expectIdent();
 			result.append(tableName + " AS " + rowId);
 			//ADD FROM
-			query.getFromClause().addFromClause(tableName);
-			//ADD AS CLAUSE
-			query.getAsClause().addAsClause(tableName, rowId);
-			
+			query.getFromClause().addFromClause(tableName, rowId);
+
 		}
 		while (ttype == TT_INNER) {
 			nextToken();
@@ -241,9 +243,19 @@ public class SQLParser extends StreamTokenizer {
 		}
 		expect(TT_WHERE);
 		String cond = parseExpr();
+		String[] split;
+		split = cond.split("\\s+");
+		if (split.length == 1){
+			//EXPRESSION (WHERE TRUE)
+			query.getWhereClause().addWhereClause("","","",split[0]);
+		}
+		else{
+			//Expression with condition (WHERE movie.imdb_score > 7)
+			String[] splitted;
+			splitted = split[0].split("\\.");
+			query.getWhereClause().addWhereClause(splitted[0], splitted[1], split[1], split[2]);
+		}
 		result.append(" WHERE " + cond);
-		//ADD WHERE CLAUSE
-		query.getWhereClause().addWhereClause(cond);
 
 
 		System.out.println(result);

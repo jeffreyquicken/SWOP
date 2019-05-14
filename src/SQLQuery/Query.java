@@ -1,23 +1,23 @@
 package SQLQuery;
 
+import Data.Column;
+import Data.Table;
+import Data.dataController;
+
 /**
  * Class with query attributes
  */
 public class Query {
-    private asClause asClause = new asClause();
+
     private fromClause fromClause = new fromClause();
     private selectClause selectClause = new selectClause();
     private whereClause whereClause = new whereClause();
 
 
 
-    public SQLQuery.asClause getAsClause() {
-        return asClause;
-    }
 
-    public void setAsClause(SQLQuery.asClause asClause) {
-        this.asClause = asClause;
-    }
+
+
 
     public SQLQuery.fromClause getFromClause() {
         return fromClause;
@@ -44,6 +44,19 @@ public class Query {
     }
 
 
+    public Table getComputedTable(dataController data){
+        Table selectedTable = this.fromClause.getTable(data);
+        Column selectedColumn;
+        for (Column column:selectedTable.getColumnNames()){
+            if (column.getName().equals(this.selectClause.getSelectClauses().get(0).getAs().getId())){
+                selectedColumn = column;
+            }
+            else{
+                return null;
+            }
+        }
+        Column exprColumn;
+    }
 
 
 
