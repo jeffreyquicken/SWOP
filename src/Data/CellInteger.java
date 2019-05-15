@@ -2,30 +2,36 @@ package Data;
 
 /**
  * Cell Class for integer values. Inherits from Cell Superclass
+ * 
+ * 
+ * @invar  The value of this class must always be a valid integer.
+ *       | this.getValue() instanceof Integer
  */
 public class CellInteger implements CellEditable<Integer>{
     protected Integer value;
     private final String type = "Integer";
     
+    /**
+	 * Initialize CellInteger with given value.
+	 *
+	 * @param  arg
+	 *         The value contained by the newly created CellInteger Object.
+	 * @effect A CellInteger is initialized with the given arg as its value
+	 * 		 | this.setValue(value)
+	 */
     public CellInteger(Integer arg){
     	this.setValue(arg);
     }
 
     
-	 public Integer getValue(){
+	public Integer getValue(){
 	        return value;
 	    }
 
 	
 	public void setValue(Integer value){
-            setNumber(value);
+        this.value = value;
     }
-	
-	public void setNumber(Integer number) {
-	        this.value = number;
-	    }
-
-
 	
 	public String getType() {
 		return this.type;
@@ -33,7 +39,10 @@ public class CellInteger implements CellEditable<Integer>{
 
 	/**
 	 * Method that adds a character to the value
-	 * @param keyChar the character to be added
+	 * @param keyChar
+	 * 		  the character to be added
+	 * @effect The value the character is appended to the end of the value
+	 * 		   | new.value = parseInt(value.toString() + keyChar)
 	 */
 	public void addChar(char keyChar) {
     	this.setValue(Integer.parseInt(this.getValue().toString() + keyChar));
@@ -41,6 +50,8 @@ public class CellInteger implements CellEditable<Integer>{
 
 	/**
 	 * Method that deletes the last character from the value
+	 * @effect The value is treated as a string and the last character is deleted
+	 * 		   | new.value == value.toString.substring(length() -1)
 	 */
 	public void delChar() {
     	String stringValue = this.getValue().toString();
@@ -50,8 +61,8 @@ public class CellInteger implements CellEditable<Integer>{
 	/**
 	 * Method that returns the value as string
 	 * @return the value as a string
-	 */
-	@Override
+	 * 		   | result == value.toString()
+	 */		   
 	public String getString(){
 		return value.toString();
 	}

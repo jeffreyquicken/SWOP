@@ -9,38 +9,27 @@ import settings.CellVisualisationSettings;
  * Class for tables
  */
 public class Table {
-    /**
-     * Name of the table
-     */
     private String tableName;
-
     /**
      * Rows of the table
      */
     private List<Row> tableRows;
-
     /**
      * List with names of the column
      */
     private List<Column> columnNames;
-
     /**
      * settings for row module
      */
     private CellVisualisationSettings rowSetting;
-
     /**
      * settings for design module
      */
     private CellVisualisationSettings designSetting;
-
-
-
     /**
      * settings for form module
      */
     private CellVisualisationSettings formSetting;
-
     /**
      * Query string that affects the table.
      */
