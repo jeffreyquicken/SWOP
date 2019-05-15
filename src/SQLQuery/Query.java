@@ -47,15 +47,38 @@ public class Query {
     public Table getComputedTable(dataController data){
         Table selectedTable = this.fromClause.getTable(data);
         Column selectedColumn;
+        Column exprColumn;
         for (Column column:selectedTable.getColumnNames()){
             if (column.getName().equals(this.selectClause.getSelectClauses().get(0).getAs().getId())){
                 selectedColumn = column;
+            }
+            else if(column.getName().equals(this.whereClause.getId())){
+                exprColumn = column;
             }
             else{
                 return null;
             }
         }
-        Column exprColumn;
+        switch (this.whereClause.getOperator()) {
+            case "<":
+                System.out.println("> - operator");
+            case ">":
+                System.out.println("< - operator");
+            case "=":
+                System.out.println("= - operator");
+            case "OR":
+                System.out.println("OR - operator");
+            case "AND":
+                System.out.println("AND - operator");
+            case "+":
+                System.out.println("+ - operator");
+            case "-":
+                System.out.println("- - operator");
+
+        }
+
+
+        return null;
     }
 
 
