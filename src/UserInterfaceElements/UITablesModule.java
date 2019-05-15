@@ -2,6 +2,7 @@ package UserInterfaceElements;
 
 import Data.Table;
 import Data.dataController;
+import SQLQuery.Query;
 import UndoRedo.Command;
 import UndoRedo.NewTable;
 import UndoRedo.TableName;
@@ -13,6 +14,8 @@ import settings.CellVisualisationSettings;
 import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
+
+import static SQLQuery.SQLParser.parseQuery;
 
 public class UITablesModule extends UISuperClass{
 	
@@ -62,6 +65,9 @@ public class UITablesModule extends UISuperClass{
         }
         //check if leftmargin is clicked
         else if(isClickedLeftMargin(xCo, yCo, data, widthList)) {
+                Query query = parseQuery("SELECT movie.title AS title FROM movies AS movie WHERE movie.imdb_score > 7");
+                Table computedTable = query.getComputedTable(data);
+                System.out.println(computedTable);
             currMode = "delete";
             activeCell = clickedCell;
         }
@@ -142,6 +148,19 @@ public class UITablesModule extends UISuperClass{
 	 */
 	private String handleDoubleClickOnCell(int ID, dataController data, String nextUImode, int[] clickedCell) {
 		data.setSelectedTable(data.getTableList().get(clickedCell[0]));
+
+        if(!data.getSelectedTable().getQuery().equals("")){
+            nextUImode = "row";
+            //Query query = parseQuery("SELECT movie.title AS title FROM movies AS movie WHERE movie.imdb_score < 7");
+            Query query = parseQuery(data.getSelectedTable().getQuery());
+            Table computedTable = query.getComputedTable(data);
+            System.out.println(computedTable);
+            data.getTableList().add(computedTable);
+            data.setSelectedTable(computedTable);
+
+        }
+
+
 		if((data.getSelectedTable().getColumnNames().size() == 0) && (ID == 502)){
 		    nextUImode = "design";
 		}else if (ID == 502) {
@@ -409,6 +428,10 @@ public class UITablesModule extends UISuperClass{
     @Override
     protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){
         String nextUIMode = "";
+
+
+
+
         if (keyCode == 17){
             ctrlPressed = true;
         }
@@ -451,6 +474,9 @@ public class UITablesModule extends UISuperClass{
         List<String> result = new ArrayList<>();
         result.add(currMode);
         result.add("");
+
+
+
         return result;
     }
     
