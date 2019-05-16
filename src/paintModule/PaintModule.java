@@ -20,6 +20,17 @@ public class PaintModule {
     protected int cellWidth = 100;
     protected int titleHeight = 15;
 
+    //MINIMUM VALUES
+    protected int minCellWidth = 80;
+    protected int cellLeftMargin = 10;
+    protected int cellTopMargin = 5;
+    protected int titleX = 10;
+    protected int titleY = 10;
+    protected int xCoStart = 30 ;
+    protected int yCoStart = 30;
+    
+    private  int margin = 30;
+
 
     public int getMinCellWidth() {
         return minCellWidth;
@@ -29,15 +40,6 @@ public class PaintModule {
         this.minCellWidth = minCellWidth;
     }
 
-    //MINIMUM VALUES
-    protected int minCellWidth = 80;
-    protected int cellLeftMargin = 10;
-    protected int cellTopMargin = 5;
-    protected int titleX = 10;
-    protected int titleY = 10;
-    protected int xCoStart = 30 ;
-    protected int yCoStart = 30;
-
     public int getMargin() {
         return margin;
     }
@@ -46,7 +48,6 @@ public class PaintModule {
         this.margin = margin;
     }
 
-    private  int margin = 30;
 
 
     public void paintCell(int newWidth, Graphics g, int startxCo, int startyCo, Cell rowItem){
@@ -89,8 +90,6 @@ public class PaintModule {
         int ogStartxCo = startxCo;
         List<Integer> widthList = setting.getWidthList();
         int tempWidth = widthList.get(i);
-
-
         boolean cutCollumn = false;
 
         //Iterate over cells
@@ -105,19 +104,17 @@ public class PaintModule {
                 int newWidth = widthList.get(i) - offsetHorizontal;
 
                paintCell(newWidth,g,startxCo,startyCo,rowItem);
+               
                 startxCo += newWidth;
                 offsetHorizontal -= widthList.get(i);
-
                 tempWidth =newWidth;
                 tempWidth += widthList.get(i+1);
-
             }
-
-
+            
             //ALS opgetelde breedte nog niet breder als windowbreedte is
             else if(tempWidth < width - 50 ){
                 paintCell(widthList.get(i),g,startxCo,startyCo,rowItem);
-
+                
                 startxCo = startxCo + widthList.get(i) ;
                 if(i != rowList.size()-1){
                 tempWidth += widthList.get(i+1);}
@@ -125,13 +122,14 @@ public class PaintModule {
             }else if(!cutCollumn){
                 int newWidth =  (width + ogStartxCo) - startxCo;
                 paintCell(newWidth,g,startxCo,startyCo,rowItem);
+                
                 startxCo = startxCo + widthList.get(i);
                 cutCollumn = true;
+                
+                
             }
             i++;
         }
-
-
         }
 
     /**
@@ -149,8 +147,6 @@ public class PaintModule {
         int ogStartxCo = startxCo;
         List<Integer> widthList = setting.getWidthList();
         int tempWidth = widthList.get(i);
-
-
         boolean cutCollumn = false;
 
         //Iterate over cells
@@ -165,15 +161,13 @@ public class PaintModule {
                 int newWidth = widthList.get(i) - offsetHorizontal;
 
                 paintCell(newWidth - margin,g,startxCo,startyCo,rowItem);
+                
                 startxCo += newWidth;
                 offsetHorizontal -= widthList.get(i);
-
                 tempWidth =newWidth;
                 tempWidth += widthList.get(i+1);
 
             }
-
-
             //ALS opgetelde breedte nog niet breder als windowbreedte is
             else if(tempWidth < width - 50 ){
                 paintCell(widthList.get(i)-margin,g,startxCo,startyCo,rowItem);
@@ -185,6 +179,7 @@ public class PaintModule {
             }else if(!cutCollumn){
                 int newWidth =  (width + ogStartxCo) - startxCo;
                 paintCell(newWidth-margin,g,startxCo,startyCo,rowItem);
+                
                 startxCo = startxCo + widthList.get(i);
                 cutCollumn = true;
             }
@@ -318,12 +313,21 @@ public class PaintModule {
             else if(offsetHorizontal < widthList.get(i) ){
                 xCoord += (widthList.get(i) - offsetHorizontal);
                 offsetHorizontal =0;
-
             }
-
-
         }
-        int yCoord = -1;
+        int yCoord = getYFromOffset(x, offsetVertical);
+
+        int[] result = {xCoord,yCoord};
+        return result;
+    }
+
+	/**
+	 * @param x
+	 * @param offsetVertical
+	 * @return yCoord 
+	 */
+	private int getYFromOffset(int x, int offsetVertical) {
+		int yCoord = -1;
         if(offsetVertical <=0 ){
              yCoord = this.getyCoStart() + x*this.getCellHeight();
         }
@@ -335,12 +339,8 @@ public class PaintModule {
             }
              yCoord = this.getyCoStart() + (x - i)*this.getCellHeight();
         }
-
-
-
-        int[] result = {xCoord,yCoord};
-        return result;
-    }
+		return yCoord;
+	}
 
     //Simple method that draws a title in left upper corner
 
@@ -440,7 +440,6 @@ public class PaintModule {
         } else {
             myColor1 = new Color(240,248,255);
         }
-
         g.setColor(myColor1);
         g.fillRect(xCo,yCo,width,titleHeight);
         g.setColor(Color.BLACK);
@@ -493,7 +492,8 @@ public class PaintModule {
         Color myColor = new Color(153, 153, 255);
         g.setColor(myColor);
         g.fillRect(xCo+1, offset+1, 9,height -1);
-        g.setColor(Color.BLACK);}
+        g.setColor(Color.BLACK);
+    }
 
 
 

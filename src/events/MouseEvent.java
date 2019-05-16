@@ -100,7 +100,6 @@ public class MouseEvent {
      */
     private int getColumnByClickCoordinates(int xCo, int firstX, List<Integer> widthList, int offsetHorizontal) {
         int colID = -1;
-
         int tempWidth = firstX;
 
         for(int i = 0; i< widthList.size(); i++) {
@@ -119,8 +118,6 @@ public class MouseEvent {
                 tempWidth += widthList.get(i) - offsetHorizontal;
                 offsetHorizontal =0;
             }
-
-
         }
         return colID;
     }
@@ -148,8 +145,6 @@ public class MouseEvent {
                 offsetVertical -= height;
                // offsetVertical =0;
             }
-
-
         }
         return rowID;
     }

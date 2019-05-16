@@ -76,6 +76,7 @@ public class Table {
     /**
      * Initiates a table object with a given name and creates th right settings objects for that table
      * @param name  the name of the table
+     * @effect initializes the Table with the given name and standard values
      */
     public Table(String name){
         tableRows = new ArrayList<Row>();
@@ -142,7 +143,6 @@ public class Table {
     }
 
     public Table getComputedTable(dataController data){
-
         //Query query = parseQuery("SELECT movie.title AS title FROM movies AS movie WHERE movie.imdb_score < 7");
         Query query = parseQuery(this.getQuery());
         Table computedTable = query.getComputedTable(data);
