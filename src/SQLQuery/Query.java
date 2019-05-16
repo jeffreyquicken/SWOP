@@ -48,27 +48,35 @@ public class Query {
     public Table getComputedTable(dataController data){
         Table selectedTable = this.fromClause.getTable(data);
         Table resultTable = new Table("Computed: " + selectedTable.getTableName());
-        Column selectedColumn = null;
+        List<Column> selectedColumn = new ArrayList<>();
         Column exprColumn;
         String condition = this.whereClause.getCondition();
-        int indexSelectedColumn = -1;
+        List<Integer> indexSelectedColumn = new ArrayList<>();
         int indexExprColumn = -1;
         int i =0;
         for (Column column:selectedTable.getColumnNames()){
+            for (int j = 0; j<this.selectClause.getSelectClauses().size(); j++){
+                if (column.getName().equals(this.selectClause.getSelectClauses().get(j).getAs().getId())){
+                    Column col = new Column(column.getName(), column.getDefaultV(), column.getType(), column.getBlanksAllowed());
+                    selectedColumn.add(col);
+                    indexSelectedColumn.add(i);
+                }
 
-            if (column.getName().equals(this.selectClause.getSelectClauses().get(0).getAs().getId())){
-                selectedColumn = column;
-                indexSelectedColumn = i;
             }
-            else if(column.getName().equals(this.whereClause.getId())){
-                exprColumn = column;
+            if(column.getName().equals(this.whereClause.getId())){
+                exprColumn = new Column(column.getName(), column.getDefaultV(), column.getType(), column.getBlanksAllowed());
                 indexExprColumn = i;
             }
             i++;
 
         }
-        resultTable.addColumn(selectedColumn);
-        resultTable.getColumnNames().get(0).setName(this.selectClause.getSelectClauses().get(0).getAs().getAlias());
+        int j = 0;
+        for (Column addCol:selectedColumn) {
+            resultTable.addColumn(addCol);
+            resultTable.getColumnNames().get(j).setName(this.selectClause.getSelectClauses().get(j).getAs().getAlias());
+            j++;
+        }
+
         switch (this.whereClause.getOperator()) {
             case "<":
                 System.out.println("> - operator");
@@ -89,11 +97,22 @@ public class Query {
         for (Row row:selectedTable.getTableRows()){
             if (Integer.parseInt(row.getColumnList().get(indexExprColumn).getString()) > Integer.parseInt(condition) ){
                 List<Column> addColumns = new ArrayList<>();
-                addColumns.add(selectedColumn);
+                int k = 0;
+                for (Column addCol:selectedColumn) {
+                    addColumns.add(addCol);
+
+
+                    k++;
+                }
                 Row resultRow = new Row(addColumns);
-                CellText cell = new CellText(row.getColumnList().get(indexSelectedColumn).getString());
-                resultRow.setColumnCell(0, cell);
+                int m = 0;
+                for (int l:indexSelectedColumn) {
+                    CellText cell = new CellText(row.getColumnList().get(l).getString());
+                    resultRow.setColumnCell(m, cell);
+                    m++;
+                }
                 resultTable.addRow(resultRow);
+
             }
         }
 
