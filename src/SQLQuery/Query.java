@@ -47,7 +47,7 @@ public class Query {
 
     public Table getComputedTable(dataController data){
         Table selectedTable = this.fromClause.getTable(data);
-        Table resultTable = new Table("Computed: " + selectedTable.getTableName());
+        Table resultTable = new Table("Computed: ");
         List<Column> selectedColumn = new ArrayList<>();
         Column exprColumn;
         String condition = this.whereClause.getCondition();

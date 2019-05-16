@@ -91,8 +91,8 @@ public class Controller {
                     topLevelWindow.addSubWindow(rowModule);
                 }
                 else if (tableDataController.getSelectedTable().getQuery().length() > 0){
-                    UIRowModule rowModule = new UIRowModule(tableDataController.computeTable("shfhsgf"));
-                    topLevelWindow.addSubWindow(rowModule);
+                    UIComputedModule computeModule = new UIComputedModule(tableDataController.getSelectedTable().getComputedTable(tableDataController));
+                    topLevelWindow.addSubWindow(computeModule);
                 }
             }
             else if(nextUIMode.equals("design")){

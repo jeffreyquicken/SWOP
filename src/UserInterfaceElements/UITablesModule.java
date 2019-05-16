@@ -48,6 +48,7 @@ public class UITablesModule extends UISuperClass{
 
         //EVENT DOUBLE CLICKS UNDER TABLE
         if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getLowestY(30)) ) {
+            data.getSelectedTable().setQuery("SELECT movie.title AS titles FROM movies AS movie WHERE movie.score < 7");
             handleDoubleClickUnderTable(data);
         }
         //EVENT CLICK CELL
@@ -151,12 +152,7 @@ public class UITablesModule extends UISuperClass{
 
         if(!data.getSelectedTable().getQuery().equals("")){
             nextUImode = "row";
-            //Query query = parseQuery("SELECT movie.title AS title FROM movies AS movie WHERE movie.imdb_score < 7");
-            Query query = parseQuery(data.getSelectedTable().getQuery());
-            Table computedTable = query.getComputedTable(data);
-            System.out.println(computedTable);
-            data.getTableList().add(computedTable);
-            data.setSelectedTable(computedTable);
+
 
         }
 

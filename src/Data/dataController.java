@@ -134,15 +134,7 @@ public class dataController {
 
     }
 
-    /**
-     * Method that computes a table based on a given query
-     * @param query the query to be used when computing the table
-     * @return the computed table
-     */
-    public Table computeTable(String query){
-       Table table = new Table("computed table: " + selectedTable.getTableName());
-       return table;
-    }
+
 
     public CellVisualisationSettings getSetting(){
         return setting;

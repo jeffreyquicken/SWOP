@@ -3,7 +3,10 @@ package Data;
 import java.util.ArrayList;
 import java.util.List;
 
+import SQLQuery.Query;
 import settings.CellVisualisationSettings;
+
+import static SQLQuery.SQLParser.parseQuery;
 
 /**
  * Class for tables
@@ -137,6 +140,18 @@ public class Table {
     public CellVisualisationSettings getDesignSetting() {
         return designSetting;
     }
+
+    public Table getComputedTable(dataController data){
+
+        //Query query = parseQuery("SELECT movie.title AS title FROM movies AS movie WHERE movie.imdb_score < 7");
+        Query query = parseQuery(this.getQuery());
+        Table computedTable = query.getComputedTable(data);
+        System.out.println(computedTable);
+        data.getTableList().add(computedTable);
+        return computedTable;
+
+    }
+
 
 
 }
