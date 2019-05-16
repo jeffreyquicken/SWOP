@@ -3,6 +3,9 @@ package SQLQuery;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for where clauses
+ */
 public class whereClause {
     private String tableName;
 

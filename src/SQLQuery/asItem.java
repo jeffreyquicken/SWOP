@@ -1,5 +1,8 @@
 package SQLQuery;
 
+/**
+ * Class for asItems (movies.title AS title). It stores the id and the alias of the item
+ */
 public class asItem {
 
     private String id;

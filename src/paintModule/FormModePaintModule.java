@@ -18,10 +18,7 @@ public class FormModePaintModule extends PaintModule{
      * @param g graphics object
      * @param table table for which form view has to be painted
      */
-    /*
-     * TO REFACTOR
-     * too long
-     */
+    //todo REFACTOR ASAP
     public void paintFormView(Graphics g, Table table, int rowIndex, int startXco, int startYco, CellVisualisationSettings setting, int width, int height, scrollbar scrollbar, int windowHeight, int sum){
         //Vertical offset
         int offset = (int) ((windowHeight-titleHeight) * scrollbar.getOffsetpercentageVertical());

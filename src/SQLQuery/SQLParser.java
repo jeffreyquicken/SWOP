@@ -10,6 +10,9 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Class for parsing an sql query into its broken down attribute objects
+ */
 public class SQLParser extends StreamTokenizer {
 
 	private String qRowID;

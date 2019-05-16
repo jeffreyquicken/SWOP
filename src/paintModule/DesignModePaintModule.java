@@ -1,6 +1,6 @@
 package paintModule;
 
-import java.awt.Color;
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.List;
@@ -20,17 +20,15 @@ public class DesignModePaintModule extends PaintModule {
      * @param g graphics object
      * @param table table for which design view has to be painted
      */
-     /*
-      * TO REFACTOR
-      * too long
-      */
+
+     //todo REFACTOR ASAP
     public void paintDesignView(Graphics g, Table table, int startXco, int startYco, CellVisualisationSettings setting, int width, int height, scrollbar scrollbar, int windowHeight, int sum){
     	//Vertical offset
         int offset = (int) ((windowHeight-titleHeight) * scrollbar.getOffsetpercentageVertical());
         //Horizontal offset
         int offsetHorizontal = (int) (sum * scrollbar.getOffsetpercentageHorizontal());
         int headerXco = startXco;
-        int headerYco = startYco - cellHeight/2;;
+        int headerYco = startYco - cellHeight/2;
         List<Integer> widthList = setting.getWidthList();
         Font currentFont = g.getFont();
         Font newFont = currentFont.deriveFont(currentFont.getSize() * 0.9F);

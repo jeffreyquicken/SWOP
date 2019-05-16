@@ -3,7 +3,14 @@ package SQLQuery;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for select clauses
+ */
 public class selectClause {
+
+    /**
+     * List with selectItems for querieq with multiple AS statements
+     */
     private List<selectItem> selectClauses = new ArrayList<>();
 
     public  List<selectItem> getSelectClauses(){

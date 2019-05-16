@@ -11,6 +11,9 @@ import settings.scrollbar;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Superclass that handles the painting.
+ */
 public class PaintModule {
     //DEFAULT VALUES
 	protected int cellHeight = 20;

@@ -3,6 +3,9 @@ package SQLQuery;
 import Data.Table;
 import Data.dataController;
 
+/**
+ * Class for select items. It stores the table name, column id and column alias.
+ */
 public class selectItem {
 
 

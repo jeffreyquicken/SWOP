@@ -6,7 +6,14 @@ import Data.dataController;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for from clauses of a query
+ */
 public class fromClause {
+
+    /**
+     * List with asItems for queries with multiple AS statements
+     */
     private List<asItem> fromClauses = new ArrayList<>();
     public  List<asItem> getFromClauses(){
 
