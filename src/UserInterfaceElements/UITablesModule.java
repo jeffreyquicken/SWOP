@@ -1,5 +1,6 @@
 package UserInterfaceElements;
 
+import Data.Column;
 import Data.Table;
 import Data.dataController;
 import SQLQuery.Query;
@@ -325,8 +326,83 @@ public class UITablesModule extends UISuperClass{
      * @return whether the query is valid
      */
     public boolean queryIsValid(String query, dataController data){
-        return true; //TODO validator
+        if (query.length() == 0){return true;}
+        try {
+            validSQLSyntax(query);
+            Query queryToCheck = parseQuery(query);
+            Table queryTable = tableExists(queryToCheck, data);
+            columnsExist(queryToCheck,queryTable);
+        }
+        catch (IllegalArgumentException e){
+            return false;
+        }
+
+        return true;
     }
+
+    /**
+     * Method that checks the syntactic validity of a query
+     * @param query the query to be checked
+     * @return whether the query is valid
+     * @throws IllegalArgumentException the query is not valid
+     */
+    public void validSQLSyntax(String query) throws IllegalArgumentException{
+        try {
+            Query parsedQuery = parseQuery(query);
+
+        } catch (Exception e){
+            throw new IllegalArgumentException("Query not valid");
+        }
+    }
+
+    /**
+     * Method that checks if a queried table existst
+     * @param query the query to be checked
+     * @param data the datacontroller
+     * @return the queried table if it exists
+     * @throws IllegalArgumentException when the queried table does not exist
+     */
+    public Table tableExists(Query query, dataController data) throws IllegalArgumentException{
+        try {
+            Table selectedTable = query.getFromClause().getTable(data);
+            if (selectedTable == null){
+                throw new IllegalArgumentException("Table does not exist");
+            }
+            return selectedTable;
+        } catch (Exception e){
+            throw new IllegalArgumentException("Error with queried table");
+        }
+    }
+
+    public void columnsExist(Query query, Table table) throws IllegalArgumentException{
+        try {
+            int columnCounter = 0;
+            int indexExprColumn = -1;
+            int i =0;
+            for (Column column:table.getColumnNames()){
+                for (int j = 0; j<query.getSelectClause().getSelectClauses().size(); j++){
+                    if (column.getName().equals(query.getSelectClause().getSelectClauses().get(j).getAs().getId())){
+                        columnCounter++;
+                    }
+
+                }
+                if(column.getName().equals(query.getWhereClause().getId())){
+                    indexExprColumn = i;
+                }
+                i++;
+
+            }
+            if (indexExprColumn == -1){
+                throw new IllegalArgumentException("Expression column does not exist");
+            }
+            else if (columnCounter != query.getSelectClause().getSelectClauses().size()){
+                throw  new IllegalArgumentException("One or more select columns do not exist");
+            }
+        } catch (Exception e){
+            throw new IllegalArgumentException("Error with queried columns");
+        }
+    }
+
 
    
     /*

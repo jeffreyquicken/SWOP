@@ -31,7 +31,7 @@ public class fromClause {
         fromClauses.add(item);
     }
 
-    public Table getTable(dataController data){
+    public Table getTable(dataController data) throws IllegalArgumentException{
         for (Table table:data.getTableList()){
             if (table.getTableName().equals(this.fromClauses.get(0).getId())){
                 return table;
