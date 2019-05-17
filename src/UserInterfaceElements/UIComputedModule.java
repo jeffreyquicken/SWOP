@@ -1,6 +1,7 @@
 package UserInterfaceElements;
 
 import Data.*;
+import SQLQuery.Query;
 import UndoRedo.Command;
 import UndoRedo.NewRow;
 import UndoRedo.RowValue;
@@ -13,6 +14,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static SQLQuery.SQLParser.parseQuery;
+
 public class UIComputedModule extends UISuperClass{
     private RowModePaintModule paintModule;
     private events.MouseEvent mouseEventHandler;
@@ -21,12 +24,31 @@ public class UIComputedModule extends UISuperClass{
     private String currMode = "normal";
     private Cell oldValue;
 
+    public String getQuery() {
+        return Query;
+    }
+
+    public void setQuery(String query) {
+        Query = query;
+    }
+
+    private String Query;
+
 
     private int[] activeCell;
     private Cell<?> tempText;
     private Boolean invalidInput = false;
     private int draggedColumn;
     private int draggedX;
+
+    public Table getTable() {
+        return table;
+    }
+
+    public void setTable(Table table) {
+        this.table = table;
+    }
+
     private Table table;
 
     public int[] getActiveCell() {
@@ -135,6 +157,9 @@ public class UIComputedModule extends UISuperClass{
 
 
     public void paint(Graphics g, dataController data, Integer[] coords, Integer[] dimensions) {
+
+        recomputeTable(data);
+
         List<Integer> widthList = table.getRowSetting().getWidthList();
         int sum = widthList.stream().mapToInt(Integer::intValue).sum();
         paintWindowBasics(g, data, coords, dimensions, sum);
@@ -177,8 +202,20 @@ public class UIComputedModule extends UISuperClass{
     }
 
 
+    public void recomputeTable(dataController data){
 
+        this.setTable(this.getComputedTable(data));
 
+    }
+
+    public Table getComputedTable(dataController data){
+
+        //Query query = parseQuery("SELECT movie.title AS title FROM movies AS movie WHERE movie.imdb_score < 7");
+        SQLQuery.Query query = parseQuery("SELECT movie.title AS title FROM movies AS movie WHERE movie.score > 7");
+        Table computedTable = query.getComputedTable(data);
+        return computedTable;
+
+    }
 
     //TODO JEFFREY an WOUT locate to UISUPERCLASS
     /*

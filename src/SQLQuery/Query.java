@@ -95,13 +95,13 @@ public class Query {
 
         }
         for (Row row:selectedTable.getTableRows()){
-            if (Integer.parseInt(row.getColumnList().get(indexExprColumn).getString()) > Integer.parseInt(condition) ){
+            String leftExpr = row.getColumnList().get(indexExprColumn).getString();
+            String rightExpr = condition;
+            if (isNumeric(leftExpr) && isNumeric(rightExpr) && Integer.parseInt(leftExpr) > Integer.parseInt(condition) ){
                 List<Column> addColumns = new ArrayList<>();
                 int k = 0;
                 for (Column addCol:selectedColumn) {
                     addColumns.add(addCol);
-
-
                     k++;
                 }
                 Row resultRow = new Row(addColumns);
@@ -119,6 +119,19 @@ public class Query {
         return resultTable;
     }
 
+    /**
+     * Method to check if a string is a number
+     * @param toCheck the string to check
+     * @throws NumberFormatException the input string is not a number
+     */
+    public boolean isNumeric(String toCheck) throws NumberFormatException{
+        try {
+            Double.parseDouble(toCheck);
+            return true;
+        } catch (Exception e){
+           return false;
+        }
+    }
 
 
 
