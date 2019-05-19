@@ -232,29 +232,44 @@ public class UITablesModule extends UISuperClass{
         CellVisualisationSettings setting;
         setting = data.getSetting();
         List<Integer> widthList = setting.getWidthList();
-
         paintWindowBasics(g, data, coords, dimensions, setting);
- 
         //Check mode
         if (currMode == "edit" ) {
-            int[] coords1 = paintModule.getCellCoords(activeCell[0] , activeCell[1] , widthList, scrollbar, dimensions[1] );
-                paintModule.paintCursor(g, coords1[0] + coords[0],
-                        coords1[1] + coords[1], widthList.get(activeCell[1]),
-                        paintModule.getCellHeight(), tempText);
-
+          paintEditMode(g,widthList,dimensions,coords);
         }
         //check if there are warnings
         if (invalidInput || currMode == "delete") {
-            int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList, scrollbar, dimensions[1]);
-            paintModule.paintBorder(g, coords[0] + coords1[0],
-                    coords[1] + coords1[1],  widthList.get(activeCell[1]),
-                    paintModule.getCellHeight(), Color.RED);
+          paintDeleteMode(g,widthList,dimensions,coords);
         } else {
             paintModule.setColor(g, Color.BLACK);
         }
         //paintModule.paintBorder(g,paintModule.getxCoStart(), paintModule.getyCoStart(), 80, 20, "red");
     }
 
+    /**
+     * Method that paint when the user is editing
+     * @param g graphics
+     * @param widthList widthlist
+     * @param dimensions dimensions
+     * @param coords coordinates
+     */
+    private void paintEditMode(Graphics g, List<Integer> widthList, Integer[] dimensions, Integer[] coords){
+        int[] coords1 = paintModule.getCellCoords(activeCell[0] , activeCell[1] , widthList, scrollbar, dimensions[1] );
+        paintModule.paintCursor(g, coords1[0] + coords[0], coords1[1] + coords[1], widthList.get(activeCell[1]) - 5, paintModule.getCellHeight(), tempText);
+    }
+    /**
+     * Method that paint when the user is editing
+     * @param g graphics
+     * @param widthList widthlist
+     * @param dimensions dimensions
+     * @param coords coordinates
+     */
+    private void paintDeleteMode(Graphics g, List<Integer> widthList, Integer[] dimensions, Integer[] coords){
+        int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList, scrollbar, dimensions[1]);
+        paintModule.paintBorder(g, coords[0] + coords1[0],
+                coords[1] + coords1[1],  widthList.get(activeCell[1]),
+                paintModule.getCellHeight(), Color.RED);
+    }
 	/**
 	 * @param g
 	 * @param data
@@ -374,6 +389,12 @@ public class UITablesModule extends UISuperClass{
         }
     }
 
+    /**
+     * Check if colums of QueryObject exists in our database
+     * @param query query
+     * @param table table
+     * @throws IllegalArgumentException
+     */
     public void columnsExist(Query query, Table table) throws IllegalArgumentException{
         try {
             int columnCounter = 0;
@@ -500,10 +521,6 @@ public class UITablesModule extends UISuperClass{
     @Override
     protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){
         String nextUIMode = "";
-
-
-
-
         if (keyCode == 17){
             ctrlPressed = true;
         }

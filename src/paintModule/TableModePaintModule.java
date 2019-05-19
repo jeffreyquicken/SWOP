@@ -39,27 +39,15 @@ public class TableModePaintModule extends PaintModule {
          //Only paint header when not scrolled
          if (offset <= 0 ){
             //paint the header
-
             paintHeader(g, startXco, startYco, offset, widthCells - colMargin, offsetHorizontal, "Name");
-
              int tempWidth = widthList.get(0) + widthList.get(1);
              int xCo = startXco;
 
              xCo += widthList.get(0);
              widthCells = widthList.get(1);
 
-             int newWidth = widthCells;
-             if(offsetHorizontal > 0 && offsetHorizontal  - widthCells >=0 ){
-                 newWidth = widthCells;
-             } else if (offsetHorizontal > 0 && offsetHorizontal  - widthCells < 0 ){
-                newWidth = widthCells - offsetHorizontal;
-             } else if(tempWidth  <= width  ){
-                 newWidth = widthCells;
-             }else{
-                 newWidth =  (width + startXco) - xCo ;
+             int newWidth = calculateNewWidth(offsetHorizontal,widthCells,width,tempWidth,startXco,xCo);
 
-                 System.out.println("Old width=" + widthCells + " New width="+newWidth );
-             }
              paintHeader(g, xCo, startYco, offset, newWidth - colMargin , offsetHorizontal, "Query");
         }
 
@@ -75,6 +63,32 @@ public class TableModePaintModule extends PaintModule {
             tempHeight += cellHeight;
         }
 
+    }
+
+    /**
+     * Method that calculates new width of header
+     * @param offsetHorizontal
+     * @param widthCells
+     * @param width
+     * @param tempWidth
+     * @param startXco
+     * @param xCo
+     * @return width of header
+     */
+    private int calculateNewWidth(int offsetHorizontal, int widthCells, int width, int tempWidth, int startXco, int xCo){
+         int newWidth;
+        if(offsetHorizontal > 0 && offsetHorizontal  - widthCells >=0 ){
+            newWidth = widthCells;
+        } else if (offsetHorizontal > 0 && offsetHorizontal  - widthCells < 0 ){
+            newWidth = widthCells - offsetHorizontal;
+        } else if(tempWidth  <= width  ){
+            newWidth = widthCells;
+        }else{
+            newWidth =  (width + startXco) - xCo ;
+
+            System.out.println("Old width=" + widthCells + " New width="+newWidth );
+        }
+        return newWidth;
     }
 
 	/**
