@@ -8,6 +8,8 @@ import Data.*;
 import settings.CellVisualisationSettings;
 import settings.scrollbar;
 
+import static java.lang.Math.min;
+
 public class TableModePaintModule extends PaintModule {
     /**
      * margin between name column and query column
@@ -29,19 +31,39 @@ public class TableModePaintModule extends PaintModule {
          int offset = (int) ((heigth-titleHeight) * scrollbar.getOffsetpercentageVertical());
          int tempHeight = -offset;
 
+
+         //Check if scrollbar is scrolled
          if(widthCells - offsetHorizontal > width ){
              widthCells = width;
          }
+         //Only paint header when not scrolled
          if (offset <= 0 ){
             //paint the header
-            paintHeader(g, startXco, startYco, offset, widthCells, offsetHorizontal, "Name");
+
+            paintHeader(g, startXco, startYco, offset, widthCells - colMargin, offsetHorizontal, "Name");
+
+             int tempWidth = widthList.get(0) + widthList.get(1);
              int xCo = startXco;
-             xCo += widthCells + colMargin;
-             paintHeader(g, xCo, startYco, offset, widthCells, offsetHorizontal, "Query");
+
+             xCo += widthList.get(0);
+             widthCells = widthList.get(1);
+
+             int newWidth = widthCells;
+             if(offsetHorizontal > 0 && offsetHorizontal  - widthCells >=0 ){
+                 newWidth = widthCells;
+             } else if (offsetHorizontal > 0 && offsetHorizontal  - widthCells < 0 ){
+                newWidth = widthCells - offsetHorizontal;
+             } else if(tempWidth  <= width  ){
+                 newWidth = widthCells;
+             }else{
+                 newWidth =  (width + startXco) - xCo ;
+
+                 System.out.println("Old width=" + widthCells + " New width="+newWidth );
+             }
+             paintHeader(g, xCo, startYco, offset, newWidth - colMargin , offsetHorizontal, "Query");
         }
-         System.out.println("previous YCOSTART = " + (this.yCoStart));
-       //  this.yCoStart -=  offset;
-         System.out.println("new YCOSTART = " + (this.yCoStart));
+
+
         for(Table tableItem : tableList){
             if(tempHeight < (height-10  ) && tempHeight >= 0){
                startYco = printTableGetYco(g, startXco, startYco, setting, width, offsetHorizontal, tableItem);
@@ -84,15 +106,25 @@ public class TableModePaintModule extends PaintModule {
 		return startYco;
 	}
 
-    public void paintHeader(Graphics g, int startXco, int startYco, int offset, int widthCells, int offsetHorizontal, String title){
+    /**
+     * Method that paints header of table
+     * @param g
+     * @param startXco
+     * @param startYco
+     * @param offset
+     * @param widthCells
+     * @param offsetHorizontal
+     * @param title
+     */
+    public void paintHeader(Graphics g, int startXco, int startYco, int offset, int widthCells, int offsetHorizontal, String title ){
         g.setColor(Color.GRAY);
         g.fillRect(startXco+1, startYco-cellHeight+11 - offset, widthCells-1 - offsetHorizontal, 9 );
         g.setColor(Color.BLACK);
         Font oldFont = g.getFont();
         Font newFont = oldFont.deriveFont(oldFont.getSize() * 0.9F);
         g.setFont(newFont);
+        if(widthCells < 25){title="";};
         this.paintRectText(g,startXco, startYco - cellHeight+10 - offset  , widthCells - offsetHorizontal,10, title );
         g.setFont(oldFont);
-
     }
 }

@@ -11,6 +11,9 @@ import settings.scrollbar;
 import java.awt.*;
 import java.util.List;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 /**
  * Superclass that handles the painting.
  */
@@ -120,7 +123,8 @@ public class PaintModule {
                 tempWidth += widthList.get(i+1);}
 
             }else if(!cutCollumn){
-                int newWidth =  (width + ogStartxCo) - startxCo;
+                //int newWidth =  (width + ogStartxCo) - startxCo;
+                int newWidth =  (width + ogStartxCo) - startxCo ;
                 paintCell(newWidth,g,startxCo,startyCo,rowItem);
                 
                 startxCo = startxCo + widthList.get(i);
@@ -169,7 +173,7 @@ public class PaintModule {
 
             }
             //ALS opgetelde breedte nog niet breder als windowbreedte is
-            else if(tempWidth < width - 50 ){
+            else if(tempWidth  <= width  ){
                 paintCell(widthList.get(i)-margin,g,startxCo,startyCo,rowItem);
 
                 startxCo = startxCo + widthList.get(i) ;
@@ -177,7 +181,9 @@ public class PaintModule {
                     tempWidth += widthList.get(i+1);}
 
             }else if(!cutCollumn){
-                int newWidth =  (width + ogStartxCo) - startxCo;
+                int newWidth =  (width + ogStartxCo) - startxCo ;
+               // int newWidth = min(widthList.get(i), ogStartxCo+tempWidth - width + 30 + 15);
+
                 paintCell(newWidth-margin,g,startxCo,startyCo,rowItem);
                 
                 startxCo = startxCo + widthList.get(i);
