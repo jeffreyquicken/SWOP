@@ -123,7 +123,7 @@ public class UITablesModule extends UISuperClass{
         data.addTable();
         Table t = data.getTableList().get(data.getTableList().size()-1);
         //action needs to be added to operations list
-        Command c = new NewTable(data.getTableList().size()-1,t, data);
+        Command c = new NewTable(t, data);
         data.addCommand(c);
 
 	}
