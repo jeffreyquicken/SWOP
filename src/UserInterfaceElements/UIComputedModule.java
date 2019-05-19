@@ -57,10 +57,11 @@ public class UIComputedModule extends UISuperClass{
 
     //Constructor that init/creates paintModule and an empty list with tablenames
     //Each UImodule has own paintmodule to save settings.settings (e.g. size, bg, ...)
-    public UIComputedModule(Table tableInput) {
+    public UIComputedModule(Table tableInput, dataController data) {
         paintModule = new RowModePaintModule();
         mouseEventHandler = new MouseEvent();
         table = tableInput;
+
 
     }
 

@@ -150,14 +150,11 @@ public class UITablesModule extends UISuperClass{
 	 */
 	private String handleDoubleClickOnCell(int ID, dataController data, String nextUImode, int[] clickedCell) {
 		data.setSelectedTable(data.getTableList().get(clickedCell[0]));
-
-        if(!data.getSelectedTable().getQuery().equals("")){
+		if(!data.getSelectedTable().getQuery().equals("")){
             nextUImode = "row";
 
 
         }
-
-
 		if((data.getSelectedTable().getColumnNames().size() == 0) && (ID == 502)){
 		    nextUImode = "design";
 		}else if (ID == 502) {
@@ -171,8 +168,11 @@ public class UITablesModule extends UISuperClass{
 	 */
 	private void handleClickOnCell(dataController data, int[] clickedCell) {
 		activeCell = clickedCell;
-		currMode = "edit";
-		if (activeCell[1] == 0) {
+        currMode = "edit";
+        if (clickedCell[1]==0 && checkIftableNameIsProtected(data)){
+            currMode = "normal";
+        }
+        else if (activeCell[1] == 0) {
             tempText = data.getTableList().get(activeCell[0]).getTableName();
         }
         else if (activeCell[1] == 1){
@@ -451,34 +451,24 @@ public class UITablesModule extends UISuperClass{
     @Override
     protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){
     	KeyEvent eventHandler = new KeyEvent();
-        //EVENT: ASCSII char pressed
-        if (eventHandler.isChar(keyCode)) {
-            tempText = tempText + keyChar;
-            String currName = data.getTableList().get(activeCell[0]).getTableName();
-            invalidInput = !textIsValid(tempText, data, currName);
-        }
 
+
+
+        //EVENT: ASCSII char pressed
+         if (eventHandler.isChar(keyCode)) {
+            addCharAndValidate(data, keyChar);
+        }
         //EVENT BS pressed and in edit mode
         else if (eventHandler.isBackspace(keyCode)) {
-
             //Check if string is not empty
             if (tempText.length() != 0) {
-                tempText = tempText.substring(0, tempText.length() - 1);
-                String currName = data.getTableList().get(activeCell[0]).getTableName();
-                invalidInput = !textIsValid(tempText, data, currName);
-
+              delCharAndValidate(data);
             }
             //empty string, display red border
         }
         //EVENT ENTER pressed
         else if (eventHandler.isEnter(keyCode) && !invalidInput) {
-            currMode = "normal";
-            //action needs to be added to operations list
-            String ov = data.getTableList().get(activeCell[0]).getTableName();
-            Command c = new TableName(activeCell[0],tempText,ov, data);
-            data.addCommand(c);
-            setTempText(tempText, data);
-
+            switchToNormalModeAndSaveText(data);
         }
         //ESCAPE
         if(keyCode == 27){
@@ -496,6 +486,46 @@ public class UITablesModule extends UISuperClass{
 
     }
 
+    /**
+     * Check wheter a tablename if referenced in a computed table query
+     * @param data
+     * @return wheter a tablename if referenced in a computed table query
+     */
+    public Boolean checkIftableNameIsProtected(dataController data){
+       return data.getQueryManager().getQueryDependTables().contains(data.getTableList().get(activeCell[0]));
+    }
+
+    /**
+     * Method that del a character and validates if the text is valid
+     * @param data datacontroller
+     */
+    public void delCharAndValidate(dataController data){
+        tempText = tempText.substring(0, tempText.length() - 1);
+        String currName = data.getTableList().get(activeCell[0]).getTableName();
+        invalidInput = !textIsValid(tempText, data, currName);
+    }
+    /**
+     * Method that adds a character and validates if the text is valid
+     * @param data datacontroller
+     */
+    public void addCharAndValidate(dataController data, char keyChar){
+        tempText = tempText + keyChar;
+        String currName = data.getTableList().get(activeCell[0]).getTableName();
+        invalidInput = !textIsValid(tempText, data, currName);
+    }
+
+    /**
+     * Method that switched state to normal mode and saves tempory text
+     * @param data
+     */
+    public void switchToNormalModeAndSaveText(dataController data){
+        currMode = "normal";
+        //action needs to be added to operations list
+        String ov = data.getTableList().get(activeCell[0]).getTableName();
+        Command c = new TableName(activeCell[0],tempText,ov, data);
+        data.addCommand(c);
+        setTempText(tempText, data);
+    }
     /**
      * Method that saves the temporary text to the database depending on whether it is a table name or a query
      * @param tempText the text to be saved

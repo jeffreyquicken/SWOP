@@ -38,6 +38,19 @@ public class Table {
      */
     private String query;
 
+    public Query getLastQuery() {
+        return lastQuery;
+    }
+
+    public void setLastQuery(Query lastQuery) {
+        this.lastQuery = lastQuery;
+    }
+
+    /**
+     * Last known query to a table
+     */
+   private Query lastQuery;
+
 
     public CellVisualisationSettings getFormSetting() {
         return formSetting;
@@ -142,9 +155,15 @@ public class Table {
         return designSetting;
     }
 
+    /**
+     * Method that computes a table from a Query
+     * @param data datacontroller
+     * @return computed table
+     */
     public Table getComputedTable(dataController data){
         //Query query = parseQuery("SELECT movie.title AS title FROM movies AS movie WHERE movie.imdb_score < 7");
         Query query = parseQuery(this.getQuery());
+        this.setLastQuery(query);
         Table computedTable = query.getComputedTable(data);
         System.out.println(computedTable);
         data.getTableList().add(computedTable);

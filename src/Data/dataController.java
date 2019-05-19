@@ -3,6 +3,7 @@ package Data;
 import java.util.ArrayList;
 import java.util.List;
 
+import SQLQuery.queryManager;
 import UndoRedo.Command;
 import UndoRedo.Operations;
 import settings.CellVisualisationSettings;
@@ -11,6 +12,19 @@ import settings.CellVisualisationSettings;
  * Class that controls the data (add & delete tables, get selected tables, ...)
  */
 public class dataController {
+
+    /**
+     * get method for the querymanager
+     * @return querymanager
+     */
+    public SQLQuery.queryManager getQueryManager() {
+        return queryManager;
+    }
+
+    /**
+     * Querymanager that collective information about queries
+     */
+    private SQLQuery.queryManager queryManager;
 
     /**
      * List with all tables
@@ -56,6 +70,7 @@ public class dataController {
         setting.getWidthList().add(setting.getDefaultWidth());
         //tableList = new ArrayList<>();
 
+        queryManager = new queryManager();
         tableList = new ArrayList<Table>();
         this.addTable();
         this.addTable();
@@ -80,6 +95,8 @@ public class dataController {
         //tableList = new ArrayList<>();
 
         tableList = new ArrayList<Table>();
+
+        queryManager = new queryManager();
 
         operations = new Operations();
     }
@@ -176,6 +193,7 @@ public class dataController {
     public void redo() {
         operations.redo();
     }
+
 
 
 
