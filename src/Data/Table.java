@@ -3,44 +3,36 @@ package Data;
 import java.util.ArrayList;
 import java.util.List;
 
+import SQLQuery.Query;
 import settings.CellVisualisationSettings;
+
+import static SQLQuery.SQLParser.parseQuery;
 
 /**
  * Class for tables
  */
 public class Table {
-    /**
-     * Name of the table
-     */
     private String tableName;
-
     /**
      * Rows of the table
      */
     private List<Row> tableRows;
-
     /**
      * List with names of the column
      */
     private List<Column> columnNames;
-
     /**
      * settings for row module
      */
     private CellVisualisationSettings rowSetting;
-
     /**
      * settings for design module
      */
     private CellVisualisationSettings designSetting;
-
-
-
     /**
      * settings for form module
      */
     private CellVisualisationSettings formSetting;
-
     /**
      * Query string that affects the table.
      */
@@ -84,6 +76,7 @@ public class Table {
     /**
      * Initiates a table object with a given name and creates th right settings objects for that table
      * @param name  the name of the table
+     * @effect initializes the Table with the given name and standard values
      */
     public Table(String name){
         tableRows = new ArrayList<Row>();
@@ -148,6 +141,17 @@ public class Table {
     public CellVisualisationSettings getDesignSetting() {
         return designSetting;
     }
+
+    public Table getComputedTable(dataController data){
+        //Query query = parseQuery("SELECT movie.title AS title FROM movies AS movie WHERE movie.imdb_score < 7");
+        Query query = parseQuery(this.getQuery());
+        Table computedTable = query.getComputedTable(data);
+        System.out.println(computedTable);
+        data.getTableList().add(computedTable);
+        return computedTable;
+
+    }
+
 
 
 }

@@ -26,18 +26,19 @@ public class RowModePaintModule extends PaintModule {
 	 */
 	public void paintRowModeView(Graphics g, Table table, int startXco, int startYco, int width, int height, scrollbar scrollbar,
 			int windowHeight, int sum) {
-			
-			    int verticalOffset = (int) ((windowHeight-titleHeight) * scrollbar.getOffsetpercentageVertical());
-			    int horizontalOffset = (int) (sum * scrollbar.getOffsetpercentageHorizontal());		
-			    int headerXco = startXco;
-			    int i =0;
-			    CellVisualisationSettings setting = table.getRowSetting();
-			    List<Integer> widthList = setting.getWidthList();
-			    Font currentFont = g.getFont();
-			    Font newFont = currentFont.deriveFont(currentFont.getSize() * 0.89F);
+				int verticalOffset = (int) ((windowHeight-titleHeight) * scrollbar.getOffsetpercentageVertical());
+				int horizontalOffset = (int) (sum * scrollbar.getOffsetpercentageHorizontal());		
+				int headerXco = startXco;
+				int i =0;
+				CellVisualisationSettings setting = table.getRowSetting();
+				List<Integer> widthList = setting.getWidthList();
+				Font currentFont = g.getFont();
+				Font newFont = currentFont.deriveFont(currentFont.getSize() * 0.89F);
+				int tempWidth = widthList.get(i);
+				boolean cutCollumn = false;
+			    
 			    g.setFont(newFont);
-			    int tempWidth = widthList.get(i);
-			    boolean cutCollumn = false;
+
 			    //ALS Vertical OFFSET > 0 --> GEEN HEADERS
 			    if (verticalOffset <= 0 ){
 			    //ITERATE over Collumns
@@ -50,20 +51,10 @@ public class RowModePaintModule extends PaintModule {
 			        else if(horizontalOffset > 0 && horizontalOffset  - widthList.get(i) < 0 ){
 			            //Nieuwe breedte is nu window tot nieuwe collumn
 			            int newWidth = widthList.get(i) - horizontalOffset;
-			            String name = column.getName();
-			            //Naam wordt weggelaten als er te weinig plaats is
-			            if(newWidth < 50){
-			                name = "";
-			            }
-				        this.paintHeader(g, startYco - cellHeight/2, headerXco, newWidth, name);
-			            headerXco += newWidth;
+			            tempWidth = printHeaderGetTempWidth(g, startYco, headerXco, i, widthList, column, newWidth);
 			            horizontalOffset -= widthList.get(i);
-			
-			            tempWidth =newWidth;
-			            tempWidth += widthList.get(i+1);
-			
-			
-			
+			            headerXco += newWidth;
+
 			        }
 			        //ALS opgetelde breedte nog niet breder als windowbreedte is
 			        else if(tempWidth < width -50){
@@ -74,20 +65,8 @@ public class RowModePaintModule extends PaintModule {
 			        }
 			        //Breedte is wel groter als windowbreedte ( en eerste keer = cutcollumn)
 			        else if(!cutCollumn){
-			
-			        //Nieuwe breedte is nu tot de breedte van de window
-			       // int newWidth = width   -  (headerXco - startXco);
-			            int newWidth = (width + startXco) - headerXco ;
-			
-			        String name = column.getName();
-			        //Naam wordt weggelaten als er te weinig plaats is
-			        if(newWidth < 50){
-			            name = "";
-			        }
-			        this.paintHeader(g, startYco - cellHeight/2, headerXco, newWidth, name);
-			        headerXco += widthList.get(i);
+			        headerXco = printHeaderGetHeaderXCo(g, startXco, startYco, width, headerXco, i, widthList, column);
 			        cutCollumn = true;
-			
 			        }
 			        //iterating
 			        i++;
@@ -96,25 +75,100 @@ public class RowModePaintModule extends PaintModule {
 			
 			    horizontalOffset = (int) (sum * scrollbar.getOffsetpercentageHorizontal());
 			    g.setFont(currentFont);
-			
-			    int tempHeight = -verticalOffset;
-			    System.out.println("previous XCOSTART = " + (this.xCoStart));
-			    System.out.println("previous YCOSTART = " + (this.yCoStart));
-			    ////this.yCoStart -= offset;
-			    //this.xCoStart =  startXco - offsetHorizontal;
-			    System.out.println("new XCOSTART = " + (this.xCoStart));
-			    System.out.println("new YCOSTART = " + (this.yCoStart));
-			
-			    for(Row row: table.getTableRows()){
-			        if(tempHeight < (height-10  ) && tempHeight >= 0){
-			        this.paintRow(g,row.getColumnList(),startXco ,startYco - verticalOffset, setting, width, horizontalOffset );
-			        }
-			        startYco = startYco + cellHeight;
-			        tempHeight+= cellHeight;
-			    }
+			    systemPrintStartCoords();
+			    paintRows(g, table, startXco, startYco, width, height, verticalOffset, horizontalOffset, setting);
 			
 			
 			}
 	//=====================
+
+	/**
+	 * @param g
+	 * @param startYco
+	 * @param headerXco
+	 * @param i
+	 * @param widthList
+	 * @param column
+	 * @param newWidth
+	 * @return
+	 */
+	private int printHeaderGetTempWidth(Graphics g, int startYco, int headerXco, int i, List<Integer> widthList, Column column,
+			int newWidth) {
+		int tempWidth;
+		String name = column.getName();
+		//Naam wordt weggelaten als er te weinig plaats is
+		if(newWidth < 50){
+		    name = "";
+		}
+		this.paintHeader(g, startYco - cellHeight/2, headerXco, newWidth, name);
+		//headerXco += newWidth;
+		//horizontalOffset -= widthList.get(i);
+
+		tempWidth =newWidth;
+		tempWidth += widthList.get(i+1);
+		return tempWidth;
+	}
+
+	/**
+	 * @param g
+	 * @param startXco
+	 * @param startYco
+	 * @param width
+	 * @param headerXco
+	 * @param i
+	 * @param widthList
+	 * @param column
+	 * @return
+	 */
+	private int printHeaderGetHeaderXCo(Graphics g, int startXco, int startYco, int width, int headerXco, int i, List<Integer> widthList,
+			Column column) {
+		//Nieuwe breedte is nu tot de breedte van de window
+		// int newWidth = width   -  (headerXco - startXco);
+		    int newWidth = (width + startXco) - headerXco ;
+
+		String name = column.getName();
+		//Naam wordt weggelaten als er te weinig plaats is
+		if(newWidth < 50){
+		    name = "";
+		}
+		this.paintHeader(g, startYco - cellHeight/2, headerXco, newWidth, name);
+		headerXco += widthList.get(i);
+		return headerXco;
+	}
+
+	/**
+	 * 
+	 */
+	private void systemPrintStartCoords() {
+		System.out.println("previous XCOSTART = " + (this.xCoStart));
+		System.out.println("previous YCOSTART = " + (this.yCoStart));
+		////this.yCoStart -= offset;
+		//this.xCoStart =  startXco - offsetHorizontal;
+		System.out.println("new XCOSTART = " + (this.xCoStart));
+		System.out.println("new YCOSTART = " + (this.yCoStart));
+	}
+
+	/**
+	 * @param g
+	 * @param table
+	 * @param startXco
+	 * @param startYco
+	 * @param width
+	 * @param height
+	 * @param verticalOffset
+	 * @param horizontalOffset
+	 * @param setting
+	 */
+	private void paintRows(Graphics g, Table table, int startXco, int startYco, int width, int height,
+			int verticalOffset, int horizontalOffset, CellVisualisationSettings setting) {
+		int tempHeight = -verticalOffset;
+		for(Row row: table.getTableRows()){
+		    if(tempHeight < (height-10  ) && tempHeight >= 0){
+		    this.paintRow(g,row.getColumnList(),startXco ,startYco - verticalOffset, setting, width, horizontalOffset );
+		    }
+		    startYco = startYco + cellHeight;
+		    tempHeight+= cellHeight;
+		}
+	}
 	
 }

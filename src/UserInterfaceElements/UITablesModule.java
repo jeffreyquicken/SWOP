@@ -1,7 +1,9 @@
 package UserInterfaceElements;
 
+import Data.Column;
 import Data.Table;
 import Data.dataController;
+import SQLQuery.Query;
 import UndoRedo.Command;
 import UndoRedo.NewTable;
 import UndoRedo.TableName;
@@ -13,6 +15,8 @@ import settings.CellVisualisationSettings;
 import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
+
+import static SQLQuery.SQLParser.parseQuery;
 
 public class UITablesModule extends UISuperClass{
 	
@@ -45,6 +49,7 @@ public class UITablesModule extends UISuperClass{
 
         //EVENT DOUBLE CLICKS UNDER TABLE
         if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getLowestY(30)) ) {
+            data.getSelectedTable().setQuery("SELECT movie.title AS titles FROM movies AS movie WHERE movie.score < 7");
             handleDoubleClickUnderTable(data);
         }
         //EVENT CLICK CELL
@@ -62,6 +67,9 @@ public class UITablesModule extends UISuperClass{
         }
         //check if leftmargin is clicked
         else if(isClickedLeftMargin(xCo, yCo, data, widthList)) {
+                Query query = parseQuery("SELECT movie.title AS title FROM movies AS movie WHERE movie.imdb_score > 7");
+                Table computedTable = query.getComputedTable(data);
+                System.out.println(computedTable);
             currMode = "delete";
             activeCell = clickedCell;
         }
@@ -142,6 +150,14 @@ public class UITablesModule extends UISuperClass{
 	 */
 	private String handleDoubleClickOnCell(int ID, dataController data, String nextUImode, int[] clickedCell) {
 		data.setSelectedTable(data.getTableList().get(clickedCell[0]));
+
+        if(!data.getSelectedTable().getQuery().equals("")){
+            nextUImode = "row";
+
+
+        }
+
+
 		if((data.getSelectedTable().getColumnNames().size() == 0) && (ID == 502)){
 		    nextUImode = "design";
 		}else if (ID == 502) {
@@ -216,29 +232,44 @@ public class UITablesModule extends UISuperClass{
         CellVisualisationSettings setting;
         setting = data.getSetting();
         List<Integer> widthList = setting.getWidthList();
-
         paintWindowBasics(g, data, coords, dimensions, setting);
- 
         //Check mode
         if (currMode == "edit" ) {
-            int[] coords1 = paintModule.getCellCoords(activeCell[0] , activeCell[1] , widthList, scrollbar, dimensions[1] );
-                paintModule.paintCursor(g, coords1[0] + coords[0],
-                        coords1[1] + coords[1], widthList.get(activeCell[1]),
-                        paintModule.getCellHeight(), tempText);
-
+          paintEditMode(g,widthList,dimensions,coords);
         }
         //check if there are warnings
         if (invalidInput || currMode == "delete") {
-            int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList, scrollbar, dimensions[1]);
-            paintModule.paintBorder(g, coords[0] + coords1[0],
-                    coords[1] + coords1[1],  widthList.get(activeCell[1]),
-                    paintModule.getCellHeight(), Color.RED);
+          paintDeleteMode(g,widthList,dimensions,coords);
         } else {
             paintModule.setColor(g, Color.BLACK);
         }
         //paintModule.paintBorder(g,paintModule.getxCoStart(), paintModule.getyCoStart(), 80, 20, "red");
     }
 
+    /**
+     * Method that paint when the user is editing
+     * @param g graphics
+     * @param widthList widthlist
+     * @param dimensions dimensions
+     * @param coords coordinates
+     */
+    private void paintEditMode(Graphics g, List<Integer> widthList, Integer[] dimensions, Integer[] coords){
+        int[] coords1 = paintModule.getCellCoords(activeCell[0] , activeCell[1] , widthList, scrollbar, dimensions[1] );
+        paintModule.paintCursor(g, coords1[0] + coords[0], coords1[1] + coords[1], widthList.get(activeCell[1]) - 5, paintModule.getCellHeight(), tempText);
+    }
+    /**
+     * Method that paint when the user is editing
+     * @param g graphics
+     * @param widthList widthlist
+     * @param dimensions dimensions
+     * @param coords coordinates
+     */
+    private void paintDeleteMode(Graphics g, List<Integer> widthList, Integer[] dimensions, Integer[] coords){
+        int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList, scrollbar, dimensions[1]);
+        paintModule.paintBorder(g, coords[0] + coords1[0],
+                coords[1] + coords1[1],  widthList.get(activeCell[1]),
+                paintModule.getCellHeight(), Color.RED);
+    }
 	/**
 	 * @param g
 	 * @param data
@@ -310,8 +341,89 @@ public class UITablesModule extends UISuperClass{
      * @return whether the query is valid
      */
     public boolean queryIsValid(String query, dataController data){
-        return true; //TODO validator
+        if (query.length() == 0){return true;}
+        try {
+            validSQLSyntax(query);
+            Query queryToCheck = parseQuery(query);
+            Table queryTable = tableExists(queryToCheck, data);
+            columnsExist(queryToCheck,queryTable);
+        }
+        catch (IllegalArgumentException e){
+            return false;
+        }
+
+        return true;
     }
+
+    /**
+     * Method that checks the syntactic validity of a query
+     * @param query the query to be checked
+     * @return whether the query is valid
+     * @throws IllegalArgumentException the query is not valid
+     */
+    public void validSQLSyntax(String query) throws IllegalArgumentException{
+        try {
+            Query parsedQuery = parseQuery(query);
+
+        } catch (Exception e){
+            throw new IllegalArgumentException("Query not valid");
+        }
+    }
+
+    /**
+     * Method that checks if a queried table existst
+     * @param query the query to be checked
+     * @param data the datacontroller
+     * @return the queried table if it exists
+     * @throws IllegalArgumentException when the queried table does not exist
+     */
+    public Table tableExists(Query query, dataController data) throws IllegalArgumentException{
+        try {
+            Table selectedTable = query.getFromClause().getTable(data);
+            if (selectedTable == null){
+                throw new IllegalArgumentException("Table does not exist");
+            }
+            return selectedTable;
+        } catch (Exception e){
+            throw new IllegalArgumentException("Error with queried table");
+        }
+    }
+
+    /**
+     * Check if colums of QueryObject exists in our database
+     * @param query query
+     * @param table table
+     * @throws IllegalArgumentException
+     */
+    public void columnsExist(Query query, Table table) throws IllegalArgumentException{
+        try {
+            int columnCounter = 0;
+            int indexExprColumn = -1;
+            int i =0;
+            for (Column column:table.getColumnNames()){
+                for (int j = 0; j<query.getSelectClause().getSelectClauses().size(); j++){
+                    if (column.getName().equals(query.getSelectClause().getSelectClauses().get(j).getAs().getId())){
+                        columnCounter++;
+                    }
+
+                }
+                if(column.getName().equals(query.getWhereClause().getId())){
+                    indexExprColumn = i;
+                }
+                i++;
+
+            }
+            if (indexExprColumn == -1){
+                throw new IllegalArgumentException("Expression column does not exist");
+            }
+            else if (columnCounter != query.getSelectClause().getSelectClauses().size()){
+                throw  new IllegalArgumentException("One or more select columns do not exist");
+            }
+        } catch (Exception e){
+            throw new IllegalArgumentException("Error with queried columns");
+        }
+    }
+
 
    
     /*
@@ -451,6 +563,9 @@ public class UITablesModule extends UISuperClass{
         List<String> result = new ArrayList<>();
         result.add(currMode);
         result.add("");
+
+
+
         return result;
     }
     
@@ -460,11 +575,15 @@ public class UITablesModule extends UISuperClass{
      * too long
      * large similarities with the other UI modules. maybe put in superclass or in another class altogether
      */
+
+    /**
+     * Method that recomputes scrollbar paramters when UI-change has happened
+     * @param data datacontroller
+     * @param dimensions dimensions of window
+     */
     private void recalculateScrollbar(dataController data, Integer[] dimensions){
         CellVisualisationSettings setting = data.getSetting();
-        //WIDTHLIST IS NOT SAME FOR EVERY MODULE !!!!!!!!!!!!!
         List<Integer> widthList = setting.getWidthList();
-
         int sum = widthList.stream().mapToInt(Integer::intValue).sum();
         scrollbarActive = false;
         if(sum > dimensions[0] - 31 ){
@@ -476,8 +595,6 @@ public class UITablesModule extends UISuperClass{
             scrollbar.setActiveHorizontal(false);
             scrollbar.setPercentageHorizontal(0);
             scrollbar.setOffsetpercentageHorizontal(0);
-
-
 
         }
         //TABLE LIST

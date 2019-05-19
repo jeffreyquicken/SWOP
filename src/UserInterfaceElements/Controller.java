@@ -90,9 +90,10 @@ public class Controller {
                     UIRowModule rowModule = new UIRowModule(tableDataController.getSelectedTable());
                     topLevelWindow.addSubWindow(rowModule);
                 }
-                else if (tableDataController.getSelectedTable().getQuery().length() > 0){
-                    UIRowModule rowModule = new UIRowModule(tableDataController.computeTable("shfhsgf"));
-                    topLevelWindow.addSubWindow(rowModule);
+                else if (tableDataController.getSelectedTable().getQuery().length() > 0 && id==500){
+                    UIComputedModule computeModule = new UIComputedModule(tableDataController.getSelectedTable().getComputedTable(tableDataController));
+                    computeModule.getTable().setQuery(tableDataController.getSelectedTable().getComputedTable(tableDataController).getQuery());
+                    topLevelWindow.addSubWindow(computeModule);
                 }
             }
             else if(nextUIMode.equals("design")){

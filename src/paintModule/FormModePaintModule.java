@@ -1,13 +1,11 @@
 package paintModule;
 
-import Data.Cell;
-import Data.Column;
-import Data.Row;
-import Data.Table;
+import Data.*;
 import settings.CellVisualisationSettings;
 import settings.scrollbar;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FormModePaintModule extends PaintModule{
@@ -20,10 +18,7 @@ public class FormModePaintModule extends PaintModule{
      * @param g graphics object
      * @param table table for which form view has to be painted
      */
-    /*
-     * TO REFACTOR
-     * too long
-     */
+    //todo REFACTOR ASAP
     public void paintFormView(Graphics g, Table table, int rowIndex, int startXco, int startYco, CellVisualisationSettings setting, int width, int height, scrollbar scrollbar, int windowHeight, int sum){
         //Vertical offset
         int offset = (int) ((windowHeight-titleHeight) * scrollbar.getOffsetpercentageVertical());
@@ -91,15 +86,27 @@ public class FormModePaintModule extends PaintModule{
 
         int tempHeight = -offset;
 
+
         for(Column column: table.getColumnNames()){
             if(tempHeight < (height - 10) && tempHeight >=0) {
+
                 int colIndex = table.getColumnNames().indexOf(column);
-                this.paintRectText(g, startXco, startYco, widthList.get(0), cellHeight, column.getName());
-                this.paintRectText(g, startXco + widthList.get(0) + 5, startYco, widthList.get(0), cellHeight,
-                        table.getTableRows().get(rowIndex).getColumnList().get(colIndex).getString());
+                //this.paintRectText(g, startXco, startYco, widthList.get(0), cellHeight, column.getName());
+                //this.paintRectText(g, startXco + widthList.get(0) + 5, startYco, widthList.get(0), cellHeight,
+                  //      table.getTableRows().get(rowIndex).getColumnList().get(colIndex).getString());
+
+                CellText cellName = new CellText( column.getName());
+                CellText cellQuery = new CellText( table.getTableRows().get(rowIndex).getColumnList().get(colIndex).getString());
+
+                List<Cell> listCell = new ArrayList<>();
+                listCell.add(cellName);
+                listCell.add(cellQuery);
+                this.paintRowMargin(g,listCell,startXco,startYco,setting,width,offsetHorizontal,5);
+
                 startYco = startYco + cellHeight;
                 tempHeight += cellHeight;
-            }
+                }
+
             else{
                 startYco = startYco + cellHeight;
                 tempHeight += cellHeight;

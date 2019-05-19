@@ -38,14 +38,23 @@ public class dataController {
         this.selectedTable = selectedTable;
     }
 
+    /**
+     * initializes the datacontroller
+     * 
+     * @effect the standard values of the dataController are set and three empty lists are created for demonstration purposes
+     * 		   |new.setting == new CellVisualisationSettings()
+     * 		   |new.tableList == new ArrayList()
+     * 		   |this.addTable();
+     *         |this.addTable();
+     * 		   |this.addTable();
+     *         |operations = new Operations();
+     */	
     public dataController(){
         setting = new CellVisualisationSettings();
         //setting.getWidthList().add(setting.getDefaultWidth());
         setting.getWidthList().add(setting.getDefaultWidth());
         setting.getWidthList().add(setting.getDefaultWidth());
-        tableList = new ArrayList<>();
-
-
+        //tableList = new ArrayList<>();
 
         tableList = new ArrayList<Table>();
         this.addTable();
@@ -55,12 +64,20 @@ public class dataController {
         operations = new Operations();
     }
 
+    /**
+     * initializes the datacontroller
+     * 
+     * @effect the standard values of the dataController are set 
+     * 		   |new.setting == new CellVisualisationSettings()
+     * 		   |new.tableList == new ArrayList()
+     *         |operations = new Operations();
+     */	
     public dataController(int i) {
         setting = new CellVisualisationSettings();
         //setting.getWidthList().add(setting.getDefaultWidth());
         setting.getWidthList().add(setting.getDefaultWidth());
         setting.getWidthList().add(setting.getDefaultWidth());
-        tableList = new ArrayList<>();
+        //tableList = new ArrayList<>();
 
         tableList = new ArrayList<Table>();
 
@@ -73,6 +90,10 @@ public class dataController {
 
     /**
      * Method that adds a new table to the table list and gives it a valid name
+     * 
+     * @effect creates a new table with a valid name and adds it to the list
+     * 		 | new.newTable = new Table (Name) && isValidName(Name)
+     * 		 | tableList.add(newTable)
      */
     public void addTable(){
         int numberOfTable = this.getTableList().size() + 1;
@@ -110,6 +131,9 @@ public class dataController {
     /**
      * Method that deletes a table from the table list
      * @param table the table to be deleted
+     * @pre The given table is a valid table. if so, it is in the list.
+     * @post The given table is removed from the table list
+     * 	   | tableList.remove(table)
      */
     public void deleteTable(Table table){
         tableList.remove(table);
@@ -134,15 +158,7 @@ public class dataController {
 
     }
 
-    /**
-     * Method that computes a table based on a given query
-     * @param query the query to be used when computing the table
-     * @return the computed table
-     */
-    public Table computeTable(String query){
-       Table table = new Table("computed table: " + selectedTable.getTableName());
-       return table;
-    }
+
 
     public CellVisualisationSettings getSetting(){
         return setting;

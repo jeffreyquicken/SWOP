@@ -52,6 +52,12 @@ public class Column {
      * @param defaultValue  the default value of all cells in this column
      * @param Type  the type of values of all cells in this column (string, boolean, integer or email)
      * @param blanks    whether blanks are allowed in the cells of this column
+     * 
+     * @effect The objects values are set to ghe given parameters
+     * 		   |new.name == name
+     * 		   |new.defaultV == defaultValue
+     * 		   |new.type == Type
+     * 		   |new.blanksAllowed == blanks
      */
     public Column(String name, Cell defaultValue, String Type, Boolean blanks){
         this.name = name;
@@ -63,6 +69,7 @@ public class Column {
     /**
      * Method to get basic column info
      * @return list with name,default value, type and if blanks are allowed
+     *
      */
     public List<Cell>  getInfo(){
         List<Cell> info = new ArrayList<>();

@@ -8,13 +8,18 @@ import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
 import java.util.HashMap;
+import java.util.List;
 
+/**
+ * Class for parsing an sql query into its broken down attribute objects
+ */
 public class SQLParser extends StreamTokenizer {
 
 	private String qRowID;
 	private String qColID;
 	private String qColName;
 	private String qTable;
+
 
 	private static HashMap<String, Integer> keywords = new HashMap<>();
 	public static final int
@@ -47,7 +52,7 @@ public class SQLParser extends StreamTokenizer {
 	
 	public static class ParseException extends RuntimeException {}
 	
-	public static String parseQuery(String text) { return new SQLParser(text).parseQuery(); }
+	public static Query parseQuery(String text) { return new SQLParser(text).parseQuery(); }
 	
 	@Override
 	public int nextToken() {
@@ -185,7 +190,12 @@ public class SQLParser extends StreamTokenizer {
 		return parseDisjunction();
 	}
 	
-	public String parseQuery() {
+	public Query parseQuery() {
+
+		//OUR QUERY
+		Query query = new Query();
+
+
 		StringBuilder result = new StringBuilder();
 		expect(TT_SELECT);
 		result.append("SELECT ");
@@ -194,7 +204,16 @@ public class SQLParser extends StreamTokenizer {
 			expect(TT_AS);
 			String colName = expectIdent();
 			qColID = e;
+			String tableName;
+			String id;
+			tableName = e.split("\\.")[0];
+			id = e.split("\\.")[1];
 			result.append(e + " AS " + colName);
+			//ADD SELECT
+			query.getSelectClause().addSelectItem(tableName, id, colName);
+
+
+
 			if (ttype == ',') {
 				nextToken();
 				result.append(", ");
@@ -209,7 +228,9 @@ public class SQLParser extends StreamTokenizer {
 			expect(TT_AS);
 			String rowId = expectIdent();
 			result.append(tableName + " AS " + rowId);
-			
+			//ADD FROM
+			query.getFromClause().addFromClause(tableName, rowId);
+
 		}
 		while (ttype == TT_INNER) {
 			nextToken();
@@ -225,9 +246,24 @@ public class SQLParser extends StreamTokenizer {
 		}
 		expect(TT_WHERE);
 		String cond = parseExpr();
+		String[] split;
+		split = cond.split("\\s+");
+		if (split.length == 1){
+			//EXPRESSION (WHERE TRUE)
+			query.getWhereClause().addWhereClause("","","",split[0]);
+		}
+		else{
+			//Expression with condition (WHERE movie.imdb_score > 7)
+			String[] splitted;
+			splitted = split[0].split("\\.");
+			query.getWhereClause().addWhereClause(splitted[0], splitted[1], split[1], split[2]);
+		}
 		result.append(" WHERE " + cond);
+
+
 		System.out.println(result);
-		return result.toString();
+		//return result.toString();
+		return query;
 	}
 
 	public Table computeTable(String tableName, String columnName, String condition, dataController data){
