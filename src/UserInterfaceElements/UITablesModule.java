@@ -558,11 +558,15 @@ public class UITablesModule extends UISuperClass{
      * too long
      * large similarities with the other UI modules. maybe put in superclass or in another class altogether
      */
+
+    /**
+     * Method that recomputes scrollbar paramters when UI-change has happened
+     * @param data datacontroller
+     * @param dimensions dimensions of window
+     */
     private void recalculateScrollbar(dataController data, Integer[] dimensions){
         CellVisualisationSettings setting = data.getSetting();
-        //WIDTHLIST IS NOT SAME FOR EVERY MODULE !!!!!!!!!!!!!
         List<Integer> widthList = setting.getWidthList();
-
         int sum = widthList.stream().mapToInt(Integer::intValue).sum();
         scrollbarActive = false;
         if(sum > dimensions[0] - 31 ){
@@ -574,8 +578,6 @@ public class UITablesModule extends UISuperClass{
             scrollbar.setActiveHorizontal(false);
             scrollbar.setPercentageHorizontal(0);
             scrollbar.setOffsetpercentageHorizontal(0);
-
-
 
         }
         //TABLE LIST
