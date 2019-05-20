@@ -267,8 +267,13 @@ public class UIDesignModule extends UISuperClass {
 	 */
 	
 	private void handleCellClickedValidInput(int count, dataController data, int[] clickedCell) {
-		//check which collumn
-		if (count != 2 && clickedCell[1] == 0) {
+
+        if (clickedCell[1]==0 && checkIfColNameIsProtected(data, clickedCell)){
+            currMode = "normal";
+        }
+
+	    //check which collumn
+		else if (count != 2 && clickedCell[1] == 0) {
 		    activeCell = clickedCell;
 		    currMode = "edit";
 		    tempText = new CellText(table.getColumnNames().get(activeCell[0]).getName());
@@ -289,6 +294,9 @@ public class UIDesignModule extends UISuperClass {
 	}
 
 
+	private Boolean checkIfColNameIsProtected(dataController data, int[] clickedCell){
+        return data.getQueryManager().getQueryDependColumns().contains(table.getColumnNames().get(clickedCell[0]));
+    }
 
 	/**
 	 * @param clickedCell

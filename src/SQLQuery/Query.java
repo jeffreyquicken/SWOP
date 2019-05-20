@@ -14,11 +14,22 @@ public class Query {
     private selectClause selectClause = new selectClause();
     private whereClause whereClause = new whereClause();
 
+    public List<Column> getColumns() {
+        return columns;
+    }
 
+    /**
+     * all columns used in this query
+     */
+    private List<Column> columns = new ArrayList<>();
+    /**
+     * all tables used in this query
+     */
+    private List<Table> tables = new ArrayList<>();
 
-
-
-
+    public List<Table> getTables() {
+        return tables;
+    }
 
     public SQLQuery.fromClause getFromClause() {
         return fromClause;
@@ -47,6 +58,7 @@ public class Query {
 
     public Table getComputedTable(dataController data){
         Table selectedTable = this.fromClause.getTable(data);
+        this.getTables().add(selectedTable);
         Table resultTable = new Table("Computed: ");
         List<Column> selectedColumn = new ArrayList<>();
         Column exprColumn;
@@ -57,6 +69,7 @@ public class Query {
         for (Column column:selectedTable.getColumnNames()){
             for (int j = 0; j<this.selectClause.getSelectClauses().size(); j++){
                 if (column.getName().equals(this.selectClause.getSelectClauses().get(j).getAs().getId())){
+                    this.getColumns().add(column);
                     Column col = new Column(column.getName(), column.getDefaultV(), column.getType(), column.getBlanksAllowed());
                     selectedColumn.add(col);
                     indexSelectedColumn.add(i);
@@ -64,6 +77,7 @@ public class Query {
 
             }
             if(column.getName().equals(this.whereClause.getId())){
+                this.getColumns().add(column);
                 exprColumn = new Column(column.getName(), column.getDefaultV(), column.getType(), column.getBlanksAllowed());
                 indexExprColumn = i;
             }

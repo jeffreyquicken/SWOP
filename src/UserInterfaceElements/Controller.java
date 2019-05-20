@@ -93,7 +93,8 @@ public class Controller {
                 else if (tableDataController.getSelectedTable().getQuery().length() > 0 && id==500){
                     UIComputedModule computeModule = new UIComputedModule(tableDataController.getSelectedTable().getComputedTable(tableDataController), tableDataController);
                     computeModule.getTable().setQuery(tableDataController.getSelectedTable().getComputedTable(tableDataController).getQuery());
-                    tableDataController.getQueryManager().addQueryDependendTable(tableDataController.getSelectedTable().getLastQuery().getFromClause().getTable(tableDataController));
+                    tableDataController.getQueryManager().addQueryDependendTablesFromQuery(tableDataController.getSelectedTable().getLastQuery());
+                    tableDataController.getQueryManager().addQueryDependendColumnsFromQuery(tableDataController.getSelectedTable().getLastQuery());
                     topLevelWindow.addSubWindow(computeModule);
                 }
             }
