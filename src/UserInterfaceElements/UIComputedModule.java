@@ -50,6 +50,10 @@ public class UIComputedModule extends UISuperClass{
     }
 
     private Table table;
+    /**
+     * String format of query
+     */
+    private String queryString;
 
     public int[] getActiveCell() {
         return activeCell;
@@ -57,10 +61,11 @@ public class UIComputedModule extends UISuperClass{
 
     //Constructor that init/creates paintModule and an empty list with tablenames
     //Each UImodule has own paintmodule to save settings.settings (e.g. size, bg, ...)
-    public UIComputedModule(Table tableInput, dataController data) {
+    public UIComputedModule(Table tableInput, dataController data, String qString) {
         paintModule = new RowModePaintModule();
         mouseEventHandler = new MouseEvent();
         table = tableInput;
+        queryString = qString;
 
 
     }
@@ -232,10 +237,15 @@ public class UIComputedModule extends UISuperClass{
 
     }
 
+    /**
+     * Method that parses the query and returns the computed table for a query
+     * @param data the datacontroller
+     * @return the computed table
+     */
     public Table getComputedTable(dataController data){
 
         //Query query = parseQuery("SELECT movie.title AS title FROM movies AS movie WHERE movie.imdb_score < 7");
-        SQLQuery.Query query = parseQuery("SELECT movie.title AS title FROM movies AS movie WHERE movie.score > 7");
+        SQLQuery.Query query = parseQuery(queryString);
         Table computedTable = query.getComputedTable(data);
         return computedTable;
 
