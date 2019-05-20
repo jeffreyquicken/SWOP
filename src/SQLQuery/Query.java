@@ -56,7 +56,7 @@ public class Query {
     }
 
 
-    public Table getComputedTable(dataController data){
+    public Table getComputedTable(dataController data) throws IllegalArgumentException{
         Table selectedTable = this.fromClause.getTable(data);
         this.getTables().add(selectedTable);
         Table resultTable = new Table("Computed: ");
@@ -91,27 +91,11 @@ public class Query {
             j++;
         }
 
-        switch (this.whereClause.getOperator()) {
-            case "<":
-                System.out.println("> - operator");
-            case ">":
-                System.out.println("< - operator");
-            case "=":
-                System.out.println("= - operator");
-            case "OR":
-                System.out.println("OR - operator");
-            case "AND":
-                System.out.println("AND - operator");
-            case "+":
-                System.out.println("+ - operator");
-            case "-":
-                System.out.println("- - operator");
 
-        }
         for (Row row:selectedTable.getTableRows()){
             String leftExpr = row.getColumnList().get(indexExprColumn).getString();
             String rightExpr = condition;
-            if (isNumeric(leftExpr) && isNumeric(rightExpr) && Integer.parseInt(leftExpr) > Integer.parseInt(condition) ){
+            if (isNumeric(leftExpr) && isNumeric(rightExpr) && compareExpression(leftExpr,rightExpr) ){
                 List<Column> addColumns = new ArrayList<>();
                 int k = 0;
                 for (Column addCol:selectedColumn) {
@@ -131,6 +115,23 @@ public class Query {
         }
 
         return resultTable;
+    }
+
+    public boolean compareExpression(String leftExpr, String rightExpr) throws IllegalArgumentException{
+        switch (this.whereClause.getOperator()) {
+            case "<":
+                return Integer.parseInt(leftExpr) < Integer.parseInt(rightExpr);
+            case ">":
+                return Integer.parseInt(leftExpr) > Integer.parseInt(rightExpr);
+            case "=":
+                return Integer.parseInt(leftExpr) == Integer.parseInt(rightExpr);
+            case "OR":
+                return Boolean.parseBoolean(leftExpr) || Boolean.parseBoolean(rightExpr);
+            case "AND":
+                return Boolean.parseBoolean(leftExpr) && Boolean.parseBoolean(rightExpr);
+            default:
+                throw new IllegalArgumentException("Expression not supported");
+        }
     }
 
     /**

@@ -113,7 +113,7 @@ public class UITablesModule extends UISuperClass{
     public void checkDoubleClickUnderTable(dataController data, int ID, int yCo, int count){
         //EVENT DOUBLE CLICKS UNDER TABLE
         if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getLowestY(30)) ) {
-            data.getSelectedTable().setQuery("SELECT movie.title AS titles FROM movies AS movie WHERE movie.score < 7");
+            data.getSelectedTable().setQuery("SELECT movie.Column1 AS col1, movie.Column2 AS col2 FROM Table1 AS movie WHERE movie.Column1 < 7");
             handleDoubleClickUnderTable(data);
         }
     }
