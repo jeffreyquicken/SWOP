@@ -40,10 +40,7 @@ public class UITablesModule extends UISuperClass{
      * @param data datacontroller to make changes to the data
      * @return returns a list with the nextUIMode and the state of the UI
      */
-    /*
-     * TO REFACTOR
-     * too long
-     */
+    //todo: refactor too long
     public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data, Integer[] dimensions) {
         String nextUImode = "";
        checkDoubleClickUnderTable(data, ID, yCo, count);

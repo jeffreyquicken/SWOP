@@ -13,6 +13,7 @@ public class Query {
     private fromClause fromClause = new fromClause();
     private selectClause selectClause = new selectClause();
     private whereClause whereClause = new whereClause();
+    private joinClause joinClause = new joinClause();
 
     public List<Column> getColumns() {
         return columns;
@@ -34,6 +35,8 @@ public class Query {
     public SQLQuery.fromClause getFromClause() {
         return fromClause;
     }
+
+    public SQLQuery.joinClause getJoinClause(){return joinClause;}
 
     public void setFromClause(SQLQuery.fromClause fromClause) {
         this.fromClause = fromClause;
@@ -96,6 +99,8 @@ public class Query {
             String leftExpr = row.getColumnList().get(indexExprColumn).getString();
             String rightExpr = condition;
             if (isNumeric(leftExpr) && isNumeric(rightExpr) && compareExpression(leftExpr,rightExpr) ){
+                //conditie waar
+
                 List<Column> addColumns = new ArrayList<>();
                 int k = 0;
                 for (Column addCol:selectedColumn) {
@@ -114,6 +119,8 @@ public class Query {
             }
         }
 
+        Table joinedTable = joinTables(data,selectedTable);
+        System.out.println("joined table");
         return resultTable;
     }
 
@@ -132,6 +139,70 @@ public class Query {
             default:
                 throw new IllegalArgumentException("Expression not supported");
         }
+    }
+
+    public Table joinTables(dataController data, Table selectedTable){
+        Table joinedTable = new Table("join");
+        Table table = this.getJoinClause().getTable(data, this.getJoinClause().getJoinItems().get(0));
+        Table table1;
+        Table table2;
+        if (this.getJoinClause().getJoinItems().get(0).getAlias1().equals(this.getJoinClause().getJoinItems().get(0).getRowID())){
+            table1 = table;
+            table2 = selectedTable;
+        }
+        else {
+            table1 = selectedTable;
+            table2 = table;
+        }
+
+        int indexTable1 = -1;
+        int indexTable2 = -1;
+        for (Column col:table1.getColumnNames()){
+            if (col.getName().equals(this.getJoinClause().getJoinItems().get(0).getCell1())){
+                indexTable1 = table1.getColumnNames().indexOf(col);
+            }
+        }
+        for (Column col:table2.getColumnNames()){
+            if (col.getName().equals(this.getJoinClause().getJoinItems().get(0).getCell2())){
+                indexTable2 = table2.getColumnNames().indexOf(col);
+            }
+        }
+        List<Column> columnList = new ArrayList<>();
+        for (Column col:table1.getColumnNames()){
+            Column copyCol = new Column(col.getName(), col.getDefaultV(), col.getType(), col.getBlanksAllowed());
+            columnList.add(copyCol);
+        }
+        int i = 0;
+        for (Column col:table2.getColumnNames()){
+            if (i != indexTable2) {
+                Column copyCol = new Column(col.getName(), col.getDefaultV(), col.getType(), col.getBlanksAllowed());
+                columnList.add(copyCol);
+            }
+            i++;
+        }
+        int k=0;
+        for (Row row:table1.getTableRows()){
+            for (Row row2:table2.getTableRows()){
+                if (row.getColumnList().get(indexTable1).getString().equals(row2.getColumnList().get(indexTable2).getString())){
+                    Row joinRow = new Row(columnList);
+                    int j =0;
+                    for (Cell cell:joinRow.getColumnList()){
+                        Cell joinCell = null;
+                        if(j < table1.getColumnNames().size()){
+                            joinCell = new CellText(table1.getTableRows().get(k).getColumnList().get(j).getString());
+                        }else if(j !=indexTable2) {
+                            joinCell = new CellText(table2.getTableRows().get(k).getColumnList().get(j-table1.getColumnNames().size()+1).getString());
+                        }
+                        joinRow.setColumnCell(k,joinCell);
+                        j++;
+                    }
+                    joinedTable.addRow(joinRow);
+                }
+            }
+            k++;
+        }
+
+        return joinedTable;
     }
 
     /**

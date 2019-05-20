@@ -242,6 +242,7 @@ public class SQLParser extends StreamTokenizer {
 			String cell1 = parseCellId();
 			expect('=');
 			String cell2 = parseCellId();
+			query.getJoinClause().addJoinItem(tableName, rowId, cell1, cell2);
 			result.append(" INNER JOIN " + tableName + " AS " + rowId + " ON " + cell1 + " = " + cell2);
 		}
 		expect(TT_WHERE);
