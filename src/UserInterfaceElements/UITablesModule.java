@@ -46,14 +46,10 @@ public class UITablesModule extends UISuperClass{
      */
     public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data, Integer[] dimensions) {
         String nextUImode = "";
-
-        //EVENT DOUBLE CLICKS UNDER TABLE
-        if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getLowestY(30)) ) {
-            data.getSelectedTable().setQuery("SELECT movie.title AS titles FROM movies AS movie WHERE movie.score < 7");
-            handleDoubleClickUnderTable(data);
-        }
+       checkDoubleClickUnderTable(data, ID, yCo, count);
         //EVENT CLICK CELL
         //TODO: check if margin clicked
+
         CellVisualisationSettings setting = data.getSetting();
         List<Integer> widthList = setting.getWidthList();
        int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
@@ -62,14 +58,12 @@ public class UITablesModule extends UISuperClass{
         //int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, 10, 10,
               //  paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1,widthList);
        //Checks if user is dragging border
+
             if(currMode == "drag"){
                 handleDragEvent(xCo, ID, data, dimensions, widthList);
         }
         //check if leftmargin is clicked
         else if(isClickedLeftMargin(xCo, yCo, data, widthList)) {
-                Query query = parseQuery("SELECT movie.title AS title FROM movies AS movie WHERE movie.imdb_score > 7");
-                Table computedTable = query.getComputedTable(data);
-                System.out.println(computedTable);
             currMode = "delete";
             activeCell = clickedCell;
         }
@@ -85,17 +79,10 @@ public class UITablesModule extends UISuperClass{
         }
             //EVENT edit mode and clicked outside table
         else if (currMode == "edit"  && !invalidInput) {
-            currMode = "normal";
-            //action needs to be added to operations list
-             String ov = data.getTableList().get(activeCell[0]).getTableName();
-             Command c = new TableName(activeCell[0],tempText,ov, data);
-             data.addCommand(c);
-             setTempText(tempText, data);
-        }
+                exitEditMode(data);        }
         else if (currMode == "delete"){
             currMode = "normal";
         }
-
 
         List<String> result = new ArrayList<>();
         result.add(currMode);
@@ -103,6 +90,33 @@ public class UITablesModule extends UISuperClass{
         return result;
     }
 
+    /**
+     * Method that saves text and exit edit mode
+     * @param data datacontroller
+     */
+    public void exitEditMode(dataController data){
+        currMode = "normal";
+        //action needs to be added to operations list
+        String ov = data.getTableList().get(activeCell[0]).getTableName();
+        Command c = new TableName(activeCell[0],tempText,ov, data);
+        data.addCommand(c);
+        setTempText(tempText, data);
+    }
+
+    /**
+     * Method thatchecks if user clicked under table
+     * @param data datacontroller
+     * @param ID ID
+     * @param yCo yco
+     * @param count count
+     */
+    public void checkDoubleClickUnderTable(dataController data, int ID, int yCo, int count){
+        //EVENT DOUBLE CLICKS UNDER TABLE
+        if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getLowestY(30)) ) {
+            data.getSelectedTable().setQuery("SELECT movie.title AS titles FROM movies AS movie WHERE movie.score < 7");
+            handleDoubleClickUnderTable(data);
+        }
+    }
 	/**
 	 * @param xCo
 	 * @param yCo
@@ -222,10 +236,6 @@ public class UITablesModule extends UISuperClass{
      *
      * @param g graphics object
      * @param data datacontroller
-     */
-    /*
-     * TO REFACTOR
-     * too long
      */
     @Override
     public void paint(Graphics g, dataController data, Integer[] coords, Integer[] dimensions) {
@@ -405,13 +415,11 @@ public class UITablesModule extends UISuperClass{
                     if (column.getName().equals(query.getSelectClause().getSelectClauses().get(j).getAs().getId())){
                         columnCounter++;
                     }
-
                 }
                 if(column.getName().equals(query.getWhereClause().getId())){
                     indexExprColumn = i;
                 }
                 i++;
-
             }
             if (indexExprColumn == -1){
                 throw new IllegalArgumentException("Expression column does not exist");

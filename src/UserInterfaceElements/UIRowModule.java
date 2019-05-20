@@ -70,11 +70,7 @@ public class UIRowModule extends UISuperClass {
         }
         //EVENT DOUBLE CLICKS UNDER TABLE
         else if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, table.getLengthTable() + paintModule.getyCoStart())) {
-            Row row = new Row(table.getColumnNames());
-            table.addRow(row);
-            //action needs to be added to operations list
-            Command c = new NewRow(data.getTableList().indexOf(table),row, data);
-            data.addCommand(c);
+           DoubleClickUnderRowMode(data);
         }
         //EVENT CELL CLICKED (VALID INPUT)
         else if (!invalidInput && ID == 500 && currMode!="edit" && currMode != "delete" && clickedCell[1] != -1 && clickedCell[0] != -1) {
@@ -88,21 +84,40 @@ public class UIRowModule extends UISuperClass {
         }
         //EVENT EXIT EDIT MODE
         else if(!invalidInput && currMode == "edit" && (clickedCell[0] == -1 || clickedCell[1] == -1)){
-            saveText(data);
-            //action needs to be added to operations list
-            int[] cid = new int[3];
-            cid[0] = data.getTableList().indexOf(table);
-            cid[1] = activeCell[0];
-            cid[2] = activeCell[1];
-            Command c = new RowValue(cid,tempText,oldValue, data);
-            data.addCommand(c);
-            currMode = "normal";
+           exitEditMode(data);
         }
         String nextUImode = "";
         List<String> result = new ArrayList<>();
         result.add(currMode);
         result.add("");
         return result;
+    }
+
+    /**
+     * Method that exits edit mode and saves temptext to database
+     * @param data datacontroller
+     */
+    public void exitEditMode(dataController data){
+        saveText(data);
+        //action needs to be added to operations list
+        int[] cid = new int[3];
+        cid[0] = data.getTableList().indexOf(table);
+        cid[1] = activeCell[0];
+        cid[2] = activeCell[1];
+        Command c = new RowValue(cid,tempText,oldValue, data);
+        data.addCommand(c);
+        currMode = "normal";
+    }
+    /**
+     * Method that handles double click under table
+     * @param data
+     */
+    public void DoubleClickUnderRowMode(dataController data){
+        Row row = new Row(table.getColumnNames());
+        table.addRow(row);
+        //action needs to be added to operations list
+        Command c = new NewRow(data.getTableList().indexOf(table),row, data);
+        data.addCommand(c);
     }
 
 	/**

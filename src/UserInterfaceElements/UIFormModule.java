@@ -74,8 +74,6 @@ public class UIFormModule extends UISuperClass{
             handleClickOnCell(data, clickedCell);
         }
 
-
-
         //EVENT edit mode and clicked outside table
         else if (currMode == "edit"  && !invalidInput) {
             currMode = "normal";

@@ -143,18 +143,7 @@ public class UIDesignModule extends UISuperClass {
 
         //EVENT EXIT EDIT MODE
         else if(!invalidInput && currMode == "edit" && (clickedCell[0] == -1 || clickedCell[1] == -1)){
-            saveText(data);
-            int[] cid = new int[2];
-            cid[0] = data.getTableList().indexOf(table);
-            cid[1] = activeCell[0];
-            if(activeCell[1] == 0) {
-                Command c = new ColumnName(cid,tempText.getString(),prevColName,data);
-                data.addCommand(c);
-            } else if (activeCell[1] == 1) {
-                Command c = new DefaultValue(cid,tempText,oldValue,data);
-                data.addCommand(c);
-            }
-            currMode = "normal";
+           exitEditMode(data);
         }
         List<String> result = new ArrayList<>();
         result.add(currMode);
@@ -162,7 +151,24 @@ public class UIDesignModule extends UISuperClass {
         return result;
     }
 
-
+    /**
+     * Method that exists edit mode
+     * @param data datacontroller
+     */
+    public void exitEditMode(dataController data){
+    saveText(data);
+    int[] cid = new int[2];
+    cid[0] = data.getTableList().indexOf(table);
+    cid[1] = activeCell[0];
+    if(activeCell[1] == 0) {
+        Command c = new ColumnName(cid,tempText.getString(),prevColName,data);
+        data.addCommand(c);
+    } else if (activeCell[1] == 1) {
+        Command c = new DefaultValue(cid,tempText,oldValue,data);
+        data.addCommand(c);
+    }
+    currMode = "normal";
+}
 
 	/**
 	 * @param data
