@@ -5,6 +5,9 @@ import Data.dataController;
 
 import java.util.List;
 
+/**
+ * A class of keyevents with methods for keyevent checking
+ */
 public class KeyEvent {
 
     /**

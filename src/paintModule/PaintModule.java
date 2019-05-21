@@ -15,23 +15,65 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 /**
- * Superclass that handles the painting.
+ * Superclass that handles the painting involving default dimensions, margins and coordinates for painting.
  */
 public class PaintModule {
+
     //DEFAULT VALUES
+    /**
+     * Default height of cell
+     */
 	protected int cellHeight = 20;
+
+    /**
+     * default width of cell
+     */
     protected int cellWidth = 100;
+
+    /**
+     * default height of title
+     */
     protected int titleHeight = 15;
 
     //MINIMUM VALUES
+    /**
+     * minimum width of cell
+     */
     protected int minCellWidth = 80;
+
+    /**
+     * left margin of cell
+     */
     protected int cellLeftMargin = 10;
+
+    /**
+     * top margin of cell
+     */
     protected int cellTopMargin = 5;
+
+    /**
+     * x coordinate of title
+     */
     protected int titleX = 10;
+
+    /**
+     * Y coordinate of title
+     */
     protected int titleY = 10;
+
+    /**
+     * Start x coordinate
+     */
     protected int xCoStart = 30 ;
+
+    /**
+     * Start y coordinate
+     */
     protected int yCoStart = 30;
-    
+
+    /****
+     * mdefault margin
+     */
     private  int margin = 30;
 
 
@@ -52,7 +94,14 @@ public class PaintModule {
     }
 
 
-
+    /**
+     * Method that paints a cell
+     * @param newWidth the new width of the cell
+     * @param g graphics object
+     * @param startxCo the start x coordinate of the cell
+     * @param startyCo the start y coordinate of the cell
+     * @param rowItem the rowitem to be in the cell
+     */
     public void paintCell(int newWidth, Graphics g, int startxCo, int startyCo, Cell rowItem){
         if(newWidth < 20){
             g.drawRect( startxCo,startyCo,newWidth, cellHeight);
@@ -257,6 +306,15 @@ public class PaintModule {
 
     }
 
+    /**
+     * Method that sets the background color to a given volor
+     * @param g graphics object
+     * @param xco x coordinate of section
+     * @param yco y coordinate of section
+     * @param width width of section
+     * @param height height of section
+     * @param color color of section
+     */
     public void setBackground(Graphics g, int xco, int yco, int width, int height, Color color){
         g.setColor(color);
         g.fillRect(xco, yco, width, height);
@@ -296,9 +354,9 @@ public class PaintModule {
 
     /**
      * Method to get the coordinates of a specific painted cell
-     * @param x
-     * @param y
-     * @return
+     * @param x column number
+     * @param y row number
+     * @return the coordinates of the cell
      */
     public int[] getCellCoords(int x,int y, List<Integer> widthList, scrollbar scrollbar, int windowHeight){
         int xCoord = this.getxCoStart();
@@ -328,8 +386,8 @@ public class PaintModule {
     }
 
 	/**
-	 * @param x
-	 * @param offsetVertical
+	 * @param x row number
+	 * @param offsetVertical vertical offset
 	 * @return yCoord 
 	 */
 	private int getYFromOffset(int x, int offsetVertical) {
@@ -502,7 +560,12 @@ public class PaintModule {
     }
 
 
-
+    /**
+     * Method that paints the red closing button on a subwindow
+     * @param g graphics object
+     * @param xCo x coordinate of button to be painted
+     * @param yCo y coordinate of button to be painted
+     */
     public void paintClosingButton(Graphics g, int xCo, int yCo){
         g.fillOval(xCo, yCo, titleHeight-5, titleHeight-5);
     }

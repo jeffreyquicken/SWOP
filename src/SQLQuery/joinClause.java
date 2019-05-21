@@ -27,7 +27,7 @@ public class joinClause {
      * @param tableName the table name
      * @param id the row id
      * @param cell1 cell 1 of join
-     * @param cell2 cellé of join
+     * @param cell2 cell of join
      */
     public void addJoinItem(String tableName, String id, String cell1, String cell2){
        joinItems.add(new joinItem(tableName, id, cell1, cell2));

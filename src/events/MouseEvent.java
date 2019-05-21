@@ -5,6 +5,9 @@ import settings.scrollbar;
 
 import java.util.List;
 
+/**
+ * A class of mouseevents involving methods for mouse event checking
+ */
 public class MouseEvent {
 
     /**
