@@ -11,7 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+/**
+ * Class of controller involving the different UImodules and the current mode
+ */
 public class Controller {
+
+
     private UITablesModule tablemodule;
     private UIRowModule rowmodule;
     private UIDesignModule designModule;
