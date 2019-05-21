@@ -110,7 +110,6 @@ public class UITablesModule extends UISuperClass{
     public void checkDoubleClickUnderTable(dataController data, int ID, int yCo, int count){
         //EVENT DOUBLE CLICKS UNDER TABLE
         if (currMode == "normal" && mouseEventHandler.doubleClickUnderTable(yCo, count, ID, data.getLowestY(30)) ) {
-            data.getSelectedTable().setQuery("SELECT table.Column1 AS col FROM Table1 AS table INNER JOIN Table2 AS table2 ON table.Column1 = table2.Column1 WHERE table.Column1 = 9");
             handleDoubleClickUnderTable(data);
         }
     }
