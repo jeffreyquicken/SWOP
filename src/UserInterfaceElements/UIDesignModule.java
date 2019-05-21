@@ -142,7 +142,7 @@ public class UIDesignModule extends UISuperClass {
         }
 
         //EVENT EXIT EDIT MODE
-        else if(!invalidInput && currMode == "edit" && (clickedCell[0] == -1 || clickedCell[1] == -1)){
+        else if(!invalidInput && (currMode == "edit" || currMode == "delete") && (clickedCell[0] == -1 || clickedCell[1] == -1)){
            exitEditMode(data);
         }
         List<String> result = new ArrayList<>();
