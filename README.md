@@ -2,4 +2,4 @@
 
 Project for SWOP @KUL
 
-![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
+![Alt Text](https://github.com/jeffreyquicken/SWOP/blob/master/imHappy.gif)
