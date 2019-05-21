@@ -1,3 +1,5 @@
 # SWOP
+Project for @KUL
 
-Project for SWOP @KUL
+![Alt Text](https://github.com/jeffreyquicken/SWOP/blob/master/imHappy.gif)
+&copy; SW0P t3am 12
