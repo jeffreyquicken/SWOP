@@ -84,7 +84,7 @@ public abstract class UISuperClass {
         if(scrollbar.getActiveVertical()){
             System.out.println("yes");
         }
-        if(scrollbar.getActiveVertical() && xco > (dimensions[0] - 15) && xco < dimensions[0]){
+        if(scrollbar.getActiveVertical() && xco > (dimensions[0] - 15) && xco < dimensions[0] && yco < dimensions[1] - 15){
 
             if(scrollbar.getPercentageVertical() * dimensions[1] -15 < yco){
                 System.out.println("Under vertical Scrollbar clicked!!!!!!!!!!!!!!!!!!");
@@ -96,7 +96,7 @@ public abstract class UISuperClass {
             }
 
 
-        }else if(scrollbar.getActiveHorizontal() && yco > (dimensions[1] - 15) && yco < dimensions[1]){
+        }else if(scrollbar.getActiveHorizontal() && yco > (dimensions[1] - 15) && yco < dimensions[1] && xco < dimensions[0] - 15){
             if(scrollbar.getOffsetpercentageHorizontal() * dimensions[0] < xco){
                 System.out.println("Under hor Scrollbar clicked!!!!!!!!!!!!!!!!!!");
                 scrollbar.addOffsetPercentageHorizontal();

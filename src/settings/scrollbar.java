@@ -49,7 +49,7 @@ public class scrollbar {
     }
 
     public void setOffsetpercentageVertical(double offsetpercentageVertical) {
-        this.offsetpercentageVertical += offsetpercentageVertical;
+        this.offsetpercentageVertical = offsetpercentageVertical;
     }
 
     public Boolean getActiveHorizontal() {
