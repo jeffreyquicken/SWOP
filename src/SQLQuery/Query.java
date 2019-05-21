@@ -58,9 +58,16 @@ public class Query {
         this.whereClause = whereClause;
     }
 
-
+    /**
+     * Method that computes a table based on a given query
+     * @param data the datacontroller
+     * @return the computed table
+     * @throws IllegalArgumentException when expression is not valid
+     */
     public Table getComputedTable(dataController data) throws IllegalArgumentException{
+
         Table selectedTable = this.fromClause.getTable(data);
+        selectedTable = joinTables(data,selectedTable);
         this.getTables().add(selectedTable);
         Table resultTable = new Table("Computed: ");
         List<Column> selectedColumn = new ArrayList<>();
@@ -119,11 +126,19 @@ public class Query {
             }
         }
 
-        Table joinedTable = joinTables(data,selectedTable);
+
         System.out.println("joined table");
         return resultTable;
+
     }
 
+    /**
+     * Method that compares two expressions based on the operator given in the where clause
+     * @param leftExpr the first expression
+     * @param rightExpr the second expression
+     * @return whether the comparison is true
+     * @throws IllegalArgumentException when the expression is not valid
+     */
     public boolean compareExpression(String leftExpr, String rightExpr) throws IllegalArgumentException{
         switch (this.whereClause.getOperator()) {
             case "<":
@@ -141,7 +156,16 @@ public class Query {
         }
     }
 
+    /**
+     * Method that joins two tables on a given column
+     * @param data the datacontroller
+     * @param selectedTable the table on which to join
+     * @return the joined table
+     */
     public Table joinTables(dataController data, Table selectedTable){
+        if (this.getJoinClause().getJoinItems().size() == 0){
+            return selectedTable;
+        }
         Table joinedTable = new Table("join");
         Table table = this.getJoinClause().getTable(data, this.getJoinClause().getJoinItems().get(0));
         Table table1;
@@ -171,15 +195,18 @@ public class Query {
         for (Column col:table1.getColumnNames()){
             Column copyCol = new Column(col.getName(), col.getDefaultV(), col.getType(), col.getBlanksAllowed());
             columnList.add(copyCol);
+            joinedTable.addColumn(copyCol);
         }
         int i = 0;
         for (Column col:table2.getColumnNames()){
             if (i != indexTable2) {
                 Column copyCol = new Column(col.getName(), col.getDefaultV(), col.getType(), col.getBlanksAllowed());
                 columnList.add(copyCol);
+                joinedTable.addColumn(copyCol);
             }
             i++;
         }
+
         int k=0;
         for (Row row:table1.getTableRows()){
             for (Row row2:table2.getTableRows()){
@@ -193,7 +220,7 @@ public class Query {
                         }else if(j !=indexTable2) {
                             joinCell = new CellText(table2.getTableRows().get(k).getColumnList().get(j-table1.getColumnNames().size()+1).getString());
                         }
-                        joinRow.setColumnCell(k,joinCell);
+                        joinRow.setColumnCell(j,joinCell);
                         j++;
                     }
                     joinedTable.addRow(joinRow);

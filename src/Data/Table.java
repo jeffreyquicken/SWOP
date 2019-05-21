@@ -18,7 +18,7 @@ public class Table {
      */
     private List<Row> tableRows;
     /**
-     * List with names of the column
+     * List with columns
      */
     private List<Column> columnNames;
     /**
