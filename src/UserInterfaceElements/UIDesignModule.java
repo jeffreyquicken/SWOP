@@ -391,6 +391,7 @@ public class UIDesignModule extends UISuperClass {
 		activeCell = clickedCell;
 		invalidInput = !textIsValid(newType, data, null);
 		if (invalidInput) {
+            table.getColumnNames().get(clickedCell[0]).setType(((CellText) newType).getValue());
 		    currMode = "edit";
 		} else {
 		    currMode = "normal";
