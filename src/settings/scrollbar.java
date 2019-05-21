@@ -1,14 +1,17 @@
 package settings;
 
+/**
+ * A class of scrollbar involving the offsets and percentages needed for the working of the scrollbar
+ */
 public class scrollbar {
 
-    double percentageHorizontal;
-    double percentageVertical;
-    int offsetInt;
-    double offsetpercentageHorizontal;
-    double offsetpercentageVertical;
-    Boolean isActiveHorizontal;
-    Boolean isActiveVertical;
+    private double percentageHorizontal;
+    private double percentageVertical;
+    private int offsetInt;
+    private double offsetpercentageHorizontal;
+    private double offsetpercentageVertical;
+    private Boolean isActiveHorizontal;
+    private Boolean isActiveVertical;
     
     public scrollbar(){
         percentageHorizontal = 0;

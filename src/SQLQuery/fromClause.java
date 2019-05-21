@@ -15,6 +15,7 @@ public class fromClause {
      * List with asItems for queries with multiple AS statements
      */
     private List<asItem> fromClauses = new ArrayList<>();
+
     public  List<asItem> getFromClauses(){
 
         return fromClauses;
@@ -31,7 +32,12 @@ public class fromClause {
         fromClauses.add(item);
     }
 
-    public Table getTable(dataController data) throws IllegalArgumentException{
+    /**
+     * Method that returns the table to which the from clause refers
+     * @param data datacontroller
+     * @return the table on which the from clause should be executed
+     */
+    public Table getTable(dataController data){
         for (Table table:data.getTableList()){
             if (table.getTableName().equals(this.fromClauses.get(0).getId())){
                 return table;

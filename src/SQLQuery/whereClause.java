@@ -7,7 +7,25 @@ import java.util.List;
  * Class for where clauses
  */
 public class whereClause {
+    /**
+     * WHERE $tablename$.id OPERATOR condition
+     */
     private String tableName;
+
+    /**
+     * WHERE tablename.$id$ OPERATOR condition
+     */
+    private String id;
+
+    /**
+     * WHERE tablename.id $OPERATOR$ condition
+     */
+    private String operator;
+
+    /**
+     * WHERE tablename.id OPERATOR $condition$
+     */
+    private String condition;
 
     public String getTableName() {
         return tableName;
@@ -41,11 +59,14 @@ public class whereClause {
         this.condition = condition;
     }
 
-    private String id;
-    private String operator;
-    private String condition;
 
-
+    /**
+     * Method that adds the attributes to the where clause object
+     * @param tableName the tablename
+     * @param id the column id
+     * @param operator the operator
+     * @param condition the condition to check
+     */
     public void addWhereClause(String tableName, String id, String operator, String condition){
 
         this.tableName = tableName;

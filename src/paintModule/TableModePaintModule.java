@@ -10,6 +10,9 @@ import settings.scrollbar;
 
 import static java.lang.Math.min;
 
+/**
+ * A class of TabkeModePaintModule involving methods for painting table view elements
+ */
 public class TableModePaintModule extends PaintModule {
     /**
      * margin between name column and query column
@@ -67,12 +70,12 @@ public class TableModePaintModule extends PaintModule {
 
     /**
      * Method that calculates new width of header
-     * @param offsetHorizontal
-     * @param widthCells
-     * @param width
-     * @param tempWidth
-     * @param startXco
-     * @param xCo
+     * @param offsetHorizontal the horizontal offset
+     * @param widthCells the width of the cells
+     * @param width the width
+     * @param tempWidth the temp width
+     * @param startXco the start x coordinate of the header
+     * @param xCo the x coordinate
      * @return width of header
      */
     private int calculateNewWidth(int offsetHorizontal, int widthCells, int width, int tempWidth, int startXco, int xCo){
@@ -92,6 +95,7 @@ public class TableModePaintModule extends PaintModule {
     }
 
 	/**
+     * Method that paints a row and returns the y coordinate
 	 * @param g
 	 * @param startXco
 	 * @param startYco

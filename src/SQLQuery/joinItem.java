@@ -1,12 +1,39 @@
 package SQLQuery;
 
+/**
+ * A class of join items involving the necessary attributes to represent a join clause
+ * such as the table name, row id, cells and aliases
+ */
 public class joinItem {
 
+    /**
+     * $tableName$ INNER JOIN rowid ON cell1.alias1 = cell2.alias2
+     */
     private String tableName;
+
+    /**
+     * tableName INNER JOIN $rowid$ ON cell1.alias1 = cell2.alias2
+     */
     private String rowID;
+
+    /**
+     * tableName INNER JOIN rowid ON $cell1$.alias1 = cell2.alias2
+     */
     private String cell1;
+
+    /**
+     * tableName INNER JOIN rowid ON cell1$.alias1 = $cell2$.alias2
+     */
     private String cell2;
+
+    /**
+     * tableName INNER JOIN rowid ON cell1.$alias1$ = cell2.alias2
+     */
     private String alias1;
+
+    /**
+     * tableName INNER JOIN rowid ON cell1.alias1 = cell2.$alias2$
+     */
     private String alias2;
 
     public String getTableName() {
@@ -60,7 +87,13 @@ public class joinItem {
     }
 
 
-
+    /**
+     * Constructor for join item that splits the given strings into the proper attributes
+     * @param tableName the tablename
+     * @param rowID row id
+     * @param cell1 cell1
+     * @param cell2 cell 2
+     */
     public joinItem(String tableName, String rowID, String cell1, String cell2){
         this.tableName = tableName;
         this.rowID = rowID;

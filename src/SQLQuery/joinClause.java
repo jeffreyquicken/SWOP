@@ -33,7 +33,13 @@ public class joinClause {
        joinItems.add(new joinItem(tableName, id, cell1, cell2));
     }
 
-    public Table getTable(dataController data, joinItem joinItem) throws IllegalArgumentException{
+    /**
+     * Method that returns the table to which the join clause refers
+     * @param data datacontroller
+     * @param joinItem the join item
+     * @return the table on which the join should be executed
+     */
+    public Table getTable(dataController data, joinItem joinItem){
         for (Table table:data.getTableList()){
             if (table.getTableName().equals(joinItem.getTableName())){
                 return table;
