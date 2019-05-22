@@ -403,7 +403,8 @@ public class UIRowModule extends UISuperClass {
      */
     private void saveText(dataController data) {
         currMode = "normal";
-        table.getTableRows().get(activeCell[0]).setColumnCell(activeCell[1], tempText);
+        //table.getTableRows().get(activeCell[0]).setColumnCell(activeCell[1], tempText);
+        table.getTableRows().get(activeCell[0]).getColumnList().get((activeCell[1])).setValue(tempText.getString());
     }
 
     /**

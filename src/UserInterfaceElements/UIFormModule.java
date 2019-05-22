@@ -75,8 +75,9 @@ public class UIFormModule extends UISuperClass{
         }
 
         //EVENT edit mode and clicked outside table
-        else if (currMode == "edit"  && !invalidInput) {
+        else if (currMode == "edit"  && !invalidInput && ID == 501) {
             currMode = "normal";
+            System.out.println(ID);
             setTempText(tempText, data);
         }
         else if (currMode == "delete"){
@@ -119,7 +120,8 @@ public class UIFormModule extends UISuperClass{
      */
     private void handleClickOnCell(dataController data, int[] clickedCell) {
         activeCell = clickedCell;
-        tempText = table.getTableRows().get(rowIndex).getColumnList().get(activeCell[0]);
+        Cell cellCopy = new CellText(table.getTableRows().get(rowIndex).getColumnList().get(activeCell[0]).getString());
+        tempText = cellCopy;
         currMode = "edit";
 
     }
@@ -132,7 +134,9 @@ public class UIFormModule extends UISuperClass{
         public void setTempText(Cell tempText, dataController data){
             if (activeCell[0] == 1) {
                 currMode = "normal";
-                table.getTableRows().get(activeCell[1]).setColumnCell(activeCell[0], tempText);
+                //table.getTableRows().get(activeCell[1]).setColumnCell(activeCell[0], tempText);
+               // table.getTableRows().get(activeCell[1]).getColumnList().get(activeCell[0]).setValue(tempText.getString());
+                table.getTableRows().get(rowIndex).getColumnList().get(activeCell[0]).setValue(tempText.getString());
             }
         }
 
@@ -151,8 +155,9 @@ public class UIFormModule extends UISuperClass{
      */
     protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data) {
         KeyEvent eventHandler = new KeyEvent();
-        String currName = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]).getValue().toString(); // NOOIT GEBRUIKT, snap het nut niet
+        //String currName = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]).getValue().toString(); // NOOIT GEBRUIKT, snap het nut niet
         //EVENT: ASCSII char pressed
+        String currName = table.getTableRows().get(rowIndex).getColumnList().get(activeCell[1]).getValue().toString();
         if (eventHandler.isChar(keyCode)) {
             ((CellEditable)tempText).addChar(keyChar);
 
@@ -178,7 +183,7 @@ public class UIFormModule extends UISuperClass{
         }
 
         List<String> result = new ArrayList<>();
-        result.add("edit");
+        result.add(currMode);
         result.add("");
         return result;
 
@@ -191,7 +196,8 @@ public class UIFormModule extends UISuperClass{
      */
     private void saveText(dataController data) {
         currMode = "normal";
-        table.getTableRows().get(rowIndex).setColumnCell(activeCell[0], tempText);
+       // table.getTableRows().get(activeCell[1]).getColumnList().get(activeCell[0]).setValue(tempText.getString());
+        table.getTableRows().get(rowIndex).getColumnList().get(activeCell[0]).setValue(tempText.getString());
     }
 
     /**
