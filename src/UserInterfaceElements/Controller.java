@@ -11,18 +11,53 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+/**
+ * Class of controller involving the different UImodules and the current mode
+ */
 public class Controller {
+
+    /**
+     * The tablemodule
+     */
     private UITablesModule tablemodule;
+
+    /**
+     * The rowmodule
+     */
     private UIRowModule rowmodule;
+
+    /**
+     * the designmodule
+     */
     private UIDesignModule designModule;
+
+    /**
+     * the table datacontroller
+     */
     private Data.dataController tableDataController;
+
+    /**
+     * The current mode of the program
+     */
     private String currentMode;
 
+    /**
+     * The top level window
+     */
     private UITopLevelWindow topLevelWindow;
-    //ctrlPressed var to detect if new tables module needs to be added
+
+    /**
+     * Whether the control key is pressed
+     * (to detect if new tables module needs to be added)
+     */
     private boolean ctrlPressed;
-    //shiftPressed var to detect if shift is pressedf, for redo functionaity
+
+    /**
+     * Whether shift key is pressed
+     * (for redo functionaity)
+     */
     private boolean shiftPressed;
+
     //Display key/mousevent
     private String mouseEvent = "";
     private String keyEvent = "";
@@ -54,6 +89,10 @@ public class Controller {
 
     }
 
+    /**
+     * Constructor for the controller, used for testing purposes
+     * @param i
+     */
     public Controller(int i) {
         //topLevelWindow
         topLevelWindow = new UITopLevelWindow();
@@ -90,7 +129,7 @@ public class Controller {
                     UIRowModule rowModule = new UIRowModule(tableDataController.getSelectedTable());
                     topLevelWindow.addSubWindow(rowModule);
                 }
-                else if (tableDataController.getSelectedTable().getQuery().length() > 0 && id==500){
+                else if (tableDataController.getSelectedTable().getQuery().length() > 0 && id==500 && tableDataController.getSelectedTable().getColumnNames().size() == 0){
                     UIComputedModule computeModule = new UIComputedModule(tableDataController.getSelectedTable().getComputedTable(tableDataController), tableDataController, tableDataController.getSelectedTable().getQuery());
                     computeModule.getTable().setQuery(tableDataController.getSelectedTable().getComputedTable(tableDataController).getQuery());
                     tableDataController.getQueryManager().addQueryDependendTablesFromQuery(tableDataController.getSelectedTable().getLastQuery());
@@ -209,21 +248,6 @@ public class Controller {
             subWindow.paint(g, tableDataController,topLevelWindow.getStartCoords(subWindow), topLevelWindow.getDimensions(subWindow));
         }
 
-
-
-
-        /**
-        if (this.getCurrentMode() == "table") {
-            //Let UImodule paint canvas
-            this.getTablemodule().paint(g, tableDataController);
-        } else if (this.getCurrentMode() == "row") {
-            this.getRowmodule().paint(g, tableDataController.getSelectedTable(), tableDataController);
-        } else if (this.getCurrentMode() == "design") {
-            this.getDesignModule().paint(g, tableDataController);
-        }
-        //drawing of mousevent, keyevent just for debugging
-     //   g.drawString(mouseEvent, 10, 400);
-     //   g.drawString(keyEvent, 10, 420);*/
     }
 
     public String getCurrentMode() {
@@ -264,6 +288,7 @@ public class Controller {
     public boolean getShiftPressed() {
         return shiftPressed;
     }
+
 
     public UITopLevelWindow getTopLevelWindow() {
         return topLevelWindow;

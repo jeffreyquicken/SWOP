@@ -27,13 +27,19 @@ public class joinClause {
      * @param tableName the table name
      * @param id the row id
      * @param cell1 cell 1 of join
-     * @param cell2 cellé of join
+     * @param cell2 cell of join
      */
     public void addJoinItem(String tableName, String id, String cell1, String cell2){
        joinItems.add(new joinItem(tableName, id, cell1, cell2));
     }
 
-    public Table getTable(dataController data, joinItem joinItem) throws IllegalArgumentException{
+    /**
+     * Method that returns the table to which the join clause refers
+     * @param data datacontroller
+     * @param joinItem the join item
+     * @return the table on which the join should be executed
+     */
+    public Table getTable(dataController data, joinItem joinItem){
         for (Table table:data.getTableList()){
             if (table.getTableName().equals(joinItem.getTableName())){
                 return table;

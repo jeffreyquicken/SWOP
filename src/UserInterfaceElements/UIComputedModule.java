@@ -16,9 +16,20 @@ import java.util.List;
 
 import static SQLQuery.SQLParser.parseQuery;
 
+/**
+ * Class of UIComputedmodule, extending the UISuperclass. Involving methods for painting and getting the computed table
+ */
 public class UIComputedModule extends UISuperClass{
+    /**
+     * the paintmodule for the rows
+     */
     private RowModePaintModule paintModule;
+
+    /**
+     * mouse eventhandler
+     */
     private events.MouseEvent mouseEventHandler;
+
     private int xCoStart = 50;
     private int yCoStart = 50;
     private String currMode = "normal";

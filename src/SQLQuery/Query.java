@@ -10,9 +10,24 @@ import java.util.List;
  */
 public class Query {
 
+    /**
+     * the from clause of this query
+     */
     private fromClause fromClause = new fromClause();
+
+    /**
+     * the select clause of this query
+     */
     private selectClause selectClause = new selectClause();
+
+    /**
+     * the where clause of this query
+     */
     private whereClause whereClause = new whereClause();
+
+    /**
+     * the join clause of this query
+     */
     private joinClause joinClause = new joinClause();
 
     public List<Column> getColumns() {
@@ -23,6 +38,7 @@ public class Query {
      * all columns used in this query
      */
     private List<Column> columns = new ArrayList<>();
+
     /**
      * all tables used in this query
      */

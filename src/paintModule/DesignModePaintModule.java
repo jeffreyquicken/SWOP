@@ -11,6 +11,9 @@ import Data.Table;
 import settings.CellVisualisationSettings;
 import settings.scrollbar;
 
+/**
+ * A class of DesignModePaintModule involving methods for painting design view elements
+ */
 public class DesignModePaintModule extends PaintModule {
 
 	

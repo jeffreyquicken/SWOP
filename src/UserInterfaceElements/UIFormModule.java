@@ -11,10 +11,28 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UIFormModule extends UISuperClass{
+/**
+ * Class of UIFormmodule extending the UISuperclass. Involving methods for painting and handling events.
+ */
+public class UIFormModule extends UISuperClass {
+    /**
+     * the table associated with this module
+     */
     private Table table;
+
+    /**
+     * temporary text cell
+     */
     private Cell tempText;
+
+    /**
+     * the paint module
+     */
     private FormModePaintModule paintModule;
+
+    /**
+     * the mouse event handler
+     */
     private events.MouseEvent mouseEventHandler;
 
     /**
@@ -27,7 +45,31 @@ public class UIFormModule extends UISuperClass{
      */
     private int rowIndex;
 
-    public UIFormModule(Table inputTable){
+
+    public Table getTable(){
+        return table;
+    }
+    public Cell getTempText() {
+        return tempText;
+    }
+
+    public boolean isRowNotOutOfRange() {
+        return rowNotOutOfRange;
+    }
+
+    public int getRowIndex() {
+        return rowIndex;
+    }
+
+
+
+    /**
+     * constructor for the form module
+     *
+     * @param inputTable the table associated with this module
+     */
+    public UIFormModule(Table inputTable) {
+
         paintModule = new FormModePaintModule();
         mouseEventHandler = new MouseEvent();
         invalidInput = false;
@@ -39,16 +81,12 @@ public class UIFormModule extends UISuperClass{
     /**
      * Eventhandler that takes care of a mouseclick, and returns the new state of the program
      *
-     * @param xCo x-coordinate of click
-     * @param yCo y-coordinate of click
+     * @param xCo   x-coordinate of click
+     * @param yCo   y-coordinate of click
      * @param count number of  clicked
-     * @param ID Id of mouseclick
-     * @param data datacontroller to make changes to the data
+     * @param ID    Id of mouseclick
+     * @param data  datacontroller to make changes to the data
      * @return returns a list with the nextUIMode and the state of the UI
-     */
-    /*
-     * TO REFACTOR
-     * too long
      */
     public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data, Integer[] dimensions) {
         String nextUImode = "";
@@ -59,27 +97,24 @@ public class UIFormModule extends UISuperClass{
 
         List<Integer> widthList = table.getFormSetting().getWidthList();
         int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, paintModule.getxCoStart(), paintModule.getyCoStart(),
-                paintModule.getCellHeight(), paintModule.getCellWidth(),table.getColumnNames().size(), 1,widthList, scrollbar);
+                paintModule.getCellHeight(), paintModule.getCellWidth(), table.getColumnNames().size(), 1, widthList, scrollbar);
         System.out.println("CELL CLICKED: " + clickedCell);
         //int[] clickedCell = mouseEventHandler.getCellID(xCo, yCo, 10, 10,
         //  paintModule.getCellHeight(), paintModule.getCellWidth(), data.getTableList().size(), 1,widthList);
         //Checks if user is dragging border
-        if(currMode == "drag"){
+        if (currMode == "drag") {
             handleDragEvent(xCo, ID, data, dimensions, widthList);
-        }
-
-        else if(currMode!= "edit" && scrollbarClicked(xCo,yCo,dimensions)){
-        }
-        else if (!invalidInput  && currMode!= "delete" && clickedCell[1] != -1 && clickedCell[0] != -1 && clickedCell[1] != 0) {
+        } else if (currMode != "edit" && scrollbarClicked(xCo, yCo, dimensions)) {
+        } else if (!invalidInput && currMode != "delete" && clickedCell[1] != -1 && clickedCell[0] != -1 && clickedCell[1] != 0) {
             handleClickOnCell(data, clickedCell);
         }
 
         //EVENT edit mode and clicked outside table
-        else if (currMode == "edit"  && !invalidInput) {
+        else if (currMode == "edit" && !invalidInput && ID == 501) {
             currMode = "normal";
+            System.out.println(ID);
             setTempText(tempText, data);
-        }
-        else if (currMode == "delete"){
+        } else if (currMode == "delete") {
             currMode = "normal";
         }
 
@@ -91,70 +126,75 @@ public class UIFormModule extends UISuperClass{
     }
 
     /**
-     * @param xCo
-     * @param ID
-     * @param data
-     * @param dimensions
-     * @param widthList
+     * Method that handles the dragevent
+     *
+     * @param xCo        s coordinate
+     * @param ID         click id
+     * @param data       datacontroller
+     * @param dimensions the window dimensions
+     * @param widthList  teh widthlist
      */
     private void handleDragEvent(int xCo, int ID, dataController data, Integer[] dimensions, List<Integer> widthList) {
-        if(ID == 506 || ID == 502){
+        if (ID == 506 || ID == 502) {
             int delta = xCo - draggedX;
             int previousWidth = widthList.get(draggedColumn);
-            int newWidth = previousWidth +delta;
+            int newWidth = previousWidth + delta;
             int sum = widthList.stream().mapToInt(Integer::intValue).sum();
-            if(newWidth >= paintModule.getMinCellWidth() && sum + delta < 590 - paintModule.getxCoStart() ){
+            if (newWidth >= paintModule.getMinCellWidth() && sum + delta < 590 - paintModule.getxCoStart()) {
                 widthList.set(draggedColumn, newWidth);
                 draggedX = xCo;
                 recalculateScrollbar(data, dimensions);
             }
-        }else{
-            currMode ="normal";
+        } else {
+            currMode = "normal";
         }
     }
 
     /**
-     * @param data
-     * @param clickedCell
+     * Method that handles clicks on cells
+     *
+     * @param data        datacontroller
+     * @param clickedCell clicked cell coordinates
      */
     private void handleClickOnCell(dataController data, int[] clickedCell) {
         activeCell = clickedCell;
-        tempText = table.getTableRows().get(rowIndex).getColumnList().get(activeCell[0]);
+        Cell cellCopy = new CellText(table.getTableRows().get(rowIndex).getColumnList().get(activeCell[0]).getString());
+        tempText = cellCopy;
         currMode = "edit";
 
     }
 
-        /**
-         * Method that saves the temporary text to the database depending on whether it is a table name or a query
-         * @param tempText the text to be saved
-         * @param data the datacontroller
-         */
-        public void setTempText(Cell tempText, dataController data){
-            if (activeCell[0] == 1) {
-                currMode = "normal";
-                table.getTableRows().get(activeCell[1]).setColumnCell(activeCell[0], tempText);
-            }
+    /**
+     * Method that saves the temporary text to the database depending on whether it is a table name or a query
+     *
+     * @param tempText the text to be saved
+     * @param data     the datacontroller
+     */
+    public void setTempText(Cell tempText, dataController data) {
+        if (activeCell[0] == 1) {
+            currMode = "normal";
+            //table.getTableRows().get(activeCell[1]).setColumnCell(activeCell[0], tempText);
+            // table.getTableRows().get(activeCell[1]).getColumnList().get(activeCell[0]).setValue(tempText.getString());
+            table.getTableRows().get(rowIndex).getColumnList().get(activeCell[0]).setValue(tempText.getString());
         }
+    }
 
     /**
      * Method that handles key event when the UI is in edit-mode and returns state of program
      *
-     * @param id id of key pressed
+     * @param id      id of key pressed
      * @param keyCode keycde of key pressed
      * @param keyChar keychar of key pressed
-     * @param data datacontroller
+     * @param data    datacontroller
      * @return returns a list with the nextUImode and the current mode of the UI
-     */
-    /*
-     * TO REFACTOR
-     * too long
      */
     protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data) {
         KeyEvent eventHandler = new KeyEvent();
-        String currName = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]).getValue().toString(); // NOOIT GEBRUIKT, snap het nut niet
+        //String currName = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]).getValue().toString(); // NOOIT GEBRUIKT, snap het nut niet
         //EVENT: ASCSII char pressed
+        String currName = table.getTableRows().get(rowIndex).getColumnList().get(activeCell[1]).getValue().toString();
         if (eventHandler.isChar(keyCode)) {
-            ((CellEditable)tempText).addChar(keyChar);
+            ((CellEditable) tempText).addChar(keyChar);
 
             invalidInput = !textIsValid(tempText, data, currName);
         }
@@ -164,7 +204,7 @@ public class UIFormModule extends UISuperClass{
 
             //Check if string is not empty
             if (tempText.getValue().toString().length() != 0) {
-                ((CellEditable)tempText).delChar();
+                ((CellEditable) tempText).delChar();
 
                 invalidInput = !textIsValid(tempText, data, currName);
 
@@ -178,7 +218,7 @@ public class UIFormModule extends UISuperClass{
         }
 
         List<String> result = new ArrayList<>();
-        result.add("edit");
+        result.add(currMode);
         result.add("");
         return result;
 
@@ -191,14 +231,15 @@ public class UIFormModule extends UISuperClass{
      */
     private void saveText(dataController data) {
         currMode = "normal";
-        table.getTableRows().get(rowIndex).setColumnCell(activeCell[0], tempText);
+        // table.getTableRows().get(activeCell[1]).getColumnList().get(activeCell[0]).setValue(tempText.getString());
+        table.getTableRows().get(rowIndex).getColumnList().get(activeCell[0]).setValue(tempText.getString());
     }
 
     /**
      * Checks if updated text is valid according to the place in the table it is updated
      *
-     * @param text text to be validated
-     * @param data datacontroller
+     * @param text     text to be validated
+     * @param data     datacontroller
      * @param currName old name
      * @return Wheter the text is in the correct fromat according to the type of it's cell
      */
@@ -207,9 +248,7 @@ public class UIFormModule extends UISuperClass{
         Boolean blanksAllowed = table.getColumnNames().get(activeCell[0]).getBlanksAllowed();
         if (type.equals("String")) {
             if (!blanksAllowed) {
-                if (((CellText) text).getValue().length() == 0) {
-                    return false;
-                }
+                return ((CellText) text).getValue().length() != 0;
             }
             return true;
         } else if (type.equals("Boolean")) {
@@ -218,16 +257,14 @@ public class UIFormModule extends UISuperClass{
             if (blanksAllowed && text.getString().length() == 0) {
                 return true;
             }
-            if (text.getString().contains("@")) {
-                return true;
-            } else return false;
+            return text.getString().contains("@");
 
         } else if (type.equals("Integer")) {
             if (blanksAllowed && text.getString().length() == 0) {
                 return true;
             }
             try {
-                Integer.parseInt( text.getString() );
+                Integer.parseInt(text.getString());
                 return true;
             } catch (Exception e) {
                 System.out.println(e);
@@ -240,34 +277,30 @@ public class UIFormModule extends UISuperClass{
     /**
      * Method that handles key event when the UI is in normal-mode and returns state of program
      *
-     * @param id id of key pressed
+     * @param id      id of key pressed
      * @param keyCode keycde of key pressed
      * @param keyChar keychar of key pressed
-     * @param data datacontroller
+     * @param data    datacontroller
      * @return returns a list with the nextUImode and the current mode of the UI
      */
     @Override
-    protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data){
+    protected List<String> handleKeyNormalMode(int id, int keyCode, char keyChar, dataController data) {
         String nextUIMode = "";
-        if (keyCode == 33){
+        if (keyCode == 33) {
             setRowIndex(rowIndex + 1);
-        }
-        else if (keyCode == 34) {
+        } else if (keyCode == 34) {
             setRowIndex(rowIndex - 1);
         }
-        if (keyCode == 17){
+        if (keyCode == 17) {
             ctrlPressed = true;
-        }
-        else if (ctrlPressed) {
+        } else if (ctrlPressed) {
             if (keyCode == 78) {
                 addNewRow();
                 ctrlPressed = false;
-            }
-            else if (keyCode == 68){
+            } else if (keyCode == 68) {
                 deleteRow();
             }
-        }
-        else{
+        } else {
             ctrlPressed = false;
         }
 
@@ -280,15 +313,15 @@ public class UIFormModule extends UISuperClass{
     /**
      * Method that adds a new row to the table
      */
-    public void addNewRow(){
+    public void addNewRow() {
         Row row = new Row(table.getColumnNames());
         table.addRow(row);
     }
 
-    public void deleteRow(){
+    public void deleteRow() {
         Row row = table.getTableRows().get(rowIndex);
         table.deleteRow(row);
-        if (rowIndex == table.getTableRows().size()){
+        if (rowIndex == table.getTableRows().size()) {
             rowNotOutOfRange = false;
         }
     }
@@ -296,7 +329,7 @@ public class UIFormModule extends UISuperClass{
     /**
      * Method that paints the correct view on the canvas
      *
-     * @param g graphics object
+     * @param g    graphics object
      * @param data datacontroller
      */
     @Override
@@ -310,12 +343,12 @@ public class UIFormModule extends UISuperClass{
 
         //Check mode
         if (currMode == "edit") {
-           paintEditMode(g,widthList,dimensions,coords);
-            }
+            paintEditMode(g, widthList, dimensions, coords);
+        }
 
         //check if there are warnings
         if (invalidInput || currMode == "delete") {
-            paintDeleteMode(g,widthList,dimensions,coords);
+            paintDeleteMode(g, widthList, dimensions, coords);
         } else {
             paintModule.setColor(g, Color.BLACK);
         }
@@ -325,119 +358,121 @@ public class UIFormModule extends UISuperClass{
 
     /**
      * Method that paint when the user is editing
-     * @param g graphics
-     * @param widthList widthlist
+     *
+     * @param g          graphics
+     * @param widthList  widthlist
      * @param dimensions dimensions
-     * @param coords coordinates
+     * @param coords     coordinates
      */
-    private void paintEditMode(Graphics g, List<Integer> widthList, Integer[] dimensions, Integer[] coords){
-        int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList,scrollbar, dimensions[1]);
+    private void paintEditMode(Graphics g, List<Integer> widthList, Integer[] dimensions, Integer[] coords) {
+        int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList, scrollbar, dimensions[1]);
 
         paintModule.paintCursor(g, coords1[0] + coords[0],
                 coords1[1] + coords[1], widthList.get(activeCell[1]),
                 paintModule.getCellHeight(), tempText.getValue().toString());
     }
+
     /**
      * Method that paint when the user is editing
-     * @param g graphics
-     * @param widthList widthlist
+     *
+     * @param g          graphics
+     * @param widthList  widthlist
      * @param dimensions dimensions
-     * @param coords coordinates
+     * @param coords     coordinates
      */
-    private void paintDeleteMode(Graphics g, List<Integer> widthList, Integer[] dimensions, Integer[] coords){
+    private void paintDeleteMode(Graphics g, List<Integer> widthList, Integer[] dimensions, Integer[] coords) {
         int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList, scrollbar, dimensions[1]);
         paintModule.paintBorder(g, coords[0] + coords1[0],
-                coords[1] + coords1[1],  widthList.get(activeCell[1]),
+                coords[1] + coords1[1], widthList.get(activeCell[1]),
                 paintModule.getCellHeight(), Color.RED);
 
     }
 
 
-
-
     /**
-     * @param g
-     * @param data
-     * @param coords
-     * @param dimensions
-     * @param sum
+     * Method that paints the basic windows elements
+     *
+     * @param g          graphics object
+     * @param data       datacontroller
+     * @param coords     coordinates of the window
+     * @param dimensions dimensions of the window
+     * @param sum        the sum of all the widths of all the columns that will be displayed in the window
      */
     private void paintWindowBasics(Graphics g, dataController data, Integer[] coords, Integer[] dimensions, int sum) {
         recalculateScrollbar(data, dimensions);
-        paintModule.setBackground(g,coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
+        paintModule.setBackground(g, coords[0], coords[1], dimensions[0], dimensions[1], Color.WHITE);
         if (rowNotOutOfRange) {
             paintModule.paintBorderSubwindow(g, coords, dimensions, "Form Mode (" + table.getTableName() + " Row: " + rowIndex + ")", this.getActive());
-        }
-        else{
+        } else {
             paintModule.paintBorderSubwindow(g, coords, dimensions, "Form Mode (" + table.getTableName() + " Row: No Row)", this.getActive());
         }
         recalculateScrollbar(data, dimensions);
-        paintModule.paintHScrollBar(g,coords[0],coords[1] + dimensions[1]-10, dimensions[0], scrollbar.getPercentageHorizontal(), scrollbar);
-        paintModule.paintVScrollBar(g, coords[0] + dimensions[0] -10, coords[1] + 15, dimensions[1] - 15, scrollbar.getPercentageVertical(), scrollbar);
-        if(rowNotOutOfRange){
-            paintModule.paintFormView(g, table, rowIndex, coords[0] +paintModule.getMargin(),
-                    coords[1]+paintModule.getMargin(), table.getFormSetting(), dimensions[0] - 48,dimensions[1]-58,scrollbar,dimensions[0],sum);
+        paintModule.paintHScrollBar(g, coords[0], coords[1] + dimensions[1] - 10, dimensions[0], scrollbar.getPercentageHorizontal(), scrollbar);
+        paintModule.paintVScrollBar(g, coords[0] + dimensions[0] - 10, coords[1] + 15, dimensions[1] - 15, scrollbar.getPercentageVertical(), scrollbar);
+        if (rowNotOutOfRange) {
+            paintModule.paintFormView(g, table, rowIndex, coords[0] + paintModule.getMargin(),
+                    coords[1] + paintModule.getMargin(), table.getFormSetting(), dimensions[0] - 48, dimensions[1] - 58, scrollbar, dimensions[0], sum);
         }
 
 
     }
 
     /**
-     * Method that checks whether or not the row index is in range of the number of rows and sets the index
+     * Method that checks whether or not the row index is in range of the number of rows and sets the index.
      */
-    private void setRowIndex(int index){
-        if (index < 0 ){
+    private void setRowIndex(int index) {
+        if (index < 0) {
             rowIndex = -1;
             rowNotOutOfRange = false;
-        }
-        else if(index > table.getTableRows().size()-1){
+        } else if (index > table.getTableRows().size() - 1) {
             rowIndex = table.getTableRows().size();
             rowNotOutOfRange = false;
-        }
-        else {
+        } else {
             rowIndex = index;
             rowNotOutOfRange = true;
         }
     }
 
 
-
-
-
-
-    /*
-     * TO REFACTOR
-     * too long
+    /**
+     * Method that recalculates teh scrollbar dimensions and position when the user is dragging
+     *
+     * @param data       datacontroller
+     * @param dimensions dimensions of the window
      */
-    private void recalculateScrollbar(dataController data, Integer[] dimensions){
+    private void recalculateScrollbar(dataController data, Integer[] dimensions) {
         //WIDTHLIST IS NOT SAME FOR EVERY MODULE !!!!!!!!!!!!!
         List<Integer> widthList = table.getDesignSetting().getWidthList();
 
         int sum = widthList.stream().mapToInt(Integer::intValue).sum();
         scrollbarActive = false;
-        if(sum > dimensions[0] - 31 ){
-            percentageHorizontal =  (Double.valueOf(dimensions[0]-30)/ Double.valueOf(sum));
+        if (sum > dimensions[0] - 31) {
+            percentageHorizontal = (Double.valueOf(dimensions[0] - 30) / Double.valueOf(sum));
             scrollbar.setPercentageHorizontal(percentageHorizontal);
             scrollbar.setActiveHorizontal(true);
             System.out.println(percentageHorizontal);
-        }else{
+        } else {
             scrollbar.setActiveHorizontal(false);
             scrollbar.setPercentageHorizontal(0);
             scrollbar.setOffsetpercentageHorizontal(0);
 
 
-
         }
         //TABLE LIST
-        if(table.getColumnNames().size() * paintModule.getCellHeight() > dimensions[1] - 46){
-            percentageVertical = ( Double.valueOf(dimensions[1] - 46)/ Double.valueOf((table.getColumnNames().size() * paintModule.getCellHeight())));
+        if (table.getColumnNames().size() * paintModule.getCellHeight() > dimensions[1] - 46) {
+            percentageVertical = (Double.valueOf(dimensions[1] - 46) / Double.valueOf((table.getColumnNames().size() * paintModule.getCellHeight())));
             scrollbar.setPercentageVertical(percentageVertical);
             scrollbar.setActiveVertical(true);
             System.out.println(percentageVertical);
-        }else{
+        } else {
             scrollbar.setPercentageVertical(0);
             scrollbar.setActiveVertical(false);
             scrollbar.setOffsetpercentageVertical(0);
-        }}
+        }
+    }
+
+
+
+
 
 }

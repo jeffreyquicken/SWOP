@@ -11,6 +11,9 @@ import Data.Table;
 import settings.CellVisualisationSettings;
 import settings.scrollbar;
 
+/**
+ * A class of RowModePaintModule involving methods for painting row view elements
+ */
 public class RowModePaintModule extends PaintModule {
 
 	/**
@@ -18,11 +21,7 @@ public class RowModePaintModule extends PaintModule {
 	 * @param g graphics object
 	 * @param table table to be painted
 	 * @param startXco  start X coordinate where table should be painted
-	 * @param startYco  start Y coordinate wher table should be painted
-	 */
-	/*
-	 * TO REFACTOR
-	 * too long
+	 * @param startYco  start Y coordinate where table should be painted
 	 */
 	public void paintRowModeView(Graphics g, Table table, int startXco, int startYco, int width, int height, scrollbar scrollbar,
 			int windowHeight, int sum) {
@@ -83,14 +82,15 @@ public class RowModePaintModule extends PaintModule {
 	//=====================
 
 	/**
-	 * @param g
-	 * @param startYco
-	 * @param headerXco
-	 * @param i
-	 * @param widthList
-	 * @param column
-	 * @param newWidth
-	 * @return
+	 * Method that prints the header and gets the tempwidth
+	 * @param g graphics object
+	 * @param startYco start y coordinate
+	 * @param headerXco x coordinate of header
+	 * @param i index
+	 * @param widthList the widthlist
+	 * @param column the column of the header
+	 * @param newWidth the new width for the header
+	 * @return the temp width of the header
 	 */
 	private int printHeaderGetTempWidth(Graphics g, int startYco, int headerXco, int i, List<Integer> widthList, Column column,
 			int newWidth) {
@@ -110,15 +110,16 @@ public class RowModePaintModule extends PaintModule {
 	}
 
 	/**
-	 * @param g
-	 * @param startXco
-	 * @param startYco
-	 * @param width
-	 * @param headerXco
-	 * @param i
-	 * @param widthList
-	 * @param column
-	 * @return
+	 * Method that prints the header and returns the x coordinate
+	 * @param g graphics object
+	 * @param startXco start x coordinate
+	 * @param startYco start y coordinate
+	 * @param width width of the header
+	 * @param headerXco x coordinate of the header
+	 * @param i index
+	 * @param widthList the widthlist
+	 * @param column the column of the header
+	 * @return the x coordinate of the header
 	 */
 	private int printHeaderGetHeaderXCo(Graphics g, int startXco, int startYco, int width, int headerXco, int i, List<Integer> widthList,
 			Column column) {
@@ -137,7 +138,7 @@ public class RowModePaintModule extends PaintModule {
 	}
 
 	/**
-	 * 
+	 * Method that prints the start coordinates to the terminal (debugging)
 	 */
 	private void systemPrintStartCoords() {
 		System.out.println("previous XCOSTART = " + (this.xCoStart));
@@ -149,15 +150,16 @@ public class RowModePaintModule extends PaintModule {
 	}
 
 	/**
-	 * @param g
-	 * @param table
-	 * @param startXco
-	 * @param startYco
-	 * @param width
-	 * @param height
-	 * @param verticalOffset
-	 * @param horizontalOffset
-	 * @param setting
+	 * Method that paints the rows
+	 * @param g graphics object
+	 * @param table the table to which the rows belong
+	 * @param startXco x start coordinate
+	 * @param startYco y start coordinate
+	 * @param width the width of the row
+	 * @param height the height of the row
+	 * @param verticalOffset the vertical offset of the row
+	 * @param horizontalOffset the horizontal offset of the row
+	 * @param setting the settings object
 	 */
 	private void paintRows(Graphics g, Table table, int startXco, int startYco, int width, int height,
 			int verticalOffset, int horizontalOffset, CellVisualisationSettings setting) {

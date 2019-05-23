@@ -8,6 +8,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class of FormModePaintModule involving methods for painting form view elements
+ */
 public class FormModePaintModule extends PaintModule{
 
 
