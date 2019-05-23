@@ -27,6 +27,22 @@ public class UIFormModule extends UISuperClass{
      */
     private int rowIndex;
 
+    public Table getTable(){
+        return table;
+    }
+    public Cell getTempText() {
+        return tempText;
+    }
+
+    public boolean isRowNotOutOfRange() {
+        return rowNotOutOfRange;
+    }
+
+    public int getRowIndex() {
+        return rowIndex;
+    }
+
+
     public UIFormModule(Table inputTable){
         paintModule = new FormModePaintModule();
         mouseEventHandler = new MouseEvent();
@@ -445,5 +461,9 @@ public class UIFormModule extends UISuperClass{
             scrollbar.setActiveVertical(false);
             scrollbar.setOffsetpercentageVertical(0);
         }}
+
+
+
+
 
 }

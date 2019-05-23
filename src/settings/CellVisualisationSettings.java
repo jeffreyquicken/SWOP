@@ -68,6 +68,7 @@ public class CellVisualisationSettings {
         widthList.remove(index);
     }
 
-
-
+    public void setWidthList(List<Integer> widthList) {
+        this.widthList = widthList;
+    }
 }
