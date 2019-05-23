@@ -87,7 +87,7 @@ public class Scenario6 {
 
     //STEP 1 and 2
     @Test
-    public void TestEditCollumnName(){
+    public void TestEditColumnName(){
         switchToDesignMode();
         UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
         String previousName = UIDesignModule.getTable().getColumnNames().get(0).getName();
@@ -100,7 +100,7 @@ public class Scenario6 {
     //STEP 1 and 2
 
     @Test
-    public void TestEditCollumnNameExistingName(){
+    public void TestEditColumnNameExistingName(){
         switchToDesignMode();
         UIDesignModule UIDesignModule = (UIDesignModule) topWindow.getActiveSubWindow();
         String previousName = UIDesignModule.getTable().getColumnNames().get(0).getName();

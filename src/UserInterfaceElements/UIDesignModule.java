@@ -28,7 +28,7 @@ public class UIDesignModule extends UISuperClass {
 
     //private int xCoStart = 50;
     //private int yCoStart = 50;
-    private String currMode = "normal";
+    //private String currMode = "normal";
 
     public int[] getActiveCell() {
         return activeCell;
