@@ -18,6 +18,9 @@ import java.util.ArrayList;
 
 import static SQLQuery.SQLParser.parseQuery;
 
+/**
+ * Class of UITablesmodule extending the UISuperclass. Inviolving methods for painting and handling events.
+ */
 public class UITablesModule extends UISuperClass{
 	
 	private TableModePaintModule paintModule;
@@ -40,12 +43,10 @@ public class UITablesModule extends UISuperClass{
      * @param data datacontroller to make changes to the data
      * @return returns a list with the nextUIMode and the state of the UI
      */
-    //todo: refactor too long
     public List<String> handleMouseEvent2(int xCo, int yCo, int count, int ID, dataController data, Integer[] dimensions) {
         String nextUImode = "";
        checkDoubleClickUnderTable(data, ID, yCo, count);
         //EVENT CLICK CELL
-        //TODO: check if margin clicked
 
         CellVisualisationSettings setting = data.getSetting();
         List<Integer> widthList = setting.getWidthList();
@@ -114,11 +115,12 @@ public class UITablesModule extends UISuperClass{
         }
     }
 	/**
-	 * @param xCo
-	 * @param yCo
-	 * @param data
-	 * @param widthList
-	 * @return
+     * Method that checks whether the left margin of the window is clicked
+	 * @param xCo the x coordinate
+	 * @param yCo the y coordinate
+	 * @param data datacontroller
+	 * @param widthList the widthlist
+	 * @return whether the left margin is clicked
 	 */
 	private boolean isClickedLeftMargin(int xCo, int yCo, dataController data, List<Integer> widthList) {
 		return currMode != "edit" && mouseEventHandler.marginLeftClicked(xCo,yCo,paintModule.getxCoStart(),
@@ -127,7 +129,8 @@ public class UITablesModule extends UISuperClass{
 	}
 
 	/**
-	 * @param data
+     * Method tha handles a double click under the table
+	 * @param data datacontroller
 	 */
 	private void handleDoubleClickUnderTable(dataController data) {
         data.addTable();
@@ -139,9 +142,10 @@ public class UITablesModule extends UISuperClass{
 	}
 
 	/**
-	 * @param xCo
-	 * @param yCo
-	 * @param widthList
+     * Method that handles a click in the right border of the window
+	 * @param xCo x coordinate
+	 * @param yCo y coordinate
+	 * @param widthList widthlist
 	 */
 	private void handleCellRightBorderClicked(int xCo, int yCo, List<Integer> widthList) {
 		System.out.println("RIGHT BORDER CLICKED");
@@ -151,12 +155,12 @@ public class UITablesModule extends UISuperClass{
 		draggedX = xCo;
 	}
 
-	/**
-	 * @param ID
-	 * @param data
-	 * @param nextUImode
-	 * @param clickedCell
-	 * @return
+	/** Method that handles a double click on a cell
+	 * @param ID mouse id
+	 * @param data datacontroller
+	 * @param nextUImode the next ui mode
+	 * @param clickedCell clicked cell coordinates
+	 * @return the next uimode
 	 */
 	private String handleDoubleClickOnCell(int ID, dataController data, String nextUImode, int[] clickedCell) {
 		data.setSelectedTable(data.getTableList().get(clickedCell[0]));
@@ -173,8 +177,9 @@ public class UITablesModule extends UISuperClass{
 	}
 
 	/**
-	 * @param data
-	 * @param clickedCell
+     * Method that handles the click on cell
+	 * @param data datacontroller
+	 * @param clickedCell clicked cell coordinates
 	 */
 	private void handleClickOnCell(dataController data, int[] clickedCell) {
 		activeCell = clickedCell;
@@ -191,10 +196,11 @@ public class UITablesModule extends UISuperClass{
 	}
 
 	/**
-	 * @param xCo
-	 * @param yCo
-	 * @param widthList
-	 * @return
+     * Method that checks whether the right border of a window is clicked
+	 * @param xCo x coordinate
+	 * @param yCo y coordinate
+	 * @param widthList widthlist
+	 * @return whether the right border of a window is clicked
 	 */
 	private boolean isCellRightBorderClicked(int xCo, int yCo, List<Integer> widthList) {
 		return mouseEventHandler.rightBorderClicked(xCo,yCo,paintModule.getxCoStart(), paintModule.getyCoStart(),
@@ -202,11 +208,12 @@ public class UITablesModule extends UISuperClass{
 	}
 
 	/**
-	 * @param xCo
-	 * @param ID
-	 * @param data
-	 * @param dimensions
-	 * @param widthList
+     * Method that handles the drag event
+	 * @param xCo x coordinate
+	 * @param ID mouse id
+	 * @param data datacontroller
+	 * @param dimensions dimensions of the window
+	 * @param widthList widthlist
 	 */
 	private void handleDragEvent(int xCo, int ID, dataController data, Integer[] dimensions, List<Integer> widthList) {
 		if(ID == 506 || ID == 502){
@@ -277,16 +284,13 @@ public class UITablesModule extends UISuperClass{
                 paintModule.getCellHeight(), Color.RED);
     }
 	/**
-	 * @param g
-	 * @param data
-	 * @param coords
-	 * @param dimensions
-	 * @param setting
+     * Method that paints the basic window elements.
+	 * @param g graphics object
+	 * @param data datacontroller
+	 * @param coords coordinates of the window
+	 * @param dimensions dimensions of the window
+	 * @param setting settings object
 	 */
-    /*
-     * TO REFACTOR
-     * put in superclass and maybe use for all UImodules? - change specifics
-     */
 	private void paintWindowBasics(Graphics g, dataController data, Integer[] coords, Integer[] dimensions,
 			CellVisualisationSettings setting) {
 		recalculateScrollbar(data, dimensions);
@@ -448,10 +452,6 @@ public class UITablesModule extends UISuperClass{
      * @param data datacontroller
      * @return returns a list with the nextUImode and the current mode of the UI
      */
-    /*
-     * TO REFACTOR
-     * too long
-     */
     @Override
     protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data){
     	KeyEvent eventHandler = new KeyEvent();
@@ -492,7 +492,7 @@ public class UITablesModule extends UISuperClass{
 
     /**
      * Check wheter a tablename if referenced in a computed table query
-     * @param data
+     * @param data datacontroller
      * @return wheter a tablename if referenced in a computed table query
      */
     public Boolean checkIftableNameIsProtected(dataController data){
@@ -603,13 +603,6 @@ public class UITablesModule extends UISuperClass{
         return result;
     }
     
-    
-    /*
-     * TO REFACTOR
-     * too long
-     * large similarities with the other UI modules. maybe put in superclass or in another class altogether
-     */
-
     /**
      * Method that recomputes scrollbar paramters when UI-change has happened
      * @param data datacontroller

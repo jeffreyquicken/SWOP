@@ -166,7 +166,7 @@ public class Table {
         this.setLastQuery(query);
         Table computedTable = query.getComputedTable(data);
         System.out.println(computedTable);
-        data.getTableList().add(computedTable);
+        //data.getTableList().add(computedTable);
         return computedTable;
 
     }
