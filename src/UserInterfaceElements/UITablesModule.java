@@ -646,7 +646,14 @@ public class UITablesModule extends UISuperClass{
     protected void handleNonModeDependantKeys (int id, int keyCode, char keyChar, dataController data){
     }
 
+    public String getTemptext(){
+        return tempText;
+    }
 
+    public void setTempTextString(String tempText1){
+        tempText = tempText1;
+
+    }
     }
 
 

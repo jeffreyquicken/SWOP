@@ -27,6 +27,8 @@ public class whereClause {
      */
     private String condition;
 
+
+
     public String getTableName() {
         return tableName;
     }

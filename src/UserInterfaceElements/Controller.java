@@ -270,6 +270,7 @@ public class Controller {
         return shiftPressed;
     }
 
+
     public UITopLevelWindow getTopLevelWindow() {
         return topLevelWindow;
     }
