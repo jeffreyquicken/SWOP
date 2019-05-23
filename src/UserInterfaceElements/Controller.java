@@ -129,7 +129,7 @@ public class Controller {
                     UIRowModule rowModule = new UIRowModule(tableDataController.getSelectedTable());
                     topLevelWindow.addSubWindow(rowModule);
                 }
-                else if (tableDataController.getSelectedTable().getQuery().length() > 0 && id==500){
+                else if (tableDataController.getSelectedTable().getQuery().length() > 0 && id==500 && tableDataController.getSelectedTable().getColumnNames().size() == 0){
                     UIComputedModule computeModule = new UIComputedModule(tableDataController.getSelectedTable().getComputedTable(tableDataController), tableDataController, tableDataController.getSelectedTable().getQuery());
                     computeModule.getTable().setQuery(tableDataController.getSelectedTable().getComputedTable(tableDataController).getQuery());
                     tableDataController.getQueryManager().addQueryDependendTablesFromQuery(tableDataController.getSelectedTable().getLastQuery());
