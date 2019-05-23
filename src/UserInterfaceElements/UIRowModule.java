@@ -264,12 +264,14 @@ public class UIRowModule extends UISuperClass {
     protected List<String> handleKeyEditMode(int id, int keyCode, char keyChar, dataController data) {
         KeyEvent eventHandler = new KeyEvent();
         List<String> result = new ArrayList<>();
+        result.add("edit");
+        result.add("");
         //String currName = table.getTableRows().get(activeCell[0]).getColumnList().get(activeCell[1]).getValue().toString(); // NOOIT GEBRUIKT, snap het nut niet
         //EVENT: ASCSII char pressed
         if (eventHandler.isChar(keyCode)) {
             ((CellEditable) tempText).addChar(keyChar);
             invalidInput = !textIsValid(tempText, data);
-            result.add("edit");
+            result.add(0,"edit");
         }
 
         //EVENT BS pressed and in edit mode
@@ -282,7 +284,7 @@ public class UIRowModule extends UISuperClass {
                 invalidInput = !textIsValid(tempText, data);
 
             }
-            result.add("edit");
+            result.add(0,"edit");
             //empty string, display red border
         }
         //EVENT ENTER pressed
@@ -296,7 +298,7 @@ public class UIRowModule extends UISuperClass {
             Command c = new RowValue(cid, tempText, oldValue, data);
             data.addCommand(c);
             currMode = "normal";
-            result.add("normal");
+            result.add(0,"normal");
         }
         result.add("");
         return result;
