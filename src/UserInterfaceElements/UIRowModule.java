@@ -463,22 +463,32 @@ public class UIRowModule extends UISuperClass {
      */
     private boolean textIsValid(Cell text, dataController data) {
         String type = table.getColumnNames().get(activeCell[0]).getType();
+
+        if (table.getColumnNames().get(activeCell[0]).getBlanksAllowed() && text.getString().length() ==0){
+            return true;
+        }
         if (type.equals("String")) {
             if (!table.getColumnNames().get(activeCell[0]).getBlanksAllowed()) {
-                if (((CellText) text).getValue().length() == 0) {
+                if (text.getString().length() == 0) {
                     return false;
                 }
             }
             return true;
         } else if (type.equals("Boolean")) {
+            if(text.getString().equals("true") || text.getString().equals("True") || text.getString().equals("false") || text.getString().equals("False") || text.getString().equals("empty")){
+                return true;
+            }else{
+                return false;
+            }
+
         } else if (type.equals("Email")) {
-            if (((CellEmail) text).getValue().contains("@")) {
+            if (text.getString().contains("@")) {
                 return true;
             } else return false;
         } else if (type.equals("Integer")) {
 
             try {
-                Integer.parseInt(((CellInteger) text).getValue().toString());
+                Integer.parseInt(text.getString());
                 return true;
             } catch (Exception e) {
                 return false;
