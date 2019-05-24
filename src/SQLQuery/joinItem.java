@@ -69,7 +69,6 @@ public class joinItem {
     }
 
 
-
     public String getAlias1() {
         return alias1;
     }
@@ -89,12 +88,13 @@ public class joinItem {
 
     /**
      * Constructor for join item that splits the given strings into the proper attributes
+     *
      * @param tableName the tablename
-     * @param rowID row id
-     * @param cell1 cell1
-     * @param cell2 cell 2
+     * @param rowID     row id
+     * @param cell1     cell1
+     * @param cell2     cell 2
      */
-    public joinItem(String tableName, String rowID, String cell1, String cell2){
+    public joinItem(String tableName, String rowID, String cell1, String cell2) {
         this.tableName = tableName;
         this.rowID = rowID;
 

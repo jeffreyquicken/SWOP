@@ -48,18 +48,18 @@ public class Column {
 
     /**
      * Constructor that initiates a column object with a name, default value, type and blank allowance
-     * @param name  the name of the column
-     * @param defaultValue  the default value of all cells in this column
-     * @param Type  the type of values of all cells in this column (string, boolean, integer or email)
-     * @param blanks    whether blanks are allowed in the cells of this column
-     * 
+     *
+     * @param name         the name of the column
+     * @param defaultValue the default value of all cells in this column
+     * @param Type         the type of values of all cells in this column (string, boolean, integer or email)
+     * @param blanks       whether blanks are allowed in the cells of this column
      * @effect The objects values are set to ghe given parameters
-     * 		   |new.name == name
-     * 		   |new.defaultV == defaultValue
-     * 		   |new.type == Type
-     * 		   |new.blanksAllowed == blanks
+     * |new.name == name
+     * |new.defaultV == defaultValue
+     * |new.type == Type
+     * |new.blanksAllowed == blanks
      */
-    public Column(String name, Cell defaultValue, String Type, Boolean blanks){
+    public Column(String name, Cell defaultValue, String Type, Boolean blanks) {
         this.name = name;
         defaultV = defaultValue;
         type = Type;
@@ -68,10 +68,10 @@ public class Column {
 
     /**
      * Method to get basic column info
-     * @return list with name,default value, type and if blanks are allowed
      *
+     * @return list with name,default value, type and if blanks are allowed
      */
-    public List<Cell>  getInfo(){
+    public List<Cell> getInfo() {
         List<Cell> info = new ArrayList<>();
         info.add(new CellText(name));
         info.add(defaultV);
@@ -83,12 +83,12 @@ public class Column {
 
     /**
      * Getter for column name
+     *
      * @return column name
      */
     public String getName() {
         return name;
     }
-
 
 
     /**
@@ -109,14 +109,10 @@ public class Column {
     public void setBlanksAllowed(Boolean blanksAllowed) {
         this.blanksAllowed = blanksAllowed;
     }
+
     public void setDefaultV(Cell defaultV) {
         this.defaultV = defaultV;
     }
-
-
-
-
-
 
 
 }

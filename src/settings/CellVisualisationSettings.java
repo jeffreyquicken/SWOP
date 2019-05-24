@@ -12,7 +12,7 @@ public class CellVisualisationSettings {
      * The widthlist of the cells
      */
     private List<Integer> widthList;
-    private int cellHeight= 20;
+    private int cellHeight = 20;
    /* private int startX;
     private  int startY;*/
 
@@ -32,7 +32,7 @@ public class CellVisualisationSettings {
     private int defaultWidth = 100;
 
 
-    public CellVisualisationSettings(){
+    public CellVisualisationSettings() {
         widthList = new ArrayList<>();
     }
 
@@ -64,7 +64,7 @@ public class CellVisualisationSettings {
     }
 
 
-    public void removeFromWidthList(int index){
+    public void removeFromWidthList(int index) {
         widthList.remove(index);
     }
 

@@ -15,10 +15,11 @@ public class DefaultValue implements Command {
 
     /**
      * initializes new command that represents a changed default value
+     *
      * @param cell id of the collumn where the default value was changed
-     * @param nv the new value
-     * @param ov the old value
-     * @param dc data controller
+     * @param nv   the new value
+     * @param ov   the old value
+     * @param dc   data controller
      */
     public DefaultValue(int[] cell, Cell nv, Cell ov, dataController dc) {
         this.cellID = cell;

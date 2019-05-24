@@ -13,10 +13,11 @@ public class NewTable implements Command {
 
     /**
      * initialises new command representing the add new table
-     * @param t the table that was added
+     *
+     * @param t  the table that was added
      * @param dc data controller
      */
-    public NewTable( Table t, dataController dc) {
+    public NewTable(Table t, dataController dc) {
         this.table = t;
         this.data = dc;
     }

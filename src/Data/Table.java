@@ -49,7 +49,7 @@ public class Table {
     /**
      * Last known query to a table
      */
-   private Query lastQuery;
+    private Query lastQuery;
 
 
     public CellVisualisationSettings getFormSetting() {
@@ -63,18 +63,22 @@ public class Table {
     public void setTableName(String tableName) {
         this.tableName = tableName;
     }
-    public List<Column> getColumnNames(){return columnNames;}
+
+    public List<Column> getColumnNames() {
+        return columnNames;
+    }
 
     public List<Row> getTableRows() {
         return tableRows;
     }
-    public void addRow(Row row){
+
+    public void addRow(Row row) {
         tableRows.add(row);
     }
-    public void deleteRow(Row row){
+
+    public void deleteRow(Row row) {
         tableRows.remove(row);
     }
-
 
 
     public String getQuery() {
@@ -88,20 +92,21 @@ public class Table {
 
     /**
      * Initiates a table object with a given name and creates th right settings objects for that table
-     * @param name  the name of the table
+     *
+     * @param name the name of the table
      * @effect initializes the Table with the given name and standard values
      */
-    public Table(String name){
+    public Table(String name) {
         tableRows = new ArrayList<Row>();
         columnNames = new ArrayList<Column>();
         tableName = name;
         rowSetting = new CellVisualisationSettings();
         designSetting = new CellVisualisationSettings();
         formSetting = new CellVisualisationSettings();
-        for (int i = 0; i<2;i++){
+        for (int i = 0; i < 2; i++) {
             formSetting.getWidthList().add(formSetting.getDefaultWidth());
         }
-        for(int i = 0; i< 4;i++ ){
+        for (int i = 0; i < 4; i++) {
             designSetting.getWidthList().add(designSetting.getDefaultWidth());
         }
         query = "";
@@ -109,6 +114,7 @@ public class Table {
 
     /**
      * Method that gets the row setting
+     *
      * @return the row setting
      */
     public CellVisualisationSettings getRowSetting() {
@@ -117,13 +123,14 @@ public class Table {
 
     /**
      * Adds a collumn to table
+     *
      * @param column
      */
-    public void addColumn(Column column){
+    public void addColumn(Column column) {
 
 
         columnNames.add(column);
-        for(Row row: tableRows){
+        for (Row row : tableRows) {
             row.addColumn(column.getDefaultV());
         }
         int defaultWidth = rowSetting.getDefaultWidth();
@@ -131,12 +138,12 @@ public class Table {
     }
 
 
-
     /**
      * Deletes a column
+     *
      * @param column
      */
-    public void deleteColumn(Column column){
+    public void deleteColumn(Column column) {
         columnNames.remove(column);
     }
 
@@ -157,10 +164,11 @@ public class Table {
 
     /**
      * Method that computes a table from a Query
+     *
      * @param data datacontroller
      * @return computed table
      */
-    public Table getComputedTable(dataController data){
+    public Table getComputedTable(dataController data) {
         //Query query = parseQuery("SELECT movie.title AS title FROM movies AS movie WHERE movie.imdb_score < 7");
         Query query = parseQuery(this.getQuery());
         this.setLastQuery(query);
@@ -170,7 +178,6 @@ public class Table {
         return computedTable;
 
     }
-
 
 
 }

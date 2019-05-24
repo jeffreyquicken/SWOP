@@ -20,10 +20,11 @@ public class selectItem {
 
     /**
      * Constructor for the select item
+     *
      * @param tableName the table name
-     * @param as the as item
+     * @param as        the as item
      */
-    public selectItem(String tableName, asItem as){
+    public selectItem(String tableName, asItem as) {
         this.tableName = tableName;
         this.as = as;
 
@@ -35,16 +36,17 @@ public class selectItem {
 
     /**
      * Method that returns the table to which the select item refers
+     *
      * @param data the datacontroller
      * @return the table on which the select should be executed
      */
-    public Table getTable(dataController data){
-       for (Table table:data.getTableList()){
-           if (table.getTableName().equals(this.getTableName())){
-               return table;
-           }
-       }
-       return null;
+    public Table getTable(dataController data) {
+        for (Table table : data.getTableList()) {
+            if (table.getTableName().equals(this.getTableName())) {
+                return table;
+            }
+        }
+        return null;
     }
 
     public void setTableName(String tableName) {
@@ -58,7 +60,6 @@ public class selectItem {
     public void setAs(asItem as) {
         this.as = as;
     }
-
 
 
 }

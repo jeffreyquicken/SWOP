@@ -17,10 +17,11 @@ public class asItem {
 
     /**
      * Constructor for the as item
+     *
      * @param id the id of tha AS clause
      * @param as the alias of the AS clause
      */
-    public asItem(String id, String as){
+    public asItem(String id, String as) {
         this.id = id;
         this.alias = as;
 

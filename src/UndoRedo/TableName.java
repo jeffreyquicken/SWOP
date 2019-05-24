@@ -14,10 +14,11 @@ public class TableName implements Command {
 
     /**
      * initializes new table name change command
+     *
      * @param cell id of the table
-     * @param nv new name
-     * @param ov old name
-     * @param dc data controller
+     * @param nv   new name
+     * @param ov   old name
+     * @param dc   data controller
      */
     public TableName(int cell, String nv, String ov, dataController dc) {
         this.cellID = cell;

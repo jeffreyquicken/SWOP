@@ -16,7 +16,7 @@ public class fromClause {
      */
     private List<asItem> fromClauses = new ArrayList<>();
 
-    public  List<asItem> getFromClauses(){
+    public List<asItem> getFromClauses() {
 
         return fromClauses;
 
@@ -24,22 +24,24 @@ public class fromClause {
 
     /**
      * Method that adds select item to from clause with its corresponding alias
-     * @param id the id of the from clause (FROM ID AS ALIAS)
+     *
+     * @param id    the id of the from clause (FROM ID AS ALIAS)
      * @param alias the alias of the select from (FROM ID AS ALIAS)
      */
-    public void addFromClause(String id, String alias){
+    public void addFromClause(String id, String alias) {
         asItem item = new asItem(id, alias);
         fromClauses.add(item);
     }
 
     /**
      * Method that returns the table to which the from clause refers
+     *
      * @param data datacontroller
      * @return the table on which the from clause should be executed
      */
-    public Table getTable(dataController data){
-        for (Table table:data.getTableList()){
-            if (table.getTableName().equals(this.fromClauses.get(0).getId())){
+    public Table getTable(dataController data) {
+        for (Table table : data.getTableList()) {
+            if (table.getTableName().equals(this.fromClauses.get(0).getId())) {
                 return table;
             }
         }

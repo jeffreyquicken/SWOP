@@ -271,7 +271,7 @@ public class UIRowModule extends UISuperClass {
         if (eventHandler.isChar(keyCode)) {
             ((CellEditable) tempText).addChar(keyChar);
             invalidInput = !textIsValid(tempText, data);
-            result.add(0,"edit");
+            result.add(0, "edit");
         }
 
         //EVENT BS pressed and in edit mode
@@ -284,7 +284,7 @@ public class UIRowModule extends UISuperClass {
                 invalidInput = !textIsValid(tempText, data);
 
             }
-            result.add(0,"edit");
+            result.add(0, "edit");
             //empty string, display red border
         }
         //EVENT ENTER pressed
@@ -298,7 +298,7 @@ public class UIRowModule extends UISuperClass {
             Command c = new RowValue(cid, tempText, oldValue, data);
             data.addCommand(c);
             currMode = "normal";
-            result.add(0,"normal");
+            result.add(0, "normal");
         }
         result.add("");
         return result;
@@ -464,7 +464,7 @@ public class UIRowModule extends UISuperClass {
     private boolean textIsValid(Cell text, dataController data) {
         String type = table.getColumnNames().get(activeCell[0]).getType();
 
-        if (table.getColumnNames().get(activeCell[0]).getBlanksAllowed() && text.getString().length() ==0){
+        if (table.getColumnNames().get(activeCell[0]).getBlanksAllowed() && text.getString().length() == 0) {
             return true;
         }
         if (type.equals("String")) {
@@ -475,9 +475,9 @@ public class UIRowModule extends UISuperClass {
             }
             return true;
         } else if (type.equals("Boolean")) {
-            if(text.getString().equals("true") || text.getString().equals("True") || text.getString().equals("false") || text.getString().equals("False") || text.getString().equals("empty")){
+            if (text.getString().equals("true") || text.getString().equals("True") || text.getString().equals("false") || text.getString().equals("False") || text.getString().equals("empty")) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
 

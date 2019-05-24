@@ -7,6 +7,7 @@ import Data.dataController;
  * this class structure uses the command design pattern
  */
 public interface Command {
-     void undo();
-     void redo();
+    void undo();
+
+    void redo();
 }

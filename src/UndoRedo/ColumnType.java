@@ -14,10 +14,11 @@ public class ColumnType implements Command {
 
     /**
      * initialises this command with the collumn of the type change, the previous type, the new type, and the data controller
+     *
      * @param cell id of col
-     * @param nv the new type
-     * @param ov the old type
-     * @param dc data controller
+     * @param nv   the new type
+     * @param ov   the old type
+     * @param dc   data controller
      */
     public ColumnType(int[] cell, String nv, String ov, dataController dc) {
         this.cellID = cell;

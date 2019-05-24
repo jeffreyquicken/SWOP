@@ -14,9 +14,10 @@ public class NewRow implements Command {
 
     /**
      * initialises new command representing the add new row
+     *
      * @param cell the table where to row is to be added
-     * @param r the row that was added
-     * @param dc data controller
+     * @param r    the row that was added
+     * @param dc   data controller
      */
     public NewRow(int cell, Row r, dataController dc) {
         this.cellID = cell;

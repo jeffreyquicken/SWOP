@@ -86,11 +86,11 @@ public class Controller {
         currentMode = "table";
 
 
-
     }
 
     /**
      * Constructor for the controller, used for testing purposes
+     *
      * @param i
      */
     public Controller(int i) {
@@ -120,24 +120,22 @@ public class Controller {
      */
     public void relayMouseEvent(int id, int xCo, int yCo, int count) {
         //if mode will be switched mouse event will tell
-        Integer[] result =  topLevelWindow.relayCoordinates(xCo,yCo, id);
-        if(topLevelWindow.getActiveSubWindow() != null  ) {
+        Integer[] result = topLevelWindow.relayCoordinates(xCo, yCo, id);
+        if (topLevelWindow.getActiveSubWindow() != null) {
 
             String nextUIMode = topLevelWindow.getActiveSubWindow().handleMouseEvent(result[0], result[1], count, id, tableDataController, topLevelWindow.getDimensions(topLevelWindow.getActiveSubWindow()));
-            if (nextUIMode.equals("row")){
-                if(tableDataController.getSelectedTable().getQuery().equals("")){
+            if (nextUIMode.equals("row")) {
+                if (tableDataController.getSelectedTable().getQuery().equals("")) {
                     UIRowModule rowModule = new UIRowModule(tableDataController.getSelectedTable());
                     topLevelWindow.addSubWindow(rowModule);
-                }
-                else if (tableDataController.getSelectedTable().getQuery().length() > 0 && id==500 && tableDataController.getSelectedTable().getColumnNames().size() == 0){
+                } else if (tableDataController.getSelectedTable().getQuery().length() > 0 && id == 500 && tableDataController.getSelectedTable().getColumnNames().size() == 0) {
                     UIComputedModule computeModule = new UIComputedModule(tableDataController.getSelectedTable().getComputedTable(tableDataController), tableDataController, tableDataController.getSelectedTable().getQuery());
                     computeModule.getTable().setQuery(tableDataController.getSelectedTable().getComputedTable(tableDataController).getQuery());
                     tableDataController.getQueryManager().addQueryDependendTablesFromQuery(tableDataController.getSelectedTable().getLastQuery());
                     tableDataController.getQueryManager().addQueryDependendColumnsFromQuery(tableDataController.getSelectedTable().getLastQuery());
                     topLevelWindow.addSubWindow(computeModule);
                 }
-            }
-            else if(nextUIMode.equals("design")){
+            } else if (nextUIMode.equals("design")) {
                 UIDesignModule designModule = new UIDesignModule(tableDataController.getSelectedTable());
                 topLevelWindow.addSubWindow(designModule);
             }
@@ -158,7 +156,7 @@ public class Controller {
         String nextUIMode;
 
 
-        if (topLevelWindow.getActiveSubWindow() != null ){
+        if (topLevelWindow.getActiveSubWindow() != null) {
             nextUIMode = topLevelWindow.getActiveSubWindow().handleKeyEvent(id, keyCode, keyChar, tableDataController);
         } else {
             nextUIMode = "nothing";
@@ -167,7 +165,7 @@ public class Controller {
 
         //if else statement to check if ctrl+t is clicked
         if (keyCode == 17 || keyCode == 16) {
-            if(keyCode == 17) {
+            if (keyCode == 17) {
                 setCtrlPressed(true);
             } else {
                 setShiftPressed(true);
@@ -192,17 +190,16 @@ public class Controller {
         }
 
 
-        if (nextUIMode.equals("row")){
+        if (nextUIMode.equals("row")) {
             UIRowModule rowModule = new UIRowModule(tableDataController.getSelectedTable());
             topLevelWindow.addSubWindow(rowModule);
-        }
-        else if(nextUIMode.equals("design")){
+        } else if (nextUIMode.equals("design")) {
             UIDesignModule designModule = new UIDesignModule(tableDataController.getSelectedTable());
             topLevelWindow.addSubWindow(designModule);
-        }else if(nextUIMode.equals("table")){
+        } else if (nextUIMode.equals("table")) {
             UITablesModule tablesModule = new UITablesModule();
             topLevelWindow.addSubWindow(tablesModule);
-        }else if(nextUIMode.equals("form")){
+        } else if (nextUIMode.equals("form")) {
             UIFormModule formModule = new UIFormModule(tableDataController.getSelectedTable());
             topLevelWindow.addSubWindow(formModule);
         }
@@ -228,7 +225,7 @@ public class Controller {
      */
     public void paint(Graphics g) {
         g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(0,0,10000, 10000);
+        g.fillRect(0, 0, 10000, 10000);
         g.setColor(Color.BLACK);
         List<UISuperClass> subWindows;
         if (topLevelWindow.getActiveSubWindowList().size() > 0) {
@@ -239,13 +236,13 @@ public class Controller {
         ListIterator listIterator = subWindows.listIterator(subWindows.size());
         while (listIterator.hasPrevious()) {
             UISuperClass subWindow = (UISuperClass) listIterator.previous();
-            subWindow.paint(g, tableDataController,topLevelWindow.getStartCoords(subWindow), topLevelWindow.getDimensions(subWindow));
+            subWindow.paint(g, tableDataController, topLevelWindow.getStartCoords(subWindow), topLevelWindow.getDimensions(subWindow));
 
         }
 
         UISuperClass subWindow = topLevelWindow.getActiveSubWindow();
-        if(subWindow != null){
-            subWindow.paint(g, tableDataController,topLevelWindow.getStartCoords(subWindow), topLevelWindow.getDimensions(subWindow));
+        if (subWindow != null) {
+            subWindow.paint(g, tableDataController, topLevelWindow.getStartCoords(subWindow), topLevelWindow.getDimensions(subWindow));
         }
 
     }
@@ -281,6 +278,7 @@ public class Controller {
     public boolean getCtrlPressed() {
         return ctrlPressed;
     }
+
     public void setShiftPressed(boolean sp) {
         this.shiftPressed = sp;
     }
