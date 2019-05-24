@@ -280,7 +280,7 @@ public class UITablesModule extends UISuperClass{
     private void paintDeleteMode(Graphics g, List<Integer> widthList, Integer[] dimensions, Integer[] coords){
         int[] coords1 = paintModule.getCellCoords(activeCell[0], activeCell[1], widthList, scrollbar, dimensions[1]);
         paintModule.paintBorder(g, coords[0] + coords1[0],
-                coords[1] + coords1[1],  widthList.get(activeCell[1]),
+                coords[1] + coords1[1],  widthList.get(activeCell[1])-5,
                 paintModule.getCellHeight(), Color.RED);
     }
 	/**

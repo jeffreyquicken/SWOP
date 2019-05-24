@@ -57,7 +57,7 @@ public class FormModePaintModule extends PaintModule{
                     offsetHorizontal -= widthList.get(i);
 
                     tempWidth =newWidth;
-                    if(widthList.size() != i-1){
+                    if(widthList.size() < i-2){
                         tempWidth += widthList.get(i+1);}
 
                 }
