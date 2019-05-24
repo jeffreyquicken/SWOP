@@ -131,7 +131,7 @@ public class EditTableQuery {
         //we should be in table name editing mode right now
         assertEquals("edit",window.getCurrMode());
 
-        ((UITablesModule) window).setTempTextString("SELECT table.Column1 AS col FROM Table1 AS table INNER JOIN Table2 AS table2 ON table2.Column1 = tabele.Column1 WHERE table.Column1 = ");
+        ((UITablesModule) window).setTempTextString("SELECT table.Column1 AS col FROM Table1 AS table INNER JOIN Table2 AS table2 ON table2.Column1 = table1.Column1 WHERE table.Column1 = ");
         relay.handleKeyEvent(400,101,'6');
         Table table =  dc.getSelectedTable();
         relay.handleMouseEvent(500,84,140,1);
@@ -140,12 +140,48 @@ public class EditTableQuery {
         relay.handleMouseEvent(502,56,35,2);
         relay.handleMouseEvent(500,56,35,2);
 
-        assertEquals(UIFormModule.class,topWindow.getActiveSubWindow().getClass());
-
-
-
+        assertEquals(UIComputedModule.class,topWindow.getActiveSubWindow().getClass());
     }
 
+    @Test
+    public void ExecuteValidQuery2() {
+        MoveWindowToUpperLeftCorner();
+
+        relay.handleMouseEvent(500,138,43,1);
+        //we should be in table name editing mode right now
+        assertEquals("edit",window.getCurrMode());
+
+        ((UITablesModule) window).setTempTextString("SELECT table.Column1 AS col FROM Table1 AS table INNER JOIN Table2 AS table2 ON table2.Column1 = table1.Column1 WHERE table.Column1 = ");
+        relay.handleKeyEvent(400,101,'6');
+        Table table =  dc.getSelectedTable();
+        relay.handleMouseEvent(500,84,140,1);
+        dc.getTableList().get(0).setQuery("SELECT table.Column1 AS col FROM Table1 AS table INNER JOIN Table2 AS table2 ON table2.Column1 = table1.Column1 WHERE table.Column1 = 6");
+        assertEquals("normal",window.getCurrMode());
+        relay.handleMouseEvent(502,56,35,2);
+        relay.handleMouseEvent(500,56,35,2);
+
+        assertEquals(UIComputedModule.class,topWindow.getActiveSubWindow().getClass());
+    }
+
+    @Test
+    public void ExecuteValidQuery3() {
+        MoveWindowToUpperLeftCorner();
+        AddFifthNumericCol();
+        relay.handleMouseEvent(500,138,43,1);
+        //we should be in table name editing mode right now
+        assertEquals("edit",window.getCurrMode());
+
+        ((UITablesModule) window).setTempTextString("SELECT table.Column5 AS col FROM Table1 AS table INNER JOIN Table2 AS table2 ON table2.Column5 = table1.Column5 WHERE table.Column5 = ");
+        relay.handleKeyEvent(400,101,'6');
+        Table table =  dc.getSelectedTable();
+        relay.handleMouseEvent(500,84,140,1);
+        dc.getTableList().get(0).setQuery("SELECT table.Column5 AS col FROM Table1 AS table WHERE table.Column5 = 6");
+        assertEquals("normal",window.getCurrMode());
+        //relay.handleMouseEvent(502,56,35,2);
+        relay.handleMouseEvent(500,56,35,2);
+
+        assertEquals(UIComputedModule.class,topWindow.getActiveSubWindow().getClass());
+    }
 
 
     @Test
@@ -168,6 +204,35 @@ public class EditTableQuery {
         List<Integer> info = topWindow.getSubwindowInfo().get(window);
         info.set(0,0);
         info.set(1,0);
+    }
+
+    void AddFifthNumericCol() {
+        List<Row> rij = dc.getTableList().get(0).getTableRows();
+            for (int i = 0; i<rij.size();i++) {
+                dc.getTableList().get(0).deleteRow(rij.get(i));
+            }
+
+            for(int i = 0; i<3;i++) {
+                Column col5 = new Column("Column5",new CellInteger(6), "Numerical", true);
+
+                Column col1 = new Column("Column1",new CellBoolean(true), "Boolean", true);
+                Column col2 = new Column("Column2",new CellBoolean(true), "Boolean", true);
+                Column col3 = new Column("Column3", new CellText(""), "String", true);
+                Column col4 = new Column("Column4",new CellText(""), "String", true);
+                dc.getTableList().get(i).addColumn(col1);
+                dc.getTableList().get(i).addColumn(col2);
+                dc.getTableList().get(i).addColumn(col3);
+                dc.getTableList().get(i).addColumn(col4);
+
+                dc.getTableList().get(i).addColumn(col5);
+
+                Row row1 = new Row(dc.getTableList().get(i).getColumnNames());
+                Row row2 = new Row(dc.getTableList().get(i).getColumnNames());
+                Row row3 = new Row(dc.getTableList().get(i).getColumnNames());
+                dc.getTableList().get(i).addRow(row1);
+                dc.getTableList().get(i).addRow(row2);
+                dc.getTableList().get(i).addRow(row3);
+            }
     }
 
 }

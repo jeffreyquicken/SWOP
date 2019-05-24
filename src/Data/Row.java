@@ -28,7 +28,7 @@ public class Row {
         columnList = new ArrayList<Cell>();
         for(Column col: colList){
             Cell val = col.getDefaultV();
-            if(val.getType() == "Numerical") {
+            if(val.getType() == "Integer") {
                 columnList.add(new CellInteger(((CellInteger) val).getValue()));
             } else if(val.getType() == "Email") {
                 columnList.add(new CellEmail(((CellEmail) val).getValue()));
