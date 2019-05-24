@@ -147,6 +147,7 @@ public class Controller {
         mouseEvent = "Mouse eventID= " + id + " | Coordinates clicked" + xCo + ", " + yCo + "| Amount clicked: " + count;
         System.out.println(mouseEvent);
     }
+    }
 
     /**
      * Method that relays a keyEvent to the right UIModule to be handled
