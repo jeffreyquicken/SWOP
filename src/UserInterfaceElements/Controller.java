@@ -138,6 +138,7 @@ public class Controller {
                     tableDataController.getQueryManager().addQueryDependendColumnsFromQuery(tableDataController.getSelectedTable().getLastQuery());
                     topLevelWindow.addSubWindow(computeModule);
                 }
+            }
 
             else if(nextUIMode.equals("design")){
                 UIDesignModule designModule = new UIDesignModule(tableDataController.getSelectedTable());
@@ -146,7 +147,6 @@ public class Controller {
         }
         mouseEvent = "Mouse eventID= " + id + " | Coordinates clicked" + xCo + ", " + yCo + "| Amount clicked: " + count;
         System.out.println(mouseEvent);
-    }
     }
 
     /**
