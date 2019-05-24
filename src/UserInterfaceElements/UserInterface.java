@@ -1,13 +1,25 @@
 package UserInterfaceElements;
 
-
+/**
+ * Class used for general UI data
+ */
 public class UserInterface {
     /**
-     * Class used for general UI data
+     * height of a cell
      */
     private int cellHeight;
+    /**
+     * width of a cell
+     */
     private int cellWidth;
+
+    /**
+     * default height of a cell
+     */
     private int defaultCellHeight = 20;
+    /**
+     * default width of a cell
+     */
     private int defaultCellWidth = 20;
 
     public void setCellHeight(int cellHeight) {
@@ -34,12 +46,18 @@ public class UserInterface {
         return defaultCellWidth;
     }
 
-    public UserInterface(int cellH, int cellW){
+    /**
+     * constructor for userinterface
+     *
+     * @param cellH
+     * @param cellW
+     */
+    public UserInterface(int cellH, int cellW) {
         setCellHeight(cellH);
         setCellWidth(cellW);
     }
 
-    public UserInterface(){
+    public UserInterface() {
         UserInterface UI = new UserInterface(this.getDefaultCellHeight(), this.getDefaultCellWidth());
     }
 

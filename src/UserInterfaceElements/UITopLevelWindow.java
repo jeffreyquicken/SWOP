@@ -7,26 +7,59 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * Class of UIToplevelwindow involving methods for painting and handling events in overview window
+ */
 public class UITopLevelWindow {
 
+    /**
+     * The active subwindowlist
+     */
     private List<UISuperClass> activeSubWindow;
+
+    /**
+     * settings for visualisation
+     */
     private CellVisualisationSettings setting;
+
+    /**
+     * Minimum width of a window
+     */
     private int minWidth = 150;
+
+    /**
+     * minimum height of a window
+     */
     private int minHeight = 150;
+
+    /**
+     * border that is clicked
+     */
     private int borderClicked;
-    	//EVENTS VARIABLES
+
+    //EVENTS VARIABLES
+    /**
+     * the state of the system
+     */
     private String state = "normal";
+
+    /**
+     * saved coordinates, initiated to (-1,-1)
+     */
     private int[] savedCoords = {-1,-1};
-    	//List with activeSubwindow in chronological order. The last active subwindow is in the first position in the list.
+    /**
+     * List with activeSubwindow in chronological order. The last active subwindow is in the first position in the list.
+     */
     private List<UISuperClass> subWindows;
 
 
-    //Dictionary with subwindows as keys and a list with Xco,Yco,Width, Height as value
+    /**
+     * Dictionary with subwindows as keys and a list with Xco,Yco,Width, Height as value
+     */
     private Map<UISuperClass,List<Integer>> subwindowInfo;
 
     /**
-     * Constructor
+     * Constructor for top level window
      */
     public UITopLevelWindow(){
         setting = new CellVisualisationSettings();
@@ -39,6 +72,10 @@ public class UITopLevelWindow {
     }
 
 
+    /**
+     * Method that gets the active sub window
+     * @return the activesubwindow
+     */
     public UISuperClass getActiveSubWindow() {
         if (activeSubWindow.size() == 0) {
             return null;
@@ -130,6 +167,14 @@ public class UITopLevelWindow {
 
     }
 
+    /**
+     * Method that relays the coordinates from the toplevelwindow to the right subwindow,
+     * converting from the toplevel coordinate system to the coordinate system of the clicked subi-window
+     * @param xCo x coordinate of the click
+     * @param yCo y coordinate of the click
+     * @param id the click id
+     * @return the converted coordinates
+     */
     public Integer[] relayCoordinates(int xCo, int yCo, int id){
         Integer[] result = {-1,-1};
         if (id == 502){
@@ -310,6 +355,16 @@ public class UITopLevelWindow {
 
     }
 
+    /**
+     * Method that checks whether the click is in a window
+     * @param X X coordinate of window
+     * @param Y Y coordinate of window
+     * @param xCo x coordinate of click
+     * @param yCo y coordinate of click
+     * @param width width of the windwo
+     * @param height height of the window
+     * @return whether the click is in the window
+     */
     public boolean ClickedWithinWindow(int X, int Y, int xCo, int yCo, int width, int height) {
         if (xCo >= X && xCo <= X + width && yCo >= Y && yCo <= Y + height) {
             return true;
