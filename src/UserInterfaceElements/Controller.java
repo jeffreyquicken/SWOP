@@ -119,7 +119,7 @@ public class Controller {
      * @param count number of clicks
      */
     public void relayMouseEvent(int id, int xCo, int yCo, int count) {
-        //if mode will be swtitched mouseevent will tell
+        //if mode will be switched mouse event will tell
         Integer[] result =  topLevelWindow.relayCoordinates(xCo,yCo, id);
         if(topLevelWindow.getActiveSubWindow() != null  ) {
 

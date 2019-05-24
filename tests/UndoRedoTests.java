@@ -117,8 +117,51 @@ public class UndoRedoTests {
 
     @Test
     public void ColumnNameCommand() {
+        OpenDesignWindow();
+        String original = dc.getTableList().get(0).getColumnNames().get(0).getName();
+        ChangeColumnName();
+        assertEquals(original+"a",dc.getTableList().get(0).getColumnNames().get(0).getName());
+        undo();
+        assertEquals(original,dc.getTableList().get(0).getColumnNames().get(0).getName());
+        redo();
+        assertEquals(original+"a",dc.getTableList().get(0).getColumnNames().get(0).getName());
+    }
 
+    @Test
+    public void ColumnTypeCommand()
+    {
+        OpenDesignWindow();
+        String originalType = dc.getTableList().get(0).getColumnNames().get(2).getType();
+        ChangeColumnType();
+        String newType = dc.getTableList().get(0).getColumnNames().get(2).getType();
+        undo();
+        assertEquals(originalType, dc.getTableList().get(0).getColumnNames().get(2).getType());
+        redo();
+        assertEquals(newType,dc.getTableList().get(0).getColumnNames().get(2).getType());
+    }
 
+    @Test
+    public void DefaultValueCommand() {
+        OpenDesignWindow();
+        String original = dc.getTableList().get(0).getColumnNames().get(2).getDefaultV().getString();
+        ChangeDefaultValue();
+        String newDV = dc.getTableList().get(0).getColumnNames().get(2).getDefaultV().getString();
+        undo();
+        assertEquals(original,dc.getTableList().get(0).getColumnNames().get(2).getDefaultV().getString());
+        redo();
+        assertEquals(newDV,dc.getTableList().get(0).getColumnNames().get(2).getDefaultV().getString());
+    }
+
+    @Test
+    public void NewColumnCommand() {
+        OpenDesignWindow();
+        int originalSize = dc.getTableList().get(0).getColumnNames().size();
+        AddColumn();
+        assertEquals(originalSize+1,dc.getTableList().get(0).getColumnNames().size());
+        undo();
+        assertEquals(originalSize,dc.getTableList().get(0).getColumnNames().size());
+        redo();
+        assertEquals(originalSize+1,dc.getTableList().get(0).getColumnNames().size());
     }
 
     //methods for actions to be used in tests
@@ -147,6 +190,26 @@ public class UndoRedoTests {
 
     void ChangeBlanksAllowed() {
         relay.handleMouseEvent(500,375,40,1);
+    }
+
+    void ChangeColumnName () {
+        relay.handleMouseEvent(500,100,40,1);
+        relay.handleKeyEvent(401, 65,'a');
+        relay.handleKeyEvent(401, 10,'e');
+    }
+
+    void ChangeColumnType() {
+        relay.handleMouseEvent(500,275,80,1);
+    }
+
+    void ChangeDefaultValue() {
+        relay.handleMouseEvent(500,175,80,1);
+        relay.handleKeyEvent(401, 65,'a');
+        relay.handleKeyEvent(401, 10,'e');
+    }
+
+    void AddColumn() {
+        relay.handleMouseEvent(501,110,120,2);
     }
 
     public void MoveWindowToUpperLeftCorner() {
