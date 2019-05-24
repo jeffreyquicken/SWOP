@@ -41,21 +41,28 @@ public class TableModePaintModule extends PaintModule {
          }
          //Only paint header when not scrolled
          if (offset <= 0 ){
+
             //paint the header
-            paintHeader(g, startXco, startYco, offset, widthCells - colMargin, offsetHorizontal, "Name");
+             paintHeader(g, startXco, startYco, offset, widthCells - colMargin, offsetHorizontal, "Name");
              int tempWidth = widthList.get(0) + widthList.get(1);
              int xCo = startXco;
 
              xCo += widthList.get(0);
-             widthCells = widthList.get(1);
+             widthCells = widthList.get(0);
 
              int newWidth = calculateNewWidth(offsetHorizontal,widthCells,width,tempWidth,startXco,xCo);
+             paintHeader(g, startXco+widthList.get(0)-offsetHorizontal, startYco, offset, newWidth - colMargin , offsetHorizontal, "Query");
 
-             paintHeader(g, xCo, startYco, offset, newWidth - colMargin , offsetHorizontal, "Query");
+
         }
-
-
-        for(Table tableItem : tableList){
+         //Filter computed tables
+         List<Table> tableListCopy = new ArrayList<>();
+        for (Table tableItem : tableList){
+            if(!tableItem.getTableName().contains("Computed")){
+                tableListCopy.add(tableItem);
+            }
+        }
+        for(Table tableItem : tableListCopy){
             if(tempHeight < (height-10  ) && tempHeight >= 0){
                startYco = printTableGetYco(g, startXco, startYco, setting, width, offsetHorizontal, tableItem);
             }
@@ -80,8 +87,9 @@ public class TableModePaintModule extends PaintModule {
      */
     private int calculateNewWidth(int offsetHorizontal, int widthCells, int width, int tempWidth, int startXco, int xCo){
          int newWidth;
-        if(offsetHorizontal > 0 && offsetHorizontal  - widthCells >=0 ){
-            newWidth = widthCells;
+
+        if(offsetHorizontal > 0 && offsetHorizontal - widthCells >=0 ){
+            newWidth = widthCells ;
         } else if (offsetHorizontal > 0 && offsetHorizontal  - widthCells < 0 ){
             newWidth = widthCells - offsetHorizontal;
         } else if(tempWidth  <= width  ){
@@ -89,8 +97,9 @@ public class TableModePaintModule extends PaintModule {
         }else{
             newWidth =  (width + startXco) - xCo ;
 
-            System.out.println("Old width=" + widthCells + " New width="+newWidth );
+
         }
+        System.out.println("Old width=" + widthCells + " New width="+newWidth );
         return newWidth;
     }
 
