@@ -15,6 +15,7 @@ public class dataController {
 
     /**
      * get method for the querymanager
+     *
      * @return querymanager
      */
     public SQLQuery.queryManager getQueryManager() {
@@ -54,16 +55,16 @@ public class dataController {
 
     /**
      * initializes the datacontroller
-     * 
+     *
      * @effect the standard values of the dataController are set and three empty lists are created for demonstration purposes
-     * 		   |new.setting == new CellVisualisationSettings()
-     * 		   |new.tableList == new ArrayList()
-     * 		   |this.addTable();
-     *         |this.addTable();
-     * 		   |this.addTable();
-     *         |operations = new Operations();
-     */	
-    public dataController(){
+     * |new.setting == new CellVisualisationSettings()
+     * |new.tableList == new ArrayList()
+     * |this.addTable();
+     * |this.addTable();
+     * |this.addTable();
+     * |operations = new Operations();
+     */
+    public dataController() {
         setting = new CellVisualisationSettings();
         //setting.getWidthList().add(setting.getDefaultWidth());
         setting.getWidthList().add(setting.getDefaultWidth());
@@ -81,12 +82,12 @@ public class dataController {
 
     /**
      * initializes the datacontroller
-     * 
-     * @effect the standard values of the dataController are set 
-     * 		   |new.setting == new CellVisualisationSettings()
-     * 		   |new.tableList == new ArrayList()
-     *         |operations = new Operations();
-     */	
+     *
+     * @effect the standard values of the dataController are set
+     * |new.setting == new CellVisualisationSettings()
+     * |new.tableList == new ArrayList()
+     * |operations = new Operations();
+     */
     public dataController(int i) {
         setting = new CellVisualisationSettings();
         //setting.getWidthList().add(setting.getDefaultWidth());
@@ -101,22 +102,22 @@ public class dataController {
         operations = new Operations();
     }
 
-    public List<Table> getTableList(){
+    public List<Table> getTableList() {
         return tableList;
     }
 
     /**
      * Method that adds a new table to the table list and gives it a valid name
-     * 
+     *
      * @effect creates a new table with a valid name and adds it to the list
-     * 		 | new.newTable = new Table (Name) && isValidName(Name)
-     * 		 | tableList.add(newTable)
+     * | new.newTable = new Table (Name) && isValidName(Name)
+     * | tableList.add(newTable)
      */
-    public void addTable(){
+    public void addTable() {
         int numberOfTable = this.getTableList().size() + 1;
         String newName = "Table" + numberOfTable;
         int i = numberOfTable;
-        while (!isValidName(newName, null)){
+        while (!isValidName(newName, null)) {
             i++;
             newName = "Table" + i;
         }
@@ -124,10 +125,11 @@ public class dataController {
         Table newTable = new Table(newName);
         tableList.add(newTable);
     }
+
     /**
      * Checks if updated text is valid
      *
-     * @param text text to be validated
+     * @param text     text to be validated
      * @param currName old name
      * @return Wheter the name of the table is valid (hence unique and non-empty)
      */
@@ -147,28 +149,30 @@ public class dataController {
 
     /**
      * Method that deletes a table from the table list
+     *
      * @param table the table to be deleted
      * @pre The given table is a valid table. if so, it is in the list.
      * @post The given table is removed from the table list
-     * 	   | tableList.remove(table)
+     * | tableList.remove(table)
      */
-    public void deleteTable(Table table){
+    public void deleteTable(Table table) {
         tableList.remove(table);
     }
 
     /**
      * Method that returns the lowest Y coordinate based on how many tables there are
      * and the set height for these tables
+     *
      * @return the lowest Y coordinate
      */
-    public int getLowestY(int i){
+    public int getLowestY(int i) {
         int lowestY = i;
-        try{
-        for (Table table : this.getTableList()){
-            lowestY += 20;
-        }
+        try {
+            for (Table table : this.getTableList()) {
+                lowestY += 20;
+            }
             return lowestY;
-        }catch (Exception e){
+        } catch (Exception e) {
             return lowestY;
         }
 
@@ -176,8 +180,7 @@ public class dataController {
     }
 
 
-
-    public CellVisualisationSettings getSetting(){
+    public CellVisualisationSettings getSetting() {
         return setting;
     }
 
@@ -193,8 +196,6 @@ public class dataController {
     public void redo() {
         operations.redo();
     }
-
-
 
 
 }

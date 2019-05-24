@@ -46,9 +46,10 @@ public class UIFormModule extends UISuperClass {
     private int rowIndex;
 
 
-    public Table getTable(){
+    public Table getTable() {
         return table;
     }
+
     public Cell getTempText() {
         return tempText;
     }
@@ -60,7 +61,6 @@ public class UIFormModule extends UISuperClass {
     public int getRowIndex() {
         return rowIndex;
     }
-
 
 
     /**
@@ -470,9 +470,6 @@ public class UIFormModule extends UISuperClass {
             scrollbar.setOffsetpercentageVertical(0);
         }
     }
-
-
-
 
 
 }

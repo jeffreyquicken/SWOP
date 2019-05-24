@@ -28,7 +28,6 @@ public class whereClause {
     private String condition;
 
 
-
     public String getTableName() {
         return tableName;
     }
@@ -64,12 +63,13 @@ public class whereClause {
 
     /**
      * Method that adds the attributes to the where clause object
+     *
      * @param tableName the tablename
-     * @param id the column id
-     * @param operator the operator
+     * @param id        the column id
+     * @param operator  the operator
      * @param condition the condition to check
      */
-    public void addWhereClause(String tableName, String id, String operator, String condition){
+    public void addWhereClause(String tableName, String id, String operator, String condition) {
 
         this.tableName = tableName;
         this.id = id;

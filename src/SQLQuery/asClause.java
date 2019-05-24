@@ -19,17 +19,15 @@ public class asClause {
 
     /**
      * Method that adds an AS item to the list with AS clauses
+     *
      * @param id the id of the AS clause
      * @param as the alias of the AS clause
      */
-    public void addAsClause(String id, String as){
+    public void addAsClause(String id, String as) {
         asItem asItem = new asItem(id, as);
         asClauses.add(asItem);
 
     }
-
-
-
 
 
 }

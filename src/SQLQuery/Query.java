@@ -62,7 +62,9 @@ public class Query {
         return fromClause;
     }
 
-    public SQLQuery.joinClause getJoinClause(){return joinClause;}
+    public SQLQuery.joinClause getJoinClause() {
+        return joinClause;
+    }
 
     public void setFromClause(SQLQuery.fromClause fromClause) {
         this.fromClause = fromClause;
@@ -86,14 +88,15 @@ public class Query {
 
     /**
      * Method that computes a table based on a given query
+     *
      * @param data the datacontroller
      * @return the computed table
      * @throws IllegalArgumentException when expression is not valid
      */
-    public Table getComputedTable(dataController data) throws IllegalArgumentException{
+    public Table getComputedTable(dataController data) throws IllegalArgumentException {
 
         Table selectedTable = this.fromClause.getTable(data);
-        selectedTable = joinTables(data,selectedTable);
+        selectedTable = joinTables(data, selectedTable);
         this.getTables().add(selectedTable);
         Table resultTable = new Table("Computed_"+ this.getName());
         List<Column> selectedColumn = new ArrayList<>();
@@ -101,10 +104,10 @@ public class Query {
         String condition = this.whereClause.getCondition();
         List<Integer> indexSelectedColumn = new ArrayList<>();
         int indexExprColumn = -1;
-        int i =0;
-        for (Column column:selectedTable.getColumnNames()){
-            for (int j = 0; j<this.selectClause.getSelectClauses().size(); j++){
-                if (column.getName().equals(this.selectClause.getSelectClauses().get(j).getAs().getId())){
+        int i = 0;
+        for (Column column : selectedTable.getColumnNames()) {
+            for (int j = 0; j < this.selectClause.getSelectClauses().size(); j++) {
+                if (column.getName().equals(this.selectClause.getSelectClauses().get(j).getAs().getId())) {
                     this.getColumns().add(column);
                     Column col = new Column(column.getName(), column.getDefaultV(), column.getType(), column.getBlanksAllowed());
                     selectedColumn.add(col);
@@ -112,7 +115,7 @@ public class Query {
                 }
 
             }
-            if(column.getName().equals(this.whereClause.getId())){
+            if (column.getName().equals(this.whereClause.getId())) {
                 this.getColumns().add(column);
                 exprColumn = new Column(column.getName(), column.getDefaultV(), column.getType(), column.getBlanksAllowed());
                 indexExprColumn = i;
@@ -121,28 +124,28 @@ public class Query {
 
         }
         int j = 0;
-        for (Column addCol:selectedColumn) {
+        for (Column addCol : selectedColumn) {
             resultTable.addColumn(addCol);
             resultTable.getColumnNames().get(j).setName(this.selectClause.getSelectClauses().get(j).getAs().getAlias());
             j++;
         }
 
 
-        for (Row row:selectedTable.getTableRows()){
+        for (Row row : selectedTable.getTableRows()) {
             String leftExpr = row.getColumnList().get(indexExprColumn).getString();
             String rightExpr = condition;
-            if (isNumeric(leftExpr) && isNumeric(rightExpr) && compareExpression(leftExpr,rightExpr) ){
+            if (isNumeric(leftExpr) && isNumeric(rightExpr) && compareExpression(leftExpr, rightExpr)) {
                 //conditie waar
 
                 List<Column> addColumns = new ArrayList<>();
                 int k = 0;
-                for (Column addCol:selectedColumn) {
+                for (Column addCol : selectedColumn) {
                     addColumns.add(addCol);
                     k++;
                 }
                 Row resultRow = new Row(addColumns);
                 int m = 0;
-                for (int l:indexSelectedColumn) {
+                for (int l : indexSelectedColumn) {
                     CellText cell = new CellText(row.getColumnList().get(l).getString());
                     resultRow.setColumnCell(m, cell);
                     m++;
@@ -160,12 +163,13 @@ public class Query {
 
     /**
      * Method that compares two expressions based on the operator given in the where clause
-     * @param leftExpr the first expression
+     *
+     * @param leftExpr  the first expression
      * @param rightExpr the second expression
      * @return whether the comparison is true
      * @throws IllegalArgumentException when the expression is not valid
      */
-    public boolean compareExpression(String leftExpr, String rightExpr) throws IllegalArgumentException{
+    public boolean compareExpression(String leftExpr, String rightExpr) throws IllegalArgumentException {
         switch (this.whereClause.getOperator()) {
             case "<":
                 return Integer.parseInt(leftExpr) < Integer.parseInt(rightExpr);
@@ -184,47 +188,47 @@ public class Query {
 
     /**
      * Method that joins two tables on a given column
-     * @param data the datacontroller
+     *
+     * @param data          the datacontroller
      * @param selectedTable the table on which to join
      * @return the joined table
      */
-    public Table joinTables(dataController data, Table selectedTable){
-        if (this.getJoinClause().getJoinItems().size() == 0){
+    public Table joinTables(dataController data, Table selectedTable) {
+        if (this.getJoinClause().getJoinItems().size() == 0) {
             return selectedTable;
         }
         Table joinedTable = new Table("join");
         Table table = this.getJoinClause().getTable(data, this.getJoinClause().getJoinItems().get(0));
         Table table1;
         Table table2;
-        if (this.getJoinClause().getJoinItems().get(0).getAlias1().equals(this.getJoinClause().getJoinItems().get(0).getRowID())){
+        if (this.getJoinClause().getJoinItems().get(0).getAlias1().equals(this.getJoinClause().getJoinItems().get(0).getRowID())) {
             table1 = table;
             table2 = selectedTable;
-        }
-        else {
+        } else {
             table1 = selectedTable;
             table2 = table;
         }
 
         int indexTable1 = -1;
         int indexTable2 = -1;
-        for (Column col:table1.getColumnNames()){
-            if (col.getName().equals(this.getJoinClause().getJoinItems().get(0).getCell1())){
+        for (Column col : table1.getColumnNames()) {
+            if (col.getName().equals(this.getJoinClause().getJoinItems().get(0).getCell1())) {
                 indexTable1 = table1.getColumnNames().indexOf(col);
             }
         }
-        for (Column col:table2.getColumnNames()){
-            if (col.getName().equals(this.getJoinClause().getJoinItems().get(0).getCell2())){
+        for (Column col : table2.getColumnNames()) {
+            if (col.getName().equals(this.getJoinClause().getJoinItems().get(0).getCell2())) {
                 indexTable2 = table2.getColumnNames().indexOf(col);
             }
         }
         List<Column> columnList = new ArrayList<>();
-        for (Column col:table1.getColumnNames()){
+        for (Column col : table1.getColumnNames()) {
             Column copyCol = new Column(col.getName(), col.getDefaultV(), col.getType(), col.getBlanksAllowed());
             columnList.add(copyCol);
             joinedTable.addColumn(copyCol);
         }
         int i = 0;
-        for (Column col:table2.getColumnNames()){
+        for (Column col : table2.getColumnNames()) {
             if (i != indexTable2) {
                 Column copyCol = new Column(col.getName(), col.getDefaultV(), col.getType(), col.getBlanksAllowed());
                 columnList.add(copyCol);
@@ -233,20 +237,20 @@ public class Query {
             i++;
         }
 
-        int k=0;
-        for (Row row:table1.getTableRows()){
-            for (Row row2:table2.getTableRows()){
-                if (row.getColumnList().get(indexTable1).getString().equals(row2.getColumnList().get(indexTable2).getString())){
+        int k = 0;
+        for (Row row : table1.getTableRows()) {
+            for (Row row2 : table2.getTableRows()) {
+                if (row.getColumnList().get(indexTable1).getString().equals(row2.getColumnList().get(indexTable2).getString())) {
                     Row joinRow = new Row(columnList);
-                    int j =0;
-                    for (Cell cell:joinRow.getColumnList()){
+                    int j = 0;
+                    for (Cell cell : joinRow.getColumnList()) {
                         Cell joinCell = null;
-                        if(j < table1.getColumnNames().size()){
+                        if (j < table1.getColumnNames().size()) {
                             joinCell = new CellText(table1.getTableRows().get(k).getColumnList().get(j).getString());
-                        }else if(j !=indexTable2) {
-                            joinCell = new CellText(table2.getTableRows().get(k).getColumnList().get(j-table1.getColumnNames().size()+1).getString());
+                        } else if (j != indexTable2) {
+                            joinCell = new CellText(table2.getTableRows().get(k).getColumnList().get(j - table1.getColumnNames().size() + 1).getString());
                         }
-                        joinRow.setColumnCell(j,joinCell);
+                        joinRow.setColumnCell(j, joinCell);
                         j++;
                     }
                     joinedTable.addRow(joinRow);
@@ -260,18 +264,18 @@ public class Query {
 
     /**
      * Method to check if a string is a number
+     *
      * @param toCheck the string to check
      * @throws NumberFormatException the input string is not a number
      */
-    public boolean isNumeric(String toCheck) throws NumberFormatException{
+    public boolean isNumeric(String toCheck) throws NumberFormatException {
         try {
             Double.parseDouble(toCheck);
             return true;
-        } catch (Exception e){
-           return false;
+        } catch (Exception e) {
+            return false;
         }
     }
-
 
 
 }

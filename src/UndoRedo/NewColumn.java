@@ -14,9 +14,10 @@ public class NewColumn implements Command {
 
     /**
      * inintializes new command representing the add new column
+     *
      * @param cell the table where to collumn is to be added
-     * @param c the column that was added
-     * @param dc data controller
+     * @param c    the column that was added
+     * @param dc   data controller
      */
     public NewColumn(int cell, Column c, dataController dc) {
         this.cellID = cell;

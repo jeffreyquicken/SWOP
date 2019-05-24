@@ -14,10 +14,11 @@ public class ColumnName implements Command {
 
     /**
      * Initiaalize new command with the old name, new name, collumn to xich names belong and the data controller to change this information
+     *
      * @param cell Place where collumn name was changed
-     * @param nv New Name
-     * @param ov Old Name
-     * @param dc datacontroller
+     * @param nv   New Name
+     * @param ov   Old Name
+     * @param dc   datacontroller
      */
     public ColumnName(int[] cell, String nv, String ov, dataController dc) {
         this.cellID = cell;

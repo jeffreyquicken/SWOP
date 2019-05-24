@@ -15,10 +15,11 @@ public class RowValue implements Command {
 
     /**
      * initializes new row value command, representing a change in the value of a row
+     *
      * @param cell the id of the cell where the value was changed
-     * @param nv the new value
-     * @param ov the old value
-     * @param dc data controller
+     * @param nv   the new value
+     * @param ov   the old value
+     * @param dc   data controller
      */
     public RowValue(int[] cell, Cell nv, Cell ov, dataController dc) {
         this.cellID = cell;
@@ -32,7 +33,7 @@ public class RowValue implements Command {
      */
     @Override
     public void undo() {
-        data.getTableList().get(cellID[0]).getTableRows().get(cellID[1]).getColumnList().set(cellID[2],oldValue);
+        data.getTableList().get(cellID[0]).getTableRows().get(cellID[1]).getColumnList().set(cellID[2], oldValue);
     }
 
     /**

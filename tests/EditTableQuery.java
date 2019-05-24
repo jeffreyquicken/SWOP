@@ -131,7 +131,11 @@ public class EditTableQuery {
         //we should be in table name editing mode right now
         assertEquals("edit",window.getCurrMode());
 
+<<<<<<< HEAD
         ((UITablesModule) window).setTempTextString("SELECT table.Column1 AS col FROM Table1 AS table INNER JOIN Table2 AS table2 ON table2.Column1 = table1.Column1 WHERE table.Column1 = ");
+=======
+        ((UITablesModule) window).setTempTextString("SELECT table.Column1 AS col FROM Table1 AS table INNER JOIN Table2 AS table2 ON table2.Column1 = tabele.Column1 WHERE table.Column1 = 6 ");
+>>>>>>> 282082731e1b187f99c6a78f517c9e18f8156bef
         relay.handleKeyEvent(400,101,'6');
         Table table =  dc.getSelectedTable();
         relay.handleMouseEvent(500,84,140,1);

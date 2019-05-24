@@ -13,8 +13,9 @@ public class BlanksAllowed implements Command {
 
     /**
      * Initialisez this command with given parameters
+     *
      * @param cell Cellid of checkbox
-     * @param dc datacontroller to acces the data
+     * @param dc   datacontroller to acces the data
      */
     public BlanksAllowed(int[] cell, dataController dc) {
         this.cellID = cell;
