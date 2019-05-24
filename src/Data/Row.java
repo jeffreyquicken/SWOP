@@ -41,16 +41,7 @@ public class Row {
 
 
         }
-        /**
-         rowName = name;
-         String value1 = "" ;
-         String value2 = "true" ;
-         String value3 = "C " + name ;
-         String value4 = "D " + name ;
-         columnList.add(value1);
-         columnList.add(value2);
-         columnList.add(value3);
-         columnList.add(value4);**/
+
     }
 
     /**
