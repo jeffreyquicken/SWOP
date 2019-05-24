@@ -11,20 +11,78 @@ import settings.scrollbar;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * superclass for UIModules involving super methods for painting and handling keyevents
+ */
 public abstract class UISuperClass {
+    /**
+     * The paintmodule
+     */
     protected PaintModule paintModule;
+
+    /**
+     * The mouseeventhandler
+     */
     protected MouseEvent mouseEventHandler;
+
+    /**
+     * the current mode of the system
+     */
     protected String currMode = "normal";
+
+    /**
+     * active cell coordinates
+     */
     protected int[] activeCell;
+
+    /**
+     * temporary text
+     */
     protected String tempText;
+
+    /**
+     * whether there is invalid input
+     */
     protected Boolean invalidInput;
+
+    /**
+     * The index of the dragged column
+     */
     protected int draggedColumn;
+
+    /**
+     * The x x coordinate of the drag
+     */
     protected int draggedX;
+
+    /**
+     * whether control key is pressed
+     */
     protected boolean ctrlPressed;
+
+    /**
+     * whether the module is the active window
+     */
     protected boolean active;
+
+    /**
+     * whether the scrolbar is active
+     */
     protected boolean scrollbarActive;
+
+    /**
+     * the horizontal sroll percentage
+     */
     protected double percentageHorizontal;
+
+    /**
+     * the vertical scroll percentage
+     */
     protected double percentageVertical;
+
+    /**
+     * the scrollbar
+     */
     protected scrollbar scrollbar;
 
     /**
@@ -43,7 +101,14 @@ public abstract class UISuperClass {
     }
 
 
-    //Handles keyevent and returns if UImode need to change
+    /**
+     * Method that handles the keyevents
+     * @param id ket id
+     * @param keyCode keycode
+     * @param keyChar key chararcter
+     * @param data datacontroller
+     * @return the next ui mode
+     */
     public String handleKeyEvent(int id, int keyCode, char keyChar, dataController data) {
         KeyEvent eventHandler = new KeyEvent();
         String nextUIMode = "";
@@ -78,8 +143,22 @@ public abstract class UISuperClass {
         return nextUIMode;
     }
 
+    /**
+     * Method for painting elelments
+     * @param g graphics object
+     * @param data datacontroller
+     * @param coords the coordinates to paint
+     * @param dimensions the dimensions
+     */
     protected void paint(Graphics g, dataController data, Integer[] coords, Integer[] dimensions){ }
 
+    /**
+     * Method that checks whhether the scrollbar is clicked
+     * @param xco the x coordinate of the click
+     * @param yco the y coorsinate of the click
+     * @param dimensions the dimensions of the window
+     * @return whether the scrollbar is clicked
+     */
     protected Boolean scrollbarClicked(int xco, int yco, Integer[] dimensions){
         if(scrollbar.getActiveVertical()){
             System.out.println("yes");

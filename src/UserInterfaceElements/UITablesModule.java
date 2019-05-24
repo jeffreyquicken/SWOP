@@ -602,7 +602,7 @@ public class UITablesModule extends UISuperClass{
 
         return result;
     }
-    
+
     /**
      * Method that recomputes scrollbar paramters when UI-change has happened
      * @param data datacontroller
