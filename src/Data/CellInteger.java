@@ -38,8 +38,7 @@ public class CellInteger implements CellEditable<Integer> {
     /**
      * Method that adds a character to the value
      *
-     * @param keyChar the character to be added
-     * @throws numberFormatException the added character is not an integer
+     * @param keyChar the character to be addeds
      * @effect The value the character is appended to the end of the value
      * | new.value = parseInt(value.toString() + keyChar)
      */

@@ -24,8 +24,6 @@ public class DesignModePaintModule extends PaintModule {
      * @param g     graphics object
      * @param table table for which design view has to be painted
      */
-
-    //todo REFACTOR ASAP
     public void paintDesignView(Graphics g, Table table, int startXco, int startYco, CellVisualisationSettings setting, int width, int height, scrollbar scrollbar, int windowHeight, int sum) {
         int offsetVertical = (int) ((windowHeight - titleHeight) * scrollbar.getOffsetpercentageVertical());
         int offsetHorizontal = (int) (sum * scrollbar.getOffsetpercentageHorizontal());
@@ -83,17 +81,18 @@ public class DesignModePaintModule extends PaintModule {
         }
 
     }
-//======================
+
 
     /**
-     * @param g
-     * @param startXco
-     * @param width
-     * @param headerXco
-     * @param headerYco
-     * @param widthList
-     * @param names
-     * @param i
+     * Method that prints the header and gets the  coordinate
+     * @param g graphics object
+     * @param startXco start x coordinate
+     * @param width width of window
+     * @param headerXco header x coordinate
+     * @param headerYco header y coordinate
+     * @param widthList widthlist
+     * @param names names
+     * @param i index
      * @return headerXco
      */
     private int printHeaderGetHeaderXCo(Graphics g, int startXco, int width, int headerXco, int headerYco, List<Integer> widthList,
@@ -112,14 +111,15 @@ public class DesignModePaintModule extends PaintModule {
     }
 
     /**
-     * @param g
-     * @param startYco
-     * @param headerXco
-     * @param widthList
-     * @param names
-     * @param i
-     * @param newWidth
-     * @return
+     * Method that prints the header and gets the temporary width
+     * @param g graphics object
+     * @param startYco start Y coordinate
+     * @param headerXco header x coordinate
+     * @param widthList the widthlist
+     * @param names names
+     * @param i index
+     * @param newWidth the new width
+     * @return the temporary wodth
      */
     private int printHeaderGetTempWidth(Graphics g, int startYco, int headerXco, List<Integer> widthList,
                                         String[] names, int i, int newWidth) {
@@ -141,16 +141,17 @@ public class DesignModePaintModule extends PaintModule {
     }
 
     /**
-     * @param g
-     * @param startXco
-     * @param startYco
-     * @param setting
-     * @param width
-     * @param height
-     * @param offsetHorizontal
-     * @param tempHeight
-     * @param column
-     * @return
+     * method that paints the row and gets the starting y coordinate
+     * @param g graphics object
+     * @param startXco start x coordinate
+     * @param startYco start Y coordinate
+     * @param setting settings object
+     * @param width the width
+     * @param height the height
+     * @param offsetHorizontal the horizontal offset
+     * @param tempHeight the temporary height
+     * @param column the column
+     * @return the start Y coordinate
      */
     private int paintRowGetYco(Graphics g, int startXco, int startYco, CellVisualisationSettings setting, int width,
                                int height, int offsetHorizontal, int tempHeight, Column column) {

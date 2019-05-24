@@ -110,14 +110,14 @@ public class TableModePaintModule extends PaintModule {
     /**
      * Method that paints a row and returns the y coordinate
      *
-     * @param g
-     * @param startXco
-     * @param startYco
-     * @param setting
-     * @param width
-     * @param offsetHorizontal
-     * @param tableItem
-     * @return
+     * @param g graphics object
+     * @param startXco starting x coordinate
+     * @param startYco starting y coordinate
+     * @param setting settings object
+     * @param width width
+     * @param offsetHorizontal horizontal offset
+     * @param tableItem table to be printed
+     * @return the starting y coordinate
      */
     private int printTableGetYco(Graphics g, int startXco, int startYco, CellVisualisationSettings setting, int width,
                                  int offsetHorizontal, Table tableItem) {
@@ -141,13 +141,13 @@ public class TableModePaintModule extends PaintModule {
     /**
      * Method that paints header of table
      *
-     * @param g
-     * @param startXco
-     * @param startYco
-     * @param offset
-     * @param widthCells
-     * @param offsetHorizontal
-     * @param title
+     * @param g graphics object
+     * @param startXco starting x coordinate
+     * @param startYco starting y coordinate
+     * @param offset the offset
+     * @param widthCells the width of the cells
+     * @param offsetHorizontal the horizontal offset
+     * @param title the title of the header
      */
     public void paintHeader(Graphics g, int startXco, int startYco, int offset, int widthCells, int offsetHorizontal, String title) {
         g.setColor(Color.GRAY);
