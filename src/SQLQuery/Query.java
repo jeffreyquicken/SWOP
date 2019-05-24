@@ -44,6 +44,16 @@ public class Query {
      */
     private List<Table> tables = new ArrayList<>();
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    private String name;
+
     public List<Table> getTables() {
         return tables;
     }
@@ -85,7 +95,7 @@ public class Query {
         Table selectedTable = this.fromClause.getTable(data);
         selectedTable = joinTables(data,selectedTable);
         this.getTables().add(selectedTable);
-        Table resultTable = new Table("Computed: ");
+        Table resultTable = new Table("Computed_"+ this.getName());
         List<Column> selectedColumn = new ArrayList<>();
         Column exprColumn;
         String condition = this.whereClause.getCondition();

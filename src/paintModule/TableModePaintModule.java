@@ -55,9 +55,14 @@ public class TableModePaintModule extends PaintModule {
 
 
         }
-
-
-        for(Table tableItem : tableList){
+         //Filter computed tables
+         List<Table> tableListCopy = new ArrayList<>();
+        for (Table tableItem : tableList){
+            if(!tableItem.getTableName().contains("Computed")){
+                tableListCopy.add(tableItem);
+            }
+        }
+        for(Table tableItem : tableListCopy){
             if(tempHeight < (height-10  ) && tempHeight >= 0){
                startYco = printTableGetYco(g, startXco, startYco, setting, width, offsetHorizontal, tableItem);
             }

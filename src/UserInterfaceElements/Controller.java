@@ -122,21 +122,24 @@ public class Controller {
         //if mode will be switched mouse event will tell
         Integer[] result =  topLevelWindow.relayCoordinates(xCo,yCo, id);
         if(topLevelWindow.getActiveSubWindow() != null  ) {
-
             String nextUIMode = topLevelWindow.getActiveSubWindow().handleMouseEvent(result[0], result[1], count, id, tableDataController, topLevelWindow.getDimensions(topLevelWindow.getActiveSubWindow()));
+
             if (nextUIMode.equals("row")){
                 if(tableDataController.getSelectedTable().getQuery().equals("")){
                     UIRowModule rowModule = new UIRowModule(tableDataController.getSelectedTable());
                     topLevelWindow.addSubWindow(rowModule);
                 }
-                else if (tableDataController.getSelectedTable().getQuery().length() > 0 && id==500 && tableDataController.getSelectedTable().getColumnNames().size() == 0){
+           //     else if (tableDataController.getSelectedTable().getQuery().length() > 0 && id==500 && tableDataController.getSelectedTable().getColumnNames().size() == 0){
+                   else if (tableDataController.getSelectedTable().getQuery().length() > 0 && id==500){
                     UIComputedModule computeModule = new UIComputedModule(tableDataController.getSelectedTable().getComputedTable(tableDataController), tableDataController, tableDataController.getSelectedTable().getQuery());
+                    tableDataController.getTableList().add(tableDataController.getSelectedTable().getComputedTable(tableDataController));
                     computeModule.getTable().setQuery(tableDataController.getSelectedTable().getComputedTable(tableDataController).getQuery());
                     tableDataController.getQueryManager().addQueryDependendTablesFromQuery(tableDataController.getSelectedTable().getLastQuery());
                     tableDataController.getQueryManager().addQueryDependendColumnsFromQuery(tableDataController.getSelectedTable().getLastQuery());
                     topLevelWindow.addSubWindow(computeModule);
                 }
             }
+
             else if(nextUIMode.equals("design")){
                 UIDesignModule designModule = new UIDesignModule(tableDataController.getSelectedTable());
                 topLevelWindow.addSubWindow(designModule);
