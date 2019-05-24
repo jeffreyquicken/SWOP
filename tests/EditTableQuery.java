@@ -134,15 +134,11 @@ public class EditTableQuery {
         ((UITablesModule) window).setTempTextString("SELECT table.Column1 AS col FROM Table1 AS table INNER JOIN Table2 AS table2 ON table2.Column1 = tabele.Column1 WHERE table.Column1 = ");
         relay.handleKeyEvent(400,101,'6');
         Table table =  dc.getSelectedTable();
-
         relay.handleMouseEvent(500,84,140,1);
-
-
-        dc.getTableList().get(0).setQuery("SELECT table.Column1 AS col FROM Table1 AS table INNER JOIN Table2 AS table2 ON table2.Column1 = tabele.Column1 WHERE table.Column1 = 6");
-
+        dc.getTableList().get(0).setQuery("SELECT table.Column1 AS col FROM Table1 AS table WHERE table.Column1 = 6");
         assertEquals("normal",window.getCurrMode());
-
-        relay.handleMouseEvent(502,75,40,2);
+        relay.handleMouseEvent(502,56,35,2);
+        relay.handleMouseEvent(500,56,35,2);
 
         assertEquals(UIFormModule.class,topWindow.getActiveSubWindow().getClass());
 

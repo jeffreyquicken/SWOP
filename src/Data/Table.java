@@ -38,6 +38,19 @@ public class Table {
      */
     private String query;
 
+    public void setComputedTable(Boolean computedTable) {
+        this.computedTable = computedTable;
+    }
+
+    public Boolean getComputedTable() {
+        return computedTable;
+    }
+
+    /**
+     * Boolean to indicate wheter a table is computed or not
+     */
+    private Boolean computedTable;
+
     public Query getLastQuery() {
         return lastQuery;
     }
@@ -110,6 +123,7 @@ public class Table {
             designSetting.getWidthList().add(designSetting.getDefaultWidth());
         }
         query = "";
+        computedTable = false;
     }
 
     /**
@@ -172,6 +186,7 @@ public class Table {
         //Query query = parseQuery("SELECT movie.title AS title FROM movies AS movie WHERE movie.imdb_score < 7");
         Query query = parseQuery(this.getQuery());
         this.setLastQuery(query);
+        query.setName(this.tableName);
         Table computedTable = query.getComputedTable(data);
         System.out.println(computedTable);
         //data.getTableList().add(computedTable);
